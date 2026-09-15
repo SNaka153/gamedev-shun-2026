@@ -33,7 +33,7 @@
     myPixel.position.x = (Math.random() - 0.5) * 3;
     myPixel.position.y = (Math.random() - 0.5) * 3;
     myRenderer.render(myScene, myCamera);
-    await new Promise(myResolve => setTimeout(myResolve, 100));
+    await new Promise(myResolve => setTimeout(myResolve, 500));
     requestAnimationFrame(myRunAnimation);
   }
   myRunAnimation();
