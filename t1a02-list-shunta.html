@@ -1,326 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>T1A02 - Whale Field Notes by Shunta</title>
-  <style>
-    /* A. Shared appearance. A dot selects an HTML class; # selects an id. */
-    * { box-sizing: border-box; }
-    body { margin: 0; background-color: #f4f3ed; color: #18383b;
-      font-family: Arial, sans-serif; line-height: 1.6; }
-    .myPage { max-width: 1120px; margin: auto; padding: 24px; }
-    a { color: #075d66; text-underline-offset: 4px; }
-    a:hover { color: #b34916; }
-    a:focus-visible, button:focus-visible, select:focus-visible {
-      outline: 3px solid #ca6a2a; outline-offset: 4px; }
-    .myTop { display: flex; justify-content: space-between; gap: 16px;
-      margin-bottom: 22px; font-size: 13px; }
-    .myLabel { font-size: 12px; font-weight: bold; letter-spacing: 2px;
-      text-transform: uppercase; color: #42686b; }
-    h1 { font-family: Georgia, serif; font-size: 64px; line-height: 1.02;
-      font-weight: normal; margin: 18px 0; }
-    h2 { font-family: Georgia, serif; font-size: 32px; line-height: 1.2;
-      font-weight: normal; margin: 10px 0 20px; }
-    h3 { margin: 0 0 10px; font-size: 21px; }
-    p { margin: 10px 0; }
-    .mySmall { color: #456365; font-size: 13px; }
-    button, select { font: inherit; }
-    button, .myButton { border: 1px solid #075d66; border-radius: 5px;
-      padding: 11px 18px; background-color: #075d66; color: white;
-      cursor: pointer; text-decoration: none; display: inline-block; }
-    button:hover, .myButton:hover { background-color: #08464d; color: white; }
-    .mySecondary { background-color: transparent; color: #075d66; }
-    select { width: 100%; background-color: white; color: #18383b;
-      border: 1px solid #92acab; border-radius: 5px; padding: 11px; margin: 6px 0 12px; }
+<body style="background-color:aliceblue; color:navy;">
 
-    /* B. The required 1-row, 2-column table: link on the left, image on the right. */
-    .myIntroTable { width: 100%; border-collapse: collapse; table-layout: fixed;
-      background-color: #102f36; color: white; }
-    .myIntroTable td { width: 50%; vertical-align: middle; }
-    .myIntroText { padding: 35px; }
-    .myIntroText .myLabel { color: #a1d6cd; }
-    .myIntroText p { color: #d9e8e5; margin-bottom: 24px; max-width: 350px; }
-    .myIntroText .myButton { background-color: #d9efa5; color: #17392e;
-      border-color: #d9efa5; }
-    .myIntroPhoto { padding: 0; background-color: #0b2730; }
-    .myIntroPhoto img { display: block; width: 100%; height: 340px; object-fit: cover; }
-    .myCaption { padding: 12px 18px; color: #d7e6e3; font-size: 12px; }
-    .myCaption a { color: #d7e6e3; }
+<h1 align="center" style="background-color:navy; color:white;">
+  t1a02-list-shunta.html
+</h1>
 
-    /* C. Two readable columns. The ordered list stays a real ol with five li elements. */
-    .myColumns { display: flex; gap: 32px; margin: 42px 0; align-items: flex-start; }
-    .myListPanel { flex: 1; min-width: 0; }
-    .myExplorer { flex: 1.25; min-width: 0; background-color: white;
-      border: 1px solid #d0dbd7; padding: 28px; border-radius: 8px; }
-    .myWhaleList { padding-left: 32px; margin: 0; }
-    .myWhaleList li { padding: 11px 8px 13px; border-bottom: 1px solid #d2ded7; }
-    .myWhaleList li::marker { color: #075d66; font-weight: bold; }
-    .myWhaleList a { font-size: 19px; font-weight: bold; }
-    .myWhaleList p { font-size: 14px; margin: 5px 0; }
-    .myBadge { display: inline-block; padding: 3px 10px; border-radius: 30px;
-      background-color: #e7f0e9; color: #234d40; font-size: 12px; margin: 8px 0; }
-    .myLength { font-size: 38px; font-family: Georgia, serif; margin: 8px 0 14px; }
-    .myTrack { height: 18px; background-color: #eaf0eb; border-radius: 4px;
-      overflow: hidden; margin: 7px 0 13px; }
-    #myLengthBar { height: 100%; width: 52.2857%; background-color: #087d88; }
-    .myReferenceBar { height: 100%; width: 95.7143%; background-color: #85967c; }
-    .myAxis { display: flex; justify-content: space-between; color: #456365; font-size: 12px; }
-    .myFeedback { margin-top: 14px; padding: 12px 14px; background-color: #eaf2ee;
-      border-left: 3px solid #6a9184; min-height: 50px; }
-    .myExplorer button { margin-top: 12px; }
+<h2>Whale Guide by Shunta</h2>
 
-    /* D. Quiz and sources. */
-    .myQuiz { border-top: 2px solid #18383b; padding-top: 24px; }
-    .myQuestions { display: flex; gap: 20px; }
-    .myQuestion { flex: 1; min-width: 0; }
-    .myQuestion label { display: block; font-weight: bold; min-height: 52px; }
-    .myQuizNote { font-size: 13px; color: #456365; min-height: 46px; }
-    .myActions { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; }
-    footer { margin-top: 38px; padding-top: 20px; border-top: 1px solid #c8d5cc; }
-    .mySources { font-size: 13px; }
-    /* E. On a narrow screen, put the columns underneath each other. */
-    @media (max-width: 720px) {
-      .myPage { padding: 16px; }
-      .myTop, .myColumns, .myQuestions { display: block; }
-      .myIntroTable td { display: block; width: 100%; }
-      .myIntroText { padding: 26px; }
-      h1 { font-size: 48px; }
-      .myIntroPhoto img { height: auto; }
-      .myExplorer { margin-top: 24px; padding: 22px; }
-      .myQuestion { margin-bottom: 14px; }
-      .myQuestion label { min-height: 0; }
-    }
-  </style>
-</head>
-<body>
-<div class="myPage">
-  <div class="myTop">
-    <span><b>OCEAN NOTES</b> / T1A02 - Lists / Shunta</span>
-    <a href="index.html">Back to assignments</a>
-  </div>
-
-  <!-- 1. Original requirement: a link and an image inside a 1 x 2 table. -->
-  <table class="myIntroTable" aria-label="Introduction: whale link and photograph">
-    <tr>
-      <td class="myIntroText">
-        <div class="myLabel">A small guide to a big ocean</div>
-        <h1>Whale<br>field notes.</h1>
-        <p>Meet five ocean giants. Choose a species, compare its length,
-          then put your whale knowledge to the test.</p>
-        <a class="myButton" href="https://happywhale.com/">Explore Happywhale &#8599;</a>
-      </td>
-      <td class="myIntroPhoto">
-        <img src="https://www.fisheries.noaa.gov/s3/styles/full_width/s3/dam-migration/2160x1440_humpbackwhale_noaa.jpg?itok=c5Ha2-Fe"
-          alt="A humpback whale breaching above the ocean surface" width="540" height="360">
-        <div class="myCaption">Humpback whale, breaching. Photo:
-          <a href="https://www.fisheries.noaa.gov/species/humpback-whale">NOAA Fisheries</a>.</div>
-      </td>
-    </tr>
-  </table>
-
-  <div class="myColumns">
-    <div class="myListPanel">
-      <div class="myLabel">01 / Meet the species</div>
-      <h2>Five whales. Five stories.</h2>
-      <p class="mySmall">Select a name to explore its reference length.</p>
-      <!-- 2. Original requirement: an ordered list containing five whale types. -->
-      <ol class="myWhaleList">
-        <li><a href="#myExplorer" onclick="myPickWhale(0)">Humpback whale</a>
-          <p>Long flippers and individual tail markings help make each humpback distinctive.</p></li>
-        <li><a href="#myExplorer" onclick="myPickWhale(1)">Killer whale</a>
-          <p>Also called an orca. It belongs to the dolphin family.</p></li>
-        <li><a href="#myExplorer" onclick="myPickWhale(2)">Blue whale</a>
-          <p>The largest animal known to have lived on Earth feeds mainly on tiny krill.</p></li>
-        <li><a href="#myExplorer" onclick="myPickWhale(3)">Gray whale</a>
-          <p>A North Pacific traveller with a mottled body and long seasonal migrations.</p></li>
-        <li><a href="#myExplorer" onclick="myPickWhale(4)">Sperm whale</a>
-          <p>The largest toothed whale searches deep water for food, including squid.</p></li>
-      </ol>
-    </div>
-
-    <!-- 3. Extra: an interactive explorer with a proportional CSS bar. -->
-    <div class="myExplorer" id="myExplorer">
-      <div class="myLabel">02 / Size explorer</div>
-      <h2>How big is big?</h2>
-      <label for="myWhaleSelect">Choose a whale</label>
-      <select id="myWhaleSelect" onchange="myShowWhale()">
-        <option value="0">Humpback whale</option>
-        <option value="1">Killer whale</option>
-        <option value="2">Blue whale</option>
-        <option value="3">Gray whale</option>
-        <option value="4">Sperm whale</option>
-      </select>
-      <div aria-live="polite">
-        <span class="myBadge" id="myType">Baleen whale</span>
-        <h3 id="myName">Humpback whale</h3>
-        <p id="myFact">Humpbacks filter krill and small fish through baleen plates.</p>
-        <div class="mySmall">REFERENCE LENGTH</div>
-        <div class="myLength" id="myLength">18.3 m</div>
-      </div>
-      <div class="mySmall">Selected whale</div>
-      <div class="myTrack" aria-hidden="true"><div id="myLengthBar"></div></div>
-      <div class="mySmall">Blue whale reference / 33.5 m</div>
-      <div class="myTrack" aria-hidden="true"><div class="myReferenceBar"></div></div>
-      <div class="myAxis"><span>0 m</span><span>17.5 m</span><span>35 m</span></div>
-      <p class="mySmall" id="myComparison">55% of the blue whale reference length.</p>
-      <a id="mySourceLink" href="https://www.fisheries.noaa.gov/species/humpback-whale">Read this species profile at NOAA &#8599;</a>
+<table border="1" style="background-color:white;">
+  <tr>
+    <td>
+      <b>Explore whales</b><br>
+      Learn more at
+      <a href="https://happywhale.com/">Happywhale</a>.
+    </td>
+    <td>
+      <img src="https://www.fisheries.noaa.gov/s3/styles/full_width/s3/dam-migration/2160x1440_humpbackwhale_noaa.jpg?itok=c5Ha2-Fe"
+           alt="A humpback whale jumping above the water"
+           width="240" style="border-radius:20px;">
       <br>
-      <button type="button" onclick="myFindLongest()">Find the longest in this list</button>
-      <div class="myFeedback" id="myMaxResult" aria-live="polite">Explore the five species, or find the longest reference length.</div>
-      <p class="mySmall">Bars use a shared 35 m scale. Values are rounded conversions of NOAA's
-        listed upper lengths: 60, 32, 110, 49 and 52 ft (male sperm whale).
-        These are reference values, not averages or measurements of the photographed whale.</p>
-    </div>
-  </div>
+      Photo: <a href="https://www.fisheries.noaa.gov/species/humpback-whale">NOAA Fisheries</a>
+    </td>
+  </tr>
+</table>
 
-  <!-- 4. Extra: three questions with explanations and a repeatable score. -->
-  <div class="myQuiz">
-    <div class="myLabel">03 / Test your knowledge</div>
-    <h2>Ready for a quick dive?</h2>
-    <form id="myQuizForm">
-      <div class="myQuestions">
-        <div class="myQuestion">
-          <label for="myQ1">1. Which whale is the largest animal?</label>
-          <select id="myQ1" onchange="myClearScore()">
-            <option value="">Choose an answer</option>
-            <option value="humpback">Humpback whale</option>
-            <option value="blue">Blue whale</option>
-            <option value="gray">Gray whale</option>
-          </select>
-          <div class="myQuizNote" id="myNote1"></div>
-        </div>
-        <div class="myQuestion">
-          <label for="myQ2">2. Which belongs to the dolphin family?</label>
-          <select id="myQ2" onchange="myClearScore()">
-            <option value="">Choose an answer</option>
-            <option value="sperm">Sperm whale</option>
-            <option value="gray">Gray whale</option>
-            <option value="killer">Killer whale</option>
-          </select>
-          <div class="myQuizNote" id="myNote2"></div>
-        </div>
-        <div class="myQuestion">
-          <label for="myQ3">3. Which is the largest toothed whale?</label>
-          <select id="myQ3" onchange="myClearScore()">
-            <option value="">Choose an answer</option>
-            <option value="sperm">Sperm whale</option>
-            <option value="blue">Blue whale</option>
-            <option value="humpback">Humpback whale</option>
-          </select>
-          <div class="myQuizNote" id="myNote3"></div>
-        </div>
-      </div>
-      <div class="myActions">
-        <button type="button" onclick="myCheckQuiz()">Check my answers</button>
-        <button type="button" class="mySecondary" onclick="myResetQuiz()">Start again</button>
-      </div>
-      <div id="myQuizResult" class="myFeedback" aria-live="polite">Choose all three answers, then check your score.</div>
-    </form>
-  </div>
+<h2>Five Types of Whales</h2>
 
-  <footer>
-    <b>Sources &amp; photo credit</b>
-    <p class="mySources">Facts and reference lengths: NOAA Fisheries species profiles for
-      <a href="https://www.fisheries.noaa.gov/species/humpback-whale">humpback</a>,
-      <a href="https://www.fisheries.noaa.gov/species/killer-whale">killer</a>,
-      <a href="https://www.fisheries.noaa.gov/species/blue-whale">blue</a>,
-      <a href="https://www.fisheries.noaa.gov/species/gray-whale">gray</a> and
-      <a href="https://www.fisheries.noaa.gov/species/sperm-whale">sperm whales</a>.
-      Photograph: NOAA Fisheries, displayed to fit the panel. Species links and photograph need an internet connection.</p>
-    <p class="mySmall">Shunta / Game Development / T1A02 - Lists / 2026</p>
-    <a href="index.html">Back to assignments</a>
-  </footer>
-</div>
+<ol id="myList" style="background-color:white; color:navy;">
+  <li>
+    <b>Humpback whale</b>
+    <ul>
+      <li>It has very long flippers.</li>
+      <li><a href="https://www.fisheries.noaa.gov/species/humpback-whale">Learn about humpback whales</a></li>
+    </ul>
+  </li>
 
-<script>
-  // 5. Arrays: the same index refers to the same whale in every array.
-  // Index 0 = humpback, 1 = killer, 2 = blue, 3 = gray, 4 = sperm.
-  let myNames = ['Humpback whale', 'Killer whale', 'Blue whale', 'Gray whale', 'Sperm whale'];
-  let myLengths = [18.3, 9.8, 33.5, 14.9, 15.8];
-  let myTypes = ['Baleen whale', 'Toothed whale / dolphin', 'Baleen whale', 'Baleen whale', 'Toothed whale'];
-  let myFacts = [
-    'Humpbacks filter krill and small fish through baleen plates.',
-    'Killer whales are the largest dolphins. Different populations eat different prey.',
-    'Blue whales filter huge volumes of water to collect tiny krill.',
-    'Gray whales make long seasonal migrations in the North Pacific.',
-    'Sperm whales make deep dives to find food such as squid.'
-  ];
-  let mySlugs = ['humpback-whale', 'killer-whale', 'blue-whale', 'gray-whale', 'sperm-whale'];
+  <li>
+    <b>Killer whale</b>
+    <ul>
+      <li>Also called an orca, it belongs to the dolphin family.</li>
+      <li><a href="https://www.fisheries.noaa.gov/species/killer-whale">Learn about killer whales</a></li>
+    </ul>
+  </li>
 
-  // 6. Read the selection, look up its data, then update the page.
-  function myShowWhale() {
-    let myIndex = Number(document.getElementById('myWhaleSelect').value);
-    document.getElementById('myName').textContent = myNames[myIndex];
-    document.getElementById('myType').textContent = myTypes[myIndex];
-    document.getElementById('myFact').textContent = myFacts[myIndex];
-    document.getElementById('myLength').textContent = myLengths[myIndex] + ' m';
-    document.getElementById('myLengthBar').style.width = (myLengths[myIndex] / 35 * 100) + '%';
-    let myPercent = Math.round(myLengths[myIndex] / myLengths[2] * 100);
-    document.getElementById('myComparison').textContent = myPercent + '% of the blue whale reference length.';
-    document.getElementById('mySourceLink').href = 'https://www.fisheries.noaa.gov/species/' + mySlugs[myIndex];
-  }
+  <li>
+    <b>Blue whale</b>
+    <ul>
+      <li>It is the largest animal on Earth.</li>
+      <li><a href="https://www.fisheries.noaa.gov/species/blue-whale">Learn about blue whales</a></li>
+    </ul>
+  </li>
 
-  // Both the ordered list and the longest button reuse this function.
-  function myPickWhale(myIndex) {
-    document.getElementById('myWhaleSelect').value = myIndex;
-    myShowWhale();
-  }
+  <li>
+    <b>Gray whale</b>
+    <ul>
+      <li>It makes long migrations in the North Pacific.</li>
+      <li><a href="https://www.fisheries.noaa.gov/species/gray-whale">Learn about gray whales</a></li>
+    </ul>
+  </li>
 
-  // 7. Our "find max" lesson: start with the first number, then compare the rest.
-  function myFindLongest() {
-    let myMax = myLengths[0];
-    let myMaxIndex = 0;
-    for (let i = 1; i < myLengths.length; i++) {
-      if (myLengths[i] > myMax) {
-        myMax = myLengths[i];
-        myMaxIndex = i;
-      }
-    }
-    myPickWhale(myMaxIndex);
-    document.getElementById('myMaxResult').textContent = 'Longest reference: ' + myNames[myMaxIndex] + ' / ' + myMax + ' m. All five lengths were compared.';
-  }
+  <li>
+    <b>Sperm whale</b>
+    <ul>
+      <li>It dives deep to find food such as squid.</li>
+      <li><a href="https://www.fisheries.noaa.gov/species/sperm-whale">Learn about sperm whales</a></li>
+    </ul>
+  </li>
+</ol>
 
-  // 8. Each check starts at zero. Changing an answer clears the old feedback.
-  function myCheckQuiz() {
-    let myScore = 0;
-    for (let i = 1; i <= 3; i++) {
-      if (document.getElementById('myQ' + i).value === '') {
-        document.getElementById('myQuizResult').textContent = 'Please answer all three questions first.';
-        return;
-      }
-    }
-    let myAnswers = ['blue', 'killer', 'sperm'];
-    let myReasons = ['The blue whale is the largest animal.', 'The killer whale is a member of the dolphin family.', 'The sperm whale is the largest toothed whale.'];
-    for (let i = 0; i < myAnswers.length; i++) {
-      let myAnswer = document.getElementById('myQ' + (i + 1)).value;
-      let myNote = document.getElementById('myNote' + (i + 1));
-      if (myAnswer === myAnswers[i]) {
-        myScore++;
-        myNote.textContent = 'Correct. ' + myReasons[i];
-      } else {
-        myNote.textContent = 'Review: ' + myReasons[i];
-      }
-    }
-    document.getElementById('myQuizResult').textContent = 'Score: ' + myScore + ' / 3. Read the explanations, then try again.';
-    if (myScore === 3) {
-      document.getElementById('myQuizResult').textContent = 'Score: 3 / 3. All correct! You know your ocean giants.';
-    }
-  }
+<h2>Change the List Colors</h2>
 
-  function myClearScore() {
-    document.getElementById('myQuizResult').textContent = 'Choose all three answers, then check your score.';
-    for (let i = 1; i <= 3; i++) {
-      document.getElementById('myNote' + i).textContent = '';
-    }
-  }
+<input type="button" value="Ocean colors" onclick="{
+  document.getElementById('myList').style.color = 'darkblue';
+  document.getElementById('myList').style.backgroundColor = 'lightcyan';
+}">
 
-  function myResetQuiz() {
-    document.getElementById('myQuizForm').reset();
-    myClearScore();
-  }
+<input type="button" value="Reset colors" onclick="{
+  document.getElementById('myList').style.color = 'navy';
+  document.getElementById('myList').style.backgroundColor = 'white';
+}">
 
-  myShowWhale();
-</script>
+<br><br>
+Facts and photo: NOAA Fisheries. The links above lead to the sources.
+<br><br>
+<a href="index.html">Back to home</a>
+
 </body>
-</html>
