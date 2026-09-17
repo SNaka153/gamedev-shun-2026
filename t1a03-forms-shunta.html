@@ -1,66 +1,101 @@
-<h6>Version 0.0.1.</h6>
+<body style="background-color:aliceblue; color:navy;">
 
-<h1 align="center">t1a03-forms-shunta.html</h1>
-<h3><font color="green">Proving that you can use: Forms 2026</font></h3>
-<br>
+<h6>Version 0.0.2.</h6>
 
-The following are all form elements (add to them):
-<br>
+<h1 align="center" style="background-color:navy; color:white;">
+  t1a03-forms-shunta.html
+</h1>
+<h3 style="color:green;">Proving that you can use: Forms 2026</h3>
 
-<form>
+Try the form elements, then make a short profile.
+
+<form onsubmit="{
+  document.getElementById('myArea01').value = 'Practice only. Nothing was sent.';
+  return false;
+}">
+
+  <h2>1. Your Choices</h2>
 
   First Name:
   <input type="text" id="myText01" value="Shunta">
-  <br>
+  <br><br>
 
-  Checkbox:
+  Checkboxes - you can choose more than one:
   <br>
   Beef: <input type="checkbox">
   <br>
   Veggy: <input type="checkbox">
-  <br>
+  <br><br>
 
-  Radio Buttons:
+  Radio Buttons - choose one station:
   <br>
   95.4 <input type="radio" name="myRad01" value="95.4">
   <br>
   101 <input type="radio" name="myRad01" value="101">
-  <br>
+  <br><br>
 
-  Hidden: <input type="hidden">
-  <br>
-
-  File: <input type="file">
-  <br>
-
-  Reset: <input type="reset">
-  <br>
-
-  Submit (advanced): <input type="submit">
-  <br>
-
-  Button:
-  <input type="button" value="click" onclick="{
-    document.getElementById('myArea01').value = 'Cool';
-  }">
-  <br>
-
-  Textarea:
-  <br>
-  <textarea id="myArea01" cols="60" rows="5">Cool this works</textarea>
-  <br>
-
-  Select Box:
+  Favorite Animal:
   <br>
   <select id="mySelect01" size="2" onchange="{
     document.getElementById('myArea01').value =
       document.getElementById('mySelect01').value;
   }">
-    <option value="myDog">Dog</option>
-    <option value="myCat">Cat</option>
-    <option value="myMouse">Mouse</option>
+    <option value="dog" selected>Dog</option>
+    <option value="cat">Cat</option>
+    <option value="mouse">Mouse</option>
   </select>
+
+  <h2>2. Make Your Profile</h2>
+
+  <input type="button" value="Show Cool" onclick="{
+    document.getElementById('myArea01').value = 'Cool';
+  }">
+
+  <input type="button" value="Make my profile" onclick="{
+    document.getElementById('myArea01').value =
+      'Hello! My name is ' + document.getElementById('myText01').value
+      + '. My favorite animal is a ' + document.getElementById('mySelect01').value + '.';
+  }">
+  <br><br>
+
+  Textarea - this displays the result, and you can edit it:
+  <br>
+  <textarea id="myArea01" cols="45" rows="5"
+            style="background-color:white; color:navy;">Your profile will appear here.</textarea>
+
+  <h2>3. Change the Textarea Colors</h2>
+
+  <input type="button" value="Ocean colors" onclick="{
+    document.getElementById('myArea01').style.color = 'darkblue';
+    document.getElementById('myArea01').style.backgroundColor = 'lightcyan';
+  }">
+
+  <input type="button" value="Reset colors" onclick="{
+    document.getElementById('myArea01').style.color = 'navy';
+    document.getElementById('myArea01').style.backgroundColor = 'white';
+  }">
+
+  <h2>4. Other Form Elements</h2>
+
+  Hidden input (not displayed):
+  <input type="hidden" value="practice01">
+  <br><br>
+
+  Choose a file:
+  <input type="file">
+  <br>
+  Selecting a file does not upload it in this demo.
+  <br><br>
+
+  <input type="reset" value="Reset fields">
+  <input type="submit" value="Test submit">
+  <br>
+  Reset fields restores the starting values. Use Reset colors to restore the colors.
+  <br>
+  Test submit shows a practice message. Nothing is sent or saved.
 
 </form>
 
 <a href="index.html">Back to Home</a>
+
+</body>
