@@ -1,8 +1,10 @@
-<body>
+<body style="background-color:aliceblue; color:navy;">
 
-Version 0.0.1<br>
+Version 0.0.2<br>
 
-<h1 align="center">T1A04 CSS by Shunta 2026</h1>
+<h1 align="center" style="background-color:navy; color:white;">
+  T1A04 CSS by Shunta 2026
+</h1>
 
 Reference Link:
 <a href="https://www.w3schools.com/cssref/default.asp">W3Schools</a>
@@ -22,37 +24,95 @@ b {
 </pre>
 
 The examples below use CSS inside HTML tags.
-<br><br>
+
+<h2>1. Text Colors and Size</h2>
 
 <i>This is Italic</i>
 <br><br>
 
-<i id="myB1" style="color: #00ff00; background-color: blue;">
+<i id="myB1" style="color:#00ff00; background-color:blue; font-size:16px;">
   This is Italic with CSS background and text colors.
 </i>
 
 <br><br>
 
-<input type="button" value="Change" onclick="{
+<input type="button" value="Change colors" onclick="{
   document.getElementById('myB1').style.color = 'red';
   document.getElementById('myB1').style.backgroundColor = 'yellow';
 }">
 
+<input type="button" value="Larger text" onclick="{
+  document.getElementById('myB1').style.fontSize = '24px';
+}">
+
+<input type="button" value="Reset text" onclick="{
+  document.getElementById('myB1').style.color = '#00ff00';
+  document.getElementById('myB1').style.backgroundColor = 'blue';
+  document.getElementById('myB1').style.fontSize = '16px';
+}">
+
+<h2>2. Move the Textarea</h2>
+
+This textarea has a photo background. You can type in it.
+<br>
+The buttons set its position relative to its starting place.
 <br><br>
 
-<textarea style="
-  background-image: url('myImgNew.jpg');
-  position: relative;
-  left: 0px;
-  top: 0px;
-  width: 200px;
-  height: 50px;
-">Advanced: see if you can move this textarea.</textarea>
+<input type="button" value="Right: 100px" onclick="{
+  document.getElementById('myArea01').style.left = '100px';
+}">
 
-<br><br><br><br>
+<input type="button" value="Down: 40px" onclick="{
+  document.getElementById('myArea01').style.top = '40px';
+}">
 
-<img src="myImage01.jpg" width="200" style="border-radius: 200px;">
+<input type="button" value="Reset position" onclick="{
+  document.getElementById('myArea01').style.left = '0px';
+  document.getElementById('myArea01').style.top = '0px';
+}">
 
-</body>
+<br><br>
+
+<div style="height:140px; background-color:lightcyan;">
+  <textarea id="myArea01" style="
+    background-image:url('https://www.fisheries.noaa.gov/s3/styles/full_width/s3/dam-migration/2160x1440_humpbackwhale_noaa.jpg?itok=c5Ha2-Fe');
+    background-size:cover;
+    color:white;
+    position:relative;
+    left:0px;
+    top:0px;
+    width:200px;
+    height:80px;
+  "></textarea>
+</div>
+
+<h2>3. Change the Image Corners</h2>
+
+<img id="myImage01"
+     src="https://www.fisheries.noaa.gov/s3/styles/full_width/s3/dam-migration/2160x1440_humpbackwhale_noaa.jpg?itok=c5Ha2-Fe"
+     alt="A humpback whale jumping above the water"
+     width="200"
+     style="border-radius:200px;">
+
+<br><br>
+
+<input type="button" value="Square corners" onclick="{
+  document.getElementById('myImage01').style.borderRadius = '0px';
+}">
+
+<input type="button" value="Rounded corners" onclick="{
+  document.getElementById('myImage01').style.borderRadius = '200px';
+}">
+
+<br><br>
+
+Photo and textarea background:
+<a href="https://www.fisheries.noaa.gov/species/humpback-whale">
+  NOAA Fisheries
+</a>
+
+<br><br>
 
 <a href="index.html">Back to Home</a>
+
+</body>
