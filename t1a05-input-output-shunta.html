@@ -1,0 +1,88 @@
+<body style="background-color:aliceblue; color:navy;">
+
+<h2 align="center">T1A05 Input / Output by Shunta</h2>
+
+<h3>Example Input / Output Code</h3>
+
+<pre>
+let myIn01 = parseFloat(document.getElementById('myNum01').value);
+document.getElementById('myDiv01').innerHTML = myIn01;
+</pre>
+
+<h3>1. Squares and Cubes</h3>
+
+Enter a number:
+<input id="myNum01" type="number" value="4" step="any">
+
+<br><br>
+
+<input type="button" value="Square" onclick="{
+  let myIn01 = parseFloat(document.getElementById('myNum01').value);
+  let myAnswer = myIn01 * myIn01;
+
+  document.getElementById('myDiv01').innerHTML =
+    myIn01 + ' squared = ' + myAnswer;
+}">
+
+<input type="button" value="Cube" onclick="{
+  let myIn01 = parseFloat(document.getElementById('myNum01').value);
+  let myAnswer = myIn01 * myIn01 * myIn01;
+
+  document.getElementById('myDiv01').innerHTML =
+    myIn01 + ' cubed = ' + myAnswer;
+}">
+
+<br><br>
+
+<div id="myDiv01"
+     style="background-color:white; color:navy; font-size:24px;">
+  Your answer will appear here.
+</div>
+
+<h3>2. Add Two Numbers</h3>
+
+First number:
+<input id="myNum02" type="number" value="3" step="any">
+
+<br><br>
+
+Second number:
+<input id="myNum03" type="number" value="7" step="any">
+
+<br><br>
+
+<input type="button" value="Add" onclick="{
+  let myFirst = parseFloat(document.getElementById('myNum02').value);
+  let mySecond = parseFloat(document.getElementById('myNum03').value);
+  let myTotal = myFirst + mySecond;
+
+  document.getElementById('myDiv02').innerHTML =
+    myFirst + ' + ' + mySecond + ' = ' + myTotal;
+}">
+
+<br><br>
+
+<div id="myDiv02"
+     style="background-color:white; color:navy; font-size:24px;">
+  Your total will appear here.
+</div>
+
+<h3>3. Reset</h3>
+
+<input type="button" value="Reset All" onclick="{
+  document.getElementById('myNum01').value = '4';
+  document.getElementById('myNum02').value = '3';
+  document.getElementById('myNum03').value = '7';
+
+  document.getElementById('myDiv01').innerHTML =
+    'Your answer will appear here.';
+
+  document.getElementById('myDiv02').innerHTML =
+    'Your total will appear here.';
+}">
+
+<br><br>
+
+<a href="index.html">Back to Home</a>
+
+</body>
