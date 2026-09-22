@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <title>T1A06 Proper HTML and Variables by Shunta</title>
+
+  <style>
+    body {
+      background-color: aliceblue;
+      color: navy;
+    }
+
+    b {
+      color: blue;
+    }
+  </style>
+
+  <script>
+    function sayHello() {
+      let myNum = 3;
+      let myString = ' Hello ';
+      let myFloat = 17.5;
+      let myBool = true;
+
+      let myOut = document.getElementById('myDiv01');
+
+      myOut.innerHTML =
+        myNum + myString + myFloat + ', ' + myBool;
+
+      if (myBool) {
+        myOut.innerHTML += ', WOW';
+      }
+    }
+
+    function myShowVariables() {
+      let myNum =
+        parseFloat(document.getElementById('myNum01').value);
+
+      let myFloat =
+        parseFloat(document.getElementById('myNum02').value);
+
+      let myString = 'Hello';
+      let myBool = document.getElementById('myCheck01').checked;
+      let myTotal = myNum + myFloat;
+
+      let myOut = document.getElementById('myDiv02');
+
+      myOut.innerHTML =
+        'First number: ' + myNum + '<br>' +
+        'Second number: ' + myFloat + '<br>' +
+        'String: ' + myString + '<br>' +
+        'Boolean: ' + myBool + '<br>' +
+        'Total: ' + myTotal;
+
+      if (myBool) {
+        myOut.innerHTML += '<br>WOW! The checkbox is checked.';
+      } else {
+        myOut.innerHTML += '<br>The checkbox is not checked.';
+      }
+    }
+
+    function myReset() {
+      document.getElementById('myNum01').value = '3';
+      document.getElementById('myNum02').value = '17.5';
+      document.getElementById('myCheck01').checked = true;
+
+      document.getElementById('myDiv02').innerHTML =
+        'Your results will appear here.';
+    }
+  </script>
+</head>
+
+<body>
+
+  <h1>T1A06 Proper HTML and Variables by Shunta</h1>
+
+  <h2>1. Teacher's Basic Example</h2>
+
+  <p>This is <b>bold</b> text.</p>
+
+  <button onclick="sayHello()">Click Me</button>
+
+  <div id="myDiv01">...</div>
+
+  <h2>2. My Variable Experiment</h2>
+
+  <p>Change the numbers and checkbox, then show the results.</p>
+
+  First number:
+  <input id="myNum01" type="number" value="3" step="any">
+
+  <br><br>
+
+  Second number:
+  <input id="myNum02" type="number" value="17.5" step="any">
+
+  <br><br>
+
+  Show the WOW message:
+  <input id="myCheck01" type="checkbox" checked>
+
+  <br><br>
+
+  <button onclick="myShowVariables()">Show Results</button>
+  <button onclick="myReset()">Reset Experiment</button>
+
+  <br><br>
+
+  <div id="myDiv02"
+       style="background-color:white; font-size:20px;">
+    Your results will appear here.
+  </div>
+
+  <br>
+
+  <a href="index.html">Back to Home</a>
+
+</body>
+</html>
