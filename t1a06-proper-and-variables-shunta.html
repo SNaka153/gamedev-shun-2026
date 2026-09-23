@@ -69,6 +69,27 @@
       document.getElementById('myDiv02').innerHTML =
         'Your results will appear here.';
     }
+    let myScore = 0;
+
+    function myAddPoints() {
+      myScore += 3;
+
+      document.getElementById('myScoreDiv').innerHTML =
+        'Score: ' + myScore;
+
+      if (myScore >= 15) {
+        document.getElementById('myScoreDiv').innerHTML +=
+          '<br>Goal reached!';
+      }
+    }
+
+    function myResetScore() {
+      myScore = 0;
+
+      document.getElementById('myScoreDiv').innerHTML =
+        'Score: ' + myScore;
+    }
+
   </script>
 </head>
 
@@ -114,6 +135,18 @@
   </div>
 
   <br>
+  <h2>3. My Game Score Counter</h2>
+
+  <p>Earn 3 points each time. Reach 15 points!</p>
+
+  <button onclick="myAddPoints()">Add 3 Points</button>
+  <button onclick="myResetScore()">Reset Score</button>
+
+  <br><br>
+
+  <div id="myScoreDiv" style="color:blue; font-size:24px;">
+  Score: 0
+  </div>
 
   <a href="index.html">Back to Home</a>
 
