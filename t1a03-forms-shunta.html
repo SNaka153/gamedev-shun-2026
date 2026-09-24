@@ -95,6 +95,118 @@ Try the form elements, then make a short profile.
   Test submit shows a practice message. Nothing is sent or saved.
 
 </form>
+<h2>5. My Game Workshop Form</h2>
+
+<p>
+  Choose your workshop options and create a booking preview.
+  This is a practice form. Nothing is sent or saved.
+</p>
+
+<form onsubmit="{
+  let myName = document.getElementById('myPlayerName').value;
+  let myDate = document.getElementById('myDate').value;
+  let myTickets = parseFloat(document.getElementById('myTickets').value);
+  let myLevel = document.getElementById('myLevel').value;
+  let myColor = document.getElementById('myColor').value;
+
+  let mySession = 'Morning';
+  if (document.getElementById('myAfternoon').checked) {
+    mySession = 'Afternoon';
+  }
+
+  let myEquipment = 'I will bring my own controller.';
+  if (document.getElementById('myController').checked) {
+    myEquipment = 'Please lend me a controller.';
+  }
+
+  let myTotal = myTickets * 5;
+
+  document.getElementById('myBookingResult').textContent =
+    'Player: ' + myName + '\n' +
+    'Date: ' + myDate + '\n' +
+    'Session: ' + mySession + '\n' +
+    'Tickets: ' + myTickets + '\n' +
+    'Practice total: $' + myTotal + '\n' +
+    'Experience level: ' + myLevel + '/10\n' +
+    'Equipment: ' + myEquipment;
+
+  document.getElementById('myBookingResult').style.borderColor =
+    myColor;
+
+  return false;
+}">
+
+  <label for="myPlayerName">Player nickname:</label>
+  <input id="myPlayerName" type="text"
+         placeholder="Enter a nickname" maxlength="20" required>
+
+  <br><br>
+
+  <label for="myDate">Workshop date:</label>
+  <input id="myDate" type="date" required>
+
+  <br><br>
+
+  <label for="myTickets">Tickets ($5 each, practice only):</label>
+  <input id="myTickets" type="number"
+         min="1" max="5" step="1" value="1" required>
+
+  <br><br>
+
+  Session:
+  <br>
+
+  <label>
+    <input type="radio" name="mySession"
+           value="Morning" checked>
+    Morning
+  </label>
+
+  <label>
+    <input id="myAfternoon" type="radio"
+           name="mySession" value="Afternoon">
+    Afternoon
+  </label>
+
+  <br><br>
+
+  <label>
+    <input id="myController" type="checkbox">
+    I need to borrow a controller.
+  </label>
+
+  <br><br>
+
+  <label for="myLevel">Experience level:</label>
+  <input id="myLevel" type="range"
+         min="1" max="10" value="5" oninput="{
+    document.getElementById('myLevelValue').textContent = this.value;
+  }">
+  <span id="myLevelValue">5</span>/10
+
+  <br><br>
+
+  <label for="myColor">Result border color:</label>
+  <input id="myColor" type="color" value="#000080">
+
+  <br><br>
+
+  <input type="submit" value="Create Booking Preview">
+
+  <input type="reset" value="Reset Workshop" onclick="{
+    document.getElementById('myLevelValue').textContent = '5';
+    document.getElementById('myBookingResult').textContent =
+      'Your booking preview will appear here.';
+    document.getElementById('myBookingResult').style.borderColor =
+      '#000080';
+  }">
+
+</form>
+
+<pre id="myBookingResult"
+     style="white-space:pre-wrap; background-color:white;
+            color:navy; border:3px solid navy; padding:15px;">
+Your booking preview will appear here.</pre>
 
 <a href="index.html">Back to Home</a>
 
