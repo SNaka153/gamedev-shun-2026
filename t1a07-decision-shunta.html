@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>T1A07 Decisions by Shunta</title>
+</head>
+
+<body style="background-color:aliceblue; color:navy;">
+
+<h1 align="center">T1A07 Decisions by Shunta</h1>
+
+<a href="index.html">Back to Home</a>
+
+<h2>1. Teacher's Examples</h2>
+
+<p>Enter a number, then try the three buttons.</p>
+
+<input id="myNum01" type="number" value="4" step="any">
+<br><br>
+
+<input type="button" value="Simple if" onclick="{
+  let myIn01 = parseFloat(document.getElementById('myNum01').value);
+
+  document.getElementById('myDiv01').innerHTML =
+    'The condition was false, so the if block did not run.';
+
+  if (myIn01 >= 3) {
+    document.getElementById('myDiv01').innerHTML =
+      myIn01 + ' is greater than or equal to 3.';
+  }
+}">
+
+<input type="button" value="if...else" onclick="{
+  let myIn01 = parseFloat(document.getElementById('myNum01').value);
+
+  if (myIn01 >= 3) {
+    document.getElementById('myDiv01').innerHTML =
+      myIn01 + ' is greater than or equal to 3.';
+  } else {
+    document.getElementById('myDiv01').innerHTML =
+      'The number is below 3, or no valid number was entered.';
+  }
+}">
+
+<input type="button" value="Complex if" onclick="{
+  let myIn01 = parseFloat(document.getElementById('myNum01').value);
+
+  if ((myIn01 != 3 || myIn01 > -3) && myIn01 <= 100) {
+    document.getElementById('myDiv01').innerHTML =
+      myIn01 + ' passes the complex condition.';
+  } else {
+    document.getElementById('myDiv01').innerHTML =
+      'The condition is false. Try a valid number at or below 100.';
+  }
+}">
+
+<br><br>
+
+<div id="myDiv01"
+     style="background-color:white; padding:15px; border:2px solid navy;">
+  Your result will appear here.
+</div>
+
+<h3>Predict before clicking</h3>
+
+<table border="1" cellpadding="8">
+  <tr>
+    <th>Number</th>
+    <th>Number >= 3</th>
+    <th>Complex condition</th>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>False</td>
+    <td>True</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>True</td>
+    <td>True</td>
+  </tr>
+  <tr>
+    <td>101</td>
+    <td>True</td>
+    <td>False</td>
+  </tr>
+</table>
+
+<h2>2. My Extension: Game Gate Challenge</h2>
+
+<p>Change the inputs and predict which gates will open.</p>
+
+<label for="myEnergy">Energy (0 to 100):</label>
+<input id="myEnergy" type="number" min="0" max="100" value="60">
+<br><br>
+
+<label>
+  <input id="myKey" type="checkbox">
+  I have a key
+</label>
+<br><br>
+
+<label>
+  <input id="myPass" type="checkbox">
+  I have an explorer pass
+</label>
+<br><br>
+
+<input type="button" value="Check all gates" onclick="{
+  let myEnergy = parseFloat(document.getElementById('myEnergy').value);
+  let myKey = document.getElementById('myKey').checked;
+  let myPass = document.getElementById('myPass').checked;
+
+  if (myEnergy >= 0 && myEnergy <= 100) {
+
+    if (myEnergy >= 50 && myKey) {
+      document.getElementById('myGate01').innerHTML =
+        'OPEN: You have enough energy AND a key.';
+      document.getElementById('myGate01').style.color = 'green';
+    } else {
+      document.getElementById('myGate01').innerHTML =
+        'LOCKED: You need at least 50 energy AND a key.';
+      document.getElementById('myGate01').style.color = 'firebrick';
+    }
+
+    if (myKey || myPass) {
+      document.getElementById('myGate02').innerHTML =
+        'OPEN: You have a key OR an explorer pass, or both.';
+      document.getElementById('myGate02').style.color = 'green';
+    } else {
+      document.getElementById('myGate02').innerHTML =
+        'LOCKED: You need a key OR an explorer pass.';
+      document.getElementById('myGate02').style.color = 'firebrick';
+    }
+
+    if (!myKey) {
+      document.getElementById('myAdvice').innerHTML =
+        'Tip: Find a key to help unlock the gates.';
+    } else {
+      document.getElementById('myAdvice').innerHTML =
+        'You already have a key. Check your energy next.';
+    }
+
+  } else {
+    document.getElementById('myGate01').innerHTML =
+      'Enter an energy value from 0 to 100.';
+    document.getElementById('myGate01').style.color = 'firebrick';
+
+    document.getElementById('myGate02').innerHTML =
+      'Waiting for valid energy.';
+    document.getElementById('myGate02').style.color = 'navy';
+
+    document.getElementById('myAdvice').innerHTML =
+      'Energy cannot be empty, below 0, or above 100.';
+  }
+}">
+
+<p>After changing an input, click Check all gates again.</p>
+
+<div style="background-color:white; padding:18px; border:2px solid navy;">
+  <h3>Gate 1: Energy AND Key</h3>
+  <div id="myGate01">Not checked yet.</div>
+
+  <h3>Gate 2: Key OR Pass</h3>
+  <div id="myGate02">Not checked yet.</div>
+
+  <h3>Advice: NOT Key</h3>
+  <div id="myAdvice">Your advice will appear here.</div>
+</div>
+
+<h2>3. What I Added</h2>
+
+<ul>
+  <li>Two gates with different decision rules.</li>
+  <li>Checkbox inputs that provide true or false values.</li>
+  <li>AND, OR and NOT conditions.</li>
+  <li>Green and red results for open and locked gates.</li>
+  <li>An energy check that rejects invalid input.</li>
+</ul>
+
+<a href="index.html">Back to Home</a>
+
+</body>
+</html>
