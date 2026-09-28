@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="PULSE by Shunta — turn keyboard, mouse and touch input into sound, light and a downloadable music loop.">
+<title>X T1A05 — PULSE Input / Output Studio by Shunta</title>
+<style>
+:root{color-scheme:light;--paper:#f4f1e9;--ink:#222620;--muted:#70756a;--line:#d6d8cd;--orange:#ed6538;--yellow:#e7ff83;--mono:ui-monospace,SFMono-Regular,Consolas,monospace;--sans:"Segoe UI",Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 var(--sans)}
+button,input,select{font:inherit}
+button,a,input,select{touch-action:manipulation}
+button{cursor:pointer;color:inherit;background:#fffdf7;border:1px solid var(--line);border-radius:7px;padding:9px 14px;font-weight:600;transition:background .15s,transform .15s}
+button:hover{background:#e9e9de}
+button:active{transform:translateY(1px)}
+button:disabled{opacity:.55;cursor:wait}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,canvas:focus-visible{outline:3px solid var(--orange);outline-offset:4px}
+button svg{width:15px;height:15px;vertical-align:-3px;margin-right:6px}
+a{color:inherit;text-underline-offset:4px}
+.solid{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.solid:hover{background:#3c4236}
+.orange{background:var(--orange);color:#fff;border-color:var(--orange)}
+.orange:hover{background:#d95428}
+.quiet{background:transparent}
+.small{padding:6px 10px;font-size:11px}
+.shell{max-width:1450px;padding:0 42px;margin:auto}
+.topbar{min-height:80px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;font-size:23px;font-weight:850;letter-spacing:-1px;text-decoration:none}
+.brand-icon{display:flex;gap:3px;align-items:center;height:26px}
+.brand-icon i{width:4px;height:14px;background:var(--orange);border-radius:2px}
+.brand-icon i:nth-child(2){height:24px}.brand-icon i:nth-child(3){height:32px}.brand-icon i:nth-child(4){height:18px}
+.brand small{font:10px var(--mono);letter-spacing:1px;margin-left:3px;color:var(--muted)}
+.toplinks{display:flex;gap:24px;align-items:center;font-size:11px}
+.toplinks span{padding-left:24px;border-left:1px solid var(--line)}
+.hero{padding:31px 0 27px;display:flex;justify-content:space-between;align-items:flex-end;gap:25px}
+.eyebrow{font:10px var(--mono);letter-spacing:1.8px;color:#a54828;text-transform:uppercase;margin:0 0 12px}
+h1{font-size:clamp(34px,4vw,54px);line-height:1.05;letter-spacing:-2.8px;font-weight:730;margin:0}
+h1 em{font-style:normal;color:var(--orange)}
+.hero p:not(.eyebrow){font-size:13px;color:var(--muted);margin:13px 0 0;max-width:525px}
+.hero-actions{display:flex;gap:9px;padding-bottom:3px;flex-shrink:0;flex-wrap:wrap}
+.sound-button{display:flex;gap:8px;align-items:center;background:transparent}
+.sound-button:before{content:"";width:6px;height:6px;border-radius:50%;background:#8d9583}
+.sound-button[aria-pressed="true"]:before{background:#4b8828;box-shadow:0 0 0 3px #b8d77b44}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:19px;align-items:stretch}
+.instrument{border-radius:13px;background:#202821;color:#f3f4e9;overflow:hidden;border:1px solid #354034;min-width:0}
+.instrument-top{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;border-bottom:1px solid #3d473b;gap:10px}
+.micro{font:10px var(--mono);letter-spacing:1.4px;text-transform:uppercase}
+.instrument-top .micro{color:#cdd6c6;display:flex;align-items:center;gap:9px}
+.live-dot{width:6px;height:6px;background:var(--yellow);border-radius:50%;display:inline-block}
+.mode-pills{display:flex;gap:3px;background:#111a14;padding:3px;border-radius:6px}
+.mode-pills button{color:#aab6a5;background:transparent;border:0;font-size:10px;padding:5px 9px;border-radius:3px}
+.mode-pills button[aria-pressed="true"]{background:#44513f;color:#f4f6ed}
+.pad-wrap{position:relative;height:295px;background:radial-gradient(ellipse at 70% 90%,#4b594e55,transparent 70%),#18221b;overflow:hidden}
+#play-canvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:none}
+.pad-intro{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;transition:opacity .2s}
+.pad-intro.hidden{opacity:0}
+.pad-intro strong{font-size:31px;letter-spacing:-1.1px;font-weight:500}
+.pad-intro strong em{font-family:Georgia,serif;font-weight:400;color:var(--yellow)}
+.pad-intro p{font:10px var(--mono);color:#a6b19f;letter-spacing:.5px;margin-top:12px}
+.axis-label{position:absolute;font:9px var(--mono);color:#81917d;pointer-events:none;letter-spacing:.8px}
+.axis-label.top{left:19px;top:15px}.axis-label.bottom{right:19px;bottom:13px}
+.pad-guide{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 19px;border-top:1px solid #384336;font:9px var(--mono);color:#a4b49b;min-height:34px}
+.keybed{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px;padding:12px 15px 14px;background:#263026}
+.key{height:83px;border:1px solid #6b785e;background:#edf0dc;color:#283124;text-align:left;padding:10px 10px 7px;display:flex;flex-direction:column;justify-content:space-between;min-width:0;border-radius:5px;box-shadow:0 4px 0 #101a12;transition:background .08s,transform .08s}
+.key:hover{background:#fbffe5}
+.key.active{background:var(--yellow);box-shadow:0 1px 0 #101a12;transform:translateY(3px)}
+.key b{font:10px var(--mono)}
+.key span{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.key kbd{font:20px var(--mono);font-weight:650}.key small{font:8px var(--mono);color:#68735d}
+.rack{background:#fffdf7;border:1px solid var(--line);border-radius:13px;overflow:hidden}
+.rack-top{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.rack-top h2{font-size:12px;margin:0}.rack-top span{font:9px var(--mono);color:#61794f}
+.signal-readout{padding:16px 18px 15px;border-bottom:1px solid var(--line);background:#ebece1}
+.signal-head{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--muted);font:9px var(--mono);letter-spacing:1px}
+.note-row{display:flex;align-items:baseline;gap:13px;margin:6px 0}
+.note-row strong{font-size:39px;line-height:1.1;font-weight:650;letter-spacing:-2px}
+.note-row span{font:12px var(--mono);color:#6c795e}
+.signal-flow{font:10px var(--mono);color:#646e5b;display:flex;justify-content:space-between;gap:6px}
+.rack-controls{padding:14px 18px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{min-width:0}.field.wide{grid-column:1/-1}
+.field label{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11px;margin:0 0 5px}
+.field output{font:10px var(--mono);color:#6d755f}
+select,input[type="text"],input[type="number"]{display:block;width:100%;background:#f6f5ec;border:1px solid #cdd2c2;border-radius:5px;color:var(--ink);font-size:11px;padding:7px 8px;min-width:0}
+input[type="range"]{accent-color:var(--orange);width:100%;display:block;height:5px;margin:10px 0 7px;cursor:pointer}
+.settings-note{margin:0;font-size:10px;color:var(--muted);line-height:1.55;min-height:15px}
+.rack-footer{display:flex;justify-content:space-between;gap:10px;padding:10px 18px;border-top:1px solid var(--line);font:9px var(--mono);color:#71805f}
+.sequencer{margin-top:22px;background:#fffdf7;border:1px solid var(--line);border-radius:13px;overflow:hidden}
+.sequence-top{padding:19px 21px 16px;display:flex;align-items:center;justify-content:space-between;gap:22px;border-bottom:1px solid var(--line)}
+.sequence-heading h2{font-size:19px;letter-spacing:-.6px;line-height:1.2;margin:0}
+.sequence-heading p{font-size:11px;color:var(--muted);margin:5px 0 0}
+.transport{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.tempo-field{display:flex;align-items:center;gap:6px;font:9px var(--mono);color:var(--muted);margin-right:6px}
+.tempo-field input{width:60px;text-align:center;font:13px var(--mono);padding:7px 4px;background:var(--paper)}
+#play-button{min-width:102px}
+#play-button.playing{background:#dc572f}
+.sequence-body{display:grid;grid-template-columns:174px minmax(0,1fr);padding:18px 21px 14px;gap:21px}
+.patterns{display:flex;flex-direction:column;gap:7px;padding-top:20px}
+.pattern-button{padding:8px 10px;border-radius:6px;background:transparent;display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:500}
+.pattern-button span{font:9px var(--mono);color:var(--muted)}
+.pattern-button[aria-pressed="true"]{background:#e9eddd;border-color:#b8c3a1;font-weight:650}
+.patterns .mini-label{font:9px var(--mono);color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:0 0 2px}
+.pattern-tools{display:flex;gap:6px;margin-top:4px}.pattern-tools button{flex:1;font-size:10px;padding:7px 5px}
+.grid-scroll{overflow-x:auto;padding-bottom:5px;min-width:0}
+.step-grid{min-width:610px;display:grid;grid-template-columns:34px repeat(16,minmax(0,1fr));gap:4px}
+.step-num{font:9px var(--mono);text-align:center;color:#89917e;height:16px}
+.step-num.beat{color:#687459;font-weight:700}
+.row-label{height:24px;display:flex;align-items:center;font:9px var(--mono);color:#747d68}
+.step{height:24px;min-width:0;border:1px solid #e0e4d6;border-radius:3px;background:#f0f1e7;padding:0;box-shadow:none;transition:background .1s,border-color .1s}
+.step.beat{border-left:2px solid #c6ceb9;background:#e8ecdf}
+.step:hover{background:#e1e8d0;border-color:#aab78e}
+.step[aria-pressed="true"]{background:var(--orange);border-color:#df582c}
+.step.playhead{box-shadow:inset 0 0 0 1px #4b5b36;background:#dfe9cc}
+.step[aria-pressed="true"].playhead{background:#ffba57;border-color:#ce7b1f;box-shadow:inset 0 0 0 1px #8e4c0d}
+.sequence-foot{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:11px 21px;border-top:1px solid var(--line);font:9px var(--mono);color:#818a73}
+.step-counter{color:#426232}
+.projectbar{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+.project-name{display:flex;gap:10px;align-items:center;min-width:0}.project-name label{font:9px var(--mono);letter-spacing:1px;color:var(--muted);white-space:nowrap}
+.project-name input{width:210px;background:transparent;font-size:12px}
+.project-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.project-actions button{font-size:11px;padding:7px 11px}
+.project-actions .saved{font:9px var(--mono);color:var(--muted);margin-right:8px}
+.explain-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:25px;padding:22px 0 20px}
+.explain-grid h3{font-size:12px;font-weight:650;margin:0 0 7px;display:flex;align-items:center;gap:9px}
+.explain-grid h3 span{font:10px var(--mono);color:var(--orange)}
+.explain-grid p{margin:0;font-size:11px;color:var(--muted);line-height:1.7}
+.explain-grid code{color:#5f713e;font-size:10px}
+.footer{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding:12px 0 27px;font:9px/1.8 var(--mono);color:var(--muted)}
+.footer details{max-width:550px}.footer summary{cursor:pointer}.footer details p{font-family:var(--sans);font-size:11px}.footer>a{flex-shrink:0}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,15px);opacity:0;pointer-events:none;padding:12px 19px;border-radius:8px;background:var(--ink);color:#fff;box-shadow:0 8px 30px #0002;z-index:30;font-size:12px;max-width:calc(100% - 28px);text-align:center;transition:opacity .18s,transform .18s}
+.toast.visible{opacity:1;transform:translate(-50%,0)}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.nojs{padding:20px;background:#f7dcb6;border:1px solid #bb8650}
+@media(max-width:1100px){.shell{padding:0 25px}.hero h1{font-size:43px}.workspace{grid-template-columns:minmax(0,1fr) 282px;gap:15px}.hero-actions{max-width:260px;justify-content:flex-end}.sequence-body{grid-template-columns:140px minmax(0,1fr);gap:16px}.key small{display:none}.brand small{display:none}}
+@media(max-width:800px){.workspace{grid-template-columns:minmax(0,1fr)}.rack{display:grid;grid-template-columns:1fr 1.6fr}.rack-top,.rack-footer{grid-column:1/-1}.signal-readout{border-bottom:0;border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:center}.signal-head{flex-direction:column;align-items:flex-start;gap:12px}.note-row{flex-wrap:wrap;gap:5px;margin:15px 0}.note-row strong{font-size:44px}.signal-flow{font-size:9px;flex-wrap:wrap}.rack-controls{padding:13px 16px}.sequence-top{align-items:flex-start}.sequence-body{display:block}.patterns{flex-direction:row;align-items:center;padding:0 0 15px;gap:7px;flex-wrap:wrap}.patterns .mini-label{display:none}.pattern-button{gap:15px}.pattern-tools{margin:0 0 0 auto}.pattern-tools button{padding:8px 10px}.hero h1{font-size:38px}.hero-actions{max-width:150px}.hero-actions button{font-size:11px;padding:9px 11px;width:100%;justify-content:center}.projectbar{flex-wrap:wrap}.toplinks{gap:14px}.toplinks span{padding-left:14px}.explain-grid{gap:16px}}
+@media(max-width:520px){.shell{padding:0 15px}.topbar{min-height:68px}.brand{font-size:21px;gap:9px}.toplinks{font-size:9px;gap:12px}.toplinks .assignment-link{display:none}.toplinks span{padding-left:12px}.hero{display:block;padding:26px 0 22px}.hero h1{font-size:40px;letter-spacing:-2px}.hero p:not(.eyebrow){font-size:12px;max-width:300px}.hero-actions{max-width:none;flex-wrap:nowrap;justify-content:flex-start;margin-top:20px}.hero-actions button{width:auto;padding:10px 15px}.pad-wrap{height:245px}.pad-intro strong{font-size:25px}.pad-intro p{font-size:8px}.instrument-top{padding:12px}.instrument-top .micro{font-size:9px;letter-spacing:.5px}.mode-pills button{padding:5px 7px}.axis-label{font-size:8px}.pad-guide{font-size:8px;padding:9px 12px}.pad-guide .desktop-hint{display:none}.keybed{padding:10px 9px 14px;gap:4px}.key{height:71px;padding:8px 6px}.key b{font-size:8px}.key kbd{font-size:16px}.rack{grid-template-columns:1fr}.rack-top{padding:12px 15px}.signal-readout{padding:12px 15px;border-right:0;border-bottom:1px solid var(--line);display:block}.signal-head{flex-direction:row}.note-row{margin:7px 0;gap:12px}.note-row strong{font-size:34px}.signal-flow{justify-content:flex-start;gap:18px}.rack-controls{padding:14px 15px}.sequence-top{display:block;padding:17px 15px}.transport{margin-top:15px;flex-wrap:wrap}.tempo-field{margin-right:auto}.sequence-body{padding:15px 12px 10px}.patterns{gap:5px;padding-bottom:13px}.pattern-button{font-size:10px;padding:7px 6px;gap:6px}.pattern-button span{display:none}.pattern-tools{margin:0}.pattern-tools button{padding:7px;font-size:10px}.sequence-foot{padding:10px 14px;font-size:8px;gap:8px}.project-name{width:100%}.project-name input{flex:1;width:auto}.project-actions{width:100%;gap:7px}.project-actions .saved{flex:1;font-size:8px}.project-actions button{font-size:10px;padding:7px}.explain-grid{grid-template-columns:1fr;gap:16px}.footer{flex-wrap:wrap;gap:10px}.footer details{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+ <header class="topbar">
+  <a class="brand" href="#main"><span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>PULSE <small>INPUT / OUTPUT STUDIO</small></a>
+  <nav class="toplinks" aria-label="Assignment navigation"><a class="assignment-link" href="t1a05-input-output-shunta.html">T1A05 Input / Output</a><a href="index.html">All assignments ↗</a><span>By Shunta</span></nav>
+ </header>
+ <main id="main">
+  <section class="hero">
+   <div><p class="eyebrow">X T1A05 / Small inputs. Big possibilities.</p><h1>Make a move.<br>Make a <em>little noise.</em></h1><p>Your keyboard is an instrument. Your clicks become a melody.<br>Play, build a loop, and take the sound with you.</p></div>
+   <div class="hero-actions"><button type="button" id="sound-button" class="sound-button" aria-pressed="false">Enable sound</button><button type="button" id="export-wav" class="solid"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-4-4 4 4 4-4M4 15v5h16v-5"/></svg>Export WAV</button></div>
+  </section>
+  <noscript><p class="nojs">PULSE needs JavaScript to play notes, draw the waveform and export your loop.</p></noscript>
+  <div class="workspace">
+   <section class="instrument" aria-label="Live instrument">
+    <div class="instrument-top"><span class="micro"><i class="live-dot" aria-hidden="true"></i>01 / PLAY SOMETHING</span><div class="mode-pills" role="group" aria-label="Audio visualizer"><button type="button" data-view="wave" aria-pressed="true">Wave</button><button type="button" data-view="spectrum" aria-pressed="false">Spectrum</button></div></div>
+    <div class="pad-wrap"><canvas id="play-canvas" tabindex="0" aria-label="Play pad. Click and drag horizontally to choose one of eight notes. Higher clicks play more strongly. You can also use keys A S D F G H J K."></canvas><div class="pad-intro" id="pad-intro"><strong>Find your <em>frequency.</em></strong><p>ENABLE SOUND. THEN PRESS A, S, D, F…</p></div><span class="axis-label top" id="visual-label">READY / SOUND IS OFF</span><span class="axis-label bottom">LOW PITCH ← → HIGH PITCH</span></div>
+    <div class="pad-guide"><span>Click + drag to play · higher = stronger</span><span class="desktop-hint">Or use your keyboard ↓</span></div>
+    <div class="keybed" id="keybed" role="group" aria-label="Eight playable notes"></div>
+   </section>
+   <aside class="rack" aria-label="Sound settings and live input output">
+    <div class="rack-top"><h2>02 / Signal inspector</h2><span id="signal-status">WAITING FOR INPUT</span></div>
+    <div class="signal-readout"><div class="signal-head"><span>LAST NOTE</span><span id="last-source">KEY / MOUSE / TOUCH</span></div><div class="note-row"><strong id="last-note">—</strong><span id="last-hz">0.00 Hz</span></div><div class="signal-flow"><span id="last-input">Input: waiting</span><span id="last-velocity">Strength: —</span></div></div>
+    <div class="rack-controls">
+     <div class="field"><label for="voice">Voice</label><select id="voice"><option value="glass">Glass bell</option><option value="warm">Warm keys</option><option value="arcade">Arcade</option></select></div>
+     <div class="field"><label for="scale">Note palette</label><select id="scale"><option value="bright">C pentatonic</option><option value="minor">A minor pentatonic</option><option value="dream">Whole tone</option></select></div>
+     <div class="field wide"><label for="volume">Output volume <output id="volume-out" for="volume">35%</output></label><input id="volume" type="range" min="0" max="80" value="35" step="1"></div>
+     <div class="field wide"><label for="motion">Visual motion</label><select id="motion"><option value="system">Follow device setting</option><option value="on">On for this page</option><option value="off">Still display</option></select></div>
+     <p class="settings-note field wide" id="motion-note">The display follows your device’s motion preference.</p>
+    </div>
+    <div class="rack-footer"><span id="event-count">0000 NOTE EVENTS</span><span id="audio-status">SOUND OFF</span></div>
+   </aside>
+  </div>
+  <section class="sequencer" aria-labelledby="loop-title">
+   <div class="sequence-top"><div class="sequence-heading"><h2 id="loop-title">03 / Build a little loop.</h2><p>Tap a square to add a note. Stack notes to make a chord.</p></div><div class="transport"><label class="tempo-field" for="tempo"><input id="tempo" type="number" min="50" max="180" step="1" value="108">BPM</label><button type="button" class="orange" id="play-button" aria-pressed="false">▶ Play loop</button><button type="button" id="stop-button" class="quiet" aria-label="Stop loop">■ Stop</button></div></div>
+   <div class="sequence-body"><div class="patterns" role="group" aria-label="Loop presets"><p class="mini-label">Start with a mood</p><button type="button" class="pattern-button" data-pattern="light" aria-pressed="true">First light <span>01 ↗</span></button><button type="button" class="pattern-button" data-pattern="neon" aria-pressed="false">Neon steps <span>02 ↗</span></button><button type="button" class="pattern-button" data-pattern="tide" aria-pressed="false">Slow tide <span>03 ↗</span></button><div class="pattern-tools"><button type="button" id="clear-pattern">Clear</button><button type="button" id="undo-pattern" disabled>Undo</button></div></div><div class="grid-scroll" tabindex="0" aria-label="16-step note grid; scroll horizontally on small screens"><div class="step-grid" id="step-grid" role="group" aria-label="Loop note buttons"></div></div></div>
+   <div class="sequence-foot"><span class="step-counter" id="step-counter">STEP — / 16</span><span id="pattern-count">12 NOTES · 1 BAR · 4/4</span><span>16 steps = 4 beats</span></div>
+  </section>
+  <div class="projectbar"><div class="project-name"><label for="project-name">PROJECT</label><input id="project-name" type="text" maxlength="40" value="First light — Shunta" autocomplete="off"></div><div class="project-actions"><span class="saved" id="save-status" role="status">AUTO-SAVE READY</span><button type="button" id="save-project">Save project</button><button type="button" id="load-project">Load project</button><input type="file" id="project-file" accept="application/json,.json" hidden></div></div>
+  <div class="explain-grid"><section><h3><span>IN ↗</span> A key, a click, a number.</h3><p>Press <strong>A S D F G H J K</strong>, drag on the play pad, or type a tempo. Those are different ways to give a program input.</p></section><section><h3><span>→</span> Give the input a meaning.</h3><p>Each key maps to a note frequency. The program builds the sound and reads the 16-step pattern from left to right.</p></section><section><h3><span>OUT ↗</span> Sound you can see. And keep.</h3><p>Hear the note, watch its waveform, and see its name. <strong>Export WAV</strong> saves four repeats of your loop as an audio file.</p></section></div>
+ </main>
+ <footer class="footer"><span>PULSE / X T1A05 INPUT & OUTPUT / BY SHUNTA</span><details><summary>About this experiment & useful references</summary><p>This X assignment extends T1A05: keyboard, mouse, touch and form inputs become audio, canvas visuals, text and downloadable files. The Wave and Spectrum modes read live audio when sound is enabled. With sound off, the display is labeled as a visual preview.</p><p>No microphone, samples, libraries or internet connection are needed. Projects save in this browser when storage is available. Save project creates a portable JSON file; Load project restores it. WAV export renders the current pattern four times plus a short decay tail. Muting playback does not mute the exported file; the volume slider does affect it.</p><p>Motion follows your device by default. Choose “On for this page” to animate this artwork without changing computer settings. PULSE stops its loop when you leave this tab.</p><p>Reference: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">Web Audio API</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/API/OfflineAudioContext">OfflineAudioContext</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode">AnalyserNode</a></p></details><a href="index.html">Back to Home ↗</a></footer>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>
+/* PULSE — X T1A05 Input / Output by Shunta.
+   Inputs: keys, pointer position, grid buttons, numbers, sliders and JSON.
+   Outputs: synthesized sound, audio analysis, canvas, text, WAV and JSON. */
+(() => {
+ 'use strict';
+ const myGet = id => document.getElementById(id);
+ const myKeys = ['A','S','D','F','G','H','J','K'];
+ const myScales = {
+  bright: {midi:[60,62,64,67,69,72,74,76],names:['C4','D4','E4','G4','A4','C5','D5','E5']},
+  minor: {midi:[57,60,62,64,67,69,72,74],names:['A3','C4','D4','E4','G4','A4','C5','D5']},
+  dream: {midi:[60,62,64,66,68,70,72,74],names:['C4','D4','E4','F♯4','G♯4','A♯4','C5','D5']}
+ };
+ const myMelodies = {
+  light: {title:'First light — Shunta',voice:'glass',scale:'bright',tempo:108,notes:[[0,0],[2,2],[4,4],[6,5],[7,4],[8,2],[10,1],[12,0],[14,4],[15,2]]},
+  neon: {title:'Neon steps — Shunta',voice:'arcade',scale:'minor',tempo:132,notes:[[0,0],[0,3],[2,4],[3,2],[4,0],[6,5],[7,4],[8,0],[8,2],[10,6],[11,4],[12,3],[14,2],[15,1]]},
+  tide: {title:'Slow tide — Shunta',voice:'warm',scale:'dream',tempo:72,notes:[[0,0],[0,2],[0,4],[4,1],[4,3],[8,2],[8,4],[8,6],[12,1],[12,3],[14,0],[14,4]]}
+ };
+ const myEmptyGrid = () => Array.from({length:8},()=>Array(16).fill(false));
+ function myPattern(id) {
+  const pattern = myMelodies[id], grid = myEmptyGrid();
+  pattern.notes.forEach(([step,note])=>grid[note][step]=true);
+  return {grid,title:pattern.title,voice:pattern.voice,scale:pattern.scale,tempo:pattern.tempo,preset:id};
+ }
+ let myState = {...myPattern('light'),volume:35,motion:'system',view:'wave'};
+ const myStorageKey = 'shunta.pulse.v1';
+ let mySaveTimer, myToastTimer, myStorageOK = true;
+ const myHistory = [];
+ let myAudio = null, myBus = null, myMaster = null, myAnalyser = null, myAudioWanted = false;
+ const myVoices = new Set();
+ let myPlaying = false, myClock = null, myNextStep = 0, myNextTime = 0, myPlayhead = -1;
+ const myPending = new Set();
+ let myNoteCount = 0, myLastNote = null, myRings = [], myRaf = null, myLastFrame = 0;
+ const myNoteTimers = new Map();
+ const myHeldKeys = new Set();
+ const myReduced = matchMedia('(prefers-reduced-motion: reduce)');
+ const myCanvas = myGet('play-canvas'), myPainter = myCanvas.getContext('2d');
+ let myWidth = 600, myHeight = 295;
+ let myWaveData = new Uint8Array(2048), myFrequencyData = new Uint8Array(1024);
+
+ // Files and saved settings have a small, explicit schema.
+ function myReadProject(raw) {
+  if (!raw || raw.format !== 'pulse-project' || raw.version !== 1 || !raw.settings) throw new Error('This is not a PULSE project file.');
+  const value = raw.settings;
+  if (!Array.isArray(value.grid) || value.grid.length !== 8 || value.grid.some(row=>!Array.isArray(row)||row.length!==16||row.some(cell=>typeof cell!=='boolean'))) throw new Error('The note grid in this file is invalid.');
+  if (!['glass','warm','arcade'].includes(value.voice) || !Object.hasOwn(myScales,value.scale)) throw new Error('The sound settings in this file are invalid.');
+  if (!Number.isFinite(value.tempo) || !Number.isFinite(value.volume)) throw new Error('The tempo or volume is invalid.');
+  return {grid:value.grid.map(row=>row.slice()),title:typeof value.title==='string'?value.title.slice(0,40):'My loop',voice:value.voice,scale:value.scale,
+   tempo:Math.max(50,Math.min(180,Math.round(value.tempo))),volume:Math.max(0,Math.min(80,Math.round(value.volume))),
+   motion:['system','on','off'].includes(value.motion)?value.motion:'system',view:value.view==='spectrum'?'spectrum':'wave',preset:Object.hasOwn(myMelodies,value.preset)?value.preset:'custom'};
+ }
+ function myProject() { return {format:'pulse-project',version:1,settings:myState}; }
+ try { const saved=localStorage.getItem(myStorageKey); if(saved) myState=myReadProject(JSON.parse(saved)); }
+ catch(error) { myStorageOK=false; }
+ function mySave() {
+  clearTimeout(mySaveTimer);
+  myGet('save-status').textContent=myStorageOK?'SAVING…':'SESSION ONLY';
+  mySaveTimer=setTimeout(()=>{
+   try {localStorage.setItem(myStorageKey,JSON.stringify(myProject()));myStorageOK=true;myGet('save-status').textContent='SAVED IN THIS BROWSER';}
+   catch(error){myStorageOK=false;myGet('save-status').textContent='SESSION ONLY';}
+  },220);
+ }
+ function myToast(message) {
+  clearTimeout(myToastTimer);myGet('toast').textContent=message;myGet('toast').classList.add('visible');
+  myToastTimer=setTimeout(()=>myGet('toast').classList.remove('visible'),3300);
+ }
+ function myRemember() {myHistory.push(JSON.stringify(myState));if(myHistory.length>30)myHistory.shift();myGet('undo-pattern').disabled=false;}
+ function myFrequency(row,scale=myState.scale) {return 440*Math.pow(2,(myScales[scale].midi[row]-69)/12);}
+ function myCountNotes() {return myState.grid.reduce((sum,row)=>sum+row.filter(Boolean).length,0);}
+ function myMotionAllowed() {return myState.motion==='on'||(myState.motion==='system'&&!myReduced.matches);}
+
+ // One voice is made from oscillators and a short envelope, never a sample.
+ // The exact same synth function is used for live sound and offline WAV export.
+ function mySynth(context,bus,frequency,when,strength,voice,track) {
+  const primary=context.createOscillator(), overtone=context.createOscillator();
+  const harmonic=context.createGain(), envelope=context.createGain(), filter=context.createBiquadFilter();
+  primary.type=voice==='arcade'?'square':voice==='warm'?'triangle':'sine';
+  primary.frequency.setValueAtTime(frequency,when);
+  overtone.type='sine';overtone.frequency.setValueAtTime(frequency*(voice==='glass'?3.01:2),when);
+  harmonic.gain.setValueAtTime(voice==='glass'?.18:.1,when);
+  const release=voice==='glass'?.85:voice==='warm'?.62:.32;
+  filter.type='lowpass';filter.frequency.setValueAtTime(voice==='arcade'?1500+strength*2600:10000,when);filter.Q.value=.5;
+  envelope.gain.setValueAtTime(.0001,when);
+  envelope.gain.linearRampToValueAtTime(.24*strength,when+.007);
+  envelope.gain.exponentialRampToValueAtTime(.0001,when+release);
+  primary.connect(filter);overtone.connect(harmonic);harmonic.connect(filter);filter.connect(envelope);envelope.connect(bus);
+  primary.start(when);overtone.start(when);primary.stop(when+release+.04);overtone.stop(when+release+.04);
+  const record={primary,overtone,envelope};
+  if(track)track.add(record);
+  primary.onended=()=>{primary.disconnect();overtone.disconnect();harmonic.disconnect();filter.disconnect();envelope.disconnect();if(track)track.delete(record);};
+ }
+ function myMakeGraph(context,destination,volume,analyse) {
+  const bus=context.createGain(),compressor=context.createDynamicsCompressor(),master=context.createGain();
+  compressor.threshold.value=-14;compressor.knee.value=12;compressor.ratio.value=5;compressor.attack.value=.005;compressor.release.value=.12;
+  master.gain.value=volume/100;
+  bus.connect(compressor);compressor.connect(master);
+  let analyser=null;
+  if(analyse){analyser=context.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.78;master.connect(analyser);analyser.connect(destination);}
+  else master.connect(destination);
+  return {bus,master,analyser};
+ }
+ function myStopVoices() {
+  if(!myAudio)return;
+  for(const record of myVoices){
+   try {record.envelope.gain.cancelScheduledValues(myAudio.currentTime);record.envelope.gain.setTargetAtTime(.0001,myAudio.currentTime,.008);record.primary.stop(myAudio.currentTime+.04);record.overtone.stop(myAudio.currentTime+.04);}catch(error){}
+  }
+ }
+ function myRefreshAudio() {
+  const active=myAudioWanted&&myAudio&&myAudio.state==='running';
+  myGet('sound-button').textContent=active?'Mute sound':'Enable sound';
+  myGet('sound-button').setAttribute('aria-pressed',String(Boolean(active)));
+  myGet('audio-status').textContent=active?(myState.volume===0?'VOLUME IS ZERO':'SOUND ON'):'SOUND OFF';
+  myGet('visual-label').textContent=active?(myState.view==='wave'?'LIVE AUDIO / WAVEFORM':'LIVE AUDIO / FREQUENCY SPECTRUM'):(myLastNote?'VISUAL PREVIEW / SOUND OFF':'READY / SOUND IS OFF');
+ }
+ myGet('sound-button').addEventListener('click',async()=>{
+  if(myAudioWanted&&myAudio&&myAudio.state==='running'){
+   myAudioWanted=false;myMaster.gain.setTargetAtTime(0,myAudio.currentTime,.015);myStopVoices();myRefreshAudio();myToast('Sound muted. You can still play, edit and export.');return;
+  }
+  const AudioClass=window.AudioContext||window.webkitAudioContext;
+  if(!AudioClass){myToast('This browser cannot play Web Audio. The visual instrument still works.');return;}
+  myGet('sound-button').disabled=true;
+  try {
+   if(!myAudio){myAudio=new AudioClass();const graph=myMakeGraph(myAudio,myAudio.destination,myState.volume,true);myBus=graph.bus;myMaster=graph.master;myAnalyser=graph.analyser;myAudio.addEventListener('statechange',myRefreshAudio);}
+   await myAudio.resume();
+   if(myAudio.state!=='running')throw new Error('Audio is suspended.');
+   myAudioWanted=true;myMaster.gain.setTargetAtTime(myState.volume/100,myAudio.currentTime,.015);
+   myToast('Sound is on. Try A S D F G H J K, or play the loop.');
+  } catch(error){myAudioWanted=false;myToast('Audio could not start. Try Enable sound again, or continue with the visual instrument.');}
+  finally{myGet('sound-button').disabled=false;myRefreshAudio();myStartDrawing();}
+ });
+
+ // Build reusable note buttons and the 8 × 16 editable input grid.
+ const myKeyButtons=[], myStepButtons=Array.from({length:8},()=>[]);
+ myKeys.forEach((letter,row)=>{
+  const key=document.createElement('button');key.type='button';key.className='key';key.dataset.row=row;
+  const note=document.createElement('b'),foot=document.createElement('span'),cap=document.createElement('kbd'),number=document.createElement('small');
+  cap.textContent=letter;number.textContent=String(row+1).padStart(2,'0');foot.append(cap,number);key.append(note,foot);
+  key.addEventListener('click',()=>myPlay(row,'NOTE PAD',letter,.8));myGet('keybed').appendChild(key);myKeyButtons.push(key);
+ });
+ const corner=document.createElement('span');corner.setAttribute('aria-hidden','true');myGet('step-grid').appendChild(corner);
+ for(let step=0;step<16;step++){const number=document.createElement('span');number.className='step-num'+(step%4===0?' beat':'');number.textContent=String(step+1).padStart(2,'0');number.setAttribute('aria-hidden','true');myGet('step-grid').appendChild(number);}
+ for(let row=7;row>=0;row--){
+  const label=document.createElement('span');label.className='row-label';label.dataset.rowLabel=row;myGet('step-grid').appendChild(label);
+  for(let step=0;step<16;step++){
+   const button=document.createElement('button');button.type='button';button.className='step'+(step%4===0?' beat':'');button.dataset.row=row;button.dataset.step=step;button.tabIndex=row===7&&step===0?0:-1;
+   button.addEventListener('click',()=>{
+    myRemember();myState.grid[row][step]=!myState.grid[row][step];myState.preset='custom';myRenderGrid();mySave();
+    if(myState.grid[row][step])myPlay(row,'GRID EDIT','Step '+(step+1),.65);
+   });
+   button.addEventListener('focus',()=>{document.querySelectorAll('.step[tabindex="0"]').forEach(el=>el.tabIndex=-1);button.tabIndex=0;});
+   button.addEventListener('keydown',event=>{
+    let r=row,c=step;
+    if(event.key==='ArrowRight')c=Math.min(15,c+1);else if(event.key==='ArrowLeft')c=Math.max(0,c-1);else if(event.key==='ArrowUp')r=Math.min(7,r+1);else if(event.key==='ArrowDown')r=Math.max(0,r-1);else if(event.key==='Home')c=0;else if(event.key==='End')c=15;else return;
+    event.preventDefault();myStepButtons[r][c].focus();
+   });
+   myStepButtons[row][step]=button;myGet('step-grid').appendChild(button);
+  }
+ }
+ function myRenderGrid(){
+  myKeyButtons.forEach((button,row)=>{button.querySelector('b').textContent=myScales[myState.scale].names[row];button.setAttribute('aria-label','Play '+myScales[myState.scale].names[row]+', keyboard '+myKeys[row]);});
+  document.querySelectorAll('[data-row-label]').forEach(label=>label.textContent=myScales[myState.scale].names[Number(label.dataset.rowLabel)]);
+  myStepButtons.forEach((buttons,row)=>buttons.forEach((button,step)=>{button.setAttribute('aria-pressed',String(myState.grid[row][step]));button.setAttribute('aria-label',myScales[myState.scale].names[row]+', step '+(step+1));button.classList.toggle('playhead',step===myPlayhead);}));
+  document.querySelectorAll('[data-pattern]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.pattern===myState.preset)));
+  myGet('pattern-count').textContent=myCountNotes()+' NOTES · 1 BAR · 4/4';
+ }
+ function myPulse(row,source,input,strength){
+  const frequency=myFrequency(row),now=performance.now();
+  myLastNote={row,frequency,name:myScales[myState.scale].names[row],strength,time:now,voice:myState.voice};
+  myRings.push({row,strength,time:now});myRings=myRings.slice(-20);myNoteCount++;
+  myGet('pad-intro').classList.add('hidden');myGet('last-note').textContent=myScales[myState.scale].names[row];myGet('last-hz').textContent=frequency.toFixed(2)+' Hz';
+  myGet('last-source').textContent=source;myGet('last-input').textContent='Input: '+input;myGet('last-velocity').textContent='Strength: '+Math.round(strength*100)+'%';
+  myGet('event-count').textContent=String(myNoteCount).padStart(4,'0')+' NOTE EVENTS';myGet('signal-status').textContent='SIGNAL RECEIVED';
+  const button=myKeyButtons[row];button.classList.add('active');clearTimeout(myNoteTimers.get(row));myNoteTimers.set(row,setTimeout(()=>button.classList.remove('active'),160));
+  myRefreshAudio();myDraw(now);myStartDrawing();
+  if(!myMotionAllowed()&&myAudioWanted)setTimeout(()=>myDraw(performance.now()),60);
+ }
+ function myPlay(row,source,input,strength){
+  if(myAudioWanted&&myAudio&&myAudio.state==='running')mySynth(myAudio,myBus,myFrequency(row),myAudio.currentTime+.005,strength,myState.voice,myVoices);
+  myPulse(row,source,input,strength);
+ }
+ document.addEventListener('keydown',event=>{
+  if(event.ctrlKey||event.metaKey||event.altKey||event.target.closest('input,textarea,select,[contenteditable="true"]'))return;
+  const row=myKeys.indexOf(event.key.toUpperCase());
+  if(row>=0){event.preventDefault();if(event.repeat||myHeldKeys.has(event.code))return;myHeldKeys.add(event.code);myPlay(row,'KEYBOARD',event.key.toUpperCase(),.8);}
+  if(event.code==='Space'&&(event.target===document.body||event.target===myCanvas)){event.preventDefault();if(!event.repeat)myTogglePlay();}
+ });
+ document.addEventListener('keyup',event=>myHeldKeys.delete(event.code));
+ window.addEventListener('blur',()=>myHeldKeys.clear());
+ let myPointerId=null,myPointerRow=-1;
+ function myPointerNote(event){
+  const box=myCanvas.getBoundingClientRect(),x=Math.max(0,Math.min(.999,(event.clientX-box.left)/box.width)),y=Math.max(0,Math.min(1,(event.clientY-box.top)/box.height));
+  const row=Math.floor(x*8);
+  if(row!==myPointerRow){myPointerRow=row;myPlay(row,event.pointerType==='touch'?'TOUCH':'MOUSE','Pad '+(row+1),.25+(1-y)*.75);}
+ }
+ myCanvas.addEventListener('pointerdown',event=>{if(event.button!==0&&event.pointerType!=='touch')return;myPointerId=event.pointerId;myPointerRow=-1;myCanvas.setPointerCapture(event.pointerId);myCanvas.focus({preventScroll:true});myPointerNote(event);});
+ myCanvas.addEventListener('pointermove',event=>{if(event.pointerId===myPointerId)myPointerNote(event);});
+ function myReleasePointer(){myPointerId=null;myPointerRow=-1;}
+ myCanvas.addEventListener('pointerup',myReleasePointer);myCanvas.addEventListener('pointercancel',myReleasePointer);myCanvas.addEventListener('lostpointercapture',myReleasePointer);
+
+ // The audio clock schedules slightly ahead; the UI follows the same timestamps.
+ function mySchedule(){
+  const now=performance.now()/1000;
+  while(myPlaying&&myNextTime<now+.08){
+   const step=myNextStep,delay=Math.max(0,myNextTime-now),rows=[];
+   for(let row=0;row<8;row++)if(myState.grid[row][step]){
+    rows.push(row);
+    if(myAudioWanted&&myAudio&&myAudio.state==='running')mySynth(myAudio,myBus,myFrequency(row),myAudio.currentTime+delay,.75,myState.voice,myVoices);
+   }
+   const timer=setTimeout(()=>{
+    myPending.delete(timer);if(!myPlaying)return;myPlayhead=step;
+    myGet('step-counter').textContent='STEP '+String(step+1).padStart(2,'0')+' / 16';myRenderGrid();
+    rows.forEach(row=>myPulse(row,'SEQUENCER','Step '+(step+1),.75));
+   },delay*1000);
+   myPending.add(timer);myNextStep=(myNextStep+1)%16;myNextTime+=60/myState.tempo/4;
+  }
+ }
+ function myStart(){
+  if(myPlaying)return;
+  if(!myCountNotes()){myToast('Add a note to the grid, or choose a preset first.');return;}
+  myPlaying=true;myNextStep=0;myNextTime=performance.now()/1000+.045;
+  myGet('play-button').textContent='■ Stop loop';myGet('play-button').classList.add('playing');myGet('play-button').setAttribute('aria-pressed','true');
+  mySchedule();myClock=setInterval(mySchedule,25);
+  if(!myAudioWanted)myToast('Loop is running silently. Press Enable sound to hear it.');
+ }
+ function myStop(){
+  myPlaying=false;clearInterval(myClock);myClock=null;myPending.forEach(clearTimeout);myPending.clear();myStopVoices();myPlayhead=-1;
+  myGet('play-button').textContent='▶ Play loop';myGet('play-button').classList.remove('playing');myGet('play-button').setAttribute('aria-pressed','false');
+  myGet('step-counter').textContent='STEP — / 16';myRenderGrid();
+ }
+ function myTogglePlay(){if(myPlaying)myStop();else myStart();}
+ myGet('play-button').addEventListener('click',myTogglePlay);myGet('stop-button').addEventListener('click',myStop);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){if(myPlaying){myStop();myToast('Loop stopped while this tab was away. Press Play to start again.');}myStopVoices();myHeldKeys.clear();}});
+
+ function myRenderSettings(save=true){
+  for(const [id,key] of [['voice','voice'],['scale','scale'],['tempo','tempo'],['volume','volume'],['motion','motion'],['project-name','title']])if(myGet(id).value!==String(myState[key]))myGet(id).value=myState[key];
+  myGet('volume-out').textContent=myState.volume+'%';
+  if(myAudio&&myMaster)myMaster.gain.setTargetAtTime(myAudioWanted?myState.volume/100:0,myAudio.currentTime,.02);
+  document.querySelectorAll('[data-view]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.view===myState.view)));
+  myGet('motion-note').textContent=myState.motion==='on'?'Motion is enabled for this page, even if the device reduces motion.':myState.motion==='off'?'Still display. Notes, buttons and sound continue to work.':myReduced.matches?'Your device reduces motion. Choose “On for this page” to animate.':'Motion is on, following your device setting.';
+  myRenderGrid();myRefreshAudio();myDraw(performance.now());myStartDrawing();if(save)mySave();
+ }
+ for(const id of ['voice','scale','motion'])myGet(id).addEventListener('change',event=>{if(id==='scale')myStop();myState[id]=event.target.value;if(id!=='motion')myState.preset='custom';myRenderSettings();});
+ myGet('volume').addEventListener('input',event=>{myState.volume=Number(event.target.value);myRenderSettings();});
+ myGet('tempo').addEventListener('change',event=>{const value=Number(event.target.value);myState.tempo=Number.isFinite(value)?Math.max(50,Math.min(180,Math.round(value))):108;myState.preset='custom';myRenderSettings();});
+ myGet('project-name').addEventListener('input',event=>{myState.title=event.target.value;mySave();});
+ document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>{myState.view=button.dataset.view;myRenderSettings();}));
+ document.querySelectorAll('[data-pattern]').forEach(button=>button.addEventListener('click',()=>{
+  myRemember();myStop();myState={...myState,...myPattern(button.dataset.pattern)};myRenderSettings();myToast('New pattern loaded. Press Play loop to hear it.');
+ }));
+ myGet('clear-pattern').addEventListener('click',()=>{myRemember();myStop();myState.grid=myEmptyGrid();myState.preset='custom';myRenderSettings();myToast('Grid cleared. Undo brings your pattern back.');});
+ myGet('undo-pattern').title='Undo the last grid or preset change';
+ myGet('undo-pattern').addEventListener('click',()=>{if(!myHistory.length)return;myStop();myState=JSON.parse(myHistory.pop());myGet('undo-pattern').disabled=!myHistory.length;myRenderSettings();});
+ myReduced.addEventListener('change',()=>myRenderSettings(false));
+
+ // Canvas output: actual audio analysis when audio is on; labeled preview otherwise.
+ function myResize(){const box=myCanvas.getBoundingClientRect(),ratio=Math.min(2,window.devicePixelRatio||1);myWidth=box.width;myHeight=box.height;myCanvas.width=Math.round(myWidth*ratio);myCanvas.height=Math.round(myHeight*ratio);myPainter.setTransform(ratio,0,0,ratio,0,0);myDraw(performance.now());}
+ function myDraw(now){
+  const g=myPainter,w=myWidth,h=myHeight,animated=myMotionAllowed();
+  g.clearRect(0,0,w,h);
+  g.strokeStyle='#89967818';g.lineWidth=1;
+  for(let x=0;x<=w;x+=w/16){g.beginPath();g.moveTo(x,0);g.lineTo(x,h);g.stroke();}
+  for(let y=0;y<h;y+=h/8){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();}
+  const current=myLastNote,age=current?(now-current.time)/1000:99;
+  const live=myAudioWanted&&myAudio&&myAudio.state==='running'&&myAnalyser;
+  if(current){
+   const x=(current.row+.5)*w/8;
+   const gradient=g.createRadialGradient(x,h/2,5,x,h/2,h*.8);gradient.addColorStop(0,'#e7ff8320');gradient.addColorStop(1,'#e7ff8300');g.fillStyle=gradient;g.fillRect(0,0,w,h);
+   if(animated){
+    myRings=myRings.filter(ring=>now-ring.time<1100);
+    for(const ring of myRings){const life=(now-ring.time)/1100;g.beginPath();g.arc((ring.row+.5)*w/8,h*.48,10+life*150,0,Math.PI*2);g.strokeStyle='rgba(232,255,140,'+((1-life)*.34)+')';g.lineWidth=1;g.stroke();}
+   }
+  }
+  // Static mode freezes the sampled trace rather than disabling the instrument.
+  let samples;
+  if(live){myAnalyser.getByteTimeDomainData(myWaveData);myAnalyser.getByteFrequencyData(myFrequencyData);samples=myWaveData;}
+  const envelope=current?(animated?Math.exp(-age*2.8):.7):0;
+  if(myState.view==='wave'){
+   g.beginPath();g.lineWidth=2;g.strokeStyle='#e7ff83';
+   for(let i=0;i<=400;i++){
+    let value=0;
+    if(samples)value=(samples[Math.min(samples.length-1,Math.floor(i/400*samples.length))]-128)/128*3;
+    else if(current){const phase=i/400*(5+current.row*1.7)*Math.PI*2+(animated?now/100:0);value=Math.sin(phase)*envelope*current.strength*.7;if(current.voice==='arcade')value=Math.sign(Math.sin(phase))*envelope*current.strength*.55;}
+    const y=h*.5+Math.max(-1,Math.min(1,value))*h*.3;if(i===0)g.moveTo(0,y);else g.lineTo(i/400*w,y);
+   }
+   g.shadowColor='#d6fb6b';g.shadowBlur=current?8:0;g.stroke();g.shadowBlur=0;
+   g.strokeStyle='#e7ff8320';g.lineWidth=1;g.beginPath();g.moveTo(0,h*.5+5);g.lineTo(w,h*.5+5);g.stroke();
+  }else{
+   const count=48,gap=4,bar=(w-42)/count-gap;
+   for(let i=0;i<count;i++){
+    let amplitude=0;
+    if(live){const bin=Math.min(myFrequencyData.length-1,Math.floor(Math.pow(i/(count-1),2)*(myFrequencyData.length*.42)));amplitude=myFrequencyData[bin]/255;}
+    else if(current){const center=9+current.row*3;amplitude=(Math.exp(-Math.pow((i-center)/4,2))+.35*Math.exp(-Math.pow((i-center*1.7)/3,2)))*envelope;}
+    const bh=Math.max(2,amplitude*h*.68);g.fillStyle=i%5===0?'#ed9668':'#dceaab';g.globalAlpha=.3+amplitude*.7;g.fillRect(21+i*(bar+gap),h*.85-bh,Math.max(1,bar),bh);
+   }
+   g.globalAlpha=1;
+  }
+  if(current){g.fillStyle='#f0f4e4';g.font='10px ui-monospace,Consolas,monospace';g.fillText(current.name+' / '+current.frequency.toFixed(2)+' Hz',19,h-16);}
+ }
+ function myFrame(now){myRaf=null;if(!myMotionAllowed()||document.hidden)return;if(now-myLastFrame>30){myDraw(now);myLastFrame=now;}myRaf=requestAnimationFrame(myFrame);}
+ function myStartDrawing(){if(myMotionAllowed()&&!myRaf&&!document.hidden)myRaf=requestAnimationFrame(myFrame);else if(!myMotionAllowed()&&myRaf){cancelAnimationFrame(myRaf);myRaf=null;}}
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)myStartDrawing();});
+ new ResizeObserver(myResize).observe(myCanvas);
+
+ function myDownload(content,type,name){const url=URL.createObjectURL(new Blob([content],{type})),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);}
+ function myFileName(title){return (title||'pulse-loop').toLowerCase().replace(/[^a-z0-9_-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,55)||'pulse-loop';}
+ myGet('save-project').addEventListener('click',()=>{myDownload(JSON.stringify(myProject(),null,2),'application/json',myFileName(myState.title)+'.pulse.json');myToast('Project saved. Load project restores this pattern and its settings.');});
+ myGet('load-project').addEventListener('click',()=>myGet('project-file').click());
+ myGet('project-file').addEventListener('change',async event=>{
+  const file=event.target.files[0];if(!file)return;
+  try {if(file.size>100000)throw new Error('This file is too large for a PULSE project.');const next=myReadProject(JSON.parse(await file.text()));myRemember();myStop();myState=next;myRenderSettings();myToast('Project loaded. Ready to play.');}
+  catch(error){myToast(error instanceof SyntaxError?'This file is not valid JSON. Choose a saved PULSE project.':error.message);}
+  finally{event.target.value='';}
+ });
+ function myEncodeWAV(buffer){
+  const samples=buffer.getChannelData(0),bytes=new ArrayBuffer(44+samples.length*2),view=new DataView(bytes);
+  const write=(offset,string)=>{for(let i=0;i<string.length;i++)view.setUint8(offset+i,string.charCodeAt(i));};
+  write(0,'RIFF');view.setUint32(4,36+samples.length*2,true);write(8,'WAVE');write(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);view.setUint32(24,buffer.sampleRate,true);view.setUint32(28,buffer.sampleRate*2,true);view.setUint16(32,2,true);view.setUint16(34,16,true);write(36,'data');view.setUint32(40,samples.length*2,true);
+  let peak=0;for(let i=0;i<samples.length;i++)peak=Math.max(peak,Math.abs(samples[i]));
+  const protection=peak>.98?.98/peak:1;
+  for(let i=0;i<samples.length;i++){const value=Math.max(-1,Math.min(1,samples[i]*protection));view.setInt16(44+i*2,value<0?value*32768:value*32767,true);}
+  return bytes;
+ }
+ myGet('export-wav').addEventListener('click',async()=>{
+  if(!myCountNotes()){myToast('Your grid is empty. Add notes before exporting.');return;}
+  if(myState.volume===0){myToast('Raise Output volume above zero before exporting sound.');return;}
+  const OfflineClass=window.OfflineAudioContext||window.webkitOfflineAudioContext;
+  if(!OfflineClass){myToast('This browser cannot render WAV. Save your project and open it in a current browser.');return;}
+  const button=myGet('export-wav'),snapshot=JSON.parse(JSON.stringify(myState));button.disabled=true;button.textContent='Rendering…';
+  try {
+   const stepLength=60/snapshot.tempo/4,total=stepLength*64+1.1;
+   const context=new OfflineClass(1,Math.ceil(total*44100),44100),graph=myMakeGraph(context,context.destination,snapshot.volume,false);
+   for(let step=0;step<64;step++)for(let row=0;row<8;row++)if(snapshot.grid[row][step%16])mySynth(context,graph.bus,myFrequency(row,snapshot.scale),.02+step*stepLength,.75,snapshot.voice,null);
+   const buffer=await context.startRendering();myDownload(myEncodeWAV(buffer),'audio/wav',myFileName(snapshot.title)+'.wav');myToast('WAV exported: four repeats of your loop, plus the final note decay.');
+  }catch(error){myToast('Audio export failed. Your pattern is still here; try again or save the project.');}
+  finally{button.disabled=false;button.textContent='↓ Export WAV';}
+ });
+ window.addEventListener('pagehide',()=>{myStopVoices();try{localStorage.setItem(myStorageKey,JSON.stringify(myProject()));}catch(error){}});
+ myGet('save-status').textContent=myStorageOK?'AUTO-SAVE READY':'SESSION ONLY';
+ myRenderSettings(false);myResize();
+})();
+</script>
+</body>
+</html>
