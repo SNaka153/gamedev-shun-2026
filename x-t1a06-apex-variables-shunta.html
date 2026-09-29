@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#142b36">
+  <title>X T1A06 · APEX Serve Lab by Shunta</title>
+  <style>
+    :root{--ink:#142b36;--muted:#566c75;--paper:#edf1ef;--card:#fcfdfa;--line:#cbd6d3;--lime:#d4ff53;--blue:#225be4;--pink:#dd5790;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;--sans:Arial,Helvetica,sans-serif}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5}button,input,select{font:inherit}button,a,input,select{touch-action:manipulation}button{cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}a{color:inherit;text-underline-offset:4px}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible,canvas:focus-visible{outline:3px solid var(--blue);outline-offset:4px}.shell{max-width:1520px;margin:auto;padding:0 34px}header{border-bottom:1px solid var(--line)}.topbar{min-height:78px;display:flex;align-items:center;gap:22px;justify-content:space-between}.brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:-1px;font-size:28px}.brand svg{width:38px;height:38px}.tag,.eyebrow,.mono{font-family:var(--mono);font-size:11px;letter-spacing:1.2px}.tag{background:var(--ink);color:var(--lime);padding:6px 10px;white-space:nowrap}.topbar nav{display:flex;gap:23px;font-size:12px}.topbar nav a{text-decoration:none}.topbar nav a:hover{text-decoration:underline}.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;padding:32px 0 28px}.eyebrow{color:var(--muted);text-transform:uppercase;font-weight:bold}.hero h1{font-size:clamp(40px,4.7vw,68px);line-height:1;letter-spacing:-3px;margin:10px 0 12px;font-weight:900}.hero h1 span{font-weight:400;color:var(--muted)}.hero p{font-size:14px;color:var(--muted);margin:0;max-width:560px}.hero-aside{display:flex;align-items:center;gap:16px;flex-shrink:0}.jersey{font-family:var(--mono);font-size:54px;font-weight:900;letter-spacing:-4px;color:var(--blue)}.player-label{font-size:12px;border-left:1px solid var(--line);padding-left:16px}.player-label strong{display:block;font-size:16px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 316px;gap:18px;align-items:start}.main-column{min-width:0}.arena{background:var(--ink);color:white;border-radius:8px;overflow:hidden;position:relative}.arena-top{display:flex;justify-content:space-between;align-items:center;padding:19px 22px 0;gap:15px}.live{display:flex;gap:8px;align-items:center;color:var(--lime);font-family:var(--mono);font-size:10px;letter-spacing:1.2px}.dot{width:6px;height:6px;background:currentColor;border-radius:50%}.arena-meta{font-family:var(--mono);font-size:10px;letter-spacing:1px;color:#a7c0c6}.canvas-wrap{height:396px;position:relative}.canvas-wrap canvas{display:block;width:100%;height:100%;touch-action:none}.canvas-hint{position:absolute;bottom:5px;left:22px;right:22px;font-size:10px;color:#a7c0c6;display:flex;justify-content:space-between;gap:12px;pointer-events:none}.legend{display:flex;gap:14px}.legend i{display:inline-block;width:14px;height:2px;vertical-align:middle;margin-right:5px;background:var(--lime)}.legend .pin-a{background:#65aaff}.legend .pin-b{background:#ff91b6}.arena-foot{padding:16px 22px 19px;display:flex;justify-content:space-between;align-items:center;gap:18px;border-top:1px solid #ffffff17}.result-title{font-size:22px;letter-spacing:-.5px;font-weight:bold;line-height:1.2}.result-copy{font-size:12px;color:#abc1c7;margin-top:4px}.result-tag{font-family:var(--mono);font-size:10px;border:1px solid #617581;color:#c4d5d9;padding:5px 9px;white-space:nowrap}.controls{padding:15px 18px;background:var(--card);border:1px solid var(--line);border-radius:0 0 8px 8px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.btn{background:var(--card);color:var(--ink);border:1px solid var(--line);padding:9px 13px;border-radius:4px;font-size:12px;font-weight:bold;white-space:nowrap}.btn:hover:not(:disabled){border-color:var(--ink);background:#e9efeb}.btn.primary{background:var(--blue);border-color:var(--blue);color:white;min-width:113px}.btn.primary:hover:not(:disabled){background:#1346bf}.btn.dark{background:var(--ink);color:var(--lime);border-color:var(--ink)}.btn.small{padding:5px 9px;font-size:10px}.speed-label{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;margin-left:auto}.speed-label select{font-size:11px;padding:6px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:3px}.scrub-row{background:var(--card);border:1px solid var(--line);border-bottom:0;padding:8px 18px;display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:10px}.scrub-row input{flex:1;min-width:0;accent-color:var(--blue)}.scrub-row output{width:70px;text-align:right}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:6px;background:var(--card);margin:16px 0}.metric{padding:15px 18px;border-right:1px solid var(--line)}.metric:last-child{border:0}.metric dt{font:10px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.5px}.metric dd{font-size:25px;font-weight:bold;letter-spacing:-1px;margin:5px 0 0;line-height:1.2}.metric small{font-size:11px;letter-spacing:0;color:var(--muted);font-weight:normal}.panel{border:1px solid var(--line);background:var(--card);border-radius:7px;overflow:hidden}.panel-head{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line)}.panel-head h2{font-size:14px;letter-spacing:-.2px;margin:0}.panel-head .eyebrow{font-size:10px}.tune{padding:17px 19px}.field-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}.field-header label{font-size:12px;font-weight:bold}.kind{display:inline-block;border:1px solid #b7c9e7;color:#2156bb;background:#eef3ff;font:9px var(--mono);padding:2px 5px;border-radius:3px}.kind.string{color:#9c4b25;background:#fff4ec;border-color:#e7ccb9}.kind.boolean{color:#5b499e;background:#f2efff;border-color:#d4c9ec}.text-input{width:100%;border:1px solid var(--line);border-radius:4px;background:white;padding:8px 10px;font-size:14px;color:var(--ink)}.control-group{margin-bottom:20px}.value-line{display:flex;align-items:center;gap:7px}.value-line input[type=range]{flex:1;min-width:0;accent-color:var(--blue);height:20px}.number-input{width:64px;min-height:32px;border:1px solid var(--line);border-radius:3px;padding:3px 5px;background:white;color:var(--ink);font:12px var(--mono);text-align:right}.units{font:10px var(--mono);color:var(--muted);min-width:20px}.range-labels{display:flex;justify-content:space-between;margin-top:4px;font:9px var(--mono);color:var(--muted);padding-right:98px}.choice-row{display:flex;gap:5px}.choice-row button{flex:1;padding:7px 3px;font-size:11px;border:1px solid var(--line);border-radius:3px;background:white;color:var(--ink)}.choice-row button[aria-pressed=true]{color:var(--blue);background:#edf3ff;border-color:var(--blue);font-weight:bold}.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:15px;font-size:12px}.toggle-row input{width:18px;height:18px;accent-color:var(--blue)}.setting-note{font-size:11px;color:var(--muted);margin:7px 0 0}.settings-bottom{border-top:1px solid var(--line);padding:14px 19px}.settings-bottom label{display:block;font-size:11px;font-weight:bold;margin-bottom:5px}.settings-bottom select{width:100%;border:1px solid var(--line);border-radius:4px;padding:7px;background:white;font-size:11px;color:var(--ink)}.presets{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0 18px}.preset{font-size:11px;background:none;border:1px solid #aebbba;color:var(--ink);border-radius:20px;padding:6px 12px}.preset:hover{background:white}.preset-label{font-size:10px;color:var(--muted);align-self:center;font-family:var(--mono);margin-right:3px}.comparison{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}.pin{position:relative;border:1px solid var(--line);background:var(--card);border-radius:7px;padding:16px;min-width:0}.pin-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.pin-name{font:11px var(--mono);font-weight:bold;color:var(--blue)}.pin-b .pin-name{color:#a73667}.pin h3{font-size:15px;margin:11px 0 4px}.pin p{font-size:11px;color:var(--muted);margin:0 0 13px}.pin-meta{font:10px var(--mono);color:var(--muted);margin:9px 0 11px}.pin-actions{display:flex;gap:6px;flex-wrap:wrap}.compare-note{font-size:12px;margin:0 0 18px;color:var(--muted)}.bottom-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;margin:22px 0}.watch-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}.watch{background:var(--card);padding:14px 18px;min-width:0}.watch-head{display:flex;gap:9px;justify-content:space-between;align-items:center;font:11px var(--mono)}.watch-value{font:20px var(--mono);margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.watch-caption{font-size:10px;color:var(--muted);margin-top:3px}.code-box{margin:0;padding:17px 18px;background:#142b36;color:#c6e3e1;font:11px/1.8 var(--mono);overflow:auto;max-height:190px;tab-size:2}.code-box .keyword{color:var(--lime)}.history-summary{display:flex;gap:14px;font:10px var(--mono);color:var(--muted);flex-wrap:wrap}.table-scroll{overflow:auto;max-height:226px;min-height:130px}table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:11px}th{text-align:left;font:9px var(--mono);color:var(--muted);background:#f2f5f1;padding:10px 12px;position:sticky;top:0}td{padding:10px 12px;border-top:1px solid var(--line)}td .btn{padding:3px 7px;font-size:10px}.outcome{font:9px var(--mono);color:var(--blue)}.outcome.fault{color:#a14636}.empty-row{text-align:center;white-space:normal;color:var(--muted);padding:35px}.file-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:14px 18px;border-top:1px solid var(--line)}.save-status{font:9px var(--mono);color:var(--muted);margin-left:auto}.source-section{margin:24px 0 28px;border-top:1px solid var(--line);padding-top:17px}.source-section>summary{cursor:pointer;font-size:13px;font-weight:bold}.explain-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px;margin:20px 0}.explain-grid h3{font-size:13px;margin:0 0 8px}.explain-grid p{font-size:12px;color:var(--muted)}.explain-grid code{font-family:var(--mono);font-size:11px}.example{background:white;border:1px solid var(--line);padding:15px;border-radius:4px}.example pre{font-size:11px;overflow:auto}.example #myClassOutput{font:12px var(--mono);margin-top:10px}footer{border-top:1px solid var(--line);padding:18px 0 26px;display:flex;justify-content:space-between;gap:20px;font:10px var(--mono);color:var(--muted)}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;border:1px solid #62767b;padding:11px 18px;border-radius:5px;box-shadow:0 5px 30px #132b3633;font-size:12px;max-width:90%;z-index:10;pointer-events:none}.toast:empty{display:none}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.noscript{padding:20px;background:#ffe8a5;text-align:center}.footer-links{display:flex;gap:18px}.keyboard-key{border:1px solid #617581;padding:1px 3px;border-radius:2px;font-family:var(--mono)}
+    @media(min-width:1500px){.canvas-wrap{height:440px}}
+    @media(max-width:1100px){.shell{padding:0 22px}.layout{grid-template-columns:minmax(0,1fr) 282px}.metric{padding:14px 12px}.metric dd{font-size:22px}.hero h1{font-size:48px}.canvas-wrap{height:380px}.arena-meta{font-size:9px}.bottom-grid{grid-template-columns:1fr 1fr}.watch-head{font-size:10px}.watch{padding:12px}.tag{display:none}}
+    @media(max-width:800px){.shell{padding:0 18px}.hero{padding:25px 0;gap:15px}.hero-aside{display:none}.hero h1{font-size:48px}.layout{grid-template-columns:1fr}.topbar{min-height:65px}.topbar nav{gap:14px;font-size:10px}.brand{font-size:25px}.brand svg{width:30px;height:30px}.tune{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}.settings-bottom{display:grid;grid-template-columns:1fr 1fr;gap:5px 20px}.settings-bottom .setting-note{grid-column:1/-1}.settings-bottom label{align-self:center}.bottom-grid{grid-template-columns:1fr}.canvas-wrap{height:370px}.explain-grid{grid-template-columns:1fr;gap:15px}.watch{padding:15px 18px}}
+    @media(max-width:460px){.shell{padding:0 12px}.hero h1{font-size:42px;letter-spacing:-2px}.hero p{font-size:12px}.eyebrow{font-size:9px}.topbar nav a:first-child{display:none}.arena-top{padding:15px 14px 0}.arena-meta{font-size:8px}.live{font-size:9px}.canvas-wrap{height:305px}.canvas-hint{left:14px;right:14px;font-size:8px}.canvas-hint>span:first-child{max-width:120px}.legend{gap:8px}.arena-foot{padding:14px}.result-title{font-size:19px}.result-copy{font-size:10px}.result-tag{font-size:8px;padding:4px 5px}.controls{padding:12px 13px;gap:7px}.btn{font-size:11px;padding:8px 10px}.controls .btn.primary{min-width:94px}.speed-label{font-size:9px;gap:3px}.speed-label select{font-size:10px;padding:4px}.metrics{grid-template-columns:1fr 1fr}.metric{border-bottom:1px solid var(--line);padding:12px 15px}.metric:nth-child(2){border-right:0}.metric:nth-child(3){border-bottom:0}.metric dd{font-size:24px}.tune{display:block;padding:18px}.comparison{gap:8px}.pin{padding:12px}.pin-top{flex-wrap:wrap}.pin h3{font-size:13px}.pin-meta{font-size:9px}.panel-head{padding:14px}.history-summary{gap:8px;font-size:9px}footer{flex-direction:column;gap:10px}.watch-head{font-size:10px}.watch-value{font-size:18px}.watch{padding:12px}.file-bar{padding:12px}.save-status{margin-left:0;flex-basis:100%}.control-group{margin-bottom:18px}.settings-bottom{display:block}.hero{padding-bottom:20px}.presets{gap:5px}.preset{font-size:10px;padding:5px 9px}}
+  </style>
+</head>
+<body>
+  <noscript><div class="noscript">Enable JavaScript to run APEX Serve Lab.</div></noscript>
+  <header><div class="shell topbar">
+    <div class="brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M3 33 20 5 37 33h-9L20 20l-8 13Z" fill="currentColor"/><path d="m17 30 3-5 3 5Z" fill="#225be4"/></svg> APEX <span class="tag">SERVE LAB / 06</span></div>
+    <nav aria-label="Page links"><a href="t1a06-proper-and-variables-shunta.html">Base assignment ↗</a><a href="index.html">Back to Home ↗</a></nav>
+  </div></header>
+  <main class="shell">
+    <section class="hero" aria-labelledby="page-title">
+      <div><div class="eyebrow">X T1A06 · Proper HTML &amp; Variables · By Shunta</div><h1 id="page-title">Small changes.<br><span>Different game.</span></h1><p>Build a serve. Watch the variables. Find your perfect arc.</p></div>
+      <div class="hero-aside"><div class="jersey">17</div><div class="player-label">ATHLETE / EXPERIMENT 01<strong id="athlete-display">Shunta</strong><span>Volleyball flight sandbox</span></div></div>
+    </section>
+    <div class="layout">
+      <div class="main-column">
+        <section class="arena" aria-label="Serve simulation">
+          <div class="arena-top"><div class="live"><span class="dot"></span><span id="scene-status">READY TO SERVE</span></div><div class="arena-meta">SIDE VIEW · 18 M COURT · <span id="net-label">2.43</span> M NET</div></div>
+          <div class="canvas-wrap"><canvas id="court" tabindex="0" aria-label="Serve trajectory. Drag the dotted aim handle to set speed and angle. Arrow keys change angle and speed. Space serves."></canvas><div class="canvas-hint"><span>Drag the aim handle · <span class="keyboard-key">SPACE</span> to serve</span><span class="legend"><span><i></i>LIVE</span><span><i class="pin-a"></i>A</span><span><i class="pin-b"></i>B</span></span></div></div>
+          <div class="arena-foot"><div><div class="result-title" id="result-title">Make your first serve.</div><div class="result-copy" id="result-copy">Adjust the blue controls, then send it.</div></div><span class="result-tag" id="result-tag">EXPERIMENT 001</span></div>
+        </section>
+        <div class="scrub-row"><label for="timeline">REPLAY</label><input id="timeline" type="range" min="0" max="1000" value="0" aria-label="Replay position" disabled><output id="time-label">0.00 s</output></div>
+        <div class="controls"><button class="btn primary" id="serve">Serve ↗</button><button class="btn" id="pause" disabled>Pause</button><button class="btn" id="replay" disabled>Replay</button><label class="speed-label" for="playback">SPEED <select id="playback"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option></select></label><button class="btn" id="save-image" title="Download the court and current settings as a PNG">Save image ↓</button></div>
+        <dl class="metrics"><div class="metric"><dt id="distance-title">Projected landing</dt><dd><span id="distance-value">—</span> <small>m</small></dd></div><div class="metric"><dt>Net clearance</dt><dd><span id="clearance-value">—</span> <small>m</small></dd></div><div class="metric"><dt>Peak height</dt><dd><span id="apex-value">—</span> <small>m</small></dd></div><div class="metric"><dt>Flight time</dt><dd><span id="flight-value">—</span> <small>s</small></dd></div></dl>
+        <div class="presets" aria-label="Experiment starting points"><span class="preset-label">START WITH</span><button class="preset" data-preset="precision">01 / Precision</button><button class="preset" data-preset="arc">02 / High arc</button><button class="preset" data-preset="net">03 / Net fault</button><button class="preset" data-preset="long">04 / Too much power</button></div>
+        <div class="comparison" aria-label="Compare saved settings">
+          <section class="pin" id="pin-a"><div class="pin-top"><span class="pin-name">A / BASELINE</span><button class="btn small" data-pin="a">Pin current</button></div><h3 id="pin-a-title">Keep a starting point.</h3><p id="pin-a-copy">Save this setup to compare its trajectory.</p><div class="pin-meta" id="pin-a-meta">SPEED — / ANGLE —</div><div class="pin-actions"><button class="btn small" data-load-pin="a" disabled>Load A</button><button class="btn small" data-clear-pin="a" disabled>Clear</button></div></section>
+          <section class="pin pin-b" id="pin-b"><div class="pin-top"><span class="pin-name">B / CHALLENGER</span><button class="btn small" data-pin="b">Pin current</button></div><h3 id="pin-b-title">Change one variable.</h3><p id="pin-b-copy">Pin a second setup and see the difference.</p><div class="pin-meta" id="pin-b-meta">SPEED — / ANGLE —</div><div class="pin-actions"><button class="btn small" data-load-pin="b" disabled>Load B</button><button class="btn small" data-clear-pin="b" disabled>Clear</button></div></section>
+        </div>
+        <p class="compare-note" id="compare-note">Try this: pin A, add 2° to your angle, then pin B.</p>
+      </div>
+      <aside class="panel" aria-labelledby="tune-title">
+        <div class="panel-head"><h2 id="tune-title">Tune your variables</h2><span class="eyebrow">01—06</span></div>
+        <div class="tune">
+          <div class="control-group"><div class="field-header"><label for="athlete">myName</label><span class="kind string">string</span></div><input class="text-input" id="athlete" type="text" value="Shunta" maxlength="24" autocomplete="off"></div>
+          <div class="control-group"><div class="field-header"><label for="speed">mySpeed</label><span class="kind">number</span></div><div class="value-line"><input id="speed" type="range" min="8" max="24" step="0.1" value="15"><input class="number-input" id="speed-number" aria-label="Speed in metres per second" type="number" min="8" max="24" step="0.1" value="15"><span class="units">m/s</span></div><div class="range-labels"><span>GENTLE</span><span>POWER</span></div></div>
+          <div class="control-group"><div class="field-header"><label for="angle">myAngle</label><span class="kind">number</span></div><div class="value-line"><input id="angle" type="range" min="-5" max="40" step="1" value="12"><input class="number-input" id="angle-number" aria-label="Launch angle in degrees" type="number" min="-5" max="40" step="1" value="12"><span class="units">deg</span></div><div class="range-labels"><span>FLAT</span><span>HIGH ARC</span></div></div>
+          <div class="control-group"><div class="field-header"><label for="height">myHeight</label><span class="kind">number</span></div><div class="value-line"><input id="height" type="range" min="1.8" max="3.5" step="0.05" value="2.7"><input class="number-input" id="height-number" aria-label="Ball release height in metres" type="number" min="1.8" max="3.5" step="0.05" value="2.7"><span class="units">m</span></div><div class="range-labels"><span>STANDING</span><span>JUMP</span></div></div>
+          <div class="control-group"><div class="field-header"><label for="target">myTarget</label><span class="kind">number</span></div><div class="value-line"><input id="target" type="range" min="10" max="17" step="0.1" value="16"><input class="number-input" id="target-number" aria-label="Target centre in metres from your baseline" type="number" min="10" max="17" step="0.1" value="16"><span class="units">m</span></div><p class="setting-note">Land within ±0.8 m of the centre.</p></div>
+          <div class="control-group"><div class="field-header"><span style="font-size:12px;font-weight:bold">Net height</span><span class="kind">number</span></div><div class="choice-row" aria-label="Net height"><button data-net="2.43" aria-pressed="true">2.43 m</button><button data-net="2.24" aria-pressed="false">2.24 m</button></div></div>
+          <div><div class="field-header"><label for="prediction">myPrediction</label><span class="kind boolean">boolean</span></div><label class="toggle-row">Show the predicted path<input id="prediction" type="checkbox" checked></label><p class="setting-note">Switch off to test your intuition. Results appear after you serve.</p></div>
+        </div>
+        <div class="settings-bottom"><label for="motion">Motion preference</label><select id="motion"><option value="system">Follow device setting</option><option value="on">On for this page</option><option value="off">Off · instant results</option></select><p class="setting-note" id="motion-note">Animation enabled. Use the timeline for a closer look.</p></div>
+      </aside>
+    </div>
+    <div class="bottom-grid">
+      <section class="panel" aria-labelledby="watch-title"><div class="panel-head"><h2 id="watch-title">Inside the variables</h2><button class="btn small" id="copy-code">Copy setup code</button></div>
+        <div class="watch-grid"><div class="watch"><div class="watch-head"><span>myName</span><span class="kind string">string</span></div><div class="watch-value" id="watch-name">"Shunta"</div><div class="watch-caption">Words keep their quotation marks.</div></div><div class="watch"><div class="watch-head"><span>mySpeed</span><span class="kind">number</span></div><div class="watch-value" id="watch-speed">15</div><div class="watch-caption">Integers and decimals are both numbers.</div></div><div class="watch"><div class="watch-head"><span>myBallY</span><span class="kind">number</span></div><div class="watch-value" id="watch-y">2.700</div><div class="watch-caption">The ball's height, updated during flight.</div></div><div class="watch"><div class="watch-head"><span>myInCourt</span><span class="kind boolean">boolean</span></div><div class="watch-value" id="watch-in">false</div><div class="watch-caption" id="watch-in-note">True after a completed serve lands in court.</div></div></div>
+        <pre class="code-box"><code id="setup-code"></code></pre>
+      </section>
+      <section class="panel" aria-labelledby="history-title"><div class="panel-head"><h2 id="history-title">Your experiments</h2><span class="eyebrow" id="history-count">00 SERVES</span></div><div class="panel-head history-summary"><span>ON TARGET <b id="hit-count">0</b></span><span>IN COURT <b id="in-count">0</b></span><span>BEST ERROR <b id="best-error">—</b></span></div>
+        <div class="table-scroll"><table><caption class="sr-only">Last 40 completed serves. Replays do not add another attempt.</caption><thead><tr><th scope="col">#</th><th scope="col">RESULT</th><th scope="col">SPEED</th><th scope="col">ANGLE</th><th scope="col">END X</th><th scope="col">REPLAY</th></tr></thead><tbody id="history-body"><tr><td colspan="6" class="empty-row">Your first completed serve starts the story.</td></tr></tbody></table></div>
+        <div class="file-bar"><button class="btn small" id="save-project">Save session ↓</button><button class="btn small" id="load-project">Load session ↑</button><input id="project-file" type="file" accept=".json,application/json" hidden><button class="btn small" id="clear-history">Clear log</button><button class="btn small" id="undo-clear" hidden>Undo clear</button><span class="save-status" id="save-status">LOCAL SESSION</span></div>
+      </section>
+    </div>
+    <details class="source-section"><summary>The T1A06 connection · how APEX works</summary><div class="explain-grid">
+      <section><h3>01 / A proper HTML document</h3><p><code>&lt;head&gt;</code> holds the title, metadata and styles. <code>&lt;body&gt;</code> holds the interface. A script at the end connects the controls to the simulation. Everything is in this one file and works offline.</p><p>The base assignment is linked at the top. This is Shunta's separate X assignment.</p><h3>02 / Variables with visible consequences</h3><p>A string stores the athlete's name. Numbers store speed, angle and height. A boolean turns the preview on or off. A function uses these values to calculate a new flight. The live inspector shows the same values the model uses.</p></section>
+      <section><h3>03 / A small, transparent model</h3><p>This is a 2D point-ball experiment: constant gravity (9.81 m/s²), no air resistance, no spin and no sideways motion. The ball begins 0.6 m behind the baseline. Contact below the net top ends the serve as a net fault. This is a simplified game model, not a prediction of a real serve.</p><p><code>x = -0.6 + speed × cos(angle) × time</code><br><code>y = height + speed × sin(angle) × time − 0.5 × gravity × time²</code></p><p>Court length and net-height options use the <a href="https://www.fivb.com/wp-content/uploads/2025/01/FIVB-Volleyball_Rules2025_2028-EN.pdf" target="_blank" rel="noopener noreferrer">FIVB 2025–2028 rules, sections 1.1 and 2.1</a>. Target scoring is custom to APEX. A and B retain their own target and net settings.</p></section>
+      <section><h3>04 / The original class idea</h3><div class="example"><pre>let myNum = 3;
+let myString = ' Hello ';
+let myFloat = 17.5;
+let myBool = true;</pre><button class="btn small" id="class-example">Run the class example</button><div id="myClassOutput">...</div></div><p><code>3</code> and <code>17.5</code> are both JavaScript <code>number</code> values. A boolean is <code>true</code> or <code>false</code>. With a string, <code>+</code> joins text.</p><p>Keyboard: <b>Space</b> serves; <b>← / →</b> change the angle; <b>↑ / ↓</b> change the speed. Shortcuts leave text fields alone. The sliders also work by keyboard and touch.</p></section>
+    </div></details>
+    <footer><span>APEX / DESIGNED BY SHUNTA · X T1A06</span><div class="footer-links"><span>40-serve local log · no account needed</span><a href="index.html">Back to Home ↗</a></div></footer>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+  'use strict';
+  // The typed setup is the heart of T1A06. Rendering is kept separate from the physics.
+  // JavaScript uses the same number type for integers and decimals.
+  const myDefault = {name:'Shunta',speed:15,angle:12,height:2.7,target:16,net:2.43,prediction:true,motion:'system',playback:1};
+  const myLimits = {speed:[8,24,0.1],angle:[-5,40,1],height:[1.8,3.5,0.05],target:[10,17,0.1]};
+  const myStorageKey = 'apex-serve-lab-v1';
+  const myGravity = 9.81;
+  const myReleaseX = -0.6;
+  const myTargetRadius = 0.8;
+  const myColours = {live:'#d4ff53',a:'#65aaff',b:'#ff91b6',ink:'#142b36',muted:'#9eb8c0'};
+  let mySettings = {...myDefault};
+  let myPins = {a:null,b:null};
+  let myHistory = [];
+  let myUndoHistory = null;
+  let myTotal = 0;
+  let myShot = null;
+  let myTime = 0;
+  let myPlaying = false;
+  let myPendingRecord = false;
+  let myFrame = 0;
+  let myLastFrame = 0;
+  let myToastTimer = 0;
+  let mySaveTimer = 0;
+  let myDrag = null;
+  let myView = null;
+  const myCanvas = document.getElementById('court');
+  const myContext = myCanvas.getContext('2d');
+  const myReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const myElement = id => document.getElementById(id);
+  const myClamp = (value,min,max) => Math.max(min,Math.min(max,value));
+  const myFormat = (value,digits=2) => Number.isFinite(value) ? value.toFixed(digits) : '—';
+
+  // Pure math: the same inputs always produce the same result, independent of frame rate.
+  function myCalculate(settings) {
+    const mySpeed = settings.speed;
+    const myAngle = settings.angle * Math.PI / 180;
+    const myHeight = settings.height;
+    const myVelocityX = mySpeed * Math.cos(myAngle);
+    const myVelocityY = mySpeed * Math.sin(myAngle);
+    const myGroundTime = (myVelocityY + Math.sqrt(myVelocityY * myVelocityY + 2 * myGravity * myHeight)) / myGravity;
+    const myNetTime = (9 - myReleaseX) / myVelocityX;
+    const myNetY = myHeight + myVelocityY * myNetTime - 0.5 * myGravity * myNetTime * myNetTime;
+    const myReachesNet = myNetTime <= myGroundTime;
+    const myNetFault = myReachesNet && myNetY <= settings.net;
+    const myDuration = myNetFault ? myNetTime : myGroundTime;
+    const myEndX = myReleaseX + myVelocityX * myDuration;
+    const myPeakTime = myClamp(myVelocityY / myGravity,0,myDuration);
+    const myPeak = myHeight + myVelocityY * myPeakTime - 0.5 * myGravity * myPeakTime * myPeakTime;
+    const myInCourt = !myNetFault && myEndX >= 9 && myEndX <= 18;
+    const myError = myInCourt ? Math.abs(myEndX - settings.target) : null;
+    const myHit = myInCourt && myError <= myTargetRadius;
+    const myResult = myNetFault ? 'NET' : myEndX < 9 ? 'SHORT' : myEndX > 18 ? 'LONG' : myHit ? 'TARGET' : 'IN';
+    return {vx:myVelocityX,vy:myVelocityY,duration:myDuration,endX:myEndX,netY:myNetY,
+      clearance:myReachesNet?myNetY-settings.net:null,peak:myPeak,peakTime:myPeakTime,
+      inCourt:myInCourt,hit:myHit,error:myError,result:myResult,netFault:myNetFault};
+  }
+  function myPosition(settings,calc,time) {
+    const t = myClamp(time,0,calc.duration);
+    return {x:myReleaseX+calc.vx*t,y:Math.max(0,settings.height+calc.vy*t-0.5*myGravity*t*t)};
+  }
+  function myMotionAllowed() {return mySettings.motion==='on'||(mySettings.motion==='system'&&!myReduceMotion.matches);}
+  function myNotify(message) {
+    clearTimeout(myToastTimer);myElement('toast').textContent=message;
+    myToastTimer=setTimeout(()=>myElement('toast').textContent='',4200);
+  }
+  function mySnap(value,key) {
+    const [min,max,step]=myLimits[key];
+    return Number((Math.round((myClamp(value,min,max)-min)/step)*step+min).toFixed(3));
+  }
+  function myValidSettings(value) {
+    if(!value||typeof value!=='object'||Array.isArray(value))throw new Error('Missing settings');
+    if(typeof value.name!=='string'||value.name.length>24)throw new Error('Invalid name');
+    for(const key of Object.keys(myLimits)){
+      const [min,max]=myLimits[key];
+      if(typeof value[key]!=='number'||!Number.isFinite(value[key])||value[key]<min||value[key]>max)throw new Error('Invalid '+key);
+    }
+    if(![2.43,2.24].includes(value.net)||typeof value.prediction!=='boolean'||!['system','on','off'].includes(value.motion)||![0.25,0.5,1].includes(value.playback))throw new Error('Invalid options');
+    const clean={...myDefault,name:value.name,net:value.net,prediction:value.prediction,motion:value.motion,playback:value.playback};
+    for(const key of Object.keys(myLimits))clean[key]=mySnap(value[key],key);
+    return clean;
+  }
+  function mySession() {return {format:'apex-serve-lab',version:1,settings:mySettings,pins:myPins,history:myHistory,total:myTotal};}
+  function myValidateSession(value) {
+    if(!value||value.format!=='apex-serve-lab'||value.version!==1||!value.pins||!Array.isArray(value.history)||value.history.length>40)throw new Error('Invalid session');
+    if(!Number.isSafeInteger(value.total)||value.total<value.history.length||value.total>1000000)throw new Error('Invalid serve count');
+    const settings=myValidSettings(value.settings);
+    const pins={a:value.pins.a===null?null:myValidSettings(value.pins.a),b:value.pins.b===null?null:myValidSettings(value.pins.b)};
+    const history=value.history.map((entry,index)=>({id:value.total-value.history.length+index+1,settings:myValidSettings(entry.settings)}));
+    return {settings,pins,history,total:value.total};
+  }
+  function myStoreNow() {
+    clearTimeout(mySaveTimer);
+    try{localStorage.setItem(myStorageKey,JSON.stringify(mySession()));myElement('save-status').textContent='SAVED IN THIS BROWSER';}
+    catch(error){myElement('save-status').textContent='SESSION ONLY · USE SAVE';}
+  }
+  function myStore() {clearTimeout(mySaveTimer);mySaveTimer=setTimeout(myStoreNow,180);}
+  function myRestore() {
+    try{
+      const raw=localStorage.getItem(myStorageKey);
+      if(raw){const restored=myValidateSession(JSON.parse(raw));mySettings=restored.settings;myPins=restored.pins;myHistory=restored.history;myTotal=restored.total;}
+      myElement('save-status').textContent='SAVED IN THIS BROWSER';
+    }catch(error){myElement('save-status').textContent='SESSION ONLY · USE SAVE';}
+  }
+  function myStop() {
+    myPlaying=false;cancelAnimationFrame(myFrame);myFrame=0;myLastFrame=0;
+  }
+  function myResetFlight() {myStop();myShot=null;myTime=0;myPendingRecord=false;}
+  function mySyncControls() {
+    myElement('athlete').value=mySettings.name;
+    for(const key of Object.keys(myLimits)){
+      myElement(key).value=mySettings[key];myElement(key+'-number').value=mySettings[key];
+    }
+    myElement('prediction').checked=mySettings.prediction;
+    myElement('motion').value=mySettings.motion;myElement('playback').value=mySettings.playback;
+    document.querySelectorAll('[data-net]').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.net)===mySettings.net)));
+    myElement('athlete-display').textContent=mySettings.name.trim()||'Your athlete';
+    myElement('watch-name').textContent=JSON.stringify(mySettings.name);
+    myElement('watch-speed').textContent=String(mySettings.speed);
+    myElement('setup-code').textContent=mySetupCode();
+    myElement('net-label').textContent=mySettings.net.toFixed(2);
+    const motion=myMotionAllowed();
+    myElement('motion-note').textContent=motion?'Animation enabled. Use the timeline for a closer look.':mySettings.motion==='system'?'Your device reduces motion. Choose “On for this page” to animate here.':'Instant results. Replay with the timeline, or turn motion on.';
+  }
+  function mySetupCode() {
+    return 'let myName = '+JSON.stringify(mySettings.name)+';\n'+
+      'let mySpeed = '+mySettings.speed+'; // metres per second\n'+
+      'let myAngle = '+mySettings.angle+'; // degrees\n'+
+      'let myHeight = '+mySettings.height+'; // metres\n'+
+      'let myTarget = '+mySettings.target+'; // metres from baseline\n'+
+      'let myPrediction = '+mySettings.prediction+';\n\n'+
+      'function myFlightAt(myTime) {\n'+
+      '  let myRadians = myAngle * Math.PI / 180;\n'+
+      '  let myX = -0.6 + mySpeed * Math.cos(myRadians) * myTime;\n'+
+      '  let myY = myHeight + mySpeed * Math.sin(myRadians) * myTime\n'+
+      '    - 0.5 * 9.81 * myTime * myTime;\n'+
+      '  return { x: myX, y: myY };\n'+
+      '}\n// Position before a net or ground collision.';
+  }
+  function myEdit(key,value) {
+    myResetFlight();mySettings[key]=value;mySyncControls();myUpdate();myStore();
+  }
+  function myApply(settings,keepView=true) {
+    const view={motion:mySettings.motion,playback:mySettings.playback};
+    myResetFlight();mySettings={...settings,...(keepView?view:{})};
+    mySyncControls();myUpdate();myStore();
+  }
+  function myRecord() {
+    if(!myPendingRecord||!myShot)return;
+    myPendingRecord=false;myTotal+=1;
+    myHistory.push({id:myTotal,settings:{...myShot.settings}});
+    if(myHistory.length>40)myHistory.shift();
+    myUndoHistory=null;myUpdateHistory();myStore();
+  }
+  function myFinish() {
+    if(!myShot)return;
+    myStop();myTime=myShot.calc.duration;myRecord();myUpdate();
+  }
+  function myTick(stamp) {
+    if(!myPlaying||!myShot)return;
+    if(myLastFrame)myTime+=Math.min((stamp-myLastFrame)/1000,0.08)*mySettings.playback;
+    myLastFrame=stamp;
+    if(myTime>=myShot.calc.duration){myFinish();return;}
+    myUpdate();myFrame=requestAnimationFrame(myTick);
+  }
+  function myPlay() {
+    if(!myShot)return;
+    if(!myMotionAllowed()){myFinish();return;}
+    if(myTime>=myShot.calc.duration)myTime=0;
+    myPlaying=true;myLastFrame=0;myUpdate();myFrame=requestAnimationFrame(myTick);
+  }
+  function myServe() {
+    myStop();myShot={settings:{...mySettings},calc:myCalculate(mySettings)};myTime=0;myPendingRecord=true;myPlay();
+  }
+  function myReplay(settings) {
+    if(settings)myApply(settings);
+    const replaySettings=settings||myShot?.settings;
+    if(!replaySettings)return;
+    myStop();myShot={settings:{...replaySettings},calc:myCalculate(replaySettings)};myTime=0;myPendingRecord=false;myPlay();
+  }
+  function myResultCopy(calc,settings) {
+    if(calc.result==='TARGET')return ['Right on target.',myFormat(calc.error)+' m from the centre. Small changes make a difference.'];
+    if(calc.result==='IN')return ['In court. Keep tuning.',myFormat(calc.error)+' m from your target. Try a small angle change.'];
+    if(calc.result==='NET')return ['Caught by the net.',myFormat(-calc.clearance)+' m below the top. Add angle or release height.'];
+    if(calc.result==='SHORT')return ['A little more distance.',myFormat(9-calc.endX)+' m short of the other side. Try more power.'];
+    return ['Past the baseline.',myFormat(calc.endX-18)+' m long. Try less power or a different angle.'];
+  }
+  function myUpdate() {
+    const calc=myShot?myShot.calc:myCalculate(mySettings);
+    const settings=myShot?myShot.settings:mySettings;
+    const done=!!myShot&&myTime>=calc.duration;
+    const visible=mySettings.prediction||done;
+    myElement('distance-title').textContent=visible&&calc.netFault?'Net contact x':myShot?'Landing position':'Projected landing';
+    myElement('distance-value').textContent=visible?myFormat(calc.endX):'—';
+    myElement('clearance-value').textContent=visible?myFormat(calc.clearance):'—';
+    myElement('apex-value').textContent=visible?myFormat(calc.peak):'—';
+    myElement('flight-value').textContent=visible?myFormat(calc.duration):'—';
+    myElement('timeline').disabled=!myShot;
+    myElement('timeline').value=myShot?Math.round(myTime/calc.duration*1000):0;
+    myElement('time-label').textContent=myTime.toFixed(2)+' s';
+    myElement('pause').disabled=!myShot||done;
+    myElement('pause').textContent=myPlaying||!myShot?'Pause':'Resume';
+    myElement('replay').disabled=!myShot;
+    myElement('serve').disabled=myPlaying;
+    myElement('scene-status').textContent=myPlaying?'BALL IN FLIGHT':myShot?(done?'FLIGHT COMPLETE':'REPLAY / PAUSED'):'READY TO SERVE';
+    const current=myPosition(settings,calc,myShot?myTime:0);
+    myElement('watch-y').textContent=current.y.toFixed(3);
+    myElement('watch-in').textContent=String(done&&calc.inCourt);
+    myElement('watch-in-note').textContent=done?(calc.inCourt?'The ball landed on the opponent’s side.':'This serve did not land in the opponent’s court.'):'True after a completed serve lands in court.';
+    let title='Make your next serve.',copy='Adjust the blue controls, then send it.',tag='NEXT / '+String(myTotal+1).padStart(3,'0');
+    if(!myTotal)title='Make your first serve.';
+    if(myShot&&!done){title=myPlaying?'Let it fly.':'Time, on your terms.';copy='Scrub the replay bar to inspect any point in the flight.';tag=myPendingRecord?'LIVE ATTEMPT':'REPLAY';}
+    if(done){[title,copy]=myResultCopy(calc,settings);tag=calc.result==='TARGET'?'TARGET HIT':calc.result==='IN'?'IN COURT':calc.result+' FAULT';}
+    myElement('result-title').textContent=title;myElement('result-copy').textContent=copy;myElement('result-tag').textContent=tag;
+    myDraw();
+  }
+  function myUpdatePins() {
+    for(const key of ['a','b']){
+      const pin=myPins[key];
+      document.querySelector('[data-load-pin="'+key+'"]').disabled=!pin;
+      document.querySelector('[data-clear-pin="'+key+'"]').disabled=!pin;
+      if(pin){
+        const calc=myCalculate(pin);
+        myElement('pin-'+key+'-title').textContent=calc.netFault?'Net fault at 9.00 m':myFormat(calc.endX)+' m · '+(calc.hit?'on target':calc.inCourt?'in court':calc.result.toLowerCase());
+        myElement('pin-'+key+'-copy').textContent='Net '+pin.net.toFixed(2)+' m · Target '+pin.target.toFixed(1)+' m';
+        myElement('pin-'+key+'-meta').textContent=pin.speed.toFixed(1)+' m/s / '+pin.angle+'° / '+pin.height.toFixed(2)+' m';
+      }else{
+        myElement('pin-'+key+'-title').textContent=key==='a'?'Keep a starting point.':'Change one variable.';
+        myElement('pin-'+key+'-copy').textContent=key==='a'?'Save this setup to compare its trajectory.':'Pin a second setup and see the difference.';
+        myElement('pin-'+key+'-meta').textContent='SPEED — / ANGLE —';
+      }
+    }
+    let note='Try this: pin A, add 2° to your angle, then pin B.';
+    if(myPins.a&&myPins.b){
+      const a=myCalculate(myPins.a),b=myCalculate(myPins.b),difference=b.endX-a.endX;
+      note='B ends '+Math.abs(difference).toFixed(2)+' m '+(difference>=0?'farther':'closer')+' than A. Peak height changes by '+(b.peak-a.peak>=0?'+':'')+(b.peak-a.peak).toFixed(2)+' m.';
+      if(a.netFault||b.netFault)note+=' A net fault ends at the net; it is not a landing.';
+    }
+    myElement('compare-note').textContent=note;
+  }
+  function myUpdateHistory() {
+    const body=myElement('history-body');body.replaceChildren();
+    let hits=0,ins=0,best=Infinity;
+    for(const entry of myHistory){const c=myCalculate(entry.settings);if(c.hit)hits++;if(c.inCourt){ins++;best=Math.min(best,c.error);}}
+    for(let index=myHistory.length-1;index>=0;index--){
+      const entry=myHistory[index],calc=myCalculate(entry.settings),row=document.createElement('tr');
+      const values=[String(entry.id).padStart(2,'0'),calc.result,entry.settings.speed.toFixed(1),entry.settings.angle+'°',calc.endX.toFixed(2)];
+      values.forEach((value,i)=>{const cell=document.createElement('td');cell.textContent=value;if(i===1)cell.className='outcome'+(calc.inCourt?'':' fault');row.appendChild(cell);});
+      const cell=document.createElement('td'),button=document.createElement('button');button.className='btn small';button.textContent='↻';button.setAttribute('aria-label','Replay serve '+entry.id);button.dataset.history=String(index);cell.appendChild(button);row.appendChild(cell);body.appendChild(row);
+    }
+    if(!myHistory.length){const row=document.createElement('tr'),cell=document.createElement('td');cell.colSpan=6;cell.className='empty-row';cell.textContent='Your first completed serve starts the story.';row.appendChild(cell);body.appendChild(row);}
+    myElement('history-count').textContent=String(myHistory.length).padStart(2,'0')+' SERVES';
+    myElement('hit-count').textContent=hits;myElement('in-count').textContent=ins;myElement('best-error').textContent=Number.isFinite(best)?best.toFixed(2)+' m':'—';
+    myElement('undo-clear').hidden=!myUndoHistory;
+    myElement('clear-history').disabled=!myHistory.length;
+  }
+
+  // Canvas is only a drawing surface. Physics and the accessible text outputs also work without animation.
+  function myDraw(ctx=myContext,width=myCanvas.clientWidth,height=myCanvas.clientHeight,exporting=false) {
+    if(!ctx||width<1||height<1)return;
+    ctx.clearRect(0,0,width,height);ctx.fillStyle=myColours.ink;ctx.fillRect(0,0,width,height);
+    const settings=myShot?myShot.settings:mySettings,calc=myShot?myShot.calc:myCalculate(settings);
+    const done=!!myShot&&myTime>=calc.duration;
+    const show=mySettings.prediction||done;
+    const curves=[{settings,calc,colour:myColours.live,key:'live'}];
+    for(const key of ['a','b'])if(myPins[key])curves.unshift({settings:myPins[key],calc:myCalculate(myPins[key]),colour:myColours[key],key});
+    const maxX=show?Math.max(21,...curves.map(c=>c.calc.endX+1.8)):21;
+    const maxY=show?Math.max(7,...curves.map(c=>c.calc.peak+1.4)):7;
+    const margin=width<500?23:45,ground=height-78;
+    const scale=Math.min((width-margin*2)/(maxX+3.2),(height-107)/maxY);
+    const usedWidth=(maxX+3.2)*scale;
+    const left=(width-usedWidth)/2;
+    const px=x=>left+(x+3.2)*scale;
+    const py=y=>ground-y*scale;
+    const unit=width<500?9:10;
+    ctx.font=unit+'px Consolas, monospace';ctx.textBaseline='middle';
+    // Distance and height grid.
+    ctx.lineWidth=1;ctx.strokeStyle='#ffffff09';ctx.fillStyle='#68848d';
+    for(let x=0;x<=maxX;x+=3){ctx.beginPath();ctx.moveTo(px(x),25);ctx.lineTo(px(x),ground);ctx.stroke();ctx.fillText(x+'',px(x)-3,ground+49);}
+    for(let y=2;y<=maxY;y+=2){ctx.beginPath();ctx.moveTo(px(-2),py(y));ctx.lineTo(px(maxX),py(y));ctx.stroke();ctx.fillText(y+'m',px(-2.7),py(y));}
+    ctx.font='bold '+Math.max(28,Math.min(55,width*.07))+'px Arial';ctx.fillStyle='#ffffff05';ctx.fillText('FIND YOUR ARC.',px(1),50);
+    // A schematic floor extrusion. x/y flight geometry above it has a uniform metre scale.
+    const depth=23;
+    ctx.fillStyle='#203e48';ctx.beginPath();ctx.moveTo(px(0),ground);ctx.lineTo(px(18),ground);ctx.lineTo(px(18)+depth,ground+depth);ctx.lineTo(px(0)+depth,ground+depth);ctx.closePath();ctx.fill();
+    ctx.strokeStyle='#678c91';ctx.lineWidth=1.2;ctx.stroke();
+    ctx.fillStyle='#2e554f';ctx.beginPath();ctx.moveTo(px(9),ground);ctx.lineTo(px(18),ground);ctx.lineTo(px(18)+depth,ground+depth);ctx.lineTo(px(9)+depth,ground+depth);ctx.closePath();ctx.fill();
+    for(const x of [0,6,9,12,18]){ctx.strokeStyle='#ffffff45';ctx.beginPath();ctx.moveTo(px(x),ground);ctx.lineTo(px(x)+depth,ground+depth);ctx.stroke();}
+    ctx.strokeStyle='#95ada9';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(px(0),ground);ctx.lineTo(px(18),ground);ctx.stroke();
+    // The custom target is an interval, not a real volleyball rule.
+    const targetLeft=px(settings.target-myTargetRadius),targetRight=px(settings.target+myTargetRadius);
+    ctx.fillStyle='#d4ff5330';ctx.beginPath();ctx.moveTo(targetLeft,ground);ctx.lineTo(targetRight,ground);ctx.lineTo(targetRight+depth,ground+depth);ctx.lineTo(targetLeft+depth,ground+depth);ctx.closePath();ctx.fill();
+    ctx.strokeStyle=myColours.live;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(targetLeft,ground+2);ctx.lineTo(targetRight,ground+2);ctx.stroke();
+    ctx.font='bold '+unit+'px Consolas, monospace';ctx.fillStyle=myColours.live;ctx.textAlign='center';ctx.fillText('TARGET',px(settings.target)+11,ground+35);ctx.textAlign='left';
+    // Net top at the chosen height, with a full-height visual support.
+    const netX=px(9),netTop=py(settings.net);
+    ctx.fillStyle='#93b3ba30';ctx.fillRect(netX-3,netTop,6,ground-netTop);
+    ctx.strokeStyle='#adced060';ctx.lineWidth=1;
+    for(let y=netTop;y<ground;y+=7){ctx.beginPath();ctx.moveTo(netX-4,y);ctx.lineTo(netX+4,y);ctx.stroke();}
+    ctx.strokeStyle='#d6e8e5';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(netX,ground);ctx.lineTo(netX,netTop);ctx.stroke();
+    ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(netX-7,netTop);ctx.lineTo(netX+7,netTop);ctx.stroke();
+    ctx.font=unit+'px Consolas, monospace';ctx.fillStyle='#b4cacf';ctx.fillText(settings.net.toFixed(2)+'m',netX+8,netTop+13);
+    // Athlete silhouette, drawn from simple shapes rather than an external asset.
+    const playerX=px(-1.25),headY=py(1.9),bodyTop=py(1.64),hipY=py(.95);
+    ctx.lineCap='round';ctx.strokeStyle='#8eaaa6';ctx.lineWidth=Math.max(3,scale*.14);
+    ctx.beginPath();ctx.moveTo(playerX,hipY);ctx.lineTo(playerX-scale*.2,py(.5));ctx.lineTo(playerX-scale*.37,ground-1);ctx.moveTo(playerX+scale*.18,hipY);ctx.lineTo(playerX+scale*.38,py(.45));ctx.lineTo(playerX+scale*.6,ground-1);ctx.stroke();
+    ctx.fillStyle='#d4ff53';ctx.beginPath();ctx.moveTo(playerX-scale*.22,bodyTop);ctx.lineTo(playerX+scale*.22,bodyTop);ctx.lineTo(playerX+scale*.28,hipY);ctx.lineTo(playerX-scale*.2,hipY);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#b6ccbf';ctx.beginPath();ctx.arc(playerX,headY,Math.max(3,scale*.16),0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#abc3b8';ctx.lineWidth=Math.max(2.5,scale*.09);ctx.beginPath();ctx.moveTo(playerX+scale*.15,bodyTop+3);ctx.lineTo(px(-.72),py(2.25));ctx.lineTo(px(myReleaseX),py(settings.height)-5);ctx.moveTo(playerX-scale*.14,bodyTop+4);ctx.lineTo(playerX-scale*.48,py(1.28));ctx.stroke();
+    ctx.fillStyle=myColours.ink;ctx.font='bold '+Math.max(7,scale*.23)+'px Arial';ctx.textAlign='center';ctx.fillText('17',playerX+scale*.025,py(1.3));ctx.textAlign='left';
+    // Draw both saved trajectories and the active forecast; hide them for prediction-off practice.
+    function drawCurve(curve,end,dashed,alpha){
+      ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle=curve.colour;ctx.lineWidth=curve.key==='live'?2.4:1.7;ctx.setLineDash(dashed?[4,6]:[]);ctx.beginPath();
+      for(let i=0;i<=90;i++){const pos=myPosition(curve.settings,curve.calc,end*i/90);if(i===0)ctx.moveTo(px(pos.x),py(pos.y));else ctx.lineTo(px(pos.x),py(pos.y));}
+      ctx.stroke();ctx.restore();
+    }
+    if(show){
+      for(const curve of curves){
+        drawCurve(curve,curve.calc.duration,curve.key==='live'&&!done,curve.key==='live'?.85:.65);
+        const end=myPosition(curve.settings,curve.calc,curve.calc.duration);
+        ctx.strokeStyle=curve.colour;ctx.lineWidth=1.4;ctx.beginPath();ctx.arc(px(end.x),py(end.y),5,0,Math.PI*2);ctx.stroke();
+        if(curve.key!=='live'){ctx.fillStyle=curve.colour;ctx.font='bold '+unit+'px Consolas, monospace';ctx.fillText(curve.key.toUpperCase(),px(end.x)+7,py(end.y)-10);}
+      }
+      ctx.fillStyle='#d4ff53';ctx.font=unit+'px Consolas, monospace';ctx.textAlign='center';
+      const peak=myPosition(settings,calc,calc.peakTime);
+      ctx.fillText('APEX '+calc.peak.toFixed(2)+'m',px(peak.x),py(peak.y)-17);ctx.textAlign='left';
+    }
+    if(myShot)drawCurve(curves.find(c=>c.key==='live'),myTime,false,1);
+    // Before flight, drag this handle. Its angle and distance map directly to the two variables.
+    let handle=null;
+    if(!myShot){
+      const angle=settings.angle*Math.PI/180,arm=2.2+(settings.speed-8)/16*2.2;
+      handle={x:px(myReleaseX+Math.cos(angle)*arm),y:py(settings.height+Math.sin(angle)*arm)};
+      ctx.strokeStyle='#e7f2f180';ctx.lineWidth=1.2;ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(px(myReleaseX),py(settings.height));ctx.lineTo(handle.x,handle.y);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='#284753';ctx.strokeStyle='#e7f2f1';ctx.beginPath();ctx.arc(handle.x,handle.y,7,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#b9ccd0';ctx.font=unit+'px Consolas, monospace';ctx.fillText(settings.angle+'°',handle.x+10,handle.y+2);
+    }
+    const position=myPosition(settings,calc,myShot?myTime:0);
+    const ballX=px(position.x),ballY=py(position.y),radius=width<500?6:8;
+    // A contact halo communicates the outcome without adding flashing or particles.
+    if(done){ctx.strokeStyle=calc.inCourt?'#d4ff5355':'#ff987555';ctx.lineWidth=2;ctx.beginPath();ctx.arc(ballX,ballY,16,0,Math.PI*2);ctx.stroke();}
+    ctx.save();ctx.translate(ballX,ballY);ctx.rotate(myTime*2);ctx.fillStyle='#f6f9ed';ctx.beginPath();ctx.arc(0,0,radius,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#2459d8';ctx.lineWidth=2;ctx.beginPath();ctx.arc(-radius*.7,0,radius*.9,-1.15,1.15);ctx.stroke();ctx.strokeStyle='#adcf49';ctx.beginPath();ctx.arc(radius*.55,radius*.25,radius,-2.7,-.1);ctx.stroke();ctx.restore();
+    if(myShot){ctx.font=unit+'px Consolas, monospace';ctx.fillStyle='#dbe9e7';ctx.fillText('t '+myTime.toFixed(2)+'s',myClamp(ballX+12,12,width-85),Math.max(18,ballY-17));}
+    if(exporting){ctx.fillStyle='#6f949d';ctx.font=(unit-1)+'px Consolas, monospace';ctx.fillText('DISTANCE FROM BASELINE / m',px(0),ground+64);}
+    if(!exporting)myView={px,py,scale,handle,release:{x:px(myReleaseX),y:py(settings.height)}};
+  }
+  function myResize() {
+    const rect=myCanvas.getBoundingClientRect(),ratio=Math.min(window.devicePixelRatio||1,2);
+    myCanvas.width=Math.round(rect.width*ratio);myCanvas.height=Math.round(rect.height*ratio);
+    myContext.setTransform(ratio,0,0,ratio,0,0);myDraw();
+  }
+
+  // Inputs change the typed state, never arbitrary HTML. Imported names are displayed with textContent.
+  for(const key of Object.keys(myLimits)){
+    myElement(key).addEventListener('input',event=>myEdit(key,mySnap(Number(event.target.value),key)));
+    myElement(key+'-number').addEventListener('change',event=>{
+      const value=event.target.valueAsNumber;
+      if(!Number.isFinite(value)){event.target.value=mySettings[key];myNotify('Enter a number within the control’s range.');return;}
+      const normalized=mySnap(value,key);myEdit(key,normalized);
+      if(normalized!==value)myNotify('Adjusted to the supported range and step.');
+    });
+  }
+  myElement('athlete').addEventListener('input',event=>myEdit('name',event.target.value));
+  myElement('prediction').addEventListener('change',event=>{mySettings.prediction=event.target.checked;mySyncControls();myUpdate();myStore();});
+  myElement('motion').addEventListener('change',event=>{
+    mySettings.motion=event.target.value;mySyncControls();if(myPlaying&&!myMotionAllowed())myFinish();else myUpdate();myStore();
+  });
+  myReduceMotion.addEventListener('change',()=>{mySyncControls();if(myPlaying&&!myMotionAllowed())myFinish();else myUpdate();});
+  myElement('playback').addEventListener('change',event=>{mySettings.playback=Number(event.target.value);myStore();});
+  document.querySelectorAll('[data-net]').forEach(button=>button.addEventListener('click',()=>myEdit('net',Number(button.dataset.net))));
+  const myPresets={precision:{speed:15,angle:12,height:2.7,target:16},arc:{speed:12,angle:30,height:2.7,target:16},net:{speed:15,angle:0,height:2.7,target:16},long:{speed:21,angle:19,height:2.7,target:16}};
+  document.querySelectorAll('[data-preset]').forEach(button=>button.addEventListener('click',()=>{myApply({...mySettings,...myPresets[button.dataset.preset]});myNotify('Starting point loaded. Make it yours.');}));
+  myElement('serve').addEventListener('click',myServe);
+  myElement('pause').addEventListener('click',()=>{if(myPlaying){myStop();myUpdate();}else myPlay();});
+  myElement('replay').addEventListener('click',()=>myReplay());
+  myElement('timeline').addEventListener('input',event=>{
+    if(!myShot)return;myStop();myTime=Number(event.target.value)/1000*myShot.calc.duration;
+    if(myTime>=myShot.calc.duration)myRecord();myUpdate();
+  });
+  document.querySelectorAll('[data-pin]').forEach(button=>button.addEventListener('click',()=>{
+    const key=button.dataset.pin;myPins[key]={...mySettings};myUpdatePins();myUpdate();myStore();myNotify('Setup '+key.toUpperCase()+' pinned. Change a variable to compare.');
+  }));
+  document.querySelectorAll('[data-load-pin]').forEach(button=>button.addEventListener('click',()=>{const pin=myPins[button.dataset.loadPin];if(pin)myApply(pin);}));
+  document.querySelectorAll('[data-clear-pin]').forEach(button=>button.addEventListener('click',()=>{myPins[button.dataset.clearPin]=null;myUpdatePins();myUpdate();myStore();}));
+  myElement('history-body').addEventListener('click',event=>{const button=event.target.closest('[data-history]');if(button){const entry=myHistory[Number(button.dataset.history)];if(entry)myReplay(entry.settings);}});
+  myElement('clear-history').addEventListener('click',()=>{
+    myUndoHistory={history:myHistory,total:myTotal};myHistory=[];myTotal=0;myUpdateHistory();myUpdate();myStore();myNotify('Log cleared. Undo is available until the next completed serve.');
+  });
+  myElement('undo-clear').addEventListener('click',()=>{if(myUndoHistory){myHistory=myUndoHistory.history;myTotal=myUndoHistory.total;myUndoHistory=null;myUpdateHistory();myUpdate();myStore();}});
+  myElement('class-example').addEventListener('click',()=>{
+    let myNum=3;let myString=' Hello ';let myFloat=17.5;let myBool=true;
+    let myOut=myElement('myClassOutput');myOut.textContent=myNum+myString+myFloat+', '+myBool;
+    if(myBool)myOut.textContent+=', WOW';
+  });
+  document.addEventListener('keydown',event=>{
+    if(event.ctrlKey||event.metaKey||event.altKey||event.target.closest('input,select,textarea,button,a,summary,[contenteditable]'))return;
+    if(event.code==='Space'){event.preventDefault();if(!event.repeat&&!myPlaying)myServe();}
+    if(event.code==='ArrowLeft'||event.code==='ArrowRight'){event.preventDefault();myEdit('angle',mySnap(mySettings.angle+(event.code==='ArrowRight'?1:-1),'angle'));}
+    if(event.code==='ArrowUp'||event.code==='ArrowDown'){event.preventDefault();myEdit('speed',mySnap(mySettings.speed+(event.code==='ArrowUp'?.2:-.2),'speed'));}
+  });
+  myCanvas.addEventListener('pointerdown',event=>{
+    if(myShot||!myView?.handle)return;
+    const rect=myCanvas.getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top;
+    if(Math.hypot(x-myView.handle.x,y-myView.handle.y)>38){myNotify('Drag the small outlined circle near the ball, or use the sliders.');return;}
+    myDrag={pointer:event.pointerId,view:myView};myCanvas.setPointerCapture(event.pointerId);myCanvas.focus();
+  });
+  myCanvas.addEventListener('pointermove',event=>{
+    if(!myDrag||myDrag.pointer!==event.pointerId)return;
+    const rect=myCanvas.getBoundingClientRect(),view=myDrag.view;
+    const dx=(event.clientX-rect.left-view.release.x)/view.scale,dy=(view.release.y-(event.clientY-rect.top))/view.scale;
+    mySettings.angle=mySnap(Math.atan2(dy,Math.max(.1,dx))*180/Math.PI,'angle');
+    mySettings.speed=mySnap(8+(Math.hypot(dx,dy)-2.2)/2.2*16,'speed');
+    mySyncControls();myUpdate();
+  });
+  function myEndDrag(event){if(myDrag&&myDrag.pointer===event.pointerId){myDrag=null;myStore();}}
+  myCanvas.addEventListener('pointerup',myEndDrag);myCanvas.addEventListener('pointercancel',myEndDrag);myCanvas.addEventListener('lostpointercapture',myEndDrag);
+
+  // Exports are built locally. No data is uploaded and no account is required.
+  function myDownload(blob,name) {
+    const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=name;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);
+  }
+  function mySafeName() {return mySettings.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'athlete';}
+  myElement('save-project').addEventListener('click',()=>{
+    myStoreNow();myDownload(new Blob([JSON.stringify(mySession(),null,2)],{type:'application/json'}),mySafeName()+'-apex-session.json');myNotify('Session saved: settings, comparison pins and completed serves.');
+  });
+  myElement('load-project').addEventListener('click',()=>myElement('project-file').click());
+  myElement('project-file').addEventListener('change',async event=>{
+    const file=event.target.files[0];if(!file)return;
+    try{
+      if(file.size>2000000)throw new Error('File too large');
+      const restored=myValidateSession(JSON.parse(await file.text()));
+      myResetFlight();mySettings=restored.settings;myPins=restored.pins;myHistory=restored.history;myTotal=restored.total;myUndoHistory=null;
+      mySyncControls();myUpdatePins();myUpdateHistory();myUpdate();myStoreNow();myNotify('Session loaded. Ready for the next experiment.');
+    }catch(error){myNotify('Invalid APEX session. Your current work was kept.');}
+    event.target.value='';
+  });
+  myElement('copy-code').addEventListener('click',async()=>{
+    const code=mySetupCode();
+    try{await navigator.clipboard.writeText(code);myNotify('Variable setup and flight function copied.');}
+    catch(error){
+      const selection=window.getSelection(),range=document.createRange();range.selectNodeContents(myElement('setup-code'));selection.removeAllRanges();selection.addRange(range);
+      myNotify('Code selected. Press Ctrl+C or Command+C to copy.');
+    }
+  });
+  myElement('save-image').addEventListener('click',()=>{
+    const canvas=document.createElement('canvas');canvas.width=1600;canvas.height=1050;
+    const ctx=canvas.getContext('2d'),settings=myShot?myShot.settings:mySettings,calc=myShot?myShot.calc:myCalculate(settings);
+    ctx.fillStyle='#edf1ef';ctx.fillRect(0,0,1600,1050);ctx.fillStyle=myColours.ink;ctx.font='bold 25px Arial';ctx.fillText('APEX / SERVE LAB',64,70);ctx.font='14px Consolas, monospace';ctx.fillText('X T1A06 · PROPER HTML & VARIABLES · BY SHUNTA',64,103);
+    ctx.font='bold 48px Arial';ctx.fillText((settings.name.trim()||'Your athlete').slice(0,24)+' / Flight study',64,169);
+    ctx.save();ctx.translate(48,208);myDraw(ctx,1504,610,true);ctx.restore();
+    ctx.fillStyle=myColours.ink;ctx.font='bold 22px Arial';ctx.fillText('SPEED '+settings.speed.toFixed(1)+' m/s     ANGLE '+settings.angle+'°     RELEASE '+settings.height.toFixed(2)+' m',64,868);
+    ctx.font='18px Consolas, monospace';
+    const visible=mySettings.prediction||(myShot&&myTime>=calc.duration);
+    ctx.fillText(visible?(calc.netFault?'NET CONTACT':'LANDING')+' '+calc.endX.toFixed(2)+' m   /   PEAK '+calc.peak.toFixed(2)+' m   /   FLIGHT '+calc.duration.toFixed(2)+' s':'Prediction hidden · complete a serve to reveal the result.',64,908);
+    ctx.font='14px Arial';ctx.fillStyle='#566c75';ctx.fillText('Simplified 2D point-ball model · no air resistance or spin · 9.81 m/s² gravity',64,963);
+    ctx.fillText('Net '+settings.net.toFixed(2)+' m · Target '+settings.target.toFixed(1)+' ±0.8 m · Blue = A / Pink = B / Lime = current',64,990);
+    canvas.toBlob(blob=>{if(blob){myDownload(blob,mySafeName()+'-apex-flight.png');myNotify('Flight study saved as a PNG image.');}else myNotify('Image export was unavailable. Try again.');},'image/png');
+  });
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&myPlaying){myStop();myUpdate();}});
+  window.addEventListener('pagehide',myStoreNow);
+  myRestore();mySyncControls();myUpdatePins();myUpdateHistory();
+  const myObserver=new ResizeObserver(myResize);myObserver.observe(myCanvas);myResize();myUpdate();
+  </script>
+</body>
+</html>
