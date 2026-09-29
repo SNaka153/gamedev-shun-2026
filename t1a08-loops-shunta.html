@@ -1,14 +1,195 @@
-<h2 align=center>t1a08-loops-by-shunta.html</h2>
-<a href="">Good reference to Javascript Loops</a><br>
+<body style="background-color:aliceblue; color:navy;">
+
+<h6>Version 0.0.2</h6>
+
+<h2 align="center">T1A08 Loops by Shunta</h2>
+
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for">
+  JavaScript For Loop Reference
+</a>
+<br>
 
 <h4>Example loop code</h4>
+
 <pre>
-  for(let myLoop = 0; myLoop < myMax; myLoop++){//your code here}
+for (let myLoop = 0; myLoop < myMax; myLoop++) {
+  // Your code here
+}
 </pre>
 
-<h4>Example working code</h4>
+<h4>Teacher's Examples</h4>
 
-Max loops: <input id="myNum01" type=number value="4"><br>
-wierd number: <input id="myWierd" type=number value="2"><br>
+Max loops:
+<input id="myNum01" type="number" value="4" min="0" max="100">
+<br>
 
-<input type=button value="Basic for Loope with Decisions" onclick="{
+Weird number:
+<input id="myWeird" type="number" value="2" min="1" max="20">
+<br><br>
+
+<input type="button" value="1. Basic For Loop with Decisions" onclick="{
+  let myTemp = '';
+  let myMax = parseInt(document.getElementById('myNum01').value);
+
+  if (myMax >= 0 && myMax <= 100) {
+    for (let myLoop = 0; myLoop < myMax; myLoop++) {
+      if (myLoop * 2 > myMax) {
+        myTemp += ' cool ';
+      }
+
+      myTemp += 'Loop number: ' + myLoop + '<br>';
+    }
+  } else {
+    myTemp = 'Enter a max from 0 to 100.';
+  }
+
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}">
+<br><br>
+
+<input type="button" value="2. Even Number Identifier" onclick="{
+  let myTemp = '';
+  let myMax = parseInt(document.getElementById('myNum01').value);
+
+  if (myMax >= 0 && myMax <= 100) {
+    for (let myLoop = 0; myLoop < myMax; myLoop++) {
+      if (myLoop % 2 == 0) {
+        myTemp += 'Even Number, ';
+      }
+
+      myTemp += 'Loop number: ' + myLoop + '<br>';
+    }
+  } else {
+    myTemp = 'Enter a max from 0 to 100.';
+  }
+
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}">
+
+<h4>My Additional Loop Examples</h4>
+
+<input type="button" value="3. Today's Paper Question: 2 to 6 Hello" onclick="{
+  let myTemp = '';
+
+  for (let myLoop = 2; myLoop < 7; myLoop++) {
+    myTemp += myLoop + ' Hello<br>';
+  }
+
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}">
+<br><br>
+
+<input type="button" value="4. Countdown" onclick="{
+  let myTemp = '';
+  let myMax = parseInt(document.getElementById('myNum01').value);
+
+  if (myMax >= 0 && myMax <= 100) {
+    for (let myLoop = myMax; myLoop >= 0; myLoop--) {
+      myTemp += myLoop + '<br>';
+    }
+
+    myTemp += 'Go!';
+  } else {
+    myTemp = 'Enter a max from 0 to 100.';
+  }
+
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}">
+<br><br>
+
+<input type="button" value="5. Odd Number Identifier" onclick="{
+  let myTemp = '';
+  let myMax = parseInt(document.getElementById('myNum01').value);
+
+  if (myMax >= 0 && myMax <= 100) {
+    for (let myLoop = 0; myLoop < myMax; myLoop++) {
+      if (myLoop % 2 != 0) {
+        myTemp += myLoop + ' is odd.<br>';
+      }
+    }
+  } else {
+    myTemp = 'Enter a max from 0 to 100.';
+  }
+
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}">
+<br><br>
+
+<input type="button" value="6. Find Multiples of the Weird Number" onclick="{
+  let myTemp = '';
+  let myMax = parseInt(document.getElementById('myNum01').value);
+  let myWeird = parseInt(document.getElementById('myWeird').value);
+
+  if (myMax >= 0 && myMax <= 100 && myWeird >= 1 && myWeird <= 20) {
+    for (let myLoop = 1; myLoop <= myMax; myLoop++) {
+      if (myLoop % myWeird == 0) {
+        myTemp += myLoop + ' is a multiple of ' + myWeird + '<br>';
+      }
+    }
+  } else {
+    myTemp = 'Enter a max from 0 to 100 and a weird number from 1 to 20.';
+  }
+
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}">
+<br><br>
+
+<input type="button" value="7. Multiplication Table" onclick="{
+  let myTemp = '';
+  let myMax = parseInt(document.getElementById('myNum01').value);
+  let myWeird = parseInt(document.getElementById('myWeird').value);
+
+  if (myMax >= 0 && myMax <= 100 && myWeird >= 1 && myWeird <= 20) {
+    for (let myLoop = 1; myLoop <= myMax; myLoop++) {
+      myTemp += myWeird + ' × ' + myLoop + ' = '
+        + myWeird * myLoop + '<br>';
+    }
+  } else {
+    myTemp = 'Enter a max from 0 to 100 and a weird number from 1 to 20.';
+  }
+
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}">
+<br><br>
+
+<input type="button" value="8. Add Numbers from 1 to Max" onclick="{
+  let myTemp = '';
+  let myTotal = 0;
+  let myMax = parseInt(document.getElementById('myNum01').value);
+
+  if (myMax >= 0 && myMax <= 100) {
+    for (let myLoop = 1; myLoop <= myMax; myLoop++) {
+      myTotal += myLoop;
+      myTemp += 'Add ' + myLoop + ': total = ' + myTotal + '<br>';
+    }
+
+    myTemp += '<br>Final total: ' + myTotal;
+  } else {
+    myTemp = 'Enter a max from 0 to 100.';
+  }
+
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}">
+
+<h4>Output</h4>
+
+<div id="myDiv01"
+     style="background-color:white; color:navy;
+            border:2px solid navy; padding:15px;">
+  Your results will appear here.
+</div>
+
+<h4>What I Added</h4>
+
+<ul>
+  <li>Printing 2 to 6 with Hello, using today's paper question.</li>
+  <li>A countdown using myLoop--.</li>
+  <li>Finding odd numbers using the remainder.</li>
+  <li>Using the weird number input to find multiples.</li>
+  <li>Creating a multiplication table.</li>
+  <li>Keeping a running total with +=.</li>
+</ul>
+
+<a href="index.html">Back to Home</a>
+
+</body>
