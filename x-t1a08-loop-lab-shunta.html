@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#eef1e8">
+<meta name="theme-color" content="#070e20">
 <title>LOOP / LAB — Orbit Orchestra by Shunta</title>
 <style>
 :root{--paper:#f1f2eb;--ink:#183833;--sub:#65726c;--line:#cdd4c8;--green:#193c35;--lime:#d3ee60;--white:#fffef7;--blue:#78c8e4;--coral:#ff927c;--purple:#b7a3f6;--mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;--round:18px}
@@ -12,6 +12,52 @@
 @media(max-width:780px){.wrap{padding:0 18px}.topbar{padding:16px 0}.topbar .eyebrow{display:none}.hero{grid-template-columns:1fr;gap:24px;padding:32px 0 25px}.hero h1{font-size:49px;letter-spacing:-2.7px}.hero-stamp{border-left:0;border-top:1px solid var(--line);padding:15px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:5px 12px}.hero-stamp .cycle-number{font-size:39px;grid-row:1/3;grid-column:2;text-align:right;margin:0}.hero-stamp p{max-width:310px}.workspace{grid-template-columns:1fr}.track-stack{grid-template-columns:1fr 1fr;gap:11px}.track-card{padding:15px}.track-fields{grid-template-columns:1fr 1fr;gap:8px}.track-head h3{font-size:13px}.bench-grid{grid-template-columns:1fr}.bench-header{display:block}.bench-header .small{margin-top:8px}.save-panel{grid-template-columns:1fr;gap:8px}.lesson-grid{grid-template-columns:1fr}.toolbar{padding:12px}.stage-footer{font-size:9px;padding:12px 16px}.hero-stamp .eyebrow{font-size:10px}}
 @media(max-width:480px){.track-stack{grid-template-columns:1fr}.hero h1{font-size:43px}.byline{gap:10px;font-size:10px}.brand{font-size:18px}.toolbar-group{gap:6px}.toolbar button{padding:8px 10px;font-size:12px}.toolbar select{max-width:180px}.track-fields{grid-template-columns:1fr 1fr}.stage-header .eyebrow{font-size:9px;letter-spacing:.5px}.stage-header{left:17px;right:17px;top:16px}.art-controls{padding:17px}.art-fields{gap:12px}.motion-row{align-items:start}.motion-row select{max-width:152px}.metric{font-size:22px}.metric small{font-size:9px}.panel-title{flex-wrap:wrap}.save-fields input{width:150px}}
 @media(prefers-reduced-motion:reduce){body:not(.force-motion) *{transition:none;animation:none}}
+/* Midnight atmosphere: code-drawn stars and quiet nebula light. */
+:root{--paper:#070e20;--ink:#e4f0f7;--sub:#a7bdd0;--line:rgba(150,183,211,.22);--green:#23504c;--white:#112138}
+html{background:#070e20;color-scheme:dark}
+body{background:#070e20;position:relative;isolation:isolate}
+body::before,body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0}
+body::before{background:radial-gradient(ellipse at 84% 10%,rgba(89,58,167,.27),transparent 43%),radial-gradient(ellipse at 6% 38%,rgba(15,124,132,.22),transparent 46%),radial-gradient(ellipse at 69% 94%,rgba(40,59,137,.25),transparent 49%),linear-gradient(150deg,#091326,#070d1d 55%,#0b122b)}
+body::after{background-image:var(--sky-pattern,none);background-size:1600px 1100px;background-position:center top;opacity:.65}
+.wrap{position:relative;z-index:1}
+.topbar{border-color:rgba(165,194,218,.25)}
+.brand{color:#e7f5f6;text-shadow:0 0 24px rgba(106,231,215,.12)}
+.hero h1{color:#edf5ff;text-shadow:0 8px 40px rgba(0,0,0,.25)}
+.hero h1 em{color:#c1f7df;text-shadow:0 0 40px rgba(105,225,208,.13)}
+.hero-stamp .cycle-number{color:#e4f3fc;text-shadow:0 0 28px rgba(105,179,228,.22)}
+.hero .eyebrow,.hero-stamp .eyebrow{color:#a5d2db}
+.toolbar,.track-card,.art-controls,.trace-panel,.code-panel,.score-panel,.mix-controls{background-color:#112138;background-image:linear-gradient(145deg,rgba(22,43,67,.92),rgba(11,25,44,.94));border-color:rgba(148,184,216,.23);box-shadow:0 14px 45px rgba(0,4,18,.16)}
+.toolbar{box-shadow:0 8px 28px rgba(0,4,18,.20)}
+.track-card{border-radius:18px}
+.track-card::before{box-shadow:0 0 17px var(--track)}
+button{background:#14263c;color:#e4f0f7;border-color:rgba(151,185,214,.27)}
+button:hover{background:#203a51;border-color:rgba(151,210,224,.47)}
+button.primary{background:var(--lime);color:#102c31;border-color:var(--lime);box-shadow:0 0 27px rgba(205,237,96,.10)}
+button.primary:hover{background:#e1f78a}
+button.dark{background:#285e59;color:#edfdf9;border-color:#418178}
+button.dark:hover{background:#36736a}
+#myArtModes button[aria-pressed=true]{background:#c1f7df;color:#143937;border-color:#c1f7df}
+input[type=range],input[type=checkbox]{accent-color:#bcf0d7}
+input[type=text],input[type=number],select{background:#102237;color:#e8f1f9;border-color:rgba(151,185,214,.28)}
+select option{background:#102237;color:#e8f1f9}
+.badge{border-color:rgba(151,185,214,.26);color:#c0d7e8}
+.stage{background:#080f24;border-color:rgba(110,163,213,.44);box-shadow:0 0 0 1px rgba(110,185,213,.05),0 24px 65px rgba(0,3,18,.38),0 0 55px rgba(67,136,180,.07)}
+.stage-header .eyebrow{color:#abc8df}.stage-header .stage-time{color:#d8ef90}
+.stage-footer{border-color:rgba(107,156,195,.24);background:rgba(8,20,38,.86);color:#b4c8dd}
+.step-dot{background:rgba(144,177,206,.10);border-color:rgba(150,187,212,.16)}
+.step-dot:hover{background:rgba(158,196,227,.24)}
+.step-dot[aria-pressed=true]{box-shadow:0 0 10px color-mix(in srgb,var(--track) 16%,transparent)}
+.track-fields input[type=range]{accent-color:var(--track)}
+.hit-tag{background:#20364b;color:#b6cfe2}.hit-tag.on{background:#d3ee60;color:#17363a}
+.trace-table td,.trace-table th{border-color:rgba(151,185,214,.16)}
+pre.code{background:#08172b;color:#d0e7eb;border:1px solid rgba(141,182,209,.12)}
+.score-line span{background:rgba(144,178,210,.13)}.score-line span.on{box-shadow:0 0 9px color-mix(in srgb,var(--track) 12%,transparent)}
+.lesson-grid pre{background:#11263b;color:#d0e7eb;border:1px solid rgba(144,178,210,.18)}
+.key{border-color:rgba(165,199,222,.30);color:#bed4e4;background:rgba(18,38,58,.65)}
+.toast{color:#c1f7df}
+.footer{color:#97b0c6}
+@media(max-width:780px){body::before{background:radial-gradient(ellipse at 98% 4%,rgba(86,58,150,.28),transparent 48%),radial-gradient(ellipse at 0% 54%,rgba(17,112,132,.23),transparent 50%),#080f20}.hero h1{text-shadow:none}}
+
 </style>
 </head>
 <body>
@@ -308,15 +354,45 @@ async function myRenderWav() {
 }
 
 
+let myCosmicSky=null;
+function mySetWallpaper() {
+  const myRandom=myRng(170826),myStars=[];
+  // A for loop makes the page's starfield: no external image is needed.
+  for(let myStar=0;myStar<170;myStar++) {
+    const myX=(myRandom()*1600).toFixed(1),myY=(myRandom()*1100).toFixed(1);
+    const myRadius=(.45+myRandom()*.75).toFixed(2),myOpacity=(.18+myRandom()*.57).toFixed(2);
+    myStars.push('<circle cx="'+myX+'" cy="'+myY+'" r="'+myRadius+'" fill="#c2dafa" opacity="'+myOpacity+'"/>');
+    if(myStar%23===0)myStars.push('<path d="M '+(+myX-3)+' '+myY+' h 6 M '+myX+' '+(+myY-3)+' v 6" stroke="#bbdafa" stroke-width=".5" opacity=".25"/>');
+  }
+  const mySvg='<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100">'+myStars.join('')+'</svg>';
+  document.body.style.setProperty('--sky-pattern','url("data:image/svg+xml,'+encodeURIComponent(mySvg)+'")');
+}
+function myGetCosmicSky() {
+  if(myCosmicSky)return myCosmicSky;
+  const mySky=document.createElement('canvas');mySky.width=800;mySky.height=800;const myCtx=mySky.getContext('2d');
+  myCtx.fillStyle='#080f24';myCtx.fillRect(0,0,800,800);
+  const myClouds=[{x:655,y:170,r:420,rgb:'79,57,145',alpha:.28},{x:125,y:440,r:420,rgb:'21,111,133',alpha:.22},{x:480,y:665,r:360,rgb:'50,71,139',alpha:.21},{x:395,y:408,r:290,rgb:'44,124,123',alpha:.12}];
+  for(const myCloud of myClouds) {
+    const myGlow=myCtx.createRadialGradient(myCloud.x,myCloud.y,0,myCloud.x,myCloud.y,myCloud.r);
+    myGlow.addColorStop(0,'rgba('+myCloud.rgb+','+myCloud.alpha+')');myGlow.addColorStop(.5,'rgba('+myCloud.rgb+','+(myCloud.alpha*.38)+')');myGlow.addColorStop(1,'rgba('+myCloud.rgb+',0)');
+    myCtx.fillStyle=myGlow;myCtx.fillRect(0,0,800,800);
+  }
+  const myRandom=myRng(250817);
+  for(let myStar=0;myStar<255;myStar++) {
+    const myX=myRandom()*800,myY=myRandom()*800,myR=.35+myRandom()*.72;
+    myCtx.globalAlpha=.14+myRandom()*.45;myCtx.fillStyle=myStar%3?'#b9cde8':'#bcdedb';
+    myCtx.beginPath();myCtx.arc(myX,myY,myR,0,Math.PI*2);myCtx.fill();
+    if(myStar%37===0){myCtx.globalAlpha=.28;myCtx.strokeStyle='#a4c3e2';myCtx.lineWidth=.55;myCtx.beginPath();myCtx.moveTo(myX-3.5,myY);myCtx.lineTo(myX+3.5,myY);myCtx.moveTo(myX,myY-3.5);myCtx.lineTo(myX,myY+3.5);myCtx.stroke();}
+  }
+  myCtx.globalAlpha=1;myCosmicSky=mySky;return myCosmicSky;
+}
 function myPoint(myRadius,myAngle) {return {x:400+myRadius*Math.cos(myAngle),y:406+myRadius*Math.sin(myAngle)};}
 function myDrawScene(myCtx,myWidth,myHeight,myData,myTick,myFraction=0,myLive=false) {
   const myScale=Math.min(myWidth,myHeight)/800;
-  myCtx.save();myCtx.setTransform(1,0,0,1,0,0);myCtx.fillStyle='#112a27';myCtx.fillRect(0,0,myWidth,myHeight);
+  myCtx.save();myCtx.setTransform(1,0,0,1,0,0);myCtx.fillStyle='#080f24';myCtx.fillRect(0,0,myWidth,myHeight);
   myCtx.translate((myWidth-800*myScale)/2,(myHeight-800*myScale)/2);myCtx.scale(myScale,myScale);
-  const myGlow=myCtx.createRadialGradient(400,410,20,400,410,430);
-  myGlow.addColorStop(0,'#22493e');myGlow.addColorStop(.60,'#15352e');myGlow.addColorStop(1,'#112a27');
-  myCtx.fillStyle=myGlow;myCtx.fillRect(0,0,800,800);
-  myCtx.strokeStyle='#385347';myCtx.lineWidth=.55;myCtx.globalAlpha=.3;
+  myCtx.drawImage(myGetCosmicSky(),0,0,800,800);
+  myCtx.strokeStyle='#7087b2';myCtx.lineWidth=.55;myCtx.globalAlpha=.085;
   for(let myGrid=40;myGrid<800;myGrid+=40){myCtx.beginPath();myCtx.moveTo(myGrid,0);myCtx.lineTo(myGrid,800);myCtx.moveTo(0,myGrid);myCtx.lineTo(800,myGrid);myCtx.stroke();}
   myCtx.globalAlpha=1;const myMotion=myData.motion==='on'||(myData.motion==='system'&&!myMedia.matches);
   const myProgress=Math.max(0,myTick+myFraction),myNodes=[],myRadii=[304,239,174,109],myAngles=[];
@@ -374,13 +450,13 @@ function myDrawScene(myCtx,myWidth,myHeight,myData,myTick,myFraction=0,myLive=fa
     if(myLive&&myState.hover&&myState.hover.lane===myNode.lane&&myState.hover.step===myNode.step){myCtx.globalAlpha=.8;myCtx.strokeStyle=myColors[myNode.lane];myCtx.beginPath();myCtx.arc(myNode.x,myNode.y,14,0,Math.PI*2);myCtx.stroke();}
   }
   // A center lens and orbit ticks give the score a physical focus.
-  myCtx.globalAlpha=1;myCtx.fillStyle='#193c33';myCtx.beginPath();myCtx.arc(400,406,49,0,Math.PI*2);myCtx.fill();
-  myCtx.strokeStyle='#67866b';myCtx.lineWidth=.8;myCtx.beginPath();myCtx.arc(400,406,49,0,Math.PI*2);myCtx.stroke();
+  myCtx.globalAlpha=1;myCtx.fillStyle='#122a3e';myCtx.beginPath();myCtx.arc(400,406,49,0,Math.PI*2);myCtx.fill();
+  myCtx.strokeStyle='#568395';myCtx.lineWidth=.8;myCtx.beginPath();myCtx.arc(400,406,49,0,Math.PI*2);myCtx.stroke();
   for(let myIndex=0;myIndex<24;myIndex++) {const myA=myIndex/24*Math.PI*2;const myP=myPoint(55,myA),myQ=myPoint(myIndex%3?58:62,myA);myCtx.beginPath();myCtx.moveTo(myP.x,myP.y);myCtx.lineTo(myQ.x,myQ.y);myCtx.stroke();}
   myCtx.textAlign='center';myCtx.fillStyle='#d3ee60';myCtx.font='bold 26px monospace';
   myCtx.fillText(myTick<0?'∞':String(myTick%myCycleLength(myData.tracks)).padStart(2,'0'),400,414);
-  myCtx.fillStyle='#a8bca6';myCtx.font='8px monospace';myCtx.fillText('SHARED TICK',400,433);
-  myCtx.globalAlpha=.5;myCtx.font='9px monospace';myCtx.textAlign='left';myCtx.fillStyle='#c6d5c1';
+  myCtx.fillStyle='#b0ccde';myCtx.font='8px monospace';myCtx.fillText('SHARED TICK',400,433);
+  myCtx.globalAlpha=.6;myCtx.font='9px monospace';myCtx.textAlign='left';myCtx.fillStyle='#bed2e7';
   myCtx.fillText('FOR / FOR / IF / REPEAT',40,745);myCtx.textAlign='right';myCtx.fillText(myData.bpm+' BPM · 2 STEPS / BEAT',760,745);
   myCtx.restore();if(myLive)myState.nodes=myNodes;
 }
@@ -410,8 +486,8 @@ function myFindNode(myEvent) {
 function myPoster() {
   const myFileName=mySafeName()+'-artwork.png';
   const myCanvas=document.createElement('canvas');myCanvas.width=1600;myCanvas.height=1840;
-  const myCtx=myCanvas.getContext('2d');myCtx.fillStyle='#f1f2eb';myCtx.fillRect(0,0,1600,1840);
-  myCtx.fillStyle='#183833';myCtx.font='bold 27px Arial';myCtx.fillText('LOOP / LAB',70,76);
+  const myCtx=myCanvas.getContext('2d');myCtx.fillStyle='#070e20';myCtx.fillRect(0,0,1600,1840);
+  myCtx.fillStyle='#e4f0f7';myCtx.font='bold 27px Arial';myCtx.fillText('LOOP / LAB',70,76);
   myCtx.font='18px monospace';myCtx.textAlign='right';myCtx.fillText('X T1A08 · BY SHUNTA · 2026',1530,76);myCtx.textAlign='left';
   const myTitle=myProject.name.trim()||'Untitled orbit';let myTitleSize=60;myCtx.font='bold '+myTitleSize+'px Arial';
   while(myCtx.measureText(myTitle).width>1460&&myTitleSize>24){myTitleSize--;myCtx.font='bold '+myTitleSize+'px Arial';}
@@ -419,8 +495,8 @@ function myPoster() {
   const myArt=document.createElement('canvas');myArt.width=1460;myArt.height=1460;
   myDrawScene(myArt.getContext('2d'),1460,1460,myClone(myProject),myState.tick,0,false);myCtx.drawImage(myArt,70,215);
   myCtx.font='19px monospace';
-  for(let myLane=0;myLane<4;myLane++){const myT=myProject.tracks[myLane],myX=70+myLane*365;myCtx.fillStyle=myColors[myLane];myCtx.fillRect(myX,1711,17,17);myCtx.fillStyle='#183833';myCtx.fillText(myNames[myLane],myX+28,1727);myCtx.font='15px monospace';myCtx.fillText(myT.steps+' steps / '+myT.notes+' notes'+(myT.enabled?'':' / muted'),myX,1757);myCtx.font='19px monospace';}
-  myCtx.fillStyle='#65726c';myCtx.font='15px monospace';myCtx.fillText('NESTED LOOPS / '+myProject.mode.toUpperCase()+' / '+myProject.bpm+' BPM / ALIGNMENT '+myCycleLength()+' STEPS',70,1810);
+  for(let myLane=0;myLane<4;myLane++){const myT=myProject.tracks[myLane],myX=70+myLane*365;myCtx.fillStyle=myColors[myLane];myCtx.fillRect(myX,1711,17,17);myCtx.fillStyle='#e4f0f7';myCtx.fillText(myNames[myLane],myX+28,1727);myCtx.font='15px monospace';myCtx.fillText(myT.steps+' steps / '+myT.notes+' notes'+(myT.enabled?'':' / muted'),myX,1757);myCtx.font='19px monospace';}
+  myCtx.fillStyle='#a7bdd0';myCtx.font='15px monospace';myCtx.fillText('NESTED LOOPS / '+myProject.mode.toUpperCase()+' / '+myProject.bpm+' BPM / ALIGNMENT '+myCycleLength()+' STEPS',70,1810);
   myCanvas.toBlob(myBlob=>{if(myBlob){myDownload(myBlob,myFileName);myTell('Artwork saved as a 1600 × 1840 PNG.');}else myTell('The artwork could not be saved in this browser.');},'image/png');
 }
 
@@ -597,6 +673,7 @@ function myWireEvents() {
   window.addEventListener('resize',myDraw);window.addEventListener('pagehide',()=>myPause());
 }
 function myInit() {
+  mySetWallpaper();
   myProject=myMakePreset('dawn');
   try{const myInitial=JSON.parse(myEl('myInitialProject').textContent);if(myInitial)myProject=myValidate(myInitial);
     else{const mySaved=localStorage.getItem(myStorageKey);if(mySaved)myProject=myValidate(JSON.parse(mySaved));}
