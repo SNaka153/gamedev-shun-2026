@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#eef1e8">
+<title>LOOP / LAB — Orbit Orchestra by Shunta</title>
+<style>
+:root{--paper:#f1f2eb;--ink:#183833;--sub:#65726c;--line:#cdd4c8;--green:#193c35;--lime:#d3ee60;--white:#fffef7;--blue:#78c8e4;--coral:#ff927c;--purple:#b7a3f6;--mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;--round:18px}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.5}button,input,select{font:inherit}button,select,input[type=range],input[type=checkbox]{cursor:pointer}button{border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink);padding:9px 13px;transition:background .15s,transform .15s}button:hover{background:#e3e8d8}button:active{transform:translateY(1px)}button:disabled{cursor:default;opacity:.45}button.primary{background:var(--lime);border-color:var(--lime);font-weight:bold}button.dark{background:var(--green);color:var(--white);border-color:var(--green)}button[aria-pressed=true]{background:var(--green);color:var(--white)}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #5a9389;outline-offset:3px}a{color:inherit;text-underline-offset:4px}input[type=range]{width:100%;accent-color:var(--green);margin:7px 0}select,input[type=text],input[type=number]{max-width:100%;border:1px solid var(--line);background:var(--white);border-radius:7px;padding:7px 9px;color:var(--ink)}.mono,.eyebrow,label small,.key,.track-stat,.metric,.badge{font-family:var(--mono)}.eyebrow{font-size:11px;letter-spacing:1.3px;text-transform:uppercase}.wrap{max-width:1400px;margin:auto;padding:0 38px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 0;border-bottom:1px solid var(--line);font-size:12px}.brand{font-size:21px;font-weight:900;letter-spacing:-1px}.brand span{font-weight:400;margin:0 3px}.topbar a{font-size:12px}.byline{display:flex;align-items:center;gap:22px}.hero{display:grid;grid-template-columns:1fr 360px;gap:36px;padding:46px 0 34px;align-items:end}.hero h1{font-size:clamp(42px,5vw,72px);line-height:1.02;letter-spacing:-3.5px;margin:14px 0 20px;max-width:820px;font-weight:900}.hero h1 em{font-style:normal;color:#527a5a}.hero p{max-width:600px;color:var(--sub);font-size:15px;margin:0}.hero-stamp{border-left:1px solid var(--line);padding-left:25px}.hero-stamp .cycle-number{font-size:58px;line-height:1;letter-spacing:-3px;font-weight:800;margin:10px 0}.hero-stamp p{font-size:12px}.small{font-size:12px;color:var(--sub)}.toolbar{border:1px solid var(--line);background:var(--white);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 15px;margin-bottom:22px}.toolbar-group{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.toolbar select{font-size:12px}.check{display:flex;align-items:center;gap:7px;font-size:12px}.badge{font-size:10px;letter-spacing:.4px;padding:5px 8px;border:1px solid var(--line);border-radius:5px}.transport-status{min-width:86px}.workspace{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(350px,.8fr);gap:24px;align-items:start}.stage{position:relative;overflow:hidden;background:#112a27;border-radius:var(--round);border:1px solid #22423a;color:var(--white)}.stage-header{display:flex;align-items:center;justify-content:space-between;position:absolute;top:22px;left:24px;right:24px;z-index:2;pointer-events:none}.stage-header .eyebrow{color:#a5b9ab}.stage-header .stage-time{font-family:var(--mono);font-size:12px;color:var(--lime)}#myCanvas{display:block;width:100%;aspect-ratio:1/1;touch-action:manipulation;cursor:crosshair}.stage-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 22px;border-top:1px solid #355047;min-height:54px;font-size:10px;color:#b7c7bb}.stage-footer strong{color:var(--lime);font-weight:normal}.art-controls{background:var(--white);border:1px solid var(--line);border-radius:var(--round);margin-top:16px;padding:18px 21px}.panel-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.panel-title h2{margin:0;font-size:16px;letter-spacing:-.4px}.mode-group{display:flex;gap:6px;flex-wrap:wrap}.mode-group button{font-size:12px;padding:7px 12px}.art-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.field{display:block;font-size:12px}.field .field-head{display:flex;justify-content:space-between;gap:10px}.field small{color:var(--sub);font-size:11px}.field select{width:100%;margin-top:5px;font-size:12px}.motion-row{border-top:1px solid var(--line);margin-top:12px;padding-top:13px;display:flex;justify-content:space-between;align-items:center;gap:12px}.motion-row select{font-size:12px}.motion-row span{font-size:11px;max-width:250px;color:var(--sub)}.track-stack{display:grid;gap:12px}.track-card{border:1px solid var(--line);background:var(--white);border-radius:var(--round);padding:17px 19px;position:relative}.track-card::before{content:"";position:absolute;left:0;top:22px;width:4px;height:26px;border-radius:0 3px 3px 0;background:var(--track)}.track-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.track-head h3{font-size:15px;margin:0;letter-spacing:-.3px}.track-head h3 span{font-family:var(--mono);color:var(--sub);font-size:10px;font-weight:normal;margin-right:9px}.track-head button{font-size:10px;padding:4px 8px}.track-stat{font-size:10px;color:var(--sub);margin-top:5px}.track-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin-top:12px}.track-fields select{padding:3px 5px;font-size:11px;width:100%;margin-top:4px}.track-fields input[type=range]{margin:4px 0 0}.step-strip{display:flex;gap:4px;margin-top:11px}.step-dot{min-width:0;flex:1;padding:0;height:19px;border-radius:4px;background:#edf0e9;border-color:#d7ddd2;position:relative}.step-dot[aria-pressed=true]{background:var(--track);border-color:var(--track);color:var(--ink)}.step-dot.current::after{content:"";position:absolute;inset:-4px;border:1px solid var(--ink);border-radius:6px}.step-dot:focus-visible{outline-offset:3px}.lane-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:11px}.lane-controls .small{margin-left:auto}.mix-controls{border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-top:16px;background:#e7ecdf;display:grid;grid-template-columns:1fr 1fr;gap:16px}.mix-controls .field-head{align-items:center}.bench{margin-top:32px;border-top:1px solid var(--line);padding-top:27px}.bench-header{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:18px}.bench-header h2{font-size:27px;letter-spacing:-1px;margin:0}.bench-header .small{max-width:490px}.bench-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}.trace-panel,.code-panel{border:1px solid var(--line);border-radius:var(--round);background:var(--white);padding:20px;min-width:0}.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:13px}.metric{font-size:24px;font-weight:600;letter-spacing:-1px}.metric small{font:10px var(--mono);display:block;letter-spacing:0;color:var(--sub);font-weight:normal}.trace-table{width:100%;border-collapse:collapse;font-size:12px}.trace-table td,.trace-table th{text-align:left;border-bottom:1px solid #e2e6dc;padding:9px 5px}.trace-table th{font:10px var(--mono);color:var(--sub);font-weight:normal}.hit-tag{display:inline-block;font:10px var(--mono);padding:3px 7px;border-radius:5px;background:#e9ece3}.hit-tag.on{background:var(--lime);color:var(--green)}.trace-note{font:11px var(--mono);margin:13px 0 0;color:var(--sub)}pre{font-family:var(--mono);font-size:11px;line-height:1.8;white-space:pre-wrap;word-break:break-word;margin:0}pre.code{padding:14px;background:#183833;color:#d5e5d2;border-radius:10px;max-height:338px;overflow:auto}.code-panel .small{margin:9px 0 0}.score-panel{border:1px solid var(--line);border-radius:var(--round);background:var(--white);padding:20px;margin-top:20px}.score-scroll{overflow:auto;padding:5px 0 7px}.score-rows{min-width:630px}.score-line{display:grid;grid-template-columns:90px repeat(32,1fr);gap:3px;margin:5px 0;align-items:center}.score-line span{height:15px;background:#e9ede3;border-radius:2px}.score-line span.on{background:var(--track)}.score-line span.now{outline:2px solid var(--ink);outline-offset:1px}.score-name{font:10px var(--mono);color:var(--sub)}.score-labels{font:9px var(--mono);color:var(--sub);height:15px;background:transparent!important}.save-panel{display:grid;grid-template-columns:1fr 1.2fr;gap:24px;border-top:1px solid var(--line);padding:27px 0;margin-top:30px}.save-panel h2{font-size:27px;margin:0 0 8px;letter-spacing:-1px}.save-panel p{font-size:13px;color:var(--sub);max-width:430px}.save-fields{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.save-fields label{font-size:11px}.save-fields input{width:180px;font-size:12px}.save-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.save-actions button{font-size:12px}.save-actions select{font-size:11px}.export-note{margin:12px 0 0;font-size:11px;color:var(--sub)}details.lesson{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 0 22px;padding:17px 0}summary{cursor:pointer;font-size:13px;font-weight:bold}.lesson-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:25px;padding:20px 0 8px}.lesson-grid h3{font-size:14px;margin:0 0 8px}.lesson-grid p{font-size:12px;color:var(--sub)}.lesson-grid pre{font-size:11px;padding:12px;border-radius:9px;background:#e4eadc}.toast{min-height:23px;font-size:12px;color:var(--green);padding:0 0 9px}.footer{padding:20px 0 30px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font:10px var(--mono);color:var(--sub)}.hidden{display:none!important}.no-motion *{scroll-behavior:auto!important;transition:none!important;animation:none!important}.muted{opacity:.58}.key{display:inline-block;padding:1px 4px;border:1px solid #cbd3c5;border-radius:4px;color:var(--sub);font-size:10px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:1050px){.wrap{padding:0 25px}.hero{grid-template-columns:1fr 250px}.hero h1{font-size:56px}.workspace{grid-template-columns:minmax(0,1fr) minmax(315px,.8fr)}.track-card{padding:14px 16px}.track-fields{gap:6px 15px}.stage-header{left:18px;right:18px;top:18px}.toolbar{flex-wrap:wrap}.byline{gap:12px}}
+@media(max-width:780px){.wrap{padding:0 18px}.topbar{padding:16px 0}.topbar .eyebrow{display:none}.hero{grid-template-columns:1fr;gap:24px;padding:32px 0 25px}.hero h1{font-size:49px;letter-spacing:-2.7px}.hero-stamp{border-left:0;border-top:1px solid var(--line);padding:15px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:5px 12px}.hero-stamp .cycle-number{font-size:39px;grid-row:1/3;grid-column:2;text-align:right;margin:0}.hero-stamp p{max-width:310px}.workspace{grid-template-columns:1fr}.track-stack{grid-template-columns:1fr 1fr;gap:11px}.track-card{padding:15px}.track-fields{grid-template-columns:1fr 1fr;gap:8px}.track-head h3{font-size:13px}.bench-grid{grid-template-columns:1fr}.bench-header{display:block}.bench-header .small{margin-top:8px}.save-panel{grid-template-columns:1fr;gap:8px}.lesson-grid{grid-template-columns:1fr}.toolbar{padding:12px}.stage-footer{font-size:9px;padding:12px 16px}.hero-stamp .eyebrow{font-size:10px}}
+@media(max-width:480px){.track-stack{grid-template-columns:1fr}.hero h1{font-size:43px}.byline{gap:10px;font-size:10px}.brand{font-size:18px}.toolbar-group{gap:6px}.toolbar button{padding:8px 10px;font-size:12px}.toolbar select{max-width:180px}.track-fields{grid-template-columns:1fr 1fr}.stage-header .eyebrow{font-size:9px;letter-spacing:.5px}.stage-header{left:17px;right:17px;top:16px}.art-controls{padding:17px}.art-fields{gap:12px}.motion-row{align-items:start}.motion-row select{max-width:152px}.metric{font-size:22px}.metric small{font-size:9px}.panel-title{flex-wrap:wrap}.save-fields input{width:150px}}
+@media(prefers-reduced-motion:reduce){body:not(.force-motion) *{transition:none;animation:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="topbar" aria-label="Page navigation"><a class="brand" href="index.html">LOOP <span>/</span> LAB</a><div class="byline"><span class="eyebrow">X T1A08 · Loops</span><span>BY SHUNTA · 2026</span><a href="index.html">Home ↗</a></div></nav>
+  <header class="hero"><div><div class="eyebrow">An orbit orchestra · made of for loops</div><h1>Different loops.<br><em>One little universe.</em></h1><p>Draw a rhythm. Watch it become a constellation. Four independent loops share a clock, but each finds its own way home.</p></div><div class="hero-stamp"><div class="eyebrow">All track positions realign in</div><div class="cycle-number"><span id="myCycle">48</span><span style="font-size:15px;letter-spacing:0"> steps</span></div><p id="myCycleNote">8 × 12 × 16 × 6, finding a common rhythm.</p></div></header>
+  <section class="toolbar" aria-label="Playback controls"><div class="toolbar-group"><button id="myPlay" class="primary">▶ Play</button><button id="myStep">Step +1</button><button id="myRewind">↶ Rewind</button><span id="myStatus" class="badge transport-status">READY</span><label class="check"><input id="mySound" type="checkbox" checked> Sound</label></div><div class="toolbar-group"><label for="myPreset" class="eyebrow">Scene</label><select id="myPreset"><option value="dawn">01 · First light</option><option value="prime">02 · Prime garden</option><option value="cascade">03 · Cascade</option><option value="afterglow">04 · Afterglow</option></select><button id="myShuffle">Shuffle ↗</button></div></section>
+  <div class="workspace"><section aria-label="Generative artwork"><div class="stage"><div class="stage-header"><span class="eyebrow" id="mySceneLabel">01 / FIRST LIGHT</span><span class="stage-time" id="myStageTime">STEP — / 48</span></div><canvas id="myCanvas" width="800" height="800" tabindex="0" aria-label="Radial rhythm artwork. Click a dot to toggle a note, or use the labelled track buttons below.">Your browser needs canvas to show the artwork. The track controls still show the rhythms.</canvas><div class="stage-footer"><span><strong>●</strong> CLICK A DOT TO PAINT A NOTE</span><span id="myStageMotion">MOTION / SYSTEM</span></div></div><div class="art-controls"><div class="panel-title"><h2>Shape the universe</h2><span class="eyebrow">01 / FORM</span></div><div class="mode-group" id="myArtModes"><button data-mode="orbit" aria-pressed="true">Orbit</button><button data-mode="weave" aria-pressed="false">Weave</button><button data-mode="bloom" aria-pressed="false">Bloom</button></div><div class="art-fields"><label class="field"><span class="field-head">Threads <small id="myThreadsVal">3</small></span><input id="myThreads" type="range" min="1" max="8" value="3"></label><label class="field"><span class="field-head">Twist <small id="myTwistVal">20°</small></span><input id="myTwist" type="range" min="0" max="90" value="20"></label></div><div class="motion-row"><span id="myMotionNote">Orbit motion follows your system preference.</span><label class="sr-only" for="myMotion">Motion preference</label><select id="myMotion"><option value="system">Motion: system</option><option value="on">On for this page</option><option value="off">Motion off</option></select></div></div><div class="mix-controls"><label class="field"><span class="field-head">Tempo <small id="myBpmVal">100 BPM</small></span><input id="myBpm" type="range" min="50" max="180" value="100"></label><label class="field"><span class="field-head">Swing <small id="mySwingVal">0%</small></span><input id="mySwing" type="range" min="0" max="40" value="0"></label></div></section>
+  <section aria-label="Four rhythm tracks"><div class="lane-controls"><span class="eyebrow">02 / FOUR INDEPENDENT LOOPS</span><button id="myUndo" disabled title="Undo the last edit">Undo</button><button id="myRedo" disabled title="Redo the last edit">Redo</button></div><div id="myTracks" class="track-stack"></div><p class="small">Steps = loop length. Notes = evenly spaced hits. Shift moves the pattern. Click the small blocks to paint your own.</p></section></div>
+  <section class="bench"><div class="bench-header"><h2>Inside the repetition.</h2><div class="small">Watch the same tick enter four different loops. A remainder picks the local step; an if statement decides whether it sounds.</div></div><div class="bench-grid"><div class="trace-panel"><div class="metric-row"><div class="metric"><span id="myTickMetric">—</span><small>CURRENT TICK · STARTS AT 0</small></div><div class="metric"><span id="myHitMetric">0</span><small>NOTES TRIGGERED THIS SESSION</small></div><div class="metric"><span id="myDensityMetric">—</span><small>NOTES / ALIGNMENT CYCLE</small></div></div><table class="trace-table"><thead><tr><th>TRACK</th><th>tick % steps</th><th>DECISION</th></tr></thead><tbody id="myTraceRows"></tbody></table><p class="trace-note" id="myTraceNote">Press Step +1 to trace the first iteration.</p></div><div class="code-panel"><div class="panel-title"><h2>Two loops. One score.</h2><button id="myCopyCode" style="font-size:11px">Copy full JS</button></div><pre class="code" id="myCodePreview"></pre><p class="small">This generates the score as data. Playback schedules those notes over time instead of playing the whole score at once.</p></div></div><div class="score-panel"><div class="panel-title"><h2>The next page of your score</h2><span class="eyebrow" id="myScoreRange">TICKS 0–31</span></div><div class="score-scroll"><div class="score-rows" id="myScoreRows"></div></div><div class="small">Each column is one shared tick. Colored cells are notes. Different loop lengths keep reshaping the combined rhythm.</div></div></section>
+  <section class="save-panel"><div><div class="eyebrow">03 / TAKE IT WITH YOU</div><h2>Your pattern, in three forms.</h2><p>Save a project to keep editing. Make a poster from the geometry. Render the same score into a real audio file.</p><div class="save-fields"><label for="myName">TITLE</label><input id="myName" type="text" maxlength="30" value="First light"><span class="badge" id="mySaveState">LOCAL AUTOSAVE</span></div></div><div><div class="save-actions"><button id="mySave">Save project ↓</button><button id="myLoad">Load project ↑</button><button id="myPoster">Artwork PNG ↓</button></div><div class="save-actions"><label class="sr-only" for="myClip">WAV length</label><select id="myClip"><option value="cycle">Full alignment cycle</option><option value="16">16-step excerpt</option><option value="32">32-step excerpt</option><option value="64">64-step excerpt</option></select><button id="myWav" class="dark">Render WAV ↓</button></div><p class="export-note" id="myExportNote">WAV includes a one-second sound tail. Playback volume does not change the exported mix.</p></div></section>
+  <div id="myToast" class="toast" role="status" aria-live="polite"></div>
+  <details class="lesson"><summary>What makes this a Loops assignment? + shortcuts</summary><div class="lesson-grid"><div><h3>01 · A loop makes a pattern</h3><pre>for (let myStep = 0;
+     myStep &lt; mySteps;
+     myStep++) {
+  myPattern.push(
+    (myStep * myNotes) % mySteps
+      &lt; myNotes
+  );
+}</pre><p>This distributes exactly myNotes hits around mySteps positions. Shift rotates that result; painting edits its true/false entries.</p></div><div><h3>02 · A loop inside a loop</h3><p>The outer loop advances the tick. The inner loop visits every track. The score preview, generated JS, and WAV renderer all use the same decisions.</p><p>Another pair of nested loops draws each track's geometry and its threads. One small rule builds hundreds of lines.</p><p>The alignment cycle uses the least common multiple of the four lengths. It is where all positions return to zero; a rhythm can repeat sooner.</p></div><div><h3>03 · Play it your way</h3><p><span class="key">Space</span> Play / pause<br><span class="key">→</span> Advance one step<br><span class="key">R</span> Rewind</p><p>Sound starts only after a click. Motion off keeps all notes, controls, and step highlights working. On a school PC, choose <b>On for this page</b> to enable orbit movement.</p><p>Edits pause playback so the next step uses your new pattern. Leaving the tab pauses the clock. Project data stays in this browser when autosave is available.</p></div></div></details>
+  <footer class="footer"><span>LOOP / LAB · X T1A08 · SHUNTA NAKAMURA · 2026</span><span><a href="t1a08-loops-shunta.html">Original Loops assignment ↗</a> · <a href="index.html">Back to Home ↗</a></span><span>NO DOWNLOADS NEEDED TO PLAY · WORKS OFFLINE</span></footer>
+</main>
+<input id="myFile" type="file" accept="application/json,.json" class="hidden">
+<script id="myInitialProject" type="application/json">null</script>
+<script>
+'use strict';
+// LOOP / LAB — authored for Shunta's X T1A08 Loops assignment.
+// No remote libraries, uploaded data, microphone, or network requests.
+const myEl = myId => document.getElementById(myId);
+const myColors = ['#78c8e4', '#d3ee60', '#ff927c', '#b7a3f6'];
+const myNames = ['Cobalt', 'Citrus', 'Coral', 'Lilac'];
+const myVoices = ['pluck', 'bell', 'bass', 'tick'];
+const myStorageKey = 'shunta-loop-lab-v1';
+const myMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+let myProject, myAudio = null, myMaster = null;
+const myState = {tick:-1, hits:0, playing:false, starting:false, generation:0, pending:[], nextTick:0,
+  nextTime:0, lastTime:0, lastDuration:.3, timer:null, voices:new Set(), frame:null, scorePage:-1,
+  lastEvents:[], hitsAt:[-100,-100,-100,-100], undo:[], redo:[], lastEditKey:'', lastEditAt:0,
+  nodes:[], hover:null, now:0, saved:true, exporting:false};
+const myClone = myValue => JSON.parse(JSON.stringify(myValue));
+const myClamp = (myNumber,myLow,myHigh) => Math.max(myLow,Math.min(myHigh,myNumber));
+function myBuildPattern(mySteps, myNotes) {
+  let myPattern = [];
+  for (let myStep = 0; myStep < mySteps; myStep++) {
+    // Each modular bucket is a note or a rest. Exactly myNotes are true.
+    myPattern.push((myStep * myNotes) % mySteps < myNotes);
+  }
+  return myPattern;
+}
+function myTrack(mySteps,myNotes,myShift,myMidi,myVoice) {
+  return {steps:mySteps,notes:myNotes,shift:myShift,midi:myMidi,voice:myVoice,enabled:true,
+    painted:false,bits:myBuildPattern(mySteps,myNotes)};
+}
+function myMakePreset(myName) {
+  const myBase = {format:'loop-lab',version:1,name:'First light',bpm:100,swing:0,mode:'orbit',
+    threads:3,twist:20,motion:'system',sound:true,seed:17,preset:myName};
+  if (myName === 'prime') return {...myBase,name:'Prime garden',bpm:114,mode:'weave',threads:4,twist:32,
+    tracks:[myTrack(7,3,0,48,'bass'),myTrack(9,4,1,64,'pluck'),myTrack(11,5,2,67,'bell'),myTrack(13,4,3,72,'pluck')]};
+  if (myName === 'cascade') return {...myBase,name:'Cascade',bpm:132,swing:18,mode:'weave',threads:5,twist:40,
+    tracks:[myTrack(8,3,0,48,'bass'),myTrack(16,7,2,62,'pluck'),myTrack(12,5,1,69,'bell'),myTrack(6,2,0,76,'tick')]};
+  if (myName === 'afterglow') return {...myBase,name:'Afterglow',bpm:76,mode:'bloom',threads:5,twist:58,
+    tracks:[myTrack(8,2,0,45,'bass'),myTrack(12,3,2,60,'bell'),myTrack(16,5,1,64,'pluck'),myTrack(6,2,1,67,'bell')]};
+  return {...myBase,preset:'dawn',tracks:[myTrack(8,3,0,48,'bass'),myTrack(12,5,1,64,'pluck'),myTrack(16,7,0,67,'bell'),myTrack(6,2,1,72,'pluck')]};
+}
+function myGcd(myA,myB) { while (myB) { const myR = myA % myB; myA=myB; myB=myR; } return myA; }
+function myCycleLength(myTracks=myProject.tracks) {
+  let myCycle=1;
+  for (let myLane=0;myLane<myTracks.length;myLane++) myCycle=myCycle/myGcd(myCycle,myTracks[myLane].steps)*myTracks[myLane].steps;
+  return myCycle;
+}
+function myIsHit(myTrackData,myStep) {
+  const mySource=(myStep-myTrackData.shift+myTrackData.steps)%myTrackData.steps;
+  return myTrackData.enabled && myTrackData.bits[mySource];
+}
+function myEventsAtTick(myTick,myTracks=myProject.tracks) {
+  let myEvents=[];
+  // This is the inner loop used by both playback and the exported score.
+  for (let myLane=0;myLane<myTracks.length;myLane++) {
+    const myTrackData=myTracks[myLane];
+    const myStep=myTick % myTrackData.steps;
+    if (myIsHit(myTrackData,myStep)) myEvents.push({tick:myTick,lane:myLane,step:myStep,midi:myTrackData.midi,voice:myTrackData.voice});
+  }
+  return myEvents;
+}
+function myBuildScore(myTracks,myTickCount) {
+  let myScore=[];
+  for (let myTick=0;myTick<myTickCount;myTick++) {
+    for (let myLane=0;myLane<myTracks.length;myLane++) {
+      const myTrackData=myTracks[myLane];
+      const myStep=myTick % myTrackData.steps;
+      if (myIsHit(myTrackData,myStep)) myScore.push({tick:myTick,lane:myLane,step:myStep,midi:myTrackData.midi,voice:myTrackData.voice});
+    }
+  }
+  return myScore;
+}
+function myTickSeconds(myTick,myData=myProject) {
+  const myBase=30/myData.bpm; // two shared steps per quarter-note beat
+  return myBase*(1+(myTick%2===0?1:-1)*myData.swing/100);
+}
+function myTimeAtTick(myTick,myData=myProject) {
+  return (30/myData.bpm)*(myTick+(myTick%2===1?myData.swing/100:0));
+}
+function myRng(mySeed) {
+  let myN=mySeed>>>0;
+  return () => {myN+=0x6D2B79F5;let myT=myN;myT=Math.imul(myT^(myT>>>15),myT|1);myT^=myT+Math.imul(myT^(myT>>>7),myT|61);return ((myT^(myT>>>14))>>>0)/4294967296;};
+}
+function myValidate(myData) {
+  const myInt=(myValue,myMin,myMax)=>Number.isInteger(myValue)&&myValue>=myMin&&myValue<=myMax;
+  if (!myData || myData.format!=='loop-lab' || myData.version!==1) throw new Error('This is not a LOOP / LAB version 1 project.');
+  if (typeof myData.name!=='string'||myData.name.length>30||!myInt(myData.bpm,50,180)||!myInt(myData.swing,0,40)||
+      !myInt(myData.threads,1,8)||!myInt(myData.twist,0,90)||!myInt(myData.seed,0,1000000)||
+      !['orbit','weave','bloom'].includes(myData.mode)||!['system','on','off'].includes(myData.motion)||
+      typeof myData.sound!=='boolean'||!['dawn','prime','cascade','afterglow','custom'].includes(myData.preset)||
+      !Array.isArray(myData.tracks)||myData.tracks.length!==4) throw new Error('Some project settings are missing or outside the supported ranges.');
+  for (const myT of myData.tracks) {
+    if (!myT||!myInt(myT.steps,3,16)||!myInt(myT.notes,0,myT.steps)||!myInt(myT.shift,0,myT.steps-1)||
+      !myInt(myT.midi,36,84)||!myVoices.includes(myT.voice)||typeof myT.enabled!=='boolean'||typeof myT.painted!=='boolean'||
+      !Array.isArray(myT.bits)||myT.bits.length!==myT.steps||myT.bits.some(myB=>typeof myB!=='boolean')||
+      myT.bits.filter(Boolean).length!==myT.notes) throw new Error('A track has an invalid rhythm or note setting.');
+    if (!myT.painted&&JSON.stringify(myT.bits)!==JSON.stringify(myBuildPattern(myT.steps,myT.notes))) throw new Error('A generated rhythm does not match its steps and notes.');
+  }
+  return myClone(myData);
+}
+function myTell(myMessage) {myEl('myToast').textContent=myMessage;}
+function mySaveLocal() {
+  try {localStorage.setItem(myStorageKey,JSON.stringify(myProject));myState.saved=true;myEl('mySaveState').textContent='LOCAL AUTOSAVE';}
+  catch (myError) {myState.saved=false;myEl('mySaveState').textContent='USE SAVE PROJECT';}
+}
+function myMotionOn() {return myProject.motion==='on'||(myProject.motion==='system'&&!myMedia.matches);}
+function myClock() {return myAudio?myAudio.currentTime:performance.now()/1000;}
+function myStopVoices() {
+  for (const myNode of myState.voices) {try {myNode.stop();}catch(myError){}}
+  myState.voices.clear();
+}
+function myPause(myLabel='PAUSED') {
+  myState.generation++;myState.starting=false;myState.playing=false;
+  clearInterval(myState.timer);myState.timer=null;myState.pending=[];myStopVoices();
+  myEl('myPlay').textContent='▶ Play';myEl('myStatus').textContent=myLabel;myDraw();
+}
+function myVisitTick(myTick,myEvents,myWhen) {
+  myState.tick=myTick;myState.lastTime=myWhen;myState.lastDuration=myTickSeconds(myTick);
+  myState.lastEvents=myEvents;myState.hits+=myEvents.length;
+  for (const myEvent of myEvents) myState.hitsAt[myEvent.lane]=myWhen;
+  myRenderTrace();myRenderScore();
+}
+function myFlush(myNow) {
+  while (myState.pending.length&&myState.pending[0].time<=myNow) {
+    const myEvent=myState.pending.shift();myVisitTick(myEvent.tick,myEvent.events,myEvent.time);
+  }
+}
+function myPump() {
+  if (!myState.playing) return;
+  const myNow=myClock();myFlush(myNow);
+  // Do not rush a backlog of notes after a stalled tab or slow frame.
+  if (myState.nextTime<myNow-.25) {myStopVoices();myState.pending=[];myState.nextTick=myState.tick+1;myState.nextTime=myNow+.04;}
+  let myScheduled=0;
+  while (myState.nextTime<myNow+.12&&myScheduled<8) {
+    const myTick=myState.nextTick;const myEvents=myEventsAtTick(myTick);
+    if (myProject.sound&&myAudio) for (const myEvent of myEvents) myPlayVoice(myAudio,myMaster,myEvent,myState.nextTime,myProject.seed,true);
+    myState.pending.push({tick:myTick,events:myEvents,time:myState.nextTime});
+    myState.nextTime+=myTickSeconds(myTick);myState.nextTick++;myScheduled++;
+  }
+}
+async function myStart() {
+  if (myState.playing||myState.starting||myState.exporting) return;
+  myState.starting=true;const myToken=++myState.generation;
+  try {if (myProject.sound) await myEnsureAudio();}
+  catch(myError){myProject.sound=false;myEl('mySound').checked=false;myTell('Sound is unavailable in this browser. Visual playback and step mode still work.');}
+  if (myToken!==myState.generation||document.hidden) {myState.starting=false;return;}
+  myState.starting=false;myState.playing=true;myState.nextTick=myState.tick+1;myState.nextTime=myClock()+.04;
+  myEl('myPlay').textContent='Ⅱ Pause';myEl('myStatus').textContent='PLAYING';
+  myPump();myState.timer=setInterval(myPump,25);myRequestDraw();
+}
+async function myStepOnce() {
+  if (myState.exporting) return;
+  myPause('STEP');const myToken=myState.generation;
+  try {if (myProject.sound) await myEnsureAudio();}
+  catch(myError){myProject.sound=false;myEl('mySound').checked=false;myTell('Sound is unavailable. Step mode is still working.');}
+  if (myToken!==myState.generation) return;
+  const myTick=myState.tick+1;const myEvents=myEventsAtTick(myTick);const myWhen=myClock()+.008;
+  if (myProject.sound&&myAudio) for (const myEvent of myEvents) myPlayVoice(myAudio,myMaster,myEvent,myWhen,myProject.seed,true);
+  myVisitTick(myTick,myEvents,myWhen);myDraw();
+}
+function myRewind() {
+  myPause('READY');myState.tick=-1;myState.hits=0;myState.lastEvents=[];myState.hitsAt=[-100,-100,-100,-100];
+  myState.scorePage=-1;myRenderTrace();myRenderScore();myDraw();
+}
+function myEdit(myChange,myKey='',myFull=true) {
+  const myNow=performance.now();
+  if (!(myKey&&myKey===myState.lastEditKey&&myNow-myState.lastEditAt<500)) {
+    myState.undo.push(myClone(myProject));if(myState.undo.length>40)myState.undo.shift();
+  }
+  myState.lastEditKey=myKey;myState.lastEditAt=myNow;myState.redo=[];
+  myPause('EDIT PAUSE');myChange();myProject.preset='custom';mySaveLocal();myRenderAll(myFull);myDraw();
+}
+function myReplace(myData,myLabel) {
+  myState.undo.push(myClone(myProject));if(myState.undo.length>40)myState.undo.shift();myState.redo=[];
+  myPause('READY');myProject=myData;myState.lastEditKey='';myState.tick=-1;myState.hits=0;myState.hitsAt=[-100,-100,-100,-100];
+  myState.lastEvents=[];mySaveLocal();myRenderAll();myDraw();myTell(myLabel);
+}
+function myHistory(myRedo) {
+  const myFrom=myRedo?myState.redo:myState.undo;const myTo=myRedo?myState.undo:myState.redo;
+  if(!myFrom.length)return;myPause();myTo.push(myClone(myProject));myProject=myFrom.pop();myState.lastEditKey='';
+  mySaveLocal();myRenderAll();myDraw();myTell(myRedo?'Edit restored.':'Last edit undone.');
+}
+function myPaint(myLane,myStep) {
+  myEdit(()=>{const myT=myProject.tracks[myLane];const myIndex=(myStep-myT.shift+myT.steps)%myT.steps;
+    myT.bits[myIndex]=!myT.bits[myIndex];myT.notes=myT.bits.filter(Boolean).length;myT.painted=true;});
+}
+
+
+async function myEnsureAudio() {
+  if (!myAudio) {
+    const myConstructor=window.AudioContext||window.webkitAudioContext;
+    if(!myConstructor)throw new Error('Web Audio unavailable');
+    myAudio=new myConstructor();myMaster=myAudio.createGain();myMaster.gain.value=.40;myMaster.connect(myAudio.destination);
+  }
+  try {if(myAudio.state!=='running')await myAudio.resume();if(myAudio.state!=='running')throw new Error('Audio could not start');}
+  catch(myError){try{await myAudio.close();}catch(myCloseError){}myAudio=null;myMaster=null;throw myError;}
+}
+function myPlayVoice(myContext,myDestination,myEvent,myWhen,mySeed,myLive=false) {
+  const myFrequency=440*Math.pow(2,(myEvent.midi-69)/12);
+  const myEnvelope=myContext.createGain();myEnvelope.connect(myDestination);
+  const myEnd=myEvent.voice==='bell'?.85:myEvent.voice==='pluck'?.48:myEvent.voice==='bass'?.34:.09;
+  const myLevel=myEvent.voice==='bass'?.32:myEvent.voice==='tick'?.16:.22;
+  myEnvelope.gain.setValueAtTime(0,myWhen);
+  myEnvelope.gain.linearRampToValueAtTime(myLevel,myWhen+.006);
+  myEnvelope.gain.exponentialRampToValueAtTime(.0001,myWhen+myEnd);
+  const mySources=[];
+  if(myEvent.voice==='tick') {
+    const myBuffer=myContext.createBuffer(1,Math.ceil(myContext.sampleRate*.09),myContext.sampleRate);
+    const myArray=myBuffer.getChannelData(0);const myRandom=myRng(mySeed+myEvent.tick*71+myEvent.lane*997);
+    for(let myIndex=0;myIndex<myArray.length;myIndex++)myArray[myIndex]=(myRandom()*2-1);
+    const mySource=myContext.createBufferSource();mySource.buffer=myBuffer;
+    const myFilter=myContext.createBiquadFilter();myFilter.type='highpass';myFilter.frequency.value=4500;
+    mySource.connect(myFilter);myFilter.connect(myEnvelope);mySources.push(mySource);
+  } else {
+    const myOsc=myContext.createOscillator();myOsc.frequency.setValueAtTime(myFrequency,myWhen);
+    myOsc.type=myEvent.voice==='bass'?'sine':myEvent.voice==='pluck'?'triangle':'sine';
+    if(myEvent.voice==='bass')myOsc.frequency.exponentialRampToValueAtTime(myFrequency*.85,myWhen+.30);
+    myOsc.connect(myEnvelope);mySources.push(myOsc);
+    if(myEvent.voice==='bell') {
+      const myOvertone=myContext.createOscillator();myOvertone.type='sine';myOvertone.frequency.value=myFrequency*2.01;
+      const mySoft=myContext.createGain();mySoft.gain.value=.24;myOvertone.connect(mySoft);mySoft.connect(myEnvelope);mySources.push(myOvertone);
+    }
+  }
+  for(const mySource of mySources) {
+    if(myLive){myState.voices.add(mySource);mySource.onended=()=>myState.voices.delete(mySource);}
+    mySource.start(myWhen);mySource.stop(myWhen+myEnd+.02);
+  }
+}
+function myDownload(myBlob,myName) {
+  const myUrl=URL.createObjectURL(myBlob);const myLink=document.createElement('a');myLink.href=myUrl;myLink.download=myName;
+  document.body.appendChild(myLink);myLink.click();myLink.remove();setTimeout(()=>URL.revokeObjectURL(myUrl),30000);
+}
+function mySafeName(myData=myProject){return (myData.name.trim().replace(/[^a-zA-Z0-9_-]+/g,'-').replace(/^-|-$/g,'')||'loop-lab').slice(0,40);}
+function myEncodeWav(myBuffer) {
+  const myChannels=2,myLength=myBuffer.length;const myBytes=new ArrayBuffer(44+myLength*myChannels*2);
+  const myView=new DataView(myBytes);const myString=(myAt,myText)=>{for(let myI=0;myI<myText.length;myI++)myView.setUint8(myAt+myI,myText.charCodeAt(myI));};
+  myString(0,'RIFF');myView.setUint32(4,36+myLength*4,true);myString(8,'WAVE');myString(12,'fmt ');
+  myView.setUint32(16,16,true);myView.setUint16(20,1,true);myView.setUint16(22,2,true);
+  myView.setUint32(24,myBuffer.sampleRate,true);myView.setUint32(28,myBuffer.sampleRate*4,true);
+  myView.setUint16(32,4,true);myView.setUint16(34,16,true);myString(36,'data');myView.setUint32(40,myLength*4,true);
+  const myLeft=myBuffer.getChannelData(0),myRight=myBuffer.getChannelData(1);
+  let myPeak=0;for(let myI=0;myI<myLength;myI++)myPeak=Math.max(myPeak,Math.abs(myLeft[myI]),Math.abs(myRight[myI]));
+  const myScale=myPeak>.95?.95/myPeak:1;
+  for(let myI=0;myI<myLength;myI++) {
+    myView.setInt16(44+myI*4,Math.round(myClamp(myLeft[myI]*myScale,-1,1)*32767),true);
+    myView.setInt16(46+myI*4,Math.round(myClamp(myRight[myI]*myScale,-1,1)*32767),true);
+  }
+  return new Blob([myBytes],{type:'audio/wav'});
+}
+async function myRenderWav() {
+  if(myState.exporting)return;
+  const myConstructor=window.OfflineAudioContext||window.webkitOfflineAudioContext;
+  if(!myConstructor){myTell('This browser cannot render audio files. Save the project or artwork instead.');return;}
+  const myData=myClone(myProject);const mySelection=myEl('myClip').value;
+  const myCount=mySelection==='cycle'?myCycleLength(myData.tracks):Number(mySelection);
+  if(!Number.isInteger(myCount)||myCount<1||myCount>128){myTell('Choose a 16-, 32-, or 64-step excerpt for this long alignment cycle.');return;}
+  const myLengthSeconds=myTimeAtTick(myCount,myData)+1;
+  if(myLengthSeconds>90){myTell('Choose a shorter excerpt to render.');return;}
+  myPause('RENDERING');myState.exporting=true;myEl('myWav').disabled=true;myEl('myPlay').disabled=true;myEl('myStep').disabled=true;
+  myTell('Rendering your score into audio…');
+  try {
+    const myRate=44100;const myOffline=new myConstructor(2,Math.ceil(myLengthSeconds*myRate),myRate);
+    const myMix=myOffline.createGain();myMix.gain.value=.40;myMix.connect(myOffline.destination);
+    const myScore=myBuildScore(myData.tracks,myCount);
+    for(let myNote=0;myNote<myScore.length;myNote++)myPlayVoice(myOffline,myMix,myScore[myNote],myTimeAtTick(myScore[myNote].tick,myData),myData.seed);
+    const myBuffer=await myOffline.startRendering();const myBlob=myEncodeWav(myBuffer);
+    myDownload(myBlob,mySafeName(myData)+'-'+myCount+'-steps.wav');
+    myTell('WAV saved: '+myCount+' steps, '+myScore.length+' notes, '+myLengthSeconds.toFixed(1)+' seconds including the sound tail.');
+  }catch(myError){myTell('The audio render could not finish. Your project is still here; try a shorter excerpt.');}
+  finally {myState.exporting=false;myEl('myWav').disabled=false;myEl('myPlay').disabled=false;myEl('myStep').disabled=false;myEl('myStatus').textContent='PAUSED';}
+}
+
+
+function myPoint(myRadius,myAngle) {return {x:400+myRadius*Math.cos(myAngle),y:406+myRadius*Math.sin(myAngle)};}
+function myDrawScene(myCtx,myWidth,myHeight,myData,myTick,myFraction=0,myLive=false) {
+  const myScale=Math.min(myWidth,myHeight)/800;
+  myCtx.save();myCtx.setTransform(1,0,0,1,0,0);myCtx.fillStyle='#112a27';myCtx.fillRect(0,0,myWidth,myHeight);
+  myCtx.translate((myWidth-800*myScale)/2,(myHeight-800*myScale)/2);myCtx.scale(myScale,myScale);
+  const myGlow=myCtx.createRadialGradient(400,410,20,400,410,430);
+  myGlow.addColorStop(0,'#22493e');myGlow.addColorStop(.60,'#15352e');myGlow.addColorStop(1,'#112a27');
+  myCtx.fillStyle=myGlow;myCtx.fillRect(0,0,800,800);
+  myCtx.strokeStyle='#385347';myCtx.lineWidth=.55;myCtx.globalAlpha=.3;
+  for(let myGrid=40;myGrid<800;myGrid+=40){myCtx.beginPath();myCtx.moveTo(myGrid,0);myCtx.lineTo(myGrid,800);myCtx.moveTo(0,myGrid);myCtx.lineTo(800,myGrid);myCtx.stroke();}
+  myCtx.globalAlpha=1;const myMotion=myData.motion==='on'||(myData.motion==='system'&&!myMedia.matches);
+  const myProgress=Math.max(0,myTick+myFraction),myNodes=[],myRadii=[304,239,174,109],myAngles=[];
+  for(let myLane=0;myLane<myData.tracks.length;myLane++) {
+    const myT=myData.tracks[myLane];const mySpin=myMotion?myProgress*.015*(myLane%2?-1:1):0;
+    myAngles.push(-Math.PI/2+mySpin+(myLane%2?1:-1)*myData.twist*Math.PI/180*.20);
+    for(let myStep=0;myStep<myT.steps;myStep++)myNodes.push({...myPoint(myRadii[myLane],myAngles[myLane]+myStep/myT.steps*Math.PI*2),lane:myLane,step:myStep,hit:myIsHit(myT,myStep)});
+  }
+  // Nested drawing loops: a track loop and a thread loop.
+  for(let myLane=0;myLane<myData.tracks.length;myLane++) {
+    const myT=myData.tracks[myLane],myColor=myColors[myLane],myRadius=myRadii[myLane];
+    myCtx.strokeStyle=myColor;myCtx.fillStyle=myColor;myCtx.globalAlpha=myT.enabled?.24:.08;myCtx.lineWidth=1;
+    myCtx.beginPath();myCtx.arc(400,406,myRadius,0,Math.PI*2);myCtx.stroke();
+    if(myData.mode==='bloom') {
+      for(let myThread=0;myThread<myData.threads;myThread++) {
+        myCtx.beginPath();myCtx.globalAlpha=myT.enabled?.19:.035;myCtx.lineWidth=1;
+        for(let myPointIndex=0;myPointIndex<=320;myPointIndex++) {
+          const myAngle=myPointIndex/320*Math.PI*2;
+          const myPetals=Math.max(1,myT.notes);
+          const myPhase=myAngles[myLane]+myThread*Math.PI*2/myData.threads;
+          const myR=myRadius*(.69+.25*Math.sin(myPetals*myAngle+myPhase+myData.twist*.03));
+          const myP=myPoint(myR,myAngle+myPhase*.25);
+          if(myPointIndex===0)myCtx.moveTo(myP.x,myP.y);else myCtx.lineTo(myP.x,myP.y);
+        }
+        myCtx.stroke();
+      }
+    } else {
+      for(let myStep=0;myStep<myT.steps;myStep++) {
+        if(!myIsHit(myT,myStep))continue;
+        const myStart=myPoint(myRadius,myAngles[myLane]+myStep/myT.steps*Math.PI*2);
+        for(let myThread=1;myThread<=myData.threads;myThread++) {
+          const myOther=myData.mode==='weave'?(myLane+1)%4:myLane;const myOtherT=myData.tracks[myOther];
+          const myTarget=myData.mode==='weave'?(myStep*myThread+myT.shift)%myOtherT.steps:(myStep+myThread*2+myT.shift+1)%myT.steps;
+          const myEnd=myPoint(myRadii[myOther],myAngles[myOther]+myTarget/myOtherT.steps*Math.PI*2);
+          const myBend=myData.twist/90*.75;
+          const myMidX=(myStart.x+myEnd.x)/2,myMidY=(myStart.y+myEnd.y)/2;
+          myCtx.globalAlpha=.10+.11/(myThread);myCtx.lineWidth=.9;
+          myCtx.beginPath();myCtx.moveTo(myStart.x,myStart.y);
+          myCtx.quadraticCurveTo(myMidX*(1-myBend)+400*myBend,myMidY*(1-myBend)+406*myBend,myEnd.x,myEnd.y);myCtx.stroke();
+        }
+      }
+    }
+    // A quiet angular label stays near the lower edge of each track.
+    myCtx.globalAlpha=.58;myCtx.fillStyle=myColor;myCtx.font='10px monospace';myCtx.textAlign='center';
+    myCtx.fillText(String(myT.steps).padStart(2,'0')+' / '+myT.notes,400,406+myRadius+23);
+  }
+  for(const myNode of myNodes) {
+    const myT=myData.tracks[myNode.lane],myCurrent=myTick>=0&&myTick%myT.steps===myNode.step;
+    const myHitAge=myLive?Math.max(0,myClock()-myState.hitsAt[myNode.lane]):100;
+    const myFlash=myLive&&myState.playing&&myMotion&&myCurrent&&myNode.hit?Math.max(0,1-myHitAge/.35):0;
+    myCtx.fillStyle=myColors[myNode.lane];myCtx.globalAlpha=myNode.hit?1:(myT.enabled?.23:.10);
+    if(myNode.hit){myCtx.shadowColor=myColors[myNode.lane];myCtx.shadowBlur=10+myFlash*24;}
+    myCtx.beginPath();myCtx.arc(myNode.x,myNode.y,myNode.hit?4.7+myFlash*2:3.0,0,Math.PI*2);myCtx.fill();myCtx.shadowBlur=0;
+    if(myCurrent){myCtx.globalAlpha=.85;myCtx.strokeStyle='#fffef7';myCtx.lineWidth=1;myCtx.beginPath();myCtx.arc(myNode.x,myNode.y,10+myFlash*5,0,Math.PI*2);myCtx.stroke();}
+    if(myLive&&myState.hover&&myState.hover.lane===myNode.lane&&myState.hover.step===myNode.step){myCtx.globalAlpha=.8;myCtx.strokeStyle=myColors[myNode.lane];myCtx.beginPath();myCtx.arc(myNode.x,myNode.y,14,0,Math.PI*2);myCtx.stroke();}
+  }
+  // A center lens and orbit ticks give the score a physical focus.
+  myCtx.globalAlpha=1;myCtx.fillStyle='#193c33';myCtx.beginPath();myCtx.arc(400,406,49,0,Math.PI*2);myCtx.fill();
+  myCtx.strokeStyle='#67866b';myCtx.lineWidth=.8;myCtx.beginPath();myCtx.arc(400,406,49,0,Math.PI*2);myCtx.stroke();
+  for(let myIndex=0;myIndex<24;myIndex++) {const myA=myIndex/24*Math.PI*2;const myP=myPoint(55,myA),myQ=myPoint(myIndex%3?58:62,myA);myCtx.beginPath();myCtx.moveTo(myP.x,myP.y);myCtx.lineTo(myQ.x,myQ.y);myCtx.stroke();}
+  myCtx.textAlign='center';myCtx.fillStyle='#d3ee60';myCtx.font='bold 26px monospace';
+  myCtx.fillText(myTick<0?'∞':String(myTick%myCycleLength(myData.tracks)).padStart(2,'0'),400,414);
+  myCtx.fillStyle='#a8bca6';myCtx.font='8px monospace';myCtx.fillText('SHARED TICK',400,433);
+  myCtx.globalAlpha=.5;myCtx.font='9px monospace';myCtx.textAlign='left';myCtx.fillStyle='#c6d5c1';
+  myCtx.fillText('FOR / FOR / IF / REPEAT',40,745);myCtx.textAlign='right';myCtx.fillText(myData.bpm+' BPM · 2 STEPS / BEAT',760,745);
+  myCtx.restore();if(myLive)myState.nodes=myNodes;
+}
+function myDraw() {
+  const myCanvas=myEl('myCanvas');const myRect=myCanvas.getBoundingClientRect();
+  const mySize=Math.max(1,Math.round(myRect.width*Math.min(2,window.devicePixelRatio||1)));
+  if(myCanvas.width!==mySize||myCanvas.height!==mySize){myCanvas.width=mySize;myCanvas.height=mySize;}
+  const myNow=myClock();if(myState.playing)myFlush(myNow);
+  const myFraction=myState.playing&&myState.tick>=0?myClamp((myNow-myState.lastTime)/myState.lastDuration,0,1):0;
+  myDrawScene(myCanvas.getContext('2d'),mySize,mySize,myProject,myState.tick,myMotionOn()?myFraction:0,true);
+}
+function myRequestDraw() {
+  if(myState.frame)return;
+  let myLastFrame=0;
+  const myFrame=myTimestamp=>{
+    if(myTimestamp-myLastFrame>=32){myDraw();myLastFrame=myTimestamp;}
+    if(myState.playing)myState.frame=requestAnimationFrame(myFrame);else{myState.frame=null;myDraw();}
+  };
+  myState.frame=requestAnimationFrame(myFrame);
+}
+function myFindNode(myEvent) {
+  const myRect=myEl('myCanvas').getBoundingClientRect();const myX=(myEvent.clientX-myRect.left)/myRect.width*800,myY=(myEvent.clientY-myRect.top)/myRect.height*800;
+  let myBest=null,myDistance=20;
+  for(const myNode of myState.nodes){const myD=Math.hypot(myNode.x-myX,myNode.y-myY);if(myD<myDistance){myDistance=myD;myBest=myNode;}}
+  return myBest;
+}
+function myPoster() {
+  const myFileName=mySafeName()+'-artwork.png';
+  const myCanvas=document.createElement('canvas');myCanvas.width=1600;myCanvas.height=1840;
+  const myCtx=myCanvas.getContext('2d');myCtx.fillStyle='#f1f2eb';myCtx.fillRect(0,0,1600,1840);
+  myCtx.fillStyle='#183833';myCtx.font='bold 27px Arial';myCtx.fillText('LOOP / LAB',70,76);
+  myCtx.font='18px monospace';myCtx.textAlign='right';myCtx.fillText('X T1A08 · BY SHUNTA · 2026',1530,76);myCtx.textAlign='left';
+  const myTitle=myProject.name.trim()||'Untitled orbit';let myTitleSize=60;myCtx.font='bold '+myTitleSize+'px Arial';
+  while(myCtx.measureText(myTitle).width>1460&&myTitleSize>24){myTitleSize--;myCtx.font='bold '+myTitleSize+'px Arial';}
+  myCtx.fillText(myTitle,70,166);
+  const myArt=document.createElement('canvas');myArt.width=1460;myArt.height=1460;
+  myDrawScene(myArt.getContext('2d'),1460,1460,myClone(myProject),myState.tick,0,false);myCtx.drawImage(myArt,70,215);
+  myCtx.font='19px monospace';
+  for(let myLane=0;myLane<4;myLane++){const myT=myProject.tracks[myLane],myX=70+myLane*365;myCtx.fillStyle=myColors[myLane];myCtx.fillRect(myX,1711,17,17);myCtx.fillStyle='#183833';myCtx.fillText(myNames[myLane],myX+28,1727);myCtx.font='15px monospace';myCtx.fillText(myT.steps+' steps / '+myT.notes+' notes'+(myT.enabled?'':' / muted'),myX,1757);myCtx.font='19px monospace';}
+  myCtx.fillStyle='#65726c';myCtx.font='15px monospace';myCtx.fillText('NESTED LOOPS / '+myProject.mode.toUpperCase()+' / '+myProject.bpm+' BPM / ALIGNMENT '+myCycleLength()+' STEPS',70,1810);
+  myCanvas.toBlob(myBlob=>{if(myBlob){myDownload(myBlob,myFileName);myTell('Artwork saved as a 1600 × 1840 PNG.');}else myTell('The artwork could not be saved in this browser.');},'image/png');
+}
+
+
+function myMidiName(myMidi) {const myNote=['C','C♯','D','E♭','E','F','F♯','G','A♭','A','B♭','B'];return myNote[myMidi%12]+(Math.floor(myMidi/12)-1);}
+function myRenderTracks() {
+  myEl('myTracks').innerHTML=myProject.tracks.map((myT,myLane)=>`
+    <article class="track-card ${myT.enabled?'':'muted'}" style="--track:${myColors[myLane]}">
+      <div class="track-head"><h3><span>0${myLane+1}</span>${myNames[myLane]}</h3><button data-action="mute" data-lane="${myLane}" aria-pressed="${!myT.enabled}" aria-label="${myT.enabled?'Mute':'Unmute'} ${myNames[myLane]}">${myT.enabled?'ON':'MUTED'}</button></div>
+      <div class="track-stat" id="myTrackStat${myLane}">${myT.painted?'PAINTED':'GENERATED'} · ${myT.notes} NOTES IN ${myT.steps} STEPS</div>
+      <div class="track-fields">
+        <label class="field"><span class="field-head">Steps <small id="myVal${myLane}steps">${myT.steps}</small></span><input type="range" min="3" max="16" value="${myT.steps}" data-lane="${myLane}" data-field="steps" aria-label="${myNames[myLane]} steps"></label>
+        <label class="field"><span class="field-head">Notes <small id="myVal${myLane}notes">${myT.notes}</small></span><input type="range" min="0" max="${myT.steps}" value="${myT.notes}" data-lane="${myLane}" data-field="notes" aria-label="${myNames[myLane]} notes"></label>
+        <label class="field"><span class="field-head">Shift <small id="myVal${myLane}shift">${myT.shift}</small></span><input type="range" min="0" max="${myT.steps-1}" value="${myT.shift}" data-lane="${myLane}" data-field="shift" aria-label="${myNames[myLane]} shift"></label>
+        <label class="field"><span class="field-head">Pitch <small id="myVal${myLane}midi">${myMidiName(myT.midi)}</small></span><input type="range" min="36" max="84" value="${myT.midi}" data-lane="${myLane}" data-field="midi" aria-label="${myNames[myLane]} pitch"></label>
+      </div><div class="step-strip">${Array.from({length:myT.steps},(myUnused,myStep)=>`<button class="step-dot" data-action="paint" data-lane="${myLane}" data-step="${myStep}" aria-pressed="${myIsHit({...myT,enabled:true},myStep)}" aria-label="${myNames[myLane]} step ${myStep}: ${myIsHit({...myT,enabled:true},myStep)?'note':'rest'}" title="Step ${myStep} · click to toggle"></button>`).join('')}</div>
+      <label class="field" style="margin-top:10px"><span class="sr-only">${myNames[myLane]} instrument</span><select data-lane="${myLane}" data-field="voice" aria-label="${myNames[myLane]} instrument">${myVoices.map(myVoice=>`<option value="${myVoice}" ${myT.voice===myVoice?'selected':''}>${myVoice[0].toUpperCase()+myVoice.slice(1)}</option>`).join('')}</select></label>
+    </article>`).join('');
+}
+function myRenderTrace() {
+  const myTick=myState.tick;
+  myEl('myTickMetric').textContent=myTick<0?'—':String(myTick);
+  myEl('myHitMetric').textContent=myState.hits.toLocaleString();
+  const myCycle=myCycleLength();let myDensity=0;
+  for(const myT of myProject.tracks)if(myT.enabled)myDensity+=myT.notes*(myCycle/myT.steps);
+  myEl('myDensityMetric').textContent=myDensity.toLocaleString();
+  myEl('myStageTime').textContent='STEP '+(myTick<0?'—':String(myTick%myCycle).padStart(2,'0'))+' / '+myCycle;
+  myEl('myTraceRows').innerHTML=myProject.tracks.map((myT,myLane)=>{
+    const myHit=myTick>=0&&myIsHit(myT,myTick%myT.steps);
+    return `<tr><td><span style="color:${myColors[myLane]}">●</span> ${myNames[myLane]}</td><td class="mono">${myTick<0?'—':myTick+' % '+myT.steps+' = '+myTick%myT.steps}</td><td><span class="hit-tag ${myHit?'on':''}">${!myT.enabled?'MUTED':myTick<0?'READY':myHit?'NOTE':'REST'}</span></td></tr>`;
+  }).join('');
+  for(const myButton of myEl('myTracks').querySelectorAll('[data-action="paint"]')) {
+    const myLane=Number(myButton.dataset.lane);myButton.classList.toggle('current',myTick>=0&&myTick%myProject.tracks[myLane].steps===Number(myButton.dataset.step));
+  }
+  myEl('myTraceNote').textContent=myTick<0?'Press Step +1 to trace the first iteration.':
+    'Iteration '+myTick+': visit 4 tracks → '+myEventsAtTick(myTick).length+' note decisions. Next tick = '+(myTick+1)+'.';
+}
+function myRenderScore(myForce=false) {
+  const myPage=myState.tick<0?0:Math.floor(myState.tick/32),myStart=myPage*32;
+  if(myForce||myState.scorePage!==myPage) {
+    myState.scorePage=myPage;
+    let myHtml='<div class="score-line"><div class="score-name">TICK</div>';
+    for(let myTick=myStart;myTick<myStart+32;myTick++)myHtml+='<div class="score-labels">'+(myTick%4===0?myTick:'·')+'</div>';
+    myHtml+='</div>';
+    // A nested loop visits every track and every column of the score.
+    for(let myLane=0;myLane<4;myLane++) {
+      const myT=myProject.tracks[myLane];myHtml+='<div class="score-line" style="--track:'+myColors[myLane]+'"><div class="score-name">'+myNames[myLane]+'</div>';
+      for(let myTick=myStart;myTick<myStart+32;myTick++)myHtml+='<span class="'+(myIsHit(myT,myTick%myT.steps)?'on':'')+'" data-tick="'+myTick+'" title="'+myNames[myLane]+' · tick '+myTick+'"></span>';
+      myHtml+='</div>';
+    }
+    myEl('myScoreRows').innerHTML=myHtml;myEl('myScoreRange').textContent='TICKS '+myStart+'–'+(myStart+31);
+  }
+  for(const myCell of myEl('myScoreRows').querySelectorAll('[data-tick]'))myCell.classList.toggle('now',Number(myCell.dataset.tick)===myState.tick);
+}
+function myScoreFunction() {
+  return `function myMakeScore(myTracks, myCycle) {
+  let myScore = [];
+  for (let myTick = 0; myTick < myCycle; myTick++) {
+    for (let myLane = 0; myLane < myTracks.length; myLane++) {
+      let myTrack = myTracks[myLane];
+      let myStep = myTick % myTrack.steps;
+      let mySource = (myStep - myTrack.shift + myTrack.steps)
+                     % myTrack.steps;
+      if (myTrack.enabled && myTrack.bits[mySource]) {
+        myScore.push({tick: myTick, lane: myLane,
+          step: myStep, midi: myTrack.midi, voice: myTrack.voice});
+      }
+    }
+  }
+  return myScore;
+}`;
+}
+function myFullCode() {
+  return '// LOOP / LAB — a score generated by nested for loops.\n// Run in a JavaScript console; this returns data, not audio.\n'+
+    'const myTracks = '+JSON.stringify(myProject.tracks,null,2)+';\n\n'+myScoreFunction()+
+    '\n\nconst myScore = myMakeScore(myTracks, '+myCycleLength()+');\nconsole.table(myScore);\n';
+}
+function myRenderAll(myFull=true) {
+  if(myFull)myRenderTracks();
+  for(const myKey of ['bpm','swing','threads','twist'])myEl('my'+myKey[0].toUpperCase()+myKey.slice(1)).value=myProject[myKey];
+  myEl('myBpmVal').textContent=myProject.bpm+' BPM';myEl('mySwingVal').textContent=myProject.swing+'%';
+  myEl('myThreadsVal').textContent=myProject.threads;myEl('myTwistVal').textContent=myProject.twist+'°';
+  myEl('myName').value=myProject.name;myEl('mySound').checked=myProject.sound;myEl('myMotion').value=myProject.motion;
+  myEl('myPreset').value=myProject.preset==='custom'?'':myProject.preset;
+  if(!myEl('myPreset').querySelector('[value="custom"]')){const myOption=document.createElement('option');myOption.value='custom';myOption.textContent='Your own orbit';myEl('myPreset').appendChild(myOption);}
+  myEl('myPreset').value=myProject.preset;
+  const myLabels={dawn:'01 / FIRST LIGHT',prime:'02 / PRIME GARDEN',cascade:'03 / CASCADE',afterglow:'04 / AFTERGLOW',custom:'YOUR OWN ORBIT'};
+  myEl('mySceneLabel').textContent=myLabels[myProject.preset];
+  const myCycle=myCycleLength();myEl('myCycle').textContent=myCycle.toLocaleString();
+  myEl('myCycleNote').textContent=myProject.tracks.map(myT=>myT.steps).join(' / ')+' steps · '+myTimeAtTick(myCycle).toFixed(1)+' s to realign.';
+  myEl('myCodePreview').textContent=myScoreFunction();
+  const myMotion=myMotionOn();document.body.classList.toggle('no-motion',!myMotion);document.body.classList.toggle('force-motion',myProject.motion==='on');
+  myEl('myStageMotion').textContent=myMotion?'MOTION / ON':'MOTION / OFF';
+  myEl('myMotionNote').textContent=myProject.motion==='system'?(myMedia.matches?'Your system reduces motion. Choose On for this page to animate.':'Orbit movement follows your system preference.'):
+    myProject.motion==='on'?'Orbit movement is enabled for this page.':'Movement is off. Notes and step highlights still work.';
+  for(const myButton of myEl('myArtModes').querySelectorAll('[data-mode]'))myButton.setAttribute('aria-pressed',String(myButton.dataset.mode===myProject.mode));
+  myEl('myUndo').disabled=!myState.undo.length;myEl('myRedo').disabled=!myState.redo.length;
+  const myCanCycle=myCycle<=128&&myTimeAtTick(myCycle)+1<=90;const myCycleOption=myEl('myClip').querySelector('[value="cycle"]');
+  myCycleOption.disabled=!myCanCycle;myCycleOption.textContent=myCanCycle?'Full alignment cycle · '+myCycle+' steps':'Alignment too long · choose an excerpt';
+  if(!myCanCycle&&myEl('myClip').value==='cycle')myEl('myClip').value='32';
+  myEl('myExportNote').textContent=(myCanCycle?'':'This orbit aligns after '+myCycle.toLocaleString()+' steps. Export a short excerpt. ')+
+    'WAV includes a one-second sound tail. Sound on/off affects audition only.';
+  myRenderTrace();myRenderScore(true);
+}
+async function myCopyCode() {
+  const myCode=myFullCode();
+  try {if(!navigator.clipboard)throw new Error('Clipboard unavailable');await navigator.clipboard.writeText(myCode);myTell('Full score-generating JavaScript copied.');}
+  catch(myError){myDownload(new Blob([myCode],{type:'text/javascript;charset=utf-8'}),mySafeName()+'-score.js');myTell('Clipboard is unavailable here, so the JavaScript was saved as a file.');}
+}
+function myShuffle() {
+  const myNewSeed=(myProject.seed+1)%1000001;const myRandom=myRng(myNewSeed);
+  myEdit(()=>{myProject.seed=myNewSeed;
+    for(let myLane=0;myLane<4;myLane++){const myT=myProject.tracks[myLane];myT.notes=1+Math.floor(myRandom()*Math.max(1,myT.steps-1));myT.shift=Math.floor(myRandom()*myT.steps);myT.bits=myBuildPattern(myT.steps,myT.notes);myT.painted=false;}
+  });myTell('A new orbit from seed '+myNewSeed+'. Undo brings the previous pattern back.');
+}
+function myWireEvents() {
+  myEl('myPlay').addEventListener('click',()=>myState.playing||myState.starting?myPause():myStart());
+  myEl('myStep').addEventListener('click',myStepOnce);myEl('myRewind').addEventListener('click',myRewind);
+  myEl('mySound').addEventListener('change',()=>myEdit(()=>{myProject.sound=myEl('mySound').checked;},'sound',false));
+  myEl('myPreset').addEventListener('change',()=>{
+    const myChoice=myEl('myPreset').value;if(myChoice==='custom')return;
+    const myData=myMakePreset(myChoice);myData.motion=myProject.motion;myData.sound=myProject.sound;
+    myReplace(myData,'Scene loaded. All four loops are ready.');
+  });
+  myEl('myShuffle').addEventListener('click',myShuffle);myEl('myUndo').addEventListener('click',()=>myHistory(false));myEl('myRedo').addEventListener('click',()=>myHistory(true));
+  for(const myKey of ['bpm','swing','threads','twist']) {
+    const myInput=myEl('my'+myKey[0].toUpperCase()+myKey.slice(1));
+    myInput.addEventListener('input',()=>myEdit(()=>{myProject[myKey]=Number(myInput.value);},myKey,false));
+  }
+  myEl('myArtModes').addEventListener('click',myEvent=>{const myButton=myEvent.target.closest('[data-mode]');if(myButton)myEdit(()=>{myProject.mode=myButton.dataset.mode;},'mode',false);});
+  myEl('myMotion').addEventListener('change',()=>myEdit(()=>{myProject.motion=myEl('myMotion').value;},'motion',false));
+  myMedia.addEventListener('change',()=>{myRenderAll(false);myDraw();});
+  myEl('myName').addEventListener('input',()=>myEdit(()=>{myProject.name=myEl('myName').value;},'name',false));
+  myEl('myTracks').addEventListener('input',myEvent=>{
+    const myTarget=myEvent.target;if(!myTarget.matches('input[data-field]'))return;
+    const myLane=Number(myTarget.dataset.lane),myField=myTarget.dataset.field;
+    myEl('myVal'+myLane+myField).textContent=myField==='midi'?myMidiName(Number(myTarget.value)):myTarget.value;
+  });
+  myEl('myTracks').addEventListener('change',myEvent=>{
+    const myTarget=myEvent.target;if(!myTarget.dataset.field)return;
+    const myLane=Number(myTarget.dataset.lane),myField=myTarget.dataset.field;
+    const myValue=myField==='voice'?myTarget.value:Number(myTarget.value);
+    myEdit(()=>{const myT=myProject.tracks[myLane];myT[myField]=myValue;
+      if(myField==='steps'){myT.notes=Math.min(myT.notes,myT.steps);myT.shift%=myT.steps;}
+      if(myField==='steps'||myField==='notes'){myT.bits=myBuildPattern(myT.steps,myT.notes);myT.painted=false;}
+    });
+  });
+  myEl('myTracks').addEventListener('click',myEvent=>{
+    const myTarget=myEvent.target.closest('[data-action]');if(!myTarget)return;
+    const myLane=Number(myTarget.dataset.lane);
+    if(myTarget.dataset.action==='paint')myPaint(myLane,Number(myTarget.dataset.step));
+    if(myTarget.dataset.action==='mute')myEdit(()=>{myProject.tracks[myLane].enabled=!myProject.tracks[myLane].enabled;});
+  });
+  const myCanvas=myEl('myCanvas');
+  myCanvas.addEventListener('pointermove',myEvent=>{myState.hover=myFindNode(myEvent);if(!myState.playing)myDraw();});
+  myCanvas.addEventListener('pointerleave',()=>{myState.hover=null;if(!myState.playing)myDraw();});
+  myCanvas.addEventListener('click',myEvent=>{const myNode=myFindNode(myEvent);if(myNode)myPaint(myNode.lane,myNode.step);});
+  myEl('myCopyCode').addEventListener('click',myCopyCode);myEl('myPoster').addEventListener('click',myPoster);myEl('myWav').addEventListener('click',myRenderWav);
+  myEl('mySave').addEventListener('click',()=>{myDownload(new Blob([JSON.stringify(myProject,null,2)],{type:'application/json'}),mySafeName()+'.loop-lab.json');myTell('Project saved. Load this JSON file to restore the four loops and artwork settings.');});
+  myEl('myLoad').addEventListener('click',()=>myEl('myFile').click());
+  myEl('myFile').addEventListener('change',async()=>{
+    const myFile=myEl('myFile').files[0];myEl('myFile').value='';if(!myFile)return;
+    try{if(myFile.size>50000)throw new Error('That file is too large for a LOOP / LAB project.');
+      const myData=myValidate(JSON.parse(await myFile.text()));myReplace(myData,'Project loaded. Undo restores the previous one.');
+    }catch(myError){myTell('Project not loaded: '+myError.message);}
+  });
+  document.addEventListener('keydown',myEvent=>{
+    if(myEvent.target.closest('input,select,textarea,button,summary')||myEvent.ctrlKey||myEvent.metaKey||myEvent.altKey)return;
+    if(myEvent.code==='Space'){myEvent.preventDefault();if(!myEvent.repeat)myState.playing?myPause():myStart();}
+    if(myEvent.code==='ArrowRight'){myEvent.preventDefault();if(!myEvent.repeat)myStepOnce();}
+    if(myEvent.code==='KeyR'){myEvent.preventDefault();myRewind();}
+  });
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&(myState.playing||myState.starting))myPause('TAB PAUSED');});
+  window.addEventListener('resize',myDraw);window.addEventListener('pagehide',()=>myPause());
+}
+function myInit() {
+  myProject=myMakePreset('dawn');
+  try{const myInitial=JSON.parse(myEl('myInitialProject').textContent);if(myInitial)myProject=myValidate(myInitial);
+    else{const mySaved=localStorage.getItem(myStorageKey);if(mySaved)myProject=myValidate(JSON.parse(mySaved));}
+  }catch(myError){myTell('Starting with First light. A saved project could not be restored; Save project keeps a separate copy.');}
+  myRenderAll();mySaveLocal();myWireEvents();myDraw();
+  // Small inspection API for this assignment's offline checks and curious learners.
+  window.myLoopLab={get project(){return myClone(myProject);},get tick(){return myState.tick;},get hits(){return myState.hits;},
+    pattern:myBuildPattern,score:myBuildScore,events:myEventsAtTick,cycle:myCycleLength,validate:myValidate,
+    seconds:myTimeAtTick,fullCode:myFullCode,draw:myDraw,rewind:myRewind,pause:myPause};
+}
+myInit();
+
+</script>
+</body>
+</html>
