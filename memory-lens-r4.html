@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#12263b">
   <meta name="description" content="写真の文字・撮影日時・保存された撮影場所を検索する。写真と記録をひとつのファイルに保存して、別の端末でも開けます。">
-  <meta name="memory-lens-version" content="2026-10-04-r2">
+  <meta name="memory-lens-version" content="2026-10-04-r4">
   <title>Memory Lens — 写真の記憶を検索</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2312263b'/%3E%3Crect x='7' y='7' width='18' height='18' rx='4' fill='none' stroke='%238be5ff' stroke-width='2'/%3E%3Ccircle cx='15' cy='15' r='4' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='m18 18 5 5' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
   <style>
@@ -24,6 +24,8 @@
     @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
     .scene-help{font-size:.875rem;color:var(--muted);margin-top:12px;max-width:850px}.scene-row{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:14px}.scene-label{display:inline-block;font-size:.875rem;font-weight:650;border-radius:8px;padding:4px 9px;background:#edf2f7;color:var(--muted)}.scene-label[data-kind="indoor"]{background:#edf1ff;color:#30499e}.scene-label[data-kind="outdoor"]{background:#e1f5f1;color:#176653}.scene-label[data-kind="uncertain"]{background:#fff4db;color:#795a13}.scene-row button{font-size:.875rem;min-height:44px}.scene-detail{padding:16px;background:#f1f6fa;border-radius:10px;margin-top:16px}.scene-detail p{font-size:.875rem;margin:9px 0}.scene-detail button{margin-top:7px}
     .release-stamp{font-size:.875rem;color:var(--muted);margin:0 0 12px}.code-methods{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.code-methods a{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:10px 17px;border-radius:10px;font-weight:650;text-decoration:none;background:#e8eef4;color:var(--ink)}.code-methods a.primary{background:var(--blue);color:white}#codeProgress{white-space:pre-line;margin-top:16px}#codeServerZip{display:inline-block;margin-top:16px;color:var(--blue)}
+    #directReview h3{font-size:1rem;margin-top:18px}#directReview pre{font:inherit;white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow:auto;background:var(--wash);padding:14px;border-radius:10px;margin:8px 0 16px}#detailReread{margin-top:16px}
+    #directProgress{white-space:pre-line;min-height:26px;margin-top:18px}#directError{white-space:pre-line}
     .photo-source-actions{display:grid;gap:12px;margin-top:18px}.photo-source-actions button{min-height:54px}.camera-stage{position:relative;background:#12263b;border-radius:12px;overflow:hidden;aspect-ratio:4/3;margin:16px 0}.camera-stage video{display:block;width:100%;height:100%;object-fit:contain}.camera-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#e8eef4;color:var(--muted);padding:24px;text-align:center}.camera-placeholder[hidden]{display:none}.camera-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.camera-actions button{flex:1 1 140px}.camera-status{color:var(--muted);min-height:26px}#cameraDialog{width:min(620px,calc(100% - 24px))}#cameraDialog .dialog-body{padding-bottom:24px}.camera-note{margin-top:16px;font-size:.875rem;color:var(--muted)}
   </style>
 </head>
@@ -35,14 +37,15 @@
   <main>
     <section class="search-section" aria-labelledby="pageTitle">
       <div class="heading-row"><h1 id="pageTitle">写真の記録を探す</h1><span class="scope">言葉・日時・撮影場所・屋内外で検索</span></div>
-      <p class="release-stamp">版：2026-10-04-r2 · 写真選択・屋内外判定・カメラ修正版</p>
+      <p class="release-stamp">版：2026-10-04-r4 · 文字の向きを確認・細かい文字を読み直し</p>
       <div class="search-wrap"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg><label class="sr-only" for="search">写真名・読み取った文字・撮影場所を検索</label><input id="search" type="search" placeholder="言葉や場所を入力。例：distillation、Vancouver" autocomplete="off"><button id="clearSearch" aria-label="検索語を消す" hidden="">×</button></div>
       <div class="after-search"><span>複数の言葉はスペースで区切れます。</span><button class="quiet" id="openPaste" disabled="">データを貼り付け</button></div>
-      <div class="record-tools"><button id="exportRecords" disabled="">まとめて保存</button><p>写真・文字・撮影場所・予想をひとつのファイルに。ショートカットのtxtも開けます。</p></div>
+      <div class="record-tools"><button class="primary" id="openDirect" disabled="">写真から取り込む</button><button id="exportRecords" disabled="">まとめて保存</button><p>写真・文字・撮影場所・予想をひとつのファイルに。ショートカットのtxtも開けます。</p></div>
       <p class="scene-help">写真を付けて「屋内・屋外を予想」を押すと、景色から予想できます。解析はこの端末内で行い、初回の準備には通信が必要です。プリントや接写では判断が難しいことがあります。</p>
     </section>
     <input class="sr-only" id="fileInput" type="file" accept=".txt,.json,text/plain,application/json" multiple="" aria-label="保存した記録ファイル、またはショートカットのtxt" disabled="">
     <input class="sr-only" id="photoInput" type="file" accept="image/*" aria-label="記録に対応する写真を1枚選択" disabled="">
+    <input class="sr-only" id="directInput" type="file" accept="image/*" multiple="" aria-label="文字を読み取る写真を1〜3枚選択" disabled="">
     <p id="status" role="status" aria-live="polite"></p>
     <div class="workspace">
       <aside class="filters" aria-label="撮影日時と場所で絞り込み">
@@ -57,20 +60,21 @@
       </aside>
       <section aria-label="検索結果">
         <div class="results-toolbar"><h2 class="count" id="count" aria-live="polite">0件<span>の記録</span></h2><div class="sort-wrap"><label for="sort">並び順</label><select id="sort"><option value="newest">新しい順</option><option value="oldest">古い順</option></select></div></div>
-        <div class="result-grid" id="results"><div class="empty"><div class="empty-icon" aria-hidden="true">Aa</div><h2>写真の記録を読み込もう</h2><p>ショートカットのtxt、または「まとめて保存」で作った記録ファイルを開いてください。</p><div class="empty-actions"><button class="primary">記録を開く</button><button>貼り付ける</button><button class="quiet">サンプルで試す</button></div></div></div>
+        <div class="result-grid" id="results"><div class="empty"><div class="empty-icon" aria-hidden="true">Aa</div><h2>写真の記録を読み込もう</h2><p>写真を選んで文字を読み取れます。保存した記録やショートカットのtxtも開けます。</p><div class="empty-actions"><button class="primary">写真から取り込む</button><button>記録を開く</button><button>貼り付ける</button><button class="quiet">サンプルで試す</button></div></div></div>
       </section>
     </div>
     <footer class="foot"><p>読み込んだ文字・写真・撮影場所はサーバーに送りません。「まとめて保存」で端末に保存したファイルを開くと、写真・場所・予想も戻せます。保存していない変更は画面を閉じると失われます。</p><button class="quiet" id="closeData" hidden="" disabled="">データを閉じる</button></footer>
   </main>
+  <dialog id="directDialog" aria-labelledby="directTitle"><div class="dialog-head"><h2 id="directTitle">写真から取り込む</h2><button class="close" data-close-direct="" aria-label="写真の取り込みを閉じる">×</button></div><div class="dialog-body"><p id="directIntro">写真を1〜3枚選ぶと、画像と読み取った文字をまとめて登録します。合計30MBまでです。</p><label for="directLanguage">写真の文字の言語</label><select id="directLanguage" disabled=""><option value="eng">英語</option><option value="jpn">日本語</option><option value="jpn+eng">英語と日本語</option></select><p class="detail-note">写真に写っている言語を選んでください。英語だけ・日本語だけの写真は、その言語を選ぶと読み取りやすくなります。</p><label for="directDirection">文字の向き</label><select id="directDirection" disabled=""><option value="auto">自動で確認する</option><option value="0">このまま読む</option><option value="90">右に90°回して読む</option><option value="180">180°回して読む</option><option value="270">左に90°回して読む</option></select><p class="detail-note">読むためだけに向きを変え、元写真は保ちます。自動では向きの確認に時間がかかることがあります。</p><div class="export-actions"><button class="primary" id="directChoose" disabled="">写真を選ぶ</button><button id="directStop" hidden="">取り込みを中止</button></div><p id="directProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="directError" role="alert"></p><section id="directReview" hidden="" aria-label="文字の読み直し結果"><h3>今の文字</h3><pre id="directBefore"></pre><h3>読み直した文字</h3><pre id="directAfter"></pre><button class="primary" id="directApply" disabled="">この文字で更新</button><p class="detail-note">閉じると今の文字を保ちます。</p></section><p class="detail-note">初回の準備には通信が必要です。写真の文字はこの端末内で読み取ります。写真に残っている撮影日時と位置情報も取り込み、情報がない場合は「不明」にします。</p></div><div class="dialog-footer"><button class="quiet" data-close-direct="">閉じる</button></div></dialog>
   <dialog id="photoSourceDialog" aria-labelledby="photoSourceTitle"><div class="dialog-head"><h2 id="photoSourceTitle">写真を追加</h2><button class="close" data-close-dialog="photoSourceDialog" aria-label="写真の選択を閉じる">×</button></div><div class="dialog-body"><p>保存してある写真を選ぶか、新しく撮影できます。</p><div class="photo-source-actions"><button class="primary" id="photoLibrary">ライブラリから選ぶ</button><button id="photoCamera">カメラで撮る</button></div></div><div class="dialog-footer"><button class="quiet" data-close-dialog="photoSourceDialog">キャンセル</button></div></dialog>
   <dialog id="cameraDialog" aria-labelledby="cameraTitle"><div class="dialog-head"><h2 id="cameraTitle">写真を撮る</h2><button class="close" data-close-dialog="cameraDialog" aria-label="カメラを閉じる">×</button></div><div class="dialog-body"><p class="camera-status" id="cameraStatus" role="status" aria-live="polite"></p><div class="camera-stage"><video id="cameraVideo" autoplay="" muted="" playsinline="" aria-label="撮影する写真のプレビュー"></video><div class="camera-placeholder" id="cameraPlaceholder">映像を準備しています…</div></div><p class="dialog-error" id="cameraError" role="alert"></p><div class="camera-actions"><button class="primary" id="cameraCapture" disabled="">撮影する</button><button id="cameraSwitch">カメラを切り替える</button><button id="cameraRetry">もう一度起動</button><button class="quiet" id="cameraLibrary">写真から選ぶ</button></div><p class="camera-note">カメラを閉じると撮影を停止します。起動できない場合は、カメラアプリで撮った写真を「写真から選ぶ」で追加できます。</p></div></dialog>
   <dialog id="pasteDialog" aria-labelledby="pasteTitle"><div class="dialog-head"><h2 id="pasteTitle">データを貼り付け</h2><button class="close" data-close-dialog="pasteDialog" aria-label="貼り付け画面を閉じる">×</button></div><div class="dialog-body"><p>ショートカットで保存した1枚分のテキストを、そのまま貼り付けてください。撮影場所は空欄でも省略しても読み込めます。</p><label for="paste">写真名・撮影日時・撮影場所・読み取った文字</label><textarea id="paste" spellcheck="false" placeholder="写真名：IMG_0002
 撮影日時：Oct 2, 2026 at 10:08
 撮影場所：
 読み取った文字：ここに写真の文字"></textarea><p class="dialog-error" id="pasteError" role="alert"></p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="pasteDialog">キャンセル</button><button class="primary" id="importPaste" disabled="">読み込む</button></div></dialog>
-  <dialog id="detailDialog" aria-labelledby="detailTitle"><div class="dialog-head"><h2 id="detailTitle"></h2><button class="close" data-close-dialog="detailDialog" aria-label="写真と全文を閉じる">×</button></div><div class="dialog-body"><div id="detailPhoto" hidden=""></div><div class="detail-meta"><div><span>撮影日時</span><strong id="detailDate"></strong></div><div><span>撮影場所（写真の保存情報）</span><strong id="detailLocation"></strong></div><div><span>データの読み込み元</span><strong id="detailSource"></strong></div></div><section class="scene-detail" id="detailScenePanel" aria-label="屋内・屋外の予想" hidden=""><strong id="detailScene"></strong><p id="detailSceneCandidates"></p><button id="detailPredict" disabled="">屋内・屋外を予想</button><p>画像からの予想です。撮影場所の保存情報とは別で、誤ることもあります。</p></section><p class="detail-note">写真から取り出した文字をそのまま表示しています。読み取りには誤字が含まれることがあります。</p><div id="detailText"></div></div></dialog>
+  <dialog id="detailDialog" aria-labelledby="detailTitle"><div class="dialog-head"><h2 id="detailTitle"></h2><button class="close" data-close-dialog="detailDialog" aria-label="写真と全文を閉じる">×</button></div><div class="dialog-body"><div id="detailPhoto" hidden=""></div><div class="detail-meta"><div><span>撮影日時</span><strong id="detailDate"></strong></div><div><span>撮影場所（写真の保存情報）</span><strong id="detailLocation"></strong></div><div><span>データの読み込み元</span><strong id="detailSource"></strong></div></div><button id="detailReread" hidden="" disabled="">文字を読み直す</button><section class="scene-detail" id="detailScenePanel" aria-label="屋内・屋外の予想" hidden=""><strong id="detailScene"></strong><p id="detailSceneCandidates"></p><button id="detailPredict" disabled="">屋内・屋外を予想</button><p>画像からの予想です。撮影場所の保存情報とは別で、誤ることもあります。</p></section><p class="detail-note">写真から取り出した文字をそのまま表示しています。読み取りには誤字が含まれることがあります。</p><div id="detailText"></div></div></dialog>
   <dialog id="exportDialog" aria-labelledby="exportTitle"><div class="dialog-head"><h2 id="exportTitle">写真と記録をまとめて保存</h2><button class="close" data-close-dialog="exportDialog" aria-label="保存画面を閉じる">×</button></div><div class="dialog-body"><p id="exportSummary"></p><p id="exportNote">端末に保存したファイルは、「記録を開く」で読み込めます。写真をまだ付けていなくても、文字・撮影日時・撮影場所は保存できます。</p><p id="exportProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="exportError" role="alert"></p><div class="export-actions"><a class="primary save-link" id="exportDownload" hidden="">ファイルを保存</a><button id="exportShare" hidden="">共有して保存</button></div></div><div class="dialog-footer"><button class="quiet" data-close-dialog="exportDialog">閉じる</button></div></dialog>
-  <dialog id="codeDialog" aria-labelledby="codeTitle"><div class="dialog-head"><h2 id="codeTitle">サイトのコードを保存</h2><button class="close" data-close-dialog="codeDialog" aria-label="コードの保存画面を閉じる">×</button></div><div class="dialog-body"><p>版：2026-10-04-r2 · 写真選択・屋内外判定・カメラ修正版</p><p>iPhoneでは「ZIPを共有して保存」から「ファイルに保存」を選んでください。ZIPを開くと、中にmemory-lens.htmlがあります。</p><p id="codeProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="codeError" role="alert"></p><div class="code-methods"><a class="primary" id="codeZip" hidden="">ZIPを保存</a><button id="codeShare" hidden="">ZIPを共有して保存</button><button id="codePicker" hidden="">HTMLの保存先を選ぶ</button><a id="codeHtml" hidden="">HTMLを保存</a></div><a id="codeServerZip" href="./downloads/memory-lens-2026-10-04-r2.zip" download="memory-lens-2026-10-04-r2.zip" hidden="">ZIPを直接ダウンロード</a><p class="detail-note">保存するのはサイトのコードです。読み込んだ写真・文字・撮影場所は含みません。写真の記録は「まとめて保存」で保存できます。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="codeDialog">閉じる</button></div></dialog>
+  <dialog id="codeDialog" aria-labelledby="codeTitle"><div class="dialog-head"><h2 id="codeTitle">サイトのコードを保存</h2><button class="close" data-close-dialog="codeDialog" aria-label="コードの保存画面を閉じる">×</button></div><div class="dialog-body"><p>版：2026-10-04-r4 · 文字の向きを確認・細かい文字を読み直し</p><p>iPhoneでは「ZIPを共有して保存」から「ファイルに保存」を選んでください。ZIPを開くと、中にmemory-lens.htmlがあります。</p><p id="codeProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="codeError" role="alert"></p><div class="code-methods"><a class="primary" id="codeZip" hidden="">ZIPを保存</a><button id="codeShare" hidden="">ZIPを共有して保存</button><button id="codePicker" hidden="">HTMLの保存先を選ぶ</button><a id="codeHtml" hidden="">HTMLを保存</a></div><a id="codeServerZip" href="./downloads/memory-lens-2026-10-04-r4.zip" download="memory-lens-2026-10-04-r4.zip" hidden="">ZIPを直接ダウンロード</a><p class="detail-note">保存するのはサイトのコードです。読み込んだ写真・文字・撮影場所は含みません。写真の記録は「まとめて保存」で保存できます。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="codeDialog">閉じる</button></div></dialog>
   <script>
     'use strict';
     // CORE START — UIから独立した、テキスト解析と検索の処理。
@@ -220,7 +224,7 @@
       image.onload=()=>{try{const canvas=document.createElement('canvas');canvas.width=224;canvas.height=224;const context=canvas.getContext('2d',{willReadFrequently:true});if(!context)throw new Error('この端末では写真を解析できませんでした。パソコンでも試してください。');context.fillStyle='#fff';context.fillRect(0,0,224,224);context.drawImage(image,0,0,224,224);resolve(MemoryLensScene.tensorFromRgba(context.getImageData(0,0,224,224).data));}catch(error){reject(error);}};image.src=photo.url;
     });}
     function updateSceneDetail(record){
-      $('detailScenePanel').hidden=!record.photo;$('detailScene').textContent=MemoryLensScene.label(record.scene);
+      $('detailReread').hidden=!record.photo;$('detailReread').disabled=state.ioBusy||$('photoInput').disabled||!record.photo;$('detailScenePanel').hidden=!record.photo;$('detailScene').textContent=MemoryLensScene.label(record.scene);
       $('detailSceneCandidates').textContent=record.scene?`シーンの候補：${MemoryLensScene.candidateNames(record.scene)}`:'写真全体の景色から予想します。プリント・スクリーンショット・接写は判断が難しいことがあります。';
       $('detailPredict').textContent=state.sceneTarget===record.id?'解析中…':record.scene?'予想をやり直す':'屋内・屋外を予想';$('detailPredict').disabled=state.ioBusy||$('photoInput').disabled||!record.photo;
     }
@@ -252,6 +256,249 @@
     function locationCount(){return state.records.filter(record=>record.location).length;}
     function matchingRecords(){const filter=criteria();const filtered=state.records.filter(r=>MemoryLensCore.matches(r,filter));const direction=$('sort').value==='oldest'?1:-1;return filtered.sort((a,b)=>{if(!a.date&&!b.date)return 0;if(!a.date)return 1;if(!b.date)return -1;return direction*(a.date.order-b.date.order);});}
     function openFiles(){if(!state.ioBusy)$('fileInput').click();}
+    // READING CORE START — 写真の向きと読み取り方を比較し、元画像は変更しない。
+    const MemoryLensReading=(()=>{
+      function dimensions(width,height){
+        if(!(width>0&&height>0))throw new Error('写真の大きさを取得できませんでした。');
+        const edge=Math.max(width,height),scale=Math.min(2,3180/edge,Math.sqrt(7500000/(width*height)),Math.max(1,1800/edge));
+        return {width:Math.max(1,Math.round(width*scale)),height:Math.max(1,Math.round(height*scale)),border:10};
+      }
+      function candidate(data,angle){
+        if(typeof data?.text!=='string'||data.text.length>2000000)throw new Error('読み取った文字を取得できませんでした。写真を1枚にして試してください。');
+        const count=(data.text.match(/[\p{L}\p{N}]/gu)||[]).length;
+        const confidence=Number.isFinite(data.confidence)?Math.max(0,Math.min(100,data.confidence)):0;
+        const score=count?confidence*(1-Math.exp(-count/24))+Math.min(10,Math.log1p(count)*2):0;
+        return {text:data.text,angle,count,confidence,score};
+      }
+      function readableText(text,language){
+        // 日本語モデルが単語の間へ入れる半角スペースだけを整理する。英語の単語間は保つ。
+        return language.includes('jpn')?text.replace(/([\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]) +(?=[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}])/gu,'$1').trim():text.trim();
+      }
+      function rotated(source,angle,edge=3200){
+        const scale=Math.min(1,edge/Math.max(source.width,source.height)),width=Math.max(1,Math.round(source.width*scale)),height=Math.max(1,Math.round(source.height*scale));
+        const canvas=document.createElement('canvas');canvas.width=angle%180?height:width;canvas.height=angle%180?width:height;
+        try{
+          const context=canvas.getContext('2d');if(!context)throw new Error('この端末では写真の向きを調整できませんでした。');
+          context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);context.imageSmoothingEnabled=true;context.imageSmoothingQuality='high';
+          context.translate(canvas.width/2,canvas.height/2);context.rotate(angle*Math.PI/180);context.drawImage(source,-width/2,-height/2,width,height);return canvas;
+        }catch(error){canvas.width=0;canvas.height=0;throw error;}
+      }
+      const release=canvas=>{if(canvas){canvas.width=0;canvas.height=0;}};
+      async function read(worker,bitmap,{direction='auto',language='eng',wait,check,progress}){
+        const recognize=async(canvas,angle,options={})=>{
+          check();const result=await wait(worker.recognize(canvas,{rotateAuto:true,tessedit_pageseg_mode:'3',thresholding_method:'0',...options},{text:true}));check();return candidate(result?.data,angle);
+        };
+        const auto=direction==='auto',angle=auto?0:Number(direction);
+        if(![0,90,180,270].includes(angle))throw new Error('写真の文字の向きを選び直してください。');
+        let full=angle?rotated(bitmap,angle):bitmap,fullAngle=angle,best;
+        try{
+          progress(auto?'文字の向きを確認して読み取っています…':'選んだ向きで文字を読み取っています…');best=await recognize(full,angle);
+          // はっきり読めた通常の写真は、追加の向き確認を省いて待ち時間を抑える。
+          if(auto&&!(best.confidence>=92&&best.count>=12)){
+            let orientation=best;
+            for(const quarter of [90,180,270]){
+              progress(`文字の向きを確認しています… ${quarter/90+1} / 4`);const probe=rotated(bitmap,quarter,1800);
+              try{const result=await recognize(probe,quarter);if(result.score>orientation.score+2)orientation=result;}finally{release(probe);}
+            }
+            if(orientation.angle){
+              progress('文字が読みやすい向きで、細かい文字を読み取っています…');full=rotated(bitmap,orientation.angle);fullAngle=orientation.angle;
+              const result=await recognize(full,orientation.angle);if(result.score>best.score+2)best=result;
+            }
+          }
+          if(best.confidence<85||best.count<12){
+            progress('文字の区切りや明暗を変えて読み直しています…');
+            // 複数の短い掲示・板書と、照明むらのある紙向けの読み方も比較する。
+            const retry=best.angle===fullAngle?full:best.angle?rotated(bitmap,best.angle):bitmap;
+            try{
+              const result=await recognize(retry,best.angle,{tessedit_pageseg_mode:'11',thresholding_method:'2'});
+              if(result.score>best.score+2&&result.count>=Math.min(12,best.count*.7))best=result;
+            }finally{if(retry!==full&&retry!==bitmap)release(retry);}
+          }
+          return {...best,text:readableText(best.text,language)};
+        }finally{if(full!==bitmap)release(full);}
+      }
+      return {dimensions,candidate,readableText,read,rotated};
+    })();
+    // READING CORE END
+    // DIRECT IMPORT START — 選んだ写真を端末内で読み取り、完了した記録だけ追加する。
+    const directState={task:null,ocrPromise:null,exifPromise:null,hashes:new WeakMap(),recordId:null,review:null};
+    const DIRECT_OCR='https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/';
+    function directCancelled(){const error=new Error('写真の取り込みを中止しました。');error.name='AbortError';return error;}
+    function directCheck(task){if(task.controller.signal.aborted||directState.task!==task)throw directCancelled();}
+    function directWait(promise,task,timeout,lateCleanup){
+      return new Promise((resolve,reject)=>{
+        let settled=false,timer=null;const signal=task.controller.signal;
+        const finish=(fn,value)=>{if(settled)return;settled=true;clearTimeout(timer);signal.removeEventListener('abort',cancel);fn(value);};
+        const cancel=()=>finish(reject,directCancelled());
+        Promise.resolve(promise).then(value=>{if(settled){if(lateCleanup)Promise.resolve().then(()=>lateCleanup(value)).catch(()=>{});}else finish(resolve,value);},error=>finish(reject,error));
+        signal.addEventListener('abort',cancel,{once:true});
+        timer=setTimeout(()=>{const error=new Error('処理に時間がかかっています。通信を確認し、写真を1枚にして試してください。');error.code='DIRECT_TIMEOUT';finish(reject,error);},timeout);
+        if(signal.aborted)cancel();
+      });
+    }
+    function directScript(src,integrity,key){
+      if(window[key])return Promise.resolve(window[key]);
+      return new Promise((resolve,reject)=>{
+        const script=document.createElement('script');script.src=src;script.async=true;script.crossOrigin='anonymous';script.integrity=integrity;
+        const finish=(error)=>{clearTimeout(timer);script.onload=null;script.onerror=null;if(error){script.remove();reject(error);}else resolve(window[key]);};
+        const timer=setTimeout(()=>finish(new Error('読み取りの準備に時間がかかっています。通信を確認して、もう一度試してください。')),45000);
+        script.onload=()=>finish(window[key]?null:new Error('読み取りの準備ができませんでした。もう一度試してください。'));
+        script.onerror=()=>finish(new Error('読み取りに必要なファイルを取得できませんでした。インターネット接続を確認してください。'));
+        document.head.append(script);
+      });
+    }
+    function loadDirectOCR(){
+      if(!directState.ocrPromise)directState.ocrPromise=directScript(DIRECT_OCR+'tesseract.min.js','sha384-r1ru3tcf6FhnCFR4B7pIFG+BhFF9LlFtz/P1y4pblWn3AGs9y3lBx5SKLNf4+rED','Tesseract').catch(error=>{directState.ocrPromise=null;throw error;});
+      return directState.ocrPromise;
+    }
+    function loadDirectExif(){
+      if(!directState.exifPromise)directState.exifPromise=directScript('https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js','sha384-KrOocIA+lZcNUz2MDavnT/FuX+CbTREJihUi0bp8QUSwhE2AkGTNpv2b7yMbBkx5','exifr').catch(error=>{directState.exifPromise=null;throw error;});
+      return directState.exifPromise;
+    }
+    function directMetadata(tags){
+      let dateRaw='不明',location='';
+      const stamp=typeof tags?.DateTimeOriginal==='string'?tags.DateTimeOriginal.trim():'';
+      const match=stamp.match(/^(\d{4}):(\d{2}):(\d{2})[ T](\d{2}):(\d{2}):(\d{2})$/);
+      if(match){const value=`${match[1]}-${match[2]}-${match[3]} ${match[4]}:${match[5]}:${match[6]}`;if(MemoryLensCore.parseDate(value))dateRaw=value;}
+      const latitude=tags?.latitude,longitude=tags?.longitude;
+      if(Number.isFinite(latitude)&&Number.isFinite(longitude)&&Math.abs(latitude)<=90&&Math.abs(longitude)<=180)location=`${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+      return {dateRaw,location};
+    }
+    function directEstimate(records){return records.reduce((size,r)=>size+new Blob([JSON.stringify([r.name,r.dateRaw,r.body,r.location])]).size+(r.photo?Math.ceil(r.photo.blob.size/3)*4+1000:1000),1000);}
+    function directPhotoHash(blob){
+      const subtle=window.crypto?.subtle;if(!subtle)return Promise.resolve(null);
+      if(!directState.hashes.has(blob))directState.hashes.set(blob,blob.arrayBuffer().then(bytes=>subtle.digest('SHA-256',bytes)).then(bytes=>Array.from(new Uint8Array(bytes),value=>value.toString(16).padStart(2,'0')).join('')).catch(()=>{directState.hashes.delete(blob);return null;}));
+      return directState.hashes.get(blob);
+    }
+    function directName(file){return String(file.name||'写真').replace(/[\r\n\u0000-\u001f]/g,' ').replace(/\.[^.]+$/,'').trim().slice(0,200)||'写真';}
+    function directRecord(file,metadata,text,records){
+      const base=directName(file);let name=base,count=1,record;
+      do{record=MemoryLensCore.fromFields(name,metadata.dateRaw,text,metadata.location);name=`${base}（${++count}）`;}while(records.some(item=>item.fingerprint===record.fingerprint));
+      return record;
+    }
+    function directBitmap(photo,task){
+      return new Promise((resolve,reject)=>{
+        const image=new Image();const signal=task.controller.signal;
+        const cleanup=()=>{image.onload=null;image.onerror=null;signal.removeEventListener('abort',cancel);};
+        const cancel=()=>{cleanup();image.src='';reject(directCancelled());};
+        signal.addEventListener('abort',cancel,{once:true});
+        image.onerror=()=>{cleanup();reject(new Error('読み取り用に写真を開けませんでした。JPEGまたはPNGで試してください。'));};
+        image.onload=()=>{cleanup();let canvas=null;try{
+          directCheck(task);const size=MemoryLensReading.dimensions(image.naturalWidth,image.naturalHeight);
+          canvas=document.createElement('canvas');canvas.width=size.width+size.border*2;canvas.height=size.height+size.border*2;
+          const context=canvas.getContext('2d');if(!context)throw new Error('この端末では文字を読み取れませんでした。Safariまたはパソコンでも試してください。');
+          context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);context.imageSmoothingEnabled=true;context.imageSmoothingQuality='high';context.drawImage(image,size.border,size.border,size.width,size.height);resolve(canvas);
+        }catch(error){if(canvas){canvas.width=0;canvas.height=0;}reject(error);}finally{image.src='';}};
+        if(signal.aborted)cancel();else image.src=photo.url;
+      });
+    }
+    function directProgress(task,message){if(directState.task===task&&!task.controller.signal.aborted)$('directProgress').textContent=message;}
+    async function createDirectWorker(runtime,language,task){
+      const promise=new Promise((resolve,reject)=>{
+        Promise.resolve(runtime.createWorker(language,1,{
+          workerPath:DIRECT_OCR+'worker.min.js',corePath:'https://cdn.jsdelivr.net/npm/tesseract.js-core@6.0.0/',legacyCore:false,legacyLang:false,
+          logger:message=>{if(message.status==='recognizing text')directProgress(task,`${task.caption} · ${task.phase||'文字を読み取っています…'} ${Math.round((message.progress||0)*100)}%`);else if(!task.caption)directProgress(task,'読み取りを準備しています… 初回は少し時間がかかります。');},
+          errorHandler:error=>reject(new Error(`読み取りを準備できませんでした。通信を確認してください。${error?.message?' '+error.message:''}`))
+        })).then(resolve,reject);
+      });
+      return directWait(promise,task,150000,worker=>worker.terminate());
+    }
+    function clearDirectReview(){directState.review=null;$('directReview').hidden=true;for(const id of ['directBefore','directAfter'])$(id).textContent='';}
+    function openDirectImport(record=null){
+      if(state.ioBusy||$('directInput').disabled)return;
+      const target=record?.photo?.blob&&state.records.includes(record)?record:null;directState.recordId=target?.id||null;clearDirectReview();
+      $('directTitle').textContent=target?'写真の文字を読み直す':'写真から取り込む';$('directIntro').textContent=target?`${target.name}の写真から読み直します。結果を確認してから文字を更新できます。`:'写真を1〜3枚選ぶと、画像と読み取った文字をまとめて登録します。合計30MBまでです。';
+      $('directChoose').textContent=target?'この写真を読み直す':'写真を選ぶ';
+      $('directError').textContent='';$('directProgress').textContent='文字のある写真で、まず1枚から試してください。';$('directStop').hidden=true;$('directDialog').showModal();
+    }
+    function stopDirectImport(){
+      const task=directState.task;if(!task)return;task.controller.abort();
+      if(task.worker){const worker=task.worker;task.worker=null;Promise.resolve(worker.terminate()).catch(()=>{});}
+    }
+    function closeDirectImport(){stopDirectImport();clearDirectReview();directState.recordId=null;if($('directDialog').open)$('directDialog').close();}
+    function applyDirectReview(){
+      if(state.ioBusy||!directState.review)return;const review=directState.review,record=state.records.find(item=>item.id===review.id);
+      if(!record||record.photo!==review.photo||record.fingerprint!==review.fingerprint){$('directError').textContent='元の記録が変わりました。写真を開いて、もう一度読み直してください。';return;}
+      if(!review.text.trim()){$('directError').textContent='文字が読み取れなかったので、今の文字を保ちます。向きや言語を変えて試してください。';return;}
+      let updated=MemoryLensCore.fromFields(record.name,record.dateRaw,review.text,record.location||''),number=1;
+      while(state.records.some(item=>item!==record&&item.fingerprint===updated.fingerprint))updated=MemoryLensCore.fromFields(`${record.name}（${++number}）`,record.dateRaw,review.text,record.location||'');
+      if(directEstimate(state.records.map(item=>item===record?{...record,...updated}:item))>PACKAGE_LIMIT){$('directError').textContent='更新すると保存できる64MBを超えます。今の記録を先に保存してください。';return;}
+      Object.assign(record,updated);closeDirectImport();render();if(state.detailId===record.id&&$('detailDialog').open)showDetail(record);setStatus('読み取った文字を更新しました。「まとめて保存」で新しい記録を保存してください。');
+    }
+    async function importDirectPhotos(files,target=null){
+      if(state.ioBusy||$('directInput').disabled||!files.length)return;
+      $('directError').textContent='';
+      const valid=files.length<=3&&files.every(file=>file.size>0&&(!file.type||file.type.startsWith('image/'))&&file.name.length<=1000)&&files.reduce((sum,file)=>sum+file.size,0)<=30000000;
+      if(!valid){$('directError').textContent='写真を1〜3枚、合計30MBまでで選んでください。';$('directInput').value='';return;}
+      if(!target&&(state.records.length+files.length>1000||directEstimate(state.records)+files.reduce((sum,file)=>sum+Math.ceil(file.size/3)*4+10000,0)>PACKAGE_LIMIT)){$('directError').textContent='この記録は保存できる上限に近づいています。今の記録を「まとめて保存」し、「データを閉じる」の後で取り込んでください。';$('directInput').value='';return;}
+      const language=$('directLanguage').value||'eng',direction=$('directDirection').value||'auto';clearDirectReview();
+      const task={controller:new AbortController(),worker:null,prepared:[],currentPhoto:null,caption:'',phase:'',committed:false,target,originalPhoto:target?.photo,originalFingerprint:target?.fingerprint};directState.task=task;
+      const errors=[];let duplicates=0,missingDates=0,missingLocations=0;
+      setIOBusy(true);render();$('directStop').hidden=false;directProgress(task,'写真を確認しています…');
+      try{
+        const hashes=new Set();
+        if(!target)for(const record of state.records)if(record.photo?.blob){const hash=await directWait(directPhotoHash(record.photo.blob),task,15000);if(hash)hashes.add(hash);}
+        const incoming=[];
+        for(const file of files){const hash=target?null:await directWait(directPhotoHash(file),task,15000);if(hash&&hashes.has(hash)){duplicates++;continue;}if(hash)hashes.add(hash);incoming.push(file);}
+        let runtime=null,exif=null;
+        if(incoming.length){
+          directProgress(task,'読み取りを準備しています… 初回はインターネット接続が必要です。');
+          [runtime,exif]=await directWait(Promise.all([loadDirectOCR(),target?Promise.resolve(null):loadDirectExif()]),task,50000);
+          task.worker=await createDirectWorker(runtime,language,task);directCheck(task);
+          await directWait(task.worker.setParameters({tessedit_pageseg_mode:'3',user_defined_dpi:'300'}),task,15000);
+        }
+        for(let index=0;index<incoming.length;index++){
+          const file=incoming[index];task.caption=`${index+1} / ${incoming.length}枚 · ${file.name}`;directProgress(task,`${task.caption} · 写真を開いています…`);
+          let canvas=null;
+          try{
+            try{
+              task.currentPhoto=target?task.originalPhoto:await directWait(loadPhoto(file),task,20000,photo=>URL.revokeObjectURL(photo.url));
+              canvas=await directWait(directBitmap(task.currentPhoto,task),task,20000,bitmap=>{bitmap.width=0;bitmap.height=0;});
+            }catch(error){if(error.name==='AbortError'||target)throw error;errors.push(`${file.name}：${error.message}`);if(task.currentPhoto){URL.revokeObjectURL(task.currentPhoto.url);task.currentPhoto=null;}continue;}
+            const tags=target?null:await directWait(Promise.resolve().then(()=>exif.parse(file,{reviveValues:false,xmp:false,icc:false,iptc:false,ifd1:false,pick:['DateTimeOriginal','GPSLatitude','GPSLatitudeRef','GPSLongitude','GPSLongitudeRef']})).catch(()=>null),task,10000).catch(error=>{if(error.name==='AbortError')throw error;return null;});
+            const metadata=directMetadata(tags);directCheck(task);directProgress(task,`${task.caption} · 文字を読み取っています…`);
+            const result=await MemoryLensReading.read(task.worker,canvas,{language,direction,check:()=>directCheck(task),wait:promise=>directWait(promise,task,120000),progress:message=>{task.phase=message;directProgress(task,`${task.caption} · ${message}`);}});directCheck(task);
+            if(target){
+              if(!state.records.includes(target)||target.photo!==task.originalPhoto||target.fingerprint!==task.originalFingerprint)throw new Error('元の写真が変わりました。もう一度開いて試してください。');
+              directState.review={id:target.id,photo:task.originalPhoto,fingerprint:task.originalFingerprint,text:result.text};
+              $('directBefore').textContent=target.body||'文字なし';$('directAfter').textContent=result.text||'文字が読み取れませんでした';$('directReview').hidden=false;$('directApply').hidden=!result.text.trim();
+              directProgress(task,'読み取りが終わりました。今の文字と比べて、よければ「この文字で更新」を押してください。');task.currentPhoto=null;return;
+            }
+            const record=directRecord(file,metadata,result.text,[...state.records,...task.prepared]);
+            task.prepared.push({...record,source:'写真から取り込み',sample:false,photo:task.currentPhoto,scene:null});task.currentPhoto=null;
+            if(!record.date)missingDates++;if(!record.location)missingLocations++;
+          }finally{if(canvas){canvas.width=0;canvas.height=0;}}
+        }
+        directCheck(task);
+        if(directEstimate([...state.records,...task.prepared])>PACKAGE_LIMIT)throw new Error('写真と文字を含めると保存できる64MBを超えます。今の記録を保存し、データを閉じてから試してください。');
+        for(const record of task.prepared)state.records.push({...record,id:`record-${++state.serial}`});task.committed=true;
+        const count=task.prepared.length;
+        const message=`${count}件の写真と文字を追加しました。${duplicates?` 同じ画像${duplicates}枚は追加しませんでした。`:''}${count?` 撮影日時が不明：${missingDates}件・場所が不明：${missingLocations}件。検索の後で「まとめて保存」してください。`:''}`;
+        directProgress(task,message);$('directError').textContent=errors.join('\n');setStatus(errors.length?`${message} ${errors.join(' / ')}`:message,!!errors.length);
+      }catch(error){
+        const cancelled=error.name==='AbortError';const message=cancelled?(target?'読み直しを中止しました。今の文字はそのままです。':'取り込みを中止しました。今回選んだ写真は追加していません。'):`読み取れませんでした。${error.message} 今の記録はそのままです。`;
+        if(directState.task===task){$('directProgress').textContent=cancelled?message:'';$('directError').textContent=cancelled?'':message;setStatus(message,!cancelled);}
+      }finally{
+        task.controller.abort();
+        if(task.worker){const worker=task.worker;task.worker=null;Promise.resolve(worker.terminate()).catch(()=>{});}
+        if(task.currentPhoto&&!target)URL.revokeObjectURL(task.currentPhoto.url);
+        if(!task.committed)for(const record of task.prepared)URL.revokeObjectURL(record.photo.url);
+        if(directState.task===task){directState.task=null;$('directInput').value='';$('directStop').hidden=true;setIOBusy(false);render();const detail=state.records.find(item=>item.id===state.detailId);if(detail&&$('detailDialog').open)updateSceneDetail(detail);}
+      }
+    }
+    function initializeDirectImport(){
+      $('openDirect').addEventListener('click',openDirectImport);
+      $('directChoose').addEventListener('click',()=>{if(state.ioBusy)return;const record=state.records.find(item=>item.id===directState.recordId);if(record?.photo?.blob){importDirectPhotos([record.photo.blob],record);return;}$('directInput').value='';$('directInput').click();});
+      $('detailReread').addEventListener('click',()=>{const record=state.records.find(item=>item.id===state.detailId);if(record?.photo)openDirectImport(record);});
+      $('directApply').addEventListener('click',applyDirectReview);
+      $('directInput').addEventListener('change',event=>importDirectPhotos(Array.from(event.target.files||[])));
+      $('directStop').addEventListener('click',stopDirectImport);
+      for(const button of document.querySelectorAll('[data-close-direct]'))button.addEventListener('click',closeDirectImport);
+      $('directDialog').addEventListener('cancel',event=>{event.preventDefault();closeDirectImport();});
+      $('directDialog').addEventListener('close',()=>{if(!$('directDialog').open){stopDirectImport();clearDirectReview();directState.recordId=null;}});
+      window.addEventListener('pagehide',stopDirectImport);
+    }
+    // DIRECT IMPORT END
     // PHOTO INPUT START — 写真の選択と撮影は、同じ読み込み完了処理を使う。
     let photoSourceId=null;
     const cameraState={epoch:0,recordId:null,stream:null,controller:null,ready:false,capturing:false,facing:'environment'};
@@ -379,7 +626,7 @@
     function render(){
       const filter=criteria(),tokens=MemoryLensCore.queryTokens(filter.query);const invalid=!!(filter.from&&filter.to&&filter.from>filter.to);$('filterError').hidden=!invalid;$('clearSearch').hidden=!$('search').value;$('closeData').hidden=!state.records.length;$('exportRecords').disabled=state.ioBusy||$('photoInput').disabled||!state.records.length;
       const records=matchingRecords();$('count').replaceChildren(document.createTextNode(`${records.length}件`),element('span','',state.records.length?`/ ${state.records.length}件`:'の記録'));const root=$('results');root.replaceChildren();
-      if(!records.length){const empty=element('div','empty');const icon=element('div','empty-icon','Aa');icon.setAttribute('aria-hidden','true');empty.append(icon,element('h2','',state.records.length?'該当する記録がありません':'写真の記録を読み込もう'),element('p','',state.records.length?'検索する言葉や、日時・場所の条件を変えてみてください。':'ショートカットのtxt、または「まとめて保存」で作った記録ファイルを開いてください。'));const actions=element('div','empty-actions');if(!state.records.length){const file=element('button','primary','記録を開く');file.addEventListener('click',openFiles);const paste=element('button','','貼り付ける');paste.addEventListener('click',showPaste);const demo=element('button','quiet','サンプルで試す');demo.addEventListener('click',useDemo);actions.append(file,paste,demo);}else{const clear=element('button','','検索条件をリセット');clear.addEventListener('click',()=>{$('search').value='';resetFilters();});actions.append(clear);}empty.append(actions);root.append(empty);return;}
+      if(!records.length){const empty=element('div','empty');const icon=element('div','empty-icon','Aa');icon.setAttribute('aria-hidden','true');empty.append(icon,element('h2','',state.records.length?'該当する記録がありません':'写真の記録を読み込もう'),element('p','',state.records.length?'検索する言葉や、日時・場所の条件を変えてみてください。':'写真を選んで文字を読み取れます。保存した記録やショートカットのtxtも開けます。'));const actions=element('div','empty-actions');if(!state.records.length){const direct=element('button','primary','写真から取り込む');direct.disabled=state.ioBusy;direct.addEventListener('click',openDirectImport);const file=element('button','','記録を開く');file.addEventListener('click',openFiles);const paste=element('button','','貼り付ける');paste.addEventListener('click',showPaste);const demo=element('button','quiet','サンプルで試す');demo.addEventListener('click',useDemo);actions.append(direct,file,paste,demo);}else{const clear=element('button','','検索条件をリセット');clear.addEventListener('click',()=>{$('search').value='';resetFilters();});actions.append(clear);}empty.append(actions);root.append(empty);return;}
       for(const record of records){
         const card=element('article','record');const top=element('div','record-top');top.append(element('span','record-type',record.photo?'写真と文字':'文字の記録'));if(record.sample)top.append(element('span','sample-tag','サンプル'));const name=element('h3');name.append(highlighted(record.name,tokens));card.append(top,name,element('p','record-date',MemoryLensCore.dateLabel(record)));
         const place=element('p','record-location');place.append(document.createTextNode('撮影場所：'),highlighted(record.location||'不明',tokens));card.append(place);
@@ -389,7 +636,7 @@
       }
     }
     // 保存ファイルは端末のファイルとして持ち運ぶ。画像と記録を同じ配列要素に入れ、名前の一致に頼らない。
-    function setIOBusy(busy){state.ioBusy=busy;for(const id of ['fileInput','photoInput','openPaste','importPaste','closeData'])$(id).disabled=busy;for(const el of document.querySelectorAll('[data-open-file]'))el.disabled=busy;$('exportRecords').disabled=busy||!state.records.length;$('detailPredict').disabled=busy||!state.records.find(record=>record.id===state.detailId)?.photo;}
+    function setIOBusy(busy){state.ioBusy=busy;for(const id of ['fileInput','photoInput','openPaste','importPaste','closeData','openDirect','directInput','directChoose','directLanguage','directDirection','directApply','detailReread'])$(id).disabled=busy;for(const el of document.querySelectorAll('[data-open-file]'))el.disabled=busy;$('exportRecords').disabled=busy||!state.records.length;$('detailPredict').disabled=busy||!state.records.find(record=>record.id===state.detailId)?.photo;}
     function releaseExport(){state.exportEpoch++;if(state.exportUrl)URL.revokeObjectURL(state.exportUrl);state.exportUrl=null;state.exportFile=null;$('exportDownload').hidden=true;$('exportDownload').removeAttribute('href');$('exportShare').hidden=true;}
     function readDataURL(blob){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error('写真を保存用に読み取れませんでした。写真を選び直してください。'));reader.onabort=()=>reject(new Error('写真の読み取りが中断されました。'));reader.readAsDataURL(blob);});}
     function packageName(){const now=new Date(),pad=value=>String(value).padStart(2,'0');return `memory-lens-${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.txt`;}
@@ -468,6 +715,7 @@
     $('exportShare').addEventListener('click',async()=>{const file=state.exportFile;if(!file)return;const button=$('exportShare');button.disabled=true;try{await navigator.share({files:[file]});}catch(error){if(error.name!=='AbortError')$('exportError').textContent='共有画面を開けませんでした。「ファイルを保存」を使ってください。';}finally{button.disabled=false;}});
     $('detailPredict').addEventListener('click',()=>{const record=state.records.find(r=>r.id===state.detailId);if(record)predictEnvironment(record);});
     $('detailDialog').addEventListener('close',()=>{state.detailId=null;$('detailPhoto').replaceChildren();$('detailPhoto').hidden=true;});
+    initializeDirectImport();
     initializePhotoInput();
     window.addEventListener('pagehide',event=>{if(!event.persisted){releaseExport();for(const record of state.records)if(record.photo)URL.revokeObjectURL(record.photo.url);}});
     $('importPaste').addEventListener('click',()=>{if(state.ioBusy)return;try{const before=locationCount();const added=addRecord($('paste').value,'貼り付け');render();$('pasteDialog').close();$('paste').value='';setStatus(added?'1件の写真の記録を読み込みました。':locationCount()>before?'読み込み済みの記録に撮影場所を追加しました。':'同じ記録はすでに読み込まれています。');}catch(error){$('pasteError').textContent=error.message;}});
@@ -482,7 +730,7 @@
       const locations=locationCount()-beforeLocations;const message=`${added}件の記録${photos?`・${photos}枚の写真`:''}${locations?`・${locations}件の撮影場所`:''}を読み込みました。`;setStatus(errors.length?`${message}${errors.join(' / ')}`:`${message}${added===0&&!photos&&!locations?'同じ記録は重複して追加しません。':''}`,errors.length>0);
     });
     // CODE DOWNLOAD START — 起動時のコードだけを保存し、写真や検索結果を含めない。
-    const CODE_RELEASE='2026-10-04-r2';
+    const CODE_RELEASE='2026-10-04-r4';
     const codeState={template:null,epoch:0,htmlFile:null,zipFile:null,urls:[]};
     const CODE_MODEL_MARKER='__MEMORY_LENS_ORIGINAL_MODEL__';
     function initializeCodeDownloads(){
