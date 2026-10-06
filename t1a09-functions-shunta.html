@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>T1A09 Functions by Shunta</title>
+
+  <style>
+    body {
+      background-color: aliceblue;
+      color: navy;
+      font-family: Arial, sans-serif;
+      max-width: 850px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    section {
+      background-color: white;
+      border: 2px solid lightblue;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 8px;
+      margin: 5px 0;
+    }
+
+    .result {
+      background-color: aliceblue;
+      padding: 12px;
+      margin-top: 12px;
+    }
+  </style>
+
+  <script>
+    // Teacher's original example
+    function myExampleFunction() {
+      let myIn01 = parseInt(document.getElementById('myText01').value);
+      let mySum = myIn01 + myIn01;
+      let myReply = myIn01 + ' + ' + myIn01 + ' = ' + mySum;
+      return myReply;
+    }
+
+    // One parameter: receive a number and return its square
+    function mySquare(myNumber) {
+      return myNumber * myNumber;
+    }
+
+    // Two parameters: receive two numbers and return their product
+    function myMultiply(myFirst, mySecond) {
+      return myFirst * mySecond;
+    }
+
+    // Three parameters: calculate the average
+    function myAverage(myFirst, mySecond, myThird) {
+      return (myFirst + mySecond + myThird) / 3;
+    }
+
+    // A decision inside a function
+    function myHealthStatus(myHealth) {
+      if (myHealth <= 0) {
+        return 'Game Over';
+      } else if (myHealth <= 30) {
+        return 'Low health! Find a potion.';
+      } else {
+        return 'Ready to play!';
+      }
+    }
+  </script>
+</head>
+
+<body>
+
+  <h6>Version 0.0.2</h6>
+  <h1>T1A09 Functions by Shunta</h1>
+
+  <a href="https://www.w3schools.com/js/js_functions.asp">
+    JavaScript Functions Reference
+  </a>
+
+  <p>
+    Functions organize reusable chunks of code.
+    Parameters receive information, and return sends a result back.
+  </p>
+
+  <section>
+    <h2>1. Teacher's Original Example</h2>
+
+    <input type="text" id="myText01" value="3">
+    <br>
+
+    <input type="button" value="Function Example" onclick="{
+      document.getElementById('myDiv01').innerHTML = myExampleFunction();
+    }">
+
+    <div id="myDiv01" class="result">...</div>
+  </section>
+
+  <section>
+    <h2>2. One Parameter: Square a Number</h2>
+
+    <label for="mySquareInput">Number:</label>
+    <input type="number" id="mySquareInput" value="4" step="any">
+    <br>
+
+    <input type="button" value="Square" onclick="{
+      let myNumber = parseFloat(document.getElementById('mySquareInput').value);
+      let myAnswer = mySquare(myNumber);
+
+      document.getElementById('mySquareOutput').innerHTML =
+        myNumber + ' squared = ' + myAnswer;
+    }">
+
+    <div id="mySquareOutput" class="result">Your answer appears here.</div>
+  </section>
+
+  <section>
+    <h2>3. Two Parameters: Multiply</h2>
+
+    <label for="myFirstInput">First number:</label>
+    <input type="number" id="myFirstInput" value="6" step="any">
+    <br>
+
+    <label for="mySecondInput">Second number:</label>
+    <input type="number" id="mySecondInput" value="7" step="any">
+    <br>
+
+    <input type="button" value="Multiply" onclick="{
+      let myFirst = parseFloat(document.getElementById('myFirstInput').value);
+      let mySecond = parseFloat(document.getElementById('mySecondInput').value);
+      let myAnswer = myMultiply(myFirst, mySecond);
+
+      document.getElementById('myMultiplyOutput').innerHTML =
+        myFirst + ' × ' + mySecond + ' = ' + myAnswer;
+    }">
+
+    <div id="myMultiplyOutput" class="result">Your answer appears here.</div>
+  </section>
+
+  <section>
+    <h2>4. Three Parameters: Average Score</h2>
+
+    <label for="myScore01">Score 1:</label>
+    <input type="number" id="myScore01" value="80" step="any">
+    <br>
+
+    <label for="myScore02">Score 2:</label>
+    <input type="number" id="myScore02" value="90" step="any">
+    <br>
+
+    <label for="myScore03">Score 3:</label>
+    <input type="number" id="myScore03" value="100" step="any">
+    <br>
+
+    <input type="button" value="Find Average" onclick="{
+      let myFirst = parseFloat(document.getElementById('myScore01').value);
+      let mySecond = parseFloat(document.getElementById('myScore02').value);
+      let myThird = parseFloat(document.getElementById('myScore03').value);
+      let myAnswer = myAverage(myFirst, mySecond, myThird);
+
+      document.getElementById('myAverageOutput').innerHTML =
+        'Average score = ' + myAnswer;
+    }">
+
+    <div id="myAverageOutput" class="result">Your answer appears here.</div>
+  </section>
+
+  <section>
+    <h2>5. Game Health: Function with Decisions</h2>
+
+    <label for="myHealthInput">Player health:</label>
+    <input type="number" id="myHealthInput" value="100">
+    <br>
+
+    <input type="button" value="Check Health" onclick="{
+      let myHealth = parseFloat(document.getElementById('myHealthInput').value);
+
+      document.getElementById('myHealthOutput').innerHTML =
+        myHealthStatus(myHealth);
+    }">
+
+    <div id="myHealthOutput" class="result">Your status appears here.</div>
+  </section>
+
+  <a href="index.html">Back to Home</a>
+
+</body>
+</html>
