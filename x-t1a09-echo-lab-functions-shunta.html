@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1114">
+<title>ECHO / LAB — Functions by Shunta</title>
+<style>:root{color-scheme:dark;--bg:#0b1114;--panel:#11191d;--ink:#eff3e9;--muted:#91a29f;--line:#293b3d;--mint:#c6f7a0;--accent:#8fe4c7;--orange:#edb891}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5;background-image:radial-gradient(ellipse at 15% 0%,#19333280,transparent 35%),radial-gradient(ellipse at 90% 35%,#24222f50,transparent 45%)}button,input,select{font:inherit}button,a,input,select{touch-action:manipulation}button{cursor:pointer;color:inherit;background:none;border:1px solid var(--line);border-radius:5px;padding:8px 13px;transition:background .15s,border-color .15s}button:hover{background:#263b39;border-color:#719b8f}button:disabled{cursor:wait;opacity:.6}a{color:inherit;text-decoration:none}a:hover{color:var(--mint)}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,pre:focus-visible{outline:2px solid var(--mint);outline-offset:4px}input[type=range]{accent-color:var(--mint);cursor:pointer;height:22px;max-width:100%}select,input[type=text]{background:#162327;border:1px solid #405550;color:var(--ink);border-radius:4px;padding:8px;max-width:100%}.masthead{max-width:1420px;margin:auto;padding:26px 40px 24px;display:flex;align-items:center;gap:28px;border-bottom:1px solid var(--line)}.wordmark{font-size:24px;font-weight:bold;letter-spacing:-1px;display:flex;align-items:center}.mark{width:38px;height:38px;background:var(--mint);color:#15271c;display:inline-grid;place-content:center;border-radius:50%;font-size:33px;margin-right:12px}.slash{color:var(--mint);margin:0 6px}.edition{font:10px/1.7 monospace;letter-spacing:1px;color:var(--muted)}.header-link{margin-left:auto;font-size:12px}.header-link span{color:var(--mint);margin-left:12px}main{max-width:1420px;margin:auto;padding:0 40px}.intro{display:flex;align-items:center;justify-content:space-between;padding:44px 0 32px;gap:20px}.eyebrow,.label,.tiny{font-family:monospace;letter-spacing:1.1px}.eyebrow{font-size:10px;color:var(--accent);margin:0 0 12px}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--mint);margin-right:8px}h1{font-size:clamp(38px,5vw,66px);font-weight:500;letter-spacing:-3px;line-height:1.04;margin:0}h1 span{color:var(--mint)}.intro-copy{font-size:13px;line-height:1.8;color:var(--muted);margin:14px 0 0}.intro-copy em{color:var(--ink)}.label{font-size:10px;color:#a9bcb5}.tiny{font-size:9px;color:var(--muted)}.preset-line{display:flex;align-items:center;gap:22px;margin:4px 0 17px;flex-wrap:wrap}.presets{display:flex;gap:5px;flex-wrap:wrap}.presets button{font-size:12px;border-color:transparent;padding:7px 13px;color:var(--muted)}.presets button.active{border-color:#83b080;color:var(--mint);background:#20322c}.text-button{border:0;padding:5px 0;font-size:11px;white-space:nowrap;color:var(--mint)}.preset-line>.text-button{margin-left:auto}.instrument{display:grid;grid-template-columns:minmax(0,1fr) 310px;border:1px solid #364b49;border-radius:10px;overflow:hidden;background:var(--panel)}.stage-column{min-width:0}.stage{position:relative;height:460px;background:#0a1418;overflow:hidden;touch-action:none}.stage canvas{display:block;width:100%;height:100%}.stage-heading{position:absolute;top:27px;left:28px;pointer-events:none}.stage-heading p{margin:0 0 8px}.stage-heading h2{font-size:clamp(24px,3vw,39px);font-weight:500;letter-spacing:2px;line-height:1.2;margin:0 0 7px;overflow-wrap:anywhere;max-width:80vw}.stage-heading>p:last-child{color:var(--muted);font-size:11px;letter-spacing:0;max-width:90%}.stage-bottom{position:absolute;left:28px;right:24px;bottom:20px;display:flex;justify-content:space-between;align-items:center;gap:10px;font:9px monospace;color:#a9c3bc;letter-spacing:1px}.view-buttons{display:flex;gap:4px}.view-buttons button{font:10px Arial;letter-spacing:0;border-radius:16px;padding:5px 10px;background:#0c171ba0}.view-buttons .active{background:#c6f7a0;color:#14271c;border-color:#c6f7a0}.controls{padding:23px 24px;border-left:1px solid var(--line);background:linear-gradient(145deg,#1b2929,#131c20)}.control-heading{display:flex;justify-content:space-between;gap:10px;margin-bottom:19px}.control-heading .tiny{font-size:8px;letter-spacing:.7px}.control-heading.second{margin:20px 0 13px;padding-top:16px;border-top:1px solid var(--line)}.dial-label{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12px;line-height:1.5;margin:11px 0 0}.dial-label output{color:var(--mint);font:11px monospace}.dial{width:100%;margin:4px 0 0}.hint{font-size:10px;line-height:1.6;color:var(--muted);margin:2px 0 8px}.twin-control{display:grid;grid-template-columns:1fr 1fr;gap:17px}.twin-control>div{min-width:0}.twin-control select{width:100%;padding:5px;margin-top:7px;font-size:11px}.transport{display:flex;align-items:center;gap:12px;padding:16px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.play-button{background:var(--mint);color:#152419;border-color:var(--mint);font-weight:bold;white-space:nowrap;font-size:12px;padding:10px 15px}.play-button:hover{background:#e3ffce;color:#152419}.play-button span:first-child{margin-right:5px}.icon-button{padding:8px 10px;border:0;color:#b1c6bb}.transport-meter{flex:1;min-width:30px}.transport-meter>span{font:8px monospace;letter-spacing:1px;color:var(--muted)}.progress-track{height:3px;background:#283935;margin-top:6px}.progress-track i{height:100%;display:block;background:var(--mint);width:0}.volume{display:flex;align-items:center;gap:5px;font:9px monospace}.volume input{width:63px;margin:0}.volume output{width:24px;text-align:right;color:#bdcfbd}.keys-caption{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 24px 10px}.keys-caption>span:last-child{font-size:9px;color:var(--muted)}.keys{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px;padding:0 23px}.keys button{background:linear-gradient(180deg,#dfe9da,#a9bfac);color:#19261f;border:0;border-bottom:5px solid #839989;height:62px;padding:7px 2px 3px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;border-radius:3px}.keys button span{font-size:13px}.keys button small{font:9px monospace;color:#506857}.keys button.active{background:var(--mint);transform:translateY(2px);border-bottom-width:3px}.small-note{font-size:9px;color:var(--muted);margin:10px 24px 14px}.composition{display:grid;grid-template-columns:.9fr 1.1fr;border:1px solid var(--line);border-radius:9px;margin-top:18px;background:#111a1d}.harmonic-section,.phrase-section{padding:22px 24px;min-width:0}.phrase-section{border-left:1px solid var(--line)}.section-caption{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:18px}.section-caption .tiny{font-size:8px;letter-spacing:.7px}.harmonics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px}.harmonic{position:relative;text-align:center;border-right:1px solid #233a34;padding-right:6px}.harmonic:last-child{border-right:none}.harmonic label{font:9px monospace;color:var(--muted)}.harmonic strong{display:block;color:var(--ink);font:16px monospace;margin:2px 0}.harmonic input{display:block;width:100%;height:22px;margin:8px 0}.harmonic output{font:9px monospace;color:var(--mint)}.harmonic-bar{height:35px;display:flex;align-items:flex-end;justify-content:center;margin:6px 0}.harmonic-bar i{display:block;width:22px;min-height:2px;border-radius:3px 3px 0 0;background:linear-gradient(0deg,#31594f,var(--accent))}.wave-presets{display:flex;gap:6px;margin-top:16px}.wave-presets button{font-size:10px;padding:5px 12px;border-radius:20px}.note-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px}.note-step{border:1px solid #33453f;background:#1b2828;border-radius:5px;min-width:0;text-align:center;padding:8px 3px 4px;transition:background .1s}.note-step label{font:9px monospace;color:var(--muted)}.note-step strong{font:14px monospace;color:var(--ink);display:block;margin:9px 0 2px}.note-step select{width:100%;padding:3px 0;border:0;font-size:10px;background:transparent;text-align:center;color:var(--muted)}.note-step.active{background:#416c4c;border-color:var(--mint)}.phrase-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:17px}.phrase-bottom>span{font:9px/1.5 monospace;color:var(--muted)}.settings-line{display:flex;align-items:center;flex-wrap:wrap;gap:15px;border-bottom:1px solid var(--line);padding:18px 0 15px}.view-settings{display:flex;align-items:center;gap:9px;font-size:10px}.view-settings select{font-size:10px;padding:5px;width:131px}.view-settings input{width:70px;margin:0}.file-actions{display:flex;gap:6px;margin-left:auto}.file-actions button{font-size:10px;padding:6px 10px}.save-note{font-size:9px;color:var(--muted);margin:8px 0}.notice{font-size:11px;color:var(--mint);min-height:20px;margin:7px 0 0}.function-lab{margin:70px 0 45px;scroll-margin-top:25px}.lab-intro{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:25px}.lab-intro h2{font-weight:400;font-size:43px;letter-spacing:-1.8px;line-height:1.1;margin:0}.lab-intro h2 span{color:var(--mint)}.lab-intro>p{color:var(--muted);font-size:12px;line-height:1.9;max-width:370px}.pipeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:7px;overflow:hidden;margin-bottom:16px}.pipeline button{text-align:left;border:0;border-radius:0;background:#152022;padding:17px 20px}.pipeline button>span{font:8px monospace;color:var(--muted);letter-spacing:1px}.pipeline strong{font:15px monospace;display:block;margin:8px 0}.pipeline output{font:10px monospace;color:var(--mint)}.pipeline button:hover,.pipeline button.active{background:#233b33}.explorer{display:grid;grid-template-columns:290px minmax(0,1fr);border:1px solid var(--line);border-radius:7px;background:#121c1f;overflow:hidden}.function-menu{padding:24px;border-right:1px solid var(--line)}.function-menu select{display:block;width:100%;font:12px monospace;margin:11px 0 23px}.return-panel{margin:20px 0 14px;padding:13px;background:#253932;border-left:2px solid var(--mint)}.return-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.8 monospace;color:#d0efbc;margin:9px 0 0}.code-panel{min-width:0}.code-heading{display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line);padding:14px 20px;font:11px monospace}.code-panel>pre{margin:0;padding:24px;font:12px/1.8 monospace;color:#bfdfd0;overflow:auto;max-height:375px;tab-size:2}.foundation{border:1px solid var(--line);border-radius:7px;margin-top:18px}.foundation summary{display:flex;justify-content:space-between;align-items:center;padding:17px 20px;cursor:pointer;font-size:12px;gap:15px}.foundation summary::after{content:'+';color:var(--mint)}.foundation[open] summary::after{content:'−'}.foundation-content{display:grid;grid-template-columns:1fr 1.4fr;border-top:1px solid var(--line);padding:20px;gap:25px}.foundation-content>div{font-size:11px}.foundation-content>div p{color:var(--muted);margin:0 0 16px}.foundation-content input[type=text]{width:55px;margin:0 8px}.foundation-content input[type=button]{padding:8px;background:var(--mint);color:#17251b;border:0;border-radius:4px;cursor:pointer;font-size:11px}.teacher-output{margin-top:14px;padding:10px;background:#22352e;color:var(--mint)}.foundation-content pre{font:10px/1.7 monospace;overflow:auto;margin:0;color:#a9cbbb}footer{display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--line);padding:24px 0 30px;font:9px monospace;color:var(--muted)}footer>a{color:var(--mint)}
+@media(min-width:1250px){.stage{height:500px}.controls{padding:26px 27px}.control-heading.second{margin-top:24px}.hint{margin-bottom:13px}}
+@media(max-width:1000px){main{padding:0 24px}.masthead{padding:22px 24px}.instrument{grid-template-columns:minmax(0,1fr) 270px}.controls{padding:20px 18px}.stage{height:480px}.transport{padding:14px;gap:8px}.volume input{width:43px}.keys{padding:0 15px}.composition{grid-template-columns:1fr}.phrase-section{border-left:0;border-top:1px solid var(--line)}.file-actions{margin-left:0}.settings-line>.tiny{margin-left:auto}}
+@media(max-width:740px){.masthead{padding:17px 18px;gap:16px}.wordmark{font-size:19px}.mark{width:31px;height:31px;font-size:28px;margin-right:8px}.edition{font-size:8px;letter-spacing:.5px}.header-link{display:none}main{padding:0 16px}.intro{padding:30px 0 24px;display:block}.intro-copy{margin-top:17px;font-size:12px}h1{font-size:45px;letter-spacing:-2px}.preset-line{gap:10px}.preset-line>.label{width:100%}.presets{gap:0}.presets button{padding:7px 9px;font-size:10px}.preset-line>.text-button{margin-left:0}.instrument{grid-template-columns:1fr}.stage{height:350px}.stage-heading{top:21px;left:20px}.stage-heading h2{font-size:27px}.stage-heading>p:last-child{font-size:10px;max-width:270px}.stage-bottom{left:18px;right:16px;bottom:14px;font-size:8px;letter-spacing:.4px}.view-buttons button{font-size:9px;padding:5px 8px}.controls{border-left:0;border-top:1px solid var(--line);padding:23px}.transport{padding:14px 12px;gap:6px}.play-button{padding:10px 10px;font-size:11px}.transport-meter>span{font-size:7px;letter-spacing:0}.volume{gap:3px;font-size:8px}.volume input{width:35px}.volume output{display:none}.keys-caption{padding:16px 14px 10px}.keys-caption .label{font-size:9px}.keys-caption>span:last-child{font-size:8px}.keys{padding:0 13px;gap:4px}.keys button span{font-size:12px}.small-note{margin-left:14px;margin-right:14px;line-height:1.6}.harmonic-section,.phrase-section{padding:19px 15px}.section-caption{gap:8px;flex-wrap:wrap}.section-caption .label{font-size:9px}.note-grid{gap:4px}.note-step{padding:7px 0 4px}.note-step strong{font-size:11px}.note-step select{font-size:8px}.phrase-bottom>span{font-size:8px;max-width:75%}.harmonic strong{font-size:14px}.harmonic input{margin:5px 0}.settings-line{gap:10px;padding-top:16px}.settings-line>.tiny{width:100%;margin:0;font-size:8px}.view-settings{width:100%;gap:8px}.file-actions{width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.file-actions button{font-size:10px;padding:7px 5px}.function-lab{margin-top:47px}.lab-intro{display:block}.lab-intro h2{font-size:37px}.lab-intro>p{font-size:11px;margin-top:18px}.pipeline{grid-template-columns:1fr 1fr}.pipeline button{padding:14px}.pipeline strong{font-size:13px}.explorer{grid-template-columns:1fr}.function-menu{border-right:0;border-bottom:1px solid var(--line);padding:19px}.function-menu select{margin-bottom:15px}.code-panel>pre{font-size:10px;padding:17px;max-height:300px}.foundation summary{flex-wrap:wrap;padding:15px;font-size:11px;gap:6px}.foundation summary .tiny{font-size:8px}.foundation-content{grid-template-columns:1fr;padding:16px;gap:19px}.foundation-content pre{font-size:9px}footer{align-items:flex-start;flex-direction:column;gap:12px;padding:21px 0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <a class="wordmark" href="#top" aria-label="Echo Lab home"><span class="mark">≋</span> ECHO<span class="slash">/</span>LAB</a>
+  <span class="edition">X T1A09 · FUNCTIONS<br>DESIGNED BY SHUNTA / 2026</span>
+  <a class="header-link" href="#functions">Inside the functions <span>↗</span></a>
+</header>
+<main id="top">
+  <div class="intro"><div><p class="eyebrow"><span class="dot"></span> A SMALL EXPERIMENT IN SOUND</p><h1>Sculpt a sound<span>.</span></h1></div><p class="intro-copy">Six waves. Eight notes. Endless character.<br>Make something you can hear <em>and</em> see.</p></div>
+  <div class="preset-line"><span class="label">START WITH A FEELING</span><div class="presets" role="group" aria-label="Sound presets">
+    <button data-preset="AFTERGLOW" class="active" aria-pressed="true">01 Afterglow</button>
+    <button data-preset="GLASSHOUSE" aria-pressed="false">02 Glasshouse</button>
+    <button data-preset="NIGHTDRIVE" aria-pressed="false">03 Nightdrive</button>
+    <button data-preset="MOONPOOL" aria-pressed="false">04 Moonpool</button>
+  </div><button id="myRandom" class="text-button">Surprise me ↗</button></div>
+
+  <section class="instrument" aria-label="Sound instrument">
+    <div class="stage-column">
+      <div class="stage" id="myStage"><canvas id="myCanvas" aria-label="A wave sculpture made from your current harmonic mix"></canvas>
+        <div class="stage-heading"><p class="label">YOUR SIGNAL / LIVE SCULPTURE</p><h2 id="myPatchName">AFTERGLOW</h2><p id="myPatchDescription">Warm tones, a soft edge, a little room to breathe.</p></div>
+        <div class="stage-bottom"><span>DRAG TO ROTATE</span><div class="view-buttons" role="group" aria-label="Sculpture view"><button data-view="ribbon" class="active" aria-pressed="true">Ribbon</button><button data-view="orbit" aria-pressed="false">Orbit</button><button data-view="contour" aria-pressed="false">Contour</button></div></div>
+      </div>
+      <div class="transport"><button id="myPlay" class="play-button"><span id="myPlayIcon">▶</span> <span id="myPlayLabel">Play phrase</span></button><button id="myStop" class="icon-button" aria-label="Stop all sound">■</button><div class="transport-meter"><span id="myAudioStatus">READY / CLICK PLAY TO HEAR IT</span><div class="progress-track"><i id="myProgress"></i></div></div><label class="volume"><span>VOL</span><input id="myVolume" type="range" min="0" max="0.65" step="0.01" value="0.4" aria-label="Volume"><output id="myVolumeLabel">40%</output></label></div>
+      <div class="keys-caption"><span class="label">PLAY IT YOURSELF</span><span>Click a key, or use A S D F G H J K</span></div>
+      <div id="myKeys" class="keys" role="group" aria-label="Eight playable notes"></div>
+      <p class="small-note">Sound starts only when you play. Changing a setting stops the old phrase.</p>
+    </div>
+    <aside class="controls" aria-label="Sound controls">
+      <div class="control-heading"><span class="label">01 / SHAPE THE VOICE</span><span class="tiny">PARAMETERS IN</span></div>
+      <label class="dial-label" for="myBrightness"><span>Brightness</span><output id="myBrightnessLabel">75%</output></label><input class="dial" id="myBrightness" type="range" min="0" max="1" step="0.01" value=".75"><p class="hint">Bring the higher harmonics forward.</p>
+      <label class="dial-label" for="myDrive"><span>Edge</span><output id="myDriveLabel">10%</output></label><input class="dial" id="myDrive" type="range" min="0" max="1" step="0.01" value=".1"><p class="hint">Round waves become fuller, sharper shapes.</p>
+      <div class="twin-control"><div><label class="dial-label" for="myAttack"><span>Attack</span><output id="myAttackLabel">15 ms</output></label><input class="dial" id="myAttack" type="range" min="0" max="1" step="0.01" value=".06"></div><div><label class="dial-label" for="myRelease"><span>Release</span><output id="myReleaseLabel">1.25 s</output></label><input class="dial" id="myRelease" type="range" min=".2" max="2.4" step=".01" value="1.25"></div></div>
+      <div class="control-heading second"><span class="label">02 / GIVE IT SPACE</span><span class="tiny">STEREO ECHO</span></div>
+      <label class="dial-label" for="myEcho"><span>Echo distance</span><output id="myEchoLabel">280 ms</output></label><input class="dial" id="myEcho" type="range" min=".08" max=".55" step=".01" value=".28">
+      <label class="dial-label" for="myFeedback"><span>Echo strength</span><output id="myFeedbackLabel">36%</output></label><input class="dial" id="myFeedback" type="range" min="0" max=".65" step=".01" value=".36"><p class="hint">Four reflections bounce from left to right.</p>
+      <div class="control-heading second"><span class="label">03 / SET THE PACE</span></div>
+      <div class="twin-control"><div><label class="dial-label" for="myRoot">Root note</label><select id="myRoot" aria-label="Root note"></select></div><div><label class="dial-label" for="myBpm"><span>Tempo</span><output id="myBpmLabel">108</output></label><input class="dial" id="myBpm" type="range" min="60" max="150" step="1" value="108"></div></div>
+    </aside>
+  </section>
+
+  <section class="composition" aria-label="Harmonics and phrase editor">
+    <div class="harmonic-section"><div class="section-caption"><span class="label">04 / MIX SIX HARMONICS</span><span class="tiny">ONE NOTE, SIX FREQUENCIES</span></div><div id="myHarmonics" class="harmonics"></div><div class="wave-presets" role="group" aria-label="Harmonic recipes"><button data-wave="pure">Pure</button><button data-wave="velvet">Velvet</button><button data-wave="prism">Prism</button><button data-wave="pulse">Pulse</button></div></div>
+    <div class="phrase-section"><div class="section-caption"><span class="label">05 / WRITE YOUR PHRASE</span><span class="tiny">8 NOTES / CHANGE ANY STEP</span></div><div id="myNotes" class="note-grid"></div><div class="phrase-bottom"><span id="mySequenceLabel">C4 → G4 → C5 → G4 → D♯4 → A♯4 → D♯5 → C5</span><button id="myReverse" class="text-button">Reverse ↔</button></div></div>
+  </section>
+
+  <div class="settings-line"><div class="view-settings"><label for="myMotion">Motion</label><select id="myMotion"><option value="auto">Follow device</option><option value="on">On for this page</option><option value="off">Still</option></select><label for="myRotation">View</label><input id="myRotation" type="range" min="-1.6" max="1.6" step=".02" value=".4" aria-label="Rotate wave sculpture"></div><span id="myMotionNote" class="tiny">DEVICE PREFERENCE RESPECTED</span><div class="file-actions"><button id="mySaveWav">↓ WAV</button><button id="mySavePng">↓ Artwork</button><button id="mySavePatch">↓ Patch</button><button id="myLoadPatch">↑ Patch</button><input id="myPatchFile" type="file" accept=".json,application/json" hidden></div></div>
+  <p class="save-note" id="mySaveNote">Your patch is saved on this browser. Export a patch to keep a portable copy.</p>
+  <p id="myNotice" class="notice" role="status" aria-live="polite">Try Glasshouse, then turn the echo up. Or make your own.</p>
+
+  <section id="functions" class="function-lab">
+    <div class="lab-intro"><div><p class="eyebrow">THE IDEA BEHIND THE INSTRUMENT</p><h2>Values in.<br><span>Feeling out.</span></h2></div><p>A function is a named piece of reusable code.<br>This instrument passes numbers, arrays, and objects between functions. The returned values become sound.</p></div>
+    <div class="pipeline" aria-label="Functions used to generate the phrase">
+      <button data-function="mySequence"><span>01 / ARRAY IN</span><strong>mySequence()</strong><output id="myTraceSequence">8 notes</output></button>
+      <button data-function="myFrequency"><span>02 / NUMBER IN</span><strong>myFrequency()</strong><output id="myTraceFrequency">261.63 Hz</output></button>
+      <button data-function="myWave"><span>03 / SHAPE IN</span><strong>myWave()</strong><output id="myTraceWave">One sample</output></button>
+      <button data-function="myEcho"><span>04 / AUDIO IN</span><strong>myEcho()</strong><output id="myTraceEcho">Stereo object</output></button>
+    </div>
+    <div class="explorer"><div class="function-menu"><label class="label" for="myFunctionSelect">INSPECT A REAL FUNCTION</label><select id="myFunctionSelect"></select><label class="dial-label" for="myPhase"><span>Test phase</span><output id="myPhaseLabel">0.50 π</output></label><input id="myPhase" class="dial" type="range" min="0" max="2" step=".01" value=".5"><p class="hint">Changes the test input to myWave(). It does not change the audio.</p><div class="return-panel"><span class="label">CALL → RETURN</span><pre id="myFunctionReturn"></pre></div><p id="myFunctionExplain" class="hint"></p></div><div class="code-panel"><div class="code-heading"><span id="myCodeTitle">myWave()</span><button id="myCopyCode" class="text-button">Copy function ↗</button></div><pre tabindex="0"><code id="myCode"></code></pre></div></div>
+    <details class="foundation" open><summary><span>Teacher's foundation / T1A09</span><span class="tiny">THE ORIGINAL FUNCTION EXAMPLE</span></summary><div class="foundation-content"><div><p>Read a number, add it to itself, return the reply.</p><label for="myText01">Input</label><input type="text" id="myText01" value="3"><input type="button" id="myTeacherButton" value="Function Example" onclick="document.getElementById('myDiv01').innerHTML = myExampleFunction()"><div id="myDiv01" class="teacher-output">...</div></div><pre><code>function myExampleFunction() {
+  let myIn01 = parseInt(document.getElementById('myText01').value);
+  let mySum = myIn01 + myIn01;
+  let myReply = myIn01 + ' + ' + myIn01 + ' = ' + mySum;
+  return myReply;
+}</code></pre></div></details>
+  </section>
+  <footer><a href="index.html">← Back to Home</a><span>ECHO / LAB · X T1A09 Functions by Shunta</span><span>ALL SOUND & ART GENERATED BY CODE</span></footer>
+</main>
+<script>'use strict';
+
+/* ECHO / LAB — functions take values in and return new values.
+   These same functions build the sound you hear and the WAV you export.
+   No recordings, external audio files, or libraries are used. */
+
+function myClamp(myValue, myMin, myMax) {
+  return Math.min(myMax, Math.max(myMin, myValue));
+}
+
+function myFrequency(myMidi) {
+  return 440 * Math.pow(2, (myMidi - 69) / 12);
+}
+
+function myNoteName(myMidi) {
+  let myNames = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
+  return myNames[myMidi % 12] + (Math.floor(myMidi / 12) - 1);
+}
+
+function mySequence(myRoot, myOffsets) {
+  return myOffsets.map(function (myOffset) { return myRoot + myOffset; });
+}
+
+function mySpectrum(myHarmonics, myBrightness) {
+  let myWeights = myHarmonics.map(function (myLevel, myIndex) {
+    return myLevel * Math.exp(-myIndex * (1 - myBrightness) * 1.5);
+  });
+  let myTotal = myWeights.reduce(function (mySum, myLevel) { return mySum + myLevel; }, 0);
+  return myWeights.map(function (myLevel) { return myTotal > 0 ? myLevel / myTotal : 0; });
+}
+
+function myWave(myPhase, mySpectrum, myDrive) {
+  let myValue = 0;
+  for (let myIndex = 0; myIndex < mySpectrum.length; myIndex++) {
+    myValue += Math.sin(myPhase * (myIndex + 1)) * mySpectrum[myIndex];
+  }
+  let myStrength = 1 + myDrive * 4;
+  return Math.tanh(myValue * myStrength) / Math.tanh(myStrength);
+}
+
+function myEnvelope(myTime, myAttack, myRelease) {
+  let myEnd = myAttack + myRelease;
+  if (myTime < 0 || myTime >= myEnd) return 0;
+  if (myTime < myAttack) return myTime / myAttack;
+  let myProgress = (myTime - myAttack) / myRelease;
+  return Math.exp(-5 * myProgress) * Math.pow(1 - myProgress, 0.5);
+}
+
+function myRenderVoice(myMidi, myPatch, myRate) {
+  let myFrequencyHz = myFrequency(myMidi);
+  let mySpectrumValues = mySpectrum(myPatch.harmonics, myPatch.brightness);
+  // Exclude harmonics above the Nyquist frequency.
+  mySpectrumValues = mySpectrumValues.map(function (myLevel, myIndex) {
+    return myFrequencyHz * (myIndex + 1) < myRate / 2 ? myLevel : 0;
+  });
+  let myAttack = 0.006 + myPatch.attack * 0.15;
+  let myDuration = myAttack + myPatch.release;
+  let mySamples = new Float32Array(Math.ceil(myDuration * myRate));
+  let myPhaseStep = 2 * Math.PI * myFrequencyHz / myRate;
+  for (let myIndex = 0; myIndex < mySamples.length; myIndex++) {
+    let myTime = myIndex / myRate;
+    mySamples[myIndex] = myWave(myIndex * myPhaseStep, mySpectrumValues, myPatch.drive)
+      * myEnvelope(myTime, myAttack, myPatch.release);
+  }
+  return mySamples;
+}
+
+function myEcho(myDry, mySeconds, myFeedback, myRate) {
+  let myDelaySamples = Math.round(mySeconds * myRate);
+  let mySize = myDry.length + myDelaySamples * 4;
+  let myLeft = new Float32Array(mySize);
+  let myRight = new Float32Array(mySize);
+  for (let myTap = 0; myTap <= 4; myTap++) {
+    let myGain = myTap === 0 ? 1 : Math.pow(myFeedback, myTap);
+    if (myGain === 0) continue;
+    let myPan = myTap === 0 ? 0 : (myTap % 2 === 0 ? 0.65 : -0.65);
+    let myLeftGain = Math.sqrt((1 - myPan) / 2) * myGain;
+    let myRightGain = Math.sqrt((1 + myPan) / 2) * myGain;
+    let myStart = myTap * myDelaySamples;
+    for (let myIndex = 0; myIndex < myDry.length; myIndex++) {
+      myLeft[myStart + myIndex] += myDry[myIndex] * myLeftGain;
+      myRight[myStart + myIndex] += myDry[myIndex] * myRightGain;
+    }
+  }
+  return { left: myLeft, right: myRight };
+}
+
+function myRemoveDC(mySamples) {
+  let myPreviousInput = 0, myPreviousOutput = 0;
+  for (let myIndex = 0; myIndex < mySamples.length; myIndex++) {
+    let myInput = mySamples[myIndex];
+    let myOutput = myInput - myPreviousInput + 0.995 * myPreviousOutput;
+    mySamples[myIndex] = myOutput;
+    myPreviousInput = myInput;
+    myPreviousOutput = myOutput;
+  }
+  return mySamples;
+}
+
+function myMaster(myStereo, myVolume) {
+  myRemoveDC(myStereo.left);
+  myRemoveDC(myStereo.right);
+  let myPeak = 0, myEnergy = 0;
+  for (let myIndex = 0; myIndex < myStereo.left.length; myIndex++) {
+    myPeak = Math.max(myPeak, Math.abs(myStereo.left[myIndex]), Math.abs(myStereo.right[myIndex]));
+  }
+  let myGain = (myPeak > 1 ? 1 / myPeak : 1) * myVolume;
+  for (let myIndex = 0; myIndex < myStereo.left.length; myIndex++) {
+    myStereo.left[myIndex] *= myGain;
+    myStereo.right[myIndex] *= myGain;
+    myEnergy += myStereo.left[myIndex] * myStereo.left[myIndex] + myStereo.right[myIndex] * myStereo.right[myIndex];
+  }
+  return { left: myStereo.left, right: myStereo.right,
+    peak: myPeak * myGain, rms: Math.sqrt(myEnergy / (myStereo.left.length * 2)) };
+}
+
+function myRenderPhrase(myPatch, myRate) {
+  let myNotes = mySequence(myPatch.root, myPatch.offsets);
+  let myStepSeconds = 30 / myPatch.bpm;
+  let myVoiceSeconds = 0.006 + myPatch.attack * 0.15 + myPatch.release;
+  let myDrySize = Math.ceil(((myNotes.length - 1) * myStepSeconds + myVoiceSeconds) * myRate);
+  let myDry = new Float32Array(myDrySize);
+  for (let myStep = 0; myStep < myNotes.length; myStep++) {
+    let myVoice = myRenderVoice(myNotes[myStep], myPatch, myRate);
+    let myStart = Math.round(myStep * myStepSeconds * myRate);
+    for (let myIndex = 0; myIndex < myVoice.length && myStart + myIndex < myDry.length; myIndex++) {
+      myDry[myStart + myIndex] += myVoice[myIndex];
+    }
+  }
+  let myStereo = myMaster(myEcho(myDry, myPatch.echo, myPatch.feedback, myRate), myPatch.volume);
+  return { left: myStereo.left, right: myStereo.right, peak: myStereo.peak, rms: myStereo.rms,
+    rate: myRate, duration: myStereo.left.length / myRate, notes: myNotes, step: myStepSeconds };
+}
+
+function myRenderNote(myMidi, myPatch, myRate) {
+  return myMaster(myEcho(myRenderVoice(myMidi, myPatch, myRate), myPatch.echo, myPatch.feedback, myRate), myPatch.volume);
+}
+
+function myEncodeWav(myPhrase) {
+  let myFrames = myPhrase.left.length;
+  let myBuffer = new ArrayBuffer(44 + myFrames * 4);
+  let myView = new DataView(myBuffer);
+  function myWriteText(myOffset, myText) {
+    for (let myIndex = 0; myIndex < myText.length; myIndex++) myView.setUint8(myOffset + myIndex, myText.charCodeAt(myIndex));
+  }
+  myWriteText(0, 'RIFF'); myView.setUint32(4, 36 + myFrames * 4, true);
+  myWriteText(8, 'WAVE'); myWriteText(12, 'fmt '); myView.setUint32(16, 16, true);
+  myView.setUint16(20, 1, true); myView.setUint16(22, 2, true);
+  myView.setUint32(24, myPhrase.rate, true); myView.setUint32(28, myPhrase.rate * 4, true);
+  myView.setUint16(32, 4, true); myView.setUint16(34, 16, true);
+  myWriteText(36, 'data'); myView.setUint32(40, myFrames * 4, true);
+  for (let myIndex = 0; myIndex < myFrames; myIndex++) {
+    let myLeft = myClamp(myPhrase.left[myIndex], -1, 1);
+    let myRight = myClamp(myPhrase.right[myIndex], -1, 1);
+    myView.setInt16(44 + myIndex * 4, Math.round(myLeft * (myLeft < 0 ? 32768 : 32767)), true);
+    myView.setInt16(46 + myIndex * 4, Math.round(myRight * (myRight < 0 ? 32768 : 32767)), true);
+  }
+  return myBuffer;
+}
+
+const myPresets = {
+  AFTERGLOW: { name:'AFTERGLOW', harmonics:[1,.24,.13,.07,.03,.01], brightness:.75, drive:.1, attack:.06,
+    release:1.25, echo:.28, feedback:.36, volume:.4, bpm:108, root:60, offsets:[0,7,12,7,3,10,15,12], hue:166 },
+  GLASSHOUSE: { name:'GLASSHOUSE', harmonics:[1,.08,.42,.02,.21,.08], brightness:1, drive:0, attack:.015,
+    release:1.65, echo:.36, feedback:.5, volume:.38, bpm:92, root:65, offsets:[0,4,7,12,16,12,7,4], hue:196 },
+  NIGHTDRIVE: { name:'NIGHTDRIVE', harmonics:[1,.7,.45,.3,.2,.14], brightness:.82, drive:.7, attack:.01,
+    release:.42, echo:.14, feedback:.22, volume:.4, bpm:138, root:48, offsets:[0,0,7,10,0,3,7,12], hue:29 },
+  MOONPOOL: { name:'MOONPOOL', harmonics:[1,0,.14,0,.04,0], brightness:.4, drive:.05, attack:.5,
+    release:2.15, echo:.5, feedback:.56, volume:.4, bpm:74, root:57, offsets:[0,7,10,14,17,14,10,7], hue:270 }
+};
+
+function myClone(myValue) { return JSON.parse(JSON.stringify(myValue)); }
+
+function myValidatePatch(myValue) {
+  if (!myValue || typeof myValue !== 'object' || Array.isArray(myValue)) throw new Error('This is not an ECHO patch.');
+  let myBounds = {brightness:[0,1],drive:[0,1],attack:[0,1],release:[.2,2.4],echo:[.08,.55],
+    feedback:[0,.65],volume:[0,.65],bpm:[60,150],root:[48,71],hue:[0,360]};
+  let myClean = {name: typeof myValue.name === 'string' ? myValue.name.slice(0,36) : 'MY PATCH'};
+  for (let myKey of Object.keys(myBounds)) {
+    let myNumber = myValue[myKey];
+    if (typeof myNumber !== 'number' || !Number.isFinite(myNumber) || myNumber < myBounds[myKey][0] || myNumber > myBounds[myKey][1]) {
+      throw new Error('Invalid value for ' + myKey + '.');
+    }
+    if ((myKey === 'root' || myKey === 'bpm') && !Number.isInteger(myNumber)) throw new Error(myKey + ' must be a whole number.');
+    myClean[myKey] = myNumber;
+  }
+  if (!Array.isArray(myValue.harmonics) || myValue.harmonics.length !== 6 ||
+    myValue.harmonics.some(function (myNumber) { return typeof myNumber !== 'number' || !Number.isFinite(myNumber) || myNumber < 0 || myNumber > 1; })) {
+    throw new Error('A patch needs six harmonic levels from 0 to 1.');
+  }
+  if (!Array.isArray(myValue.offsets) || myValue.offsets.length !== 8 ||
+    myValue.offsets.some(function (myNumber) { return !Number.isInteger(myNumber) || myNumber < 0 || myNumber > 24; })) {
+    throw new Error('A phrase needs eight note offsets from 0 to 24.');
+  }
+  myClean.harmonics = myValue.harmonics.slice(); myClean.offsets = myValue.offsets.slice();
+  return myClean;
+}
+
+function myReadProject(myText) {
+  if (myText.length > 20000) throw new Error('Choose a small ECHO patch JSON file.');
+  let myProject = JSON.parse(myText);
+  if (!myProject || myProject.app !== 'ECHO-LAB' || myProject.version !== 1) throw new Error('Choose an ECHO / LAB patch file.');
+  return myValidatePatch(myProject.patch);
+}
+
+function myProject(myX, myY, myZ, myWidth, myHeight, myYaw, myTilt) {
+  let myRotX = myX * Math.cos(myYaw) + myZ * Math.sin(myYaw);
+  let myRotZ = -myX * Math.sin(myYaw) + myZ * Math.cos(myYaw);
+  let myRotY = myY * Math.cos(myTilt) - myRotZ * Math.sin(myTilt);
+  myRotZ = myY * Math.sin(myTilt) + myRotZ * Math.cos(myTilt);
+  let myScale = Math.min(myWidth * .82, myHeight * 1.5) / (7 + myRotZ);
+  return { x:myWidth * .5 + myRotX * myScale, y:myHeight * .66 - myRotY * myScale };
+}
+
+function myDrawScene(myContext, myWidth, myHeight, myPatch, myOptions) {
+  myContext.save();myContext.beginPath();myContext.rect(0,0,myWidth,myHeight);myContext.clip();
+  let myView = myOptions.view || 'ribbon';
+  let myTime = myOptions.time || 0;
+  let myYaw = (myOptions.yaw || 0) + Math.sin(myTime * .16) * .16;
+  let myEnergy = myOptions.energy || 0;
+  let myWeights = mySpectrum(myPatch.harmonics, myPatch.brightness);
+  let myHue = myPatch.hue;
+  myContext.fillStyle = '#0a1418'; myContext.fillRect(0,0,myWidth,myHeight);
+  let mySky = myContext.createRadialGradient(myWidth*.53,myHeight*.62,0,myWidth*.53,myHeight*.62,myWidth*.58);
+  mySky.addColorStop(0, 'hsla('+myHue+',45%,20%,.45)'); mySky.addColorStop(1, 'hsla('+myHue+',40%,8%,0)');
+  myContext.fillStyle=mySky; myContext.fillRect(0,0,myWidth,myHeight);
+  let myAmber = myContext.createRadialGradient(myWidth*.1,myHeight*.72,0,myWidth*.1,myHeight*.72,myWidth*.55);
+  myAmber.addColorStop(0,'rgba(128,80,52,.12)');myAmber.addColorStop(1,'rgba(128,80,52,0)');
+  myContext.fillStyle=myAmber;myContext.fillRect(0,0,myWidth,myHeight);
+  myContext.lineWidth=.55;myContext.strokeStyle='#729e8320';
+  for(let myIndex=0;myIndex<13;myIndex++){
+    let myX=myIndex*myWidth/12;
+    myContext.beginPath();myContext.moveTo(myX,myHeight*.26);myContext.lineTo(myX,myHeight);myContext.stroke();
+  }
+  for(let myIndex=0;myIndex<9;myIndex++){
+    let myY=myHeight*.26+myIndex*myHeight*.74/8;
+    myContext.beginPath();myContext.moveTo(0,myY);myContext.lineTo(myWidth,myY);myContext.stroke();
+  }
+  myContext.fillStyle='#c6e4c23f';
+  for(let myIndex=0;myIndex<35;myIndex++){
+    let myX=((myIndex*317.71+31)%997)/997*myWidth;
+    let myY=((myIndex*123.19+197)%811)/811*myHeight;
+    myContext.fillRect(myX,myY,myIndex%7===0?1.8:.7,myIndex%7===0?1.8:.7);
+  }
+  let myRows=myWidth<500?25:34, mySegments=myWidth<500?96:140;
+  let myTilt=myView==='contour'?.86:.56;
+  for(let myRow=myRows-1;myRow>=0;myRow--){
+    let myV=myRow/(myRows-1);
+    myContext.beginPath();
+    for(let mySegment=0;mySegment<=mySegments;mySegment++){
+      let myU=mySegment/mySegments;
+      let myPhase=myU*Math.PI*4+myTime*.5+myV*.45;
+      let myValue=myWave(myPhase,myWeights,myPatch.drive);
+      let myX,myY,myZ;
+      if(myView==='ribbon'){
+        myX=(myU-.5)*6;
+        myY=myValue*(.72+myEnergy*.14)*(1-Math.pow(myV-.5,2)*.7)+Math.sin(myV*7+myU*4+myTime*.25)*.1;
+        myZ=(myV-.5)*3.5;
+      }else if(myView==='orbit'){
+        let myAngle=myU*Math.PI*2;
+        let myRadius=(1.92+myValue*.35)*(1-myV*.38);
+        myX=Math.cos(myAngle)*myRadius;
+        myY=(myV-.5)*2.2+Math.sin(myAngle*3+myTime*.4)*.23+myValue*.15;
+        myZ=Math.sin(myAngle)*myRadius;
+      }else{
+        let myAngle=myU*Math.PI*2;
+        let myRadius=.15+myV*2.1+myValue*.16*myV;
+        myX=Math.cos(myAngle)*myRadius;
+        myY=Math.cos(myV*Math.PI*2+myTime*.25)*.5*(1-myV)+myValue*.16;
+        myZ=Math.sin(myAngle)*myRadius;
+      }
+      let myPoint=myProject(myX,myY,myZ,myWidth,myHeight,myYaw,myTilt);
+      if(mySegment===0)myContext.moveTo(myPoint.x,myPoint.y);else myContext.lineTo(myPoint.x,myPoint.y);
+    }
+    let myLineHue=(myHue+myV*55)%360;
+    let myLight=54+myV*17;
+    myContext.strokeStyle='hsla('+myLineHue+',65%,'+myLight+'%,'+(.35+myV*.48)+')';
+    myContext.lineWidth=myRow%7===0?1.2:.65;
+    myContext.shadowColor='hsla('+myLineHue+',85%,65%,.35)';myContext.shadowBlur=myRow%7===0?7:0;
+    myContext.stroke();
+  }
+  myContext.shadowBlur=0;
+  // A true one-cycle waveform using the same sample function as the sound.
+  let myWaveX=myWidth*.7,myWaveY=myHeight*.26,myWaveW=myWidth*.23,myWaveH=22;
+  myContext.strokeStyle='#e1be91';myContext.lineWidth=1.1;myContext.beginPath();
+  for(let myIndex=0;myIndex<=100;myIndex++){
+    let myX=myWaveX+myIndex/100*myWaveW;
+    let myY=myWaveY-myWave(myIndex/100*2*Math.PI,myWeights,myPatch.drive)*myWaveH;
+    if(myIndex===0)myContext.moveTo(myX,myY);else myContext.lineTo(myX,myY);
+  }
+  myContext.stroke();
+  myContext.font=(myWidth<500?'8':'9')+'px monospace';myContext.fillStyle='#8aaba3';
+  myContext.fillText('ONE CYCLE / '+myFrequency(myPatch.root).toFixed(2)+' Hz',myWaveX,myWaveY+myWaveH+17);
+  myContext.fillText('f(x) → RETURN',myWidth*.06,myHeight*.89);
+  myContext.restore();
+}
+
+function myDrawPoster(myContext, myWidth, myHeight, myPatch, myOptions) {
+  myContext.fillStyle='#0b1114';myContext.fillRect(0,0,myWidth,myHeight);
+  let myMargin=myWidth*.065;
+  myContext.fillStyle='#c6f7a0';myContext.font='bold '+myWidth*.025+'px Arial';
+  myContext.fillText('ECHO / LAB',myMargin,myHeight*.075);
+  myContext.font=myWidth*.0085+'px monospace';myContext.fillStyle='#91a29f';
+  myContext.fillText('X T1A09  /  FUNCTIONS BY SHUNTA  /  2026',myMargin,myHeight*.105);
+  myContext.font=myWidth*.053+'px Arial';myContext.fillStyle='#eff3e9';
+  myContext.fillText(myPatch.name,myMargin,myHeight*.2,myWidth-myMargin*2);
+  let mySceneY=myHeight*.24,mySceneH=myHeight*.54;
+  myContext.save();myContext.translate(myMargin,mySceneY);
+  myDrawScene(myContext,myWidth-myMargin*2,mySceneH,myPatch,myOptions);
+  myContext.restore();
+  myContext.strokeStyle='#3b5048';myContext.lineWidth=1;myContext.strokeRect(myMargin,mySceneY,myWidth-myMargin*2,mySceneH);
+  myContext.font=myWidth*.012+'px monospace';myContext.fillStyle='#c6f7a0';
+  let myNotes=mySequence(myPatch.root,myPatch.offsets).map(myNoteName).join('  →  ');
+  myContext.fillText(myNotes,myMargin,myHeight*.825,myWidth-myMargin*2);
+  myContext.font=myWidth*.008+'px monospace';myContext.fillStyle='#91a29f';
+  myContext.fillText(myPatch.bpm+' BPM   ·   '+myFrequency(myPatch.root).toFixed(2)+' Hz   ·   '+Math.round(myPatch.echo*1000)+' ms stereo echo',myMargin,myHeight*.86);
+  let myWeights=mySpectrum(myPatch.harmonics,myPatch.brightness);
+  let myBarW=(myWidth-myMargin*2)/6;
+  for(let myIndex=0;myIndex<6;myIndex++){
+    let myX=myMargin+myIndex*myBarW;
+    myContext.fillStyle='#23463a';myContext.fillRect(myX,myHeight*.899,myBarW*.8,5);
+    myContext.fillStyle='#c6f7a0';myContext.fillRect(myX,myHeight*.899,myBarW*.8*myWeights[myIndex],5);
+    myContext.fillStyle='#91a29f';myContext.fillText('H'+(myIndex+1)+' / '+(myWeights[myIndex]*100).toFixed(1)+'%',myX,myHeight*.928);
+  }
+  myContext.fillStyle='#eff3e9';myContext.font=myWidth*.008+'px monospace';
+  myContext.fillText('VALUES IN. FEELING OUT.                         ALL SOUND & ART GENERATED BY CODE.',myMargin,myHeight*.971,myWidth-myMargin*2);
+}
+
+function myExampleFunction() {
+  let myIn01 = parseInt(document.getElementById('myText01').value);
+  let mySum = myIn01 + myIn01;
+  let myReply = myIn01 + ' + ' + myIn01 + ' = ' + mySum;
+  return myReply;
+}
+
+// An advanced example: this function RETURNS another function.
+// The returned function remembers its own seed (a closure).
+function mySeededRandom(mySeed) {
+  let myState = mySeed >>> 0;
+  return function () {
+    myState = (Math.imul(myState, 1664525) + 1013904223) >>> 0;
+    return myState / 4294967296;
+  };
+}
+
+function myRandomPatch(mySeed) {
+  let myRandom = mySeededRandom(mySeed);
+  let myPatch = myClone(myPresets.AFTERGLOW);
+  myPatch.name = 'SIGNAL ' + String(mySeed >>> 0).slice(-6);
+  myPatch.harmonics = [1];
+  for (let myIndex = 1; myIndex < 6; myIndex++) {
+    myPatch.harmonics.push(Math.round(myRandom() * 80 / (myIndex + 1)) / 100);
+  }
+  myPatch.brightness = .35 + myRandom() * .65;
+  myPatch.drive = myRandom() * .7;
+  myPatch.attack = myRandom() * .4;
+  myPatch.release = .5 + myRandom() * 1.4;
+  myPatch.echo = .1 + myRandom() * .42;
+  myPatch.feedback = .2 + myRandom() * .4;
+  myPatch.bpm = 70 + Math.floor(myRandom() * 70);
+  myPatch.root = 48 + Math.floor(myRandom() * 17);
+  myPatch.hue = Math.floor(myRandom() * 360);
+  let myScale = [0,3,5,7,10,12,15,17,19];
+  myPatch.offsets = Array.from({length:8}, function () { return myScale[Math.floor(myRandom() * myScale.length)]; });
+  return myPatch;
+}
+
+const myGet = function (myId) { return document.getElementById(myId); };
+let myPatch = myClone(myPresets.AFTERGLOW);
+let myView = 'ribbon', myYaw = .4, myMotion = 'auto', myTime = 0;
+let myAudioContext = null, myAudioMaster = null, myActiveSources = new Set();
+let myAudioJob = 0, myPlaying = false, myPlayStart = 0, myPlayDuration = 0;
+let myCurrentStep = -1, myPadIndex = -1, myPadUntil = 0;
+let myVisualWidth = 800, myVisualHeight = 500, myLastFrame = 0;
+let mySaveTimer = 0, myInspectTimer = 0, myStorageWorks = true;
+let myChosenFunction = 'myWave';
+const myCanvas = myGet('myCanvas');
+const myContext = myCanvas.getContext('2d');
+const myReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const myKeyboard = ['a','s','d','f','g','h','j','k'];
+const myDescriptions = {
+  AFTERGLOW:'Warm tones, a soft edge, a little room to breathe.',
+  GLASSHOUSE:'Clear, delicate notes with reflections in every direction.',
+  NIGHTDRIVE:'A low pulse with a sharp edge. Take the long way home.',
+  MOONPOOL:'A slow arrival. Soft waves suspended in space.'
+};
+const myRecipes = {pure:[1,0,0,0,0,0],velvet:[1,0,.11,0,.04,0],prism:[1,.65,.45,.25,.2,.15],pulse:[1,0,.33,0,.2,0]};
+const myFunctions = {
+  myFrequency:{fn:myFrequency,explain:'One number in, one number out. MIDI 69 is the standard tuning note A4 (440 Hz).'},
+  mySequence:{fn:mySequence,explain:'A number and an array go in. A new array of MIDI notes comes back. The input array is not changed.'},
+  mySpectrum:{fn:mySpectrum,explain:'Six harmonic levels and a brightness value become normalized mixing weights. A silent mix returns six zeros.'},
+  myWave:{fn:myWave,explain:'Three parameters produce one sample. The same function draws the waveform and generates the audio.'},
+  myEnvelope:{fn:myEnvelope,explain:'Time, attack, and release become a volume multiplier. Every note fades in and out instead of starting with a click.'},
+  myRenderVoice:{fn:myRenderVoice,explain:'A note number, a patch object, and a sample rate become an array of audio samples.'},
+  myEcho:{fn:myEcho,explain:'A mono array becomes an object with left and right arrays. Four quieter reflections alternate across the stereo field.'},
+  myRenderPhrase:{fn:myRenderPhrase,explain:'A function calls other functions. Eight voices are placed on a timeline, echoed, and returned as a stereo phrase.'},
+  myEncodeWav:{fn:myEncodeWav,explain:'The returned audio arrays become a real stereo, 16-bit PCM WAV file. No microphone or recorded samples are needed.'},
+  mySeededRandom:{fn:mySeededRandom,explain:'A function can return a function! The inner function remembers its private seed. The same starting seed gives the same sequence.'},
+  myRandomPatch:{fn:myRandomPatch,explain:'One seed number returns a complete patch object. All the choices come from the private random-number function.'}
+};
+
+function myNotice(myMessage) { myGet('myNotice').textContent = myMessage; }
+
+function myTrySave() {
+  try {
+    localStorage.setItem('shunta-echo-lab-v1',JSON.stringify({app:'ECHO-LAB',version:1,patch:myPatch}));
+    myStorageWorks=true;
+  } catch (myError) { myStorageWorks=false; }
+  myGet('mySaveNote').textContent=myStorageWorks
+    ? 'Your patch is saved on this browser. Export a patch to keep a portable copy.'
+    : 'This browser cannot keep your patch. Use ↓ Patch to save it as a file.';
+}
+
+function myIsMotion() { return myMotion==='on' || (myMotion==='auto' && !myReduceMotion.matches); }
+
+function myRefreshMotion() {
+  myGet('myMotionNote').textContent=myMotion==='on' ? 'MOTION ON / FOR THIS PAGE' : myMotion==='off' ? 'STILL VIEW / DRAG TO ROTATE' : myReduceMotion.matches ? 'DEVICE REQUESTS REDUCED MOTION / CHOOSE ON TO ANIMATE' : 'DEVICE PREFERENCE RESPECTED';
+  myDrawNow();
+}
+
+function myResize() {
+  let myRect=myCanvas.getBoundingClientRect();
+  myVisualWidth=Math.max(280,myRect.width); myVisualHeight=Math.max(250,myRect.height);
+  let myRatio=Math.min(window.devicePixelRatio||1,1.5);
+  myCanvas.width=Math.round(myVisualWidth*myRatio);myCanvas.height=Math.round(myVisualHeight*myRatio);
+  myContext.setTransform(myRatio,0,0,myRatio,0,0);
+  myDrawNow();
+}
+
+function myDrawNow() {
+  let myEnergy=myPlaying ? .7 : (performance.now()<myPadUntil?.5:0);
+  myDrawScene(myContext,myVisualWidth,myVisualHeight,myPatch,{view:myView,yaw:myYaw,time:myTime,energy:myEnergy});
+}
+
+function mySetStep(myIndex) {
+  if(myIndex===myCurrentStep)return;
+  myCurrentStep=myIndex;
+  document.querySelectorAll('.note-step').forEach(function(myElement,myPosition){myElement.classList.toggle('active',myPosition===myIndex);});
+}
+
+function myResetTransport() {
+  myPlaying=false;mySetStep(-1);myPadIndex=-1;myPadUntil=0;
+  myGet('myPlayLabel').textContent='Play phrase';myGet('myPlayIcon').textContent='▶';
+  myGet('myAudioStatus').textContent='READY / CLICK PLAY TO HEAR IT';myGet('myProgress').style.width='0%';
+  document.querySelectorAll('.keys button').forEach(function(myKey){myKey.classList.remove('active');});
+}
+
+function myStopAudio(myMessage) {
+  myAudioJob++;
+  if(myAudioContext){
+    let myNow=myAudioContext.currentTime;
+    for(let myEntry of myActiveSources){
+      try{myEntry.gain.gain.cancelScheduledValues(myNow);myEntry.gain.gain.setValueAtTime(myEntry.gain.gain.value,myNow);myEntry.gain.gain.linearRampToValueAtTime(0,myNow+.025);myEntry.source.stop(myNow+.03);}catch(myError){}
+    }
+    myActiveSources.clear();
+  }
+  myResetTransport();if(myMessage)myNotice(myMessage);myDrawNow();
+}
+
+async function myGetAudio() {
+  let myAudioAPI=window.AudioContext||window.webkitAudioContext;
+  if(!myAudioAPI){myNotice('Live audio is unavailable in this browser. You can still export a WAV and artwork.');return null;}
+  try{
+    if(!myAudioContext){
+      myAudioContext=new myAudioAPI();
+      let myLimiter=myAudioContext.createDynamicsCompressor();
+      myLimiter.threshold.value=-3;myLimiter.knee.value=0;myLimiter.ratio.value=20;
+      myLimiter.attack.value=.002;myLimiter.release.value=.08;
+      myLimiter.connect(myAudioContext.destination);myAudioMaster=myLimiter;
+    }
+    if(myAudioContext.state!=='running')await myAudioContext.resume();
+    if(myAudioContext.state!=='running'){myNotice('Audio is paused by this browser. Click Play again to enable sound.');return null;}
+    return myAudioContext;
+  }catch(myError){myNotice('Could not start live audio. WAV export and the visual instrument still work.');return null;}
+}
+
+function myStartBuffer(myStereo,myRate,myAudio,myOnEnd) {
+  let myBuffer=myAudio.createBuffer(2,myStereo.left.length,myRate);
+  myBuffer.copyToChannel(myStereo.left,0);myBuffer.copyToChannel(myStereo.right,1);
+  let mySource=myAudio.createBufferSource();mySource.buffer=myBuffer;
+  let myGain=myAudio.createGain();myGain.gain.setValueAtTime(0,myAudio.currentTime);myGain.gain.linearRampToValueAtTime(1,myAudio.currentTime+.012);
+  mySource.connect(myGain);myGain.connect(myAudioMaster);
+  let myEntry={source:mySource,gain:myGain};myActiveSources.add(myEntry);
+  mySource.onended=function(){myActiveSources.delete(myEntry);mySource.disconnect();myGain.disconnect();if(myOnEnd)myOnEnd();};
+  mySource.start();return mySource;
+}
+
+async function myPlayPhrase() {
+  if(myPlaying){myStopAudio('Stopped. Your phrase is ready to play again.');return;}
+  myStopAudio();let myJob=myAudioJob;
+  let mySnapshot=myClone(myPatch);
+  let myAudio=await myGetAudio();if(!myAudio||myJob!==myAudioJob)return;
+  let myPhrase=myRenderPhrase(mySnapshot,44100);
+  myPlaying=true;myPlayStart=myAudio.currentTime;myPlayDuration=myPhrase.duration;
+  myGet('myPlayLabel').textContent='Stop phrase';myGet('myPlayIcon').textContent='■';
+  myGet('myAudioStatus').textContent='PLAYING / '+mySnapshot.bpm+' BPM';
+  myStartBuffer(myPhrase,44100,myAudio,function(){if(myJob===myAudioJob){myResetTransport();myDrawNow();}});
+  myNotice(myPhrase.peak===0?'Your mix is silent. Raise the volume or a harmonic level.':'Playing your eight-note phrase, followed by its echo tail.');
+}
+
+async function myPlayKey(myIndex) {
+  myStopAudio();let myJob=myAudioJob,mySnapshot=myClone(myPatch);
+  let myMidi=mySequence(mySnapshot.root,mySnapshot.offsets)[myIndex];
+  let myAudio=await myGetAudio();if(!myAudio||myJob!==myAudioJob)return;
+  let myStereo=myRenderNote(myMidi,mySnapshot,44100);
+  myPadIndex=myIndex;myPadUntil=performance.now()+450;
+  document.querySelectorAll('.keys button').forEach(function(myKey,myPosition){myKey.classList.toggle('active',myPosition===myIndex);});
+  myGet('myAudioStatus').textContent=myNoteName(myMidi)+' / '+myFrequency(myMidi).toFixed(2)+' Hz';
+  myStartBuffer(myStereo,44100,myAudio,function(){if(myJob===myAudioJob){myResetTransport();myDrawNow();}});
+  myDrawNow();
+}
+
+function mySyncUI() {
+  myGet('myPatchName').textContent=myPatch.name;
+  myGet('myPatchDescription').textContent=myDescriptions[myPatch.name]||'Your own mix. Shape it, play it, take it with you.';
+  document.querySelectorAll('[data-preset]').forEach(function(myButton){let myMatch=myButton.dataset.preset===myPatch.name;myButton.classList.toggle('active',myMatch);myButton.setAttribute('aria-pressed',String(myMatch));});
+  let myParams={Brightness:'brightness',Drive:'drive',Attack:'attack',Release:'release',Echo:'echo',Feedback:'feedback',Volume:'volume',Bpm:'bpm',Root:'root'};
+  for(let myName of Object.keys(myParams)){myGet('my'+myName).value=String(myPatch[myParams[myName]]);}
+  for(let myName of ['Brightness','Drive','Feedback','Volume'])myGet('my'+myName+'Label').textContent=Math.round(myPatch[myParams[myName]]*100)+'%';
+  myGet('myAttackLabel').textContent=Math.round((.006+myPatch.attack*.15)*1000)+' ms';
+  myGet('myReleaseLabel').textContent=myPatch.release.toFixed(2)+' s';
+  myGet('myEchoLabel').textContent=Math.round(myPatch.echo*1000)+' ms';
+  myGet('myBpmLabel').textContent=String(myPatch.bpm);
+  let myWeights=mySpectrum(myPatch.harmonics,myPatch.brightness);
+  let myNotes=mySequence(myPatch.root,myPatch.offsets);
+  for(let myIndex=0;myIndex<6;myIndex++){
+    myGet('myH'+myIndex).value=String(myPatch.harmonics[myIndex]);myGet('myHLabel'+myIndex).textContent=Math.round(myPatch.harmonics[myIndex]*100)+'%';
+    myGet('myHBar'+myIndex).style.height=(myWeights[myIndex]*100)+'%';
+    myGet('myHFreq'+myIndex).textContent=Math.round(myFrequency(myPatch.root)*(myIndex+1))+' Hz';
+  }
+  for(let myIndex=0;myIndex<8;myIndex++){
+    myGet('myStep'+myIndex).value=String(myPatch.offsets[myIndex]);myGet('myStepNote'+myIndex).textContent=myNoteName(myNotes[myIndex]);
+    myGet('myKeyNote'+myIndex).textContent=myNoteName(myNotes[myIndex]);
+  }
+  myGet('mySequenceLabel').textContent=myNotes.map(myNoteName).join(' → ');
+  myGet('myTraceSequence').textContent='['+myNotes.join(', ')+']';
+  myGet('myTraceFrequency').textContent=myFrequency(myPatch.root).toFixed(2)+' Hz';
+  myGet('myTraceWave').textContent=myWave(Number(myGet('myPhase').value)*Math.PI,myWeights,myPatch.drive).toFixed(5)+' / sample';
+  myGet('myTraceEcho').textContent='4 taps / '+Math.round(myPatch.echo*1000)+' ms';
+  clearTimeout(myInspectTimer);myInspectTimer=setTimeout(myInspectFunction,100);
+  myDrawNow();
+}
+
+function myEdited() {
+  myStopAudio();myPatch.name='MY SIGNAL';mySyncUI();
+  clearTimeout(mySaveTimer);mySaveTimer=setTimeout(myTrySave,200);
+}
+
+function myApplyPatch(myNewPatch,myMessage) {
+  let myValidated=myValidatePatch(myNewPatch);myStopAudio();myPatch=myValidated;mySyncUI();myTrySave();if(myMessage)myNotice(myMessage);
+}
+
+function myInspectFunction() {
+  let myName=myChosenFunction,myEntry=myFunctions[myName];
+  let myPhase=Number(myGet('myPhase').value)*Math.PI;
+  let myWeights=mySpectrum(myPatch.harmonics,myPatch.brightness);
+  let myCall='',myReturn='';
+  myGet('myPhaseLabel').textContent=Number(myGet('myPhase').value).toFixed(2)+' π';
+  if(myName==='myFrequency'){myCall='myFrequency('+myPatch.root+')';myReturn=myFrequency(myPatch.root).toFixed(5)+' Hz';}
+  else if(myName==='mySequence'){myCall='mySequence('+myPatch.root+',\n  ['+myPatch.offsets.join(', ')+'])';myReturn='['+mySequence(myPatch.root,myPatch.offsets).join(', ')+']';}
+  else if(myName==='mySpectrum'){myCall='mySpectrum(harmonics,\n  '+myPatch.brightness.toFixed(2)+')';myReturn='['+myWeights.map(function(myValue){return myValue.toFixed(3);}).join(', ')+']';}
+  else if(myName==='myWave'){myCall='myWave('+myPhase.toFixed(3)+',\n  spectrum, '+myPatch.drive.toFixed(2)+')';myReturn=myWave(myPhase,myWeights,myPatch.drive).toFixed(6);}
+  else if(myName==='myEnvelope'){let myAttack=.006+myPatch.attack*.15,myT=Number(myGet('myPhase').value)*myPatch.release/2;myCall='myEnvelope('+myT.toFixed(3)+',\n  '+myAttack.toFixed(3)+', '+myPatch.release.toFixed(2)+')';myReturn=myEnvelope(myT,myAttack,myPatch.release).toFixed(6);}
+  else if(myName==='myRenderVoice'){let myVoice=myRenderVoice(myPatch.root,myPatch,44100);myCall='myRenderVoice('+myPatch.root+',\n  patch, 44100)';myReturn='Float32Array\n'+myVoice.length.toLocaleString()+' audio samples';}
+  else if(myName==='myEcho'){let myEchoResult=myEcho(new Float32Array([0,1,0,-1,0]),myPatch.echo,myPatch.feedback,1000);myCall='myEcho([0,1,0,-1,0],\n  '+myPatch.echo.toFixed(2)+', '+myPatch.feedback.toFixed(2)+', 1000)';myReturn='{ left: '+myEchoResult.left.length+' samples,\n  right: '+myEchoResult.right.length+' samples }';}
+  else if(myName==='myRenderPhrase'){let myPhrase=myRenderPhrase(myPatch,8000);myCall='myRenderPhrase(patch, 8000)';myReturn='{ duration: '+myPhrase.duration.toFixed(3)+' s,\n  notes: 8, channels: 2,\n  frames: '+myPhrase.left.length.toLocaleString()+' }';}
+  else if(myName==='myEncodeWav'){let myTiny={left:new Float32Array([0,.5,0]),right:new Float32Array([0,.5,0]),rate:44100};myCall='myEncodeWav(tinyStereoDemo)';myReturn='ArrayBuffer / '+myEncodeWav(myTiny).byteLength+' bytes\n44-byte header + 3 stereo frames';}
+  else if(myName==='mySeededRandom'){let myRng=mySeededRandom(42);myCall='let myNext = mySeededRandom(42);\nmyNext(); myNext(); myNext();';myReturn=[myRng(),myRng(),myRng()].map(function(myValue){return myValue.toFixed(6);}).join('\n');}
+  else if(myName==='myRandomPatch'){let myNew=myRandomPatch(42);myCall='myRandomPatch(42)';myReturn='{ name: '+myNew.name+',\n  root: '+myNoteName(myNew.root)+',\n  bpm: '+myNew.bpm+', ... }';}
+  myGet('myFunctionReturn').textContent=myCall+'\n\n→ '+myReturn;
+  myGet('myFunctionExplain').textContent=myEntry.explain;
+  myGet('myCodeTitle').textContent=myName+'()';myGet('myCode').textContent=myEntry.fn.toString();
+  myGet('myFunctionSelect').value=myName;
+  document.querySelectorAll('[data-function]').forEach(function(myButton){myButton.classList.toggle('active',myButton.dataset.function===myName);});
+}
+
+function myDownload(myBlob,myFilename) {
+  let myURL=URL.createObjectURL(myBlob),myLink=document.createElement('a');
+  myLink.href=myURL;myLink.download=myFilename;document.body.appendChild(myLink);myLink.click();myLink.remove();
+  setTimeout(function(){URL.revokeObjectURL(myURL);},60000);
+}
+
+function mySafeFilename() { return myPatch.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'my-signal'; }
+
+async function myExportWav() {
+  let myButton=myGet('mySaveWav');if(myButton.disabled)return;
+  myButton.disabled=true;myNotice('Rendering your phrase and its echo tail…');
+  let mySnapshot=myClone(myPatch),myFilename=mySafeFilename();
+  await new Promise(function(myResolve){setTimeout(myResolve,20);});
+  try{
+    let myPhrase=myRenderPhrase(mySnapshot,44100),myWav=myEncodeWav(myPhrase);
+    myDownload(new Blob([myWav],{type:'audio/wav'}),'echo-'+myFilename+'.wav');
+    myNotice('WAV ready: '+myPhrase.duration.toFixed(2)+' seconds · 44.1 kHz · stereo · 16-bit PCM'+(myPhrase.peak===0?' · this mix is silent.':'.'));
+  }catch(myError){myNotice('Could not export the WAV. Try again with this page open.');}
+  finally{myButton.disabled=false;}
+}
+
+function myExportArtwork() {
+  let myPoster=document.createElement('canvas');myPoster.width=1600;myPoster.height=1200;
+  myDrawPoster(myPoster.getContext('2d'),1600,1200,myPatch,{view:myView,yaw:myYaw,time:myTime,energy:0});
+  myPoster.toBlob(function(myBlob){if(myBlob){myDownload(myBlob,'echo-'+mySafeFilename()+'.png');myNotice('Your 1600 × 1200 wave artwork is ready.');}else myNotice('Could not create the artwork. Try again.');},'image/png');
+}
+
+function myMakeControls() {
+  for(let myMidi=48;myMidi<=71;myMidi++){let myOption=document.createElement('option');myOption.value=String(myMidi);myOption.textContent=myNoteName(myMidi);myGet('myRoot').appendChild(myOption);}
+  for(let myIndex=0;myIndex<6;myIndex++){
+    let myCell=document.createElement('div');myCell.className='harmonic';
+    myCell.innerHTML='<label for="myH'+myIndex+'">H'+(myIndex+1)+'</label><strong>'+ (myIndex+1)+'×</strong><span id="myHFreq'+myIndex+'" class="tiny"></span><div class="harmonic-bar"><i id="myHBar'+myIndex+'"></i></div><input id="myH'+myIndex+'" type="range" min="0" max="1" step=".01" aria-label="Harmonic '+(myIndex+1)+' level"><output id="myHLabel'+myIndex+'"></output>';
+    myGet('myHarmonics').appendChild(myCell);
+    myGet('myH'+myIndex).addEventListener('input',function(myEvent){myPatch.harmonics[myIndex]=Number(myEvent.target.value);myEdited();});
+  }
+  for(let myIndex=0;myIndex<8;myIndex++){
+    let myCell=document.createElement('div');myCell.className='note-step';
+    myCell.innerHTML='<label for="myStep'+myIndex+'">'+String(myIndex+1).padStart(2,'0')+'</label><strong id="myStepNote'+myIndex+'"></strong><select id="myStep'+myIndex+'" aria-label="Phrase step '+(myIndex+1)+' semitone offset"></select>';
+    myGet('myNotes').appendChild(myCell);
+    for(let myOffset=0;myOffset<=24;myOffset++){let myOption=document.createElement('option');myOption.value=String(myOffset);myOption.textContent='+'+myOffset;myGet('myStep'+myIndex).appendChild(myOption);}
+    myGet('myStep'+myIndex).addEventListener('change',function(myEvent){myPatch.offsets[myIndex]=Number(myEvent.target.value);myEdited();});
+    let myKey=document.createElement('button');myKey.setAttribute('aria-label','Play note '+(myIndex+1));myKey.innerHTML='<span id="myKeyNote'+myIndex+'"></span><small>'+myKeyboard[myIndex].toUpperCase()+'</small>';
+    myKey.addEventListener('click',function(){myPlayKey(myIndex);});myGet('myKeys').appendChild(myKey);
+  }
+  for(let myName of Object.keys(myFunctions)){let myOption=document.createElement('option');myOption.value=myName;myOption.textContent=myName+'()';myGet('myFunctionSelect').appendChild(myOption);}
+}
+
+function myBindEvents() {
+  let myParams={Brightness:'brightness',Drive:'drive',Attack:'attack',Release:'release',Echo:'echo',Feedback:'feedback',Volume:'volume',Bpm:'bpm',Root:'root'};
+  for(let myName of Object.keys(myParams))myGet('my'+myName).addEventListener(myName==='Root'?'change':'input',function(myEvent){myPatch[myParams[myName]]=Number(myEvent.target.value);myEdited();});
+  document.querySelectorAll('[data-preset]').forEach(function(myButton){myButton.addEventListener('click',function(){myApplyPatch(myPresets[myButton.dataset.preset],myButton.dataset.preset+' loaded. Press Play to hear the phrase.');});});
+  document.querySelectorAll('[data-wave]').forEach(function(myButton){myButton.addEventListener('click',function(){myPatch.harmonics=myRecipes[myButton.dataset.wave].slice();myEdited();myNotice(myButton.textContent+' harmonic recipe loaded.');});});
+  document.querySelectorAll('[data-view]').forEach(function(myButton){myButton.addEventListener('click',function(){myView=myButton.dataset.view;document.querySelectorAll('[data-view]').forEach(function(myItem){let myActive=myItem===myButton;myItem.classList.toggle('active',myActive);myItem.setAttribute('aria-pressed',String(myActive));});myDrawNow();});});
+  document.querySelectorAll('[data-function]').forEach(function(myButton){myButton.addEventListener('click',function(){myChosenFunction=myButton.dataset.function;myInspectFunction();});});
+  myGet('myFunctionSelect').addEventListener('change',function(myEvent){myChosenFunction=myEvent.target.value;myInspectFunction();});
+  myGet('myPhase').addEventListener('input',function(){myInspectFunction();mySyncUI();});
+  myGet('myRandom').addEventListener('click',function(){let mySeed=Date.now()>>>0;if(window.crypto&&window.crypto.getRandomValues)mySeed=window.crypto.getRandomValues(new Uint32Array(1))[0];myApplyPatch(myRandomPatch(mySeed),'New signal created with seed '+mySeed+'. Export its patch to keep it.');});
+  myGet('myReverse').addEventListener('click',function(){myPatch.offsets=myPatch.offsets.slice().reverse();myEdited();myNotice('The eight-note order is reversed.');});
+  myGet('myPlay').addEventListener('click',myPlayPhrase);myGet('myStop').addEventListener('click',function(){myStopAudio('All sound stopped.');});
+  myGet('myMotion').addEventListener('change',function(myEvent){myMotion=myEvent.target.value;myRefreshMotion();});
+  myGet('myRotation').addEventListener('input',function(myEvent){myYaw=Number(myEvent.target.value);myDrawNow();});
+  myGet('mySaveWav').addEventListener('click',myExportWav);myGet('mySavePng').addEventListener('click',myExportArtwork);
+  myGet('mySavePatch').addEventListener('click',function(){myDownload(new Blob([JSON.stringify({app:'ECHO-LAB',version:1,patch:myPatch},null,2)],{type:'application/json'}),'echo-'+mySafeFilename()+'.json');myNotice('Patch exported. Use ↑ Patch to bring it back on another browser.');});
+  myGet('myLoadPatch').addEventListener('click',function(){myGet('myPatchFile').click();});
+  myGet('myPatchFile').addEventListener('change',async function(myEvent){let myFile=myEvent.target.files[0];if(!myFile)return;try{if(myFile.size>20000)throw new Error('Choose a small ECHO patch JSON file.');myApplyPatch(myReadProject(await myFile.text()),'Your patch is back. Press Play to hear it.');}catch(myError){myNotice('Patch not loaded: '+(myError instanceof SyntaxError?'The JSON file is not valid.':myError.message));}finally{myEvent.target.value='';}});
+  myGet('myCopyCode').addEventListener('click',async function(){let myCode=myGet('myCode').textContent;try{if(!navigator.clipboard||!window.isSecureContext)throw new Error('clipboard');await navigator.clipboard.writeText(myCode);myNotice('Function copied. Paste it into your own experiment.');}catch(myError){let mySelection=window.getSelection(),myRange=document.createRange();myRange.selectNodeContents(myGet('myCode'));mySelection.removeAllRanges();mySelection.addRange(myRange);myNotice('Function selected. Press Ctrl+C or use Copy to keep it.');}});
+  let myPointer=null,myPointerX=0,myPointerYaw=0;
+  myCanvas.addEventListener('pointerdown',function(myEvent){if(myEvent.button!==0||myPointer!==null)return;myPointer=myEvent.pointerId;myPointerX=myEvent.clientX;myPointerYaw=myYaw;myCanvas.setPointerCapture(myPointer);});
+  myCanvas.addEventListener('pointermove',function(myEvent){if(myEvent.pointerId!==myPointer)return;myYaw=myClamp(myPointerYaw+(myEvent.clientX-myPointerX)*.006,-1.6,1.6);myGet('myRotation').value=String(myYaw);myDrawNow();});
+  function myReleasePointer(myEvent){if(myEvent.pointerId===myPointer)myPointer=null;}
+  myCanvas.addEventListener('pointerup',myReleasePointer);myCanvas.addEventListener('pointercancel',myReleasePointer);myCanvas.addEventListener('lostpointercapture',myReleasePointer);
+  document.addEventListener('keydown',function(myEvent){
+    if(myEvent.repeat||myEvent.ctrlKey||myEvent.metaKey||myEvent.altKey)return;
+    let myTarget=myEvent.target,myKey=myEvent.key.toLowerCase();
+    if(myKey==='escape'){myStopAudio('All sound stopped.');return;}
+    if(myTarget&&(myTarget.isContentEditable||['INPUT','SELECT','TEXTAREA'].includes(myTarget.tagName)))return;
+    if(myKey===' '){
+      if(myTarget&&['BUTTON','A'].includes(myTarget.tagName))return;
+      myEvent.preventDefault();myPlayPhrase();
+    }else if(myKeyboard.includes(myKey)){myEvent.preventDefault();myPlayKey(myKeyboard.indexOf(myKey));}
+  });
+  document.addEventListener('visibilitychange',function(){if(document.hidden)myStopAudio();});
+  window.addEventListener('blur',function(){myStopAudio();});
+  window.addEventListener('resize',myResize);
+  if(myReduceMotion.addEventListener)myReduceMotion.addEventListener('change',myRefreshMotion);else if(myReduceMotion.addListener)myReduceMotion.addListener(myRefreshMotion);
+}
+
+function myFrame(myNow) {
+  if(!document.hidden&&myNow-myLastFrame>=33){
+    let myDelta=Math.min((myNow-myLastFrame)/1000,.06);myLastFrame=myNow;
+    if(myIsMotion())myTime+=myDelta;
+    if(myPlaying&&myAudioContext){let myElapsed=myAudioContext.currentTime-myPlayStart;myGet('myProgress').style.width=(myClamp(myElapsed/myPlayDuration,0,1)*100)+'%';mySetStep(myElapsed<8*30/myPatch.bpm?Math.floor(myElapsed/(30/myPatch.bpm)):-1);}
+    if(myIsMotion()||myPlaying||myNow<myPadUntil)myDrawNow();
+  }
+  requestAnimationFrame(myFrame);
+}
+
+function myInit() {
+  myMakeControls();myBindEvents();
+  try{let mySaved=localStorage.getItem('shunta-echo-lab-v1');if(mySaved)myPatch=myReadProject(mySaved);}catch(myError){myStorageWorks=false;}
+  mySyncUI();myInspectFunction();myResize();myRefreshMotion();myTrySave();requestAnimationFrame(myFrame);
+}
+myInit();
+</script>
+</body>
+</html>
