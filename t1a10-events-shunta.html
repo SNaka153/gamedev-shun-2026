@@ -1,0 +1,304 @@
+<DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>T1A10 Events by Shunta</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: aliceblue;
+      color: navy;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+    }
+    main { max-width: 1000px; margin: auto; }
+    h1 { margin-top: 0; text-align: center; background: navy; color: white; padding: 14px; }
+    h2 { margin-bottom: 8px; }
+    h3 { margin: 0 0 10px; font-size: 18px; }
+    .version, .hint { font-size: 13px; color: #46566b; }
+    .foundation { background: white; padding: 22px; border: 2px solid navy; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .card { min-width: 0; background: white; border: 1px solid #b7cce0; padding: 20px; }
+    input, select, button, textarea { font: inherit; max-width: 100%; }
+    input[type=text], select { padding: 7px; border: 1px solid #667c97; border-radius: 4px; }
+    input[type=button], button {
+      cursor: pointer; border: 1px solid navy; border-radius: 4px;
+      padding: 8px 13px; background: #e2efff; color: navy;
+    }
+    input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible {
+      outline: 3px solid #226bc7; outline-offset: 3px;
+    }
+    .output { margin-top: 12px; padding: 10px; background: #edf4fc; min-height: 46px; overflow-wrap: anywhere; }
+    .mouse-area, .touch-area {
+      position: relative; height: 150px; overflow: hidden;
+      border: 2px dashed #6587ba; background: #eaf4ff; border-radius: 6px;
+    }
+    .area-label { display: block; padding: 12px; pointer-events: none; font-size: 13px; }
+    .dot { position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 50%; background: navy; pointer-events: none; }
+    .touch-area { touch-action: none; }
+    .touch-area .dot { background: #ae3a86; }
+    .drop-area { margin-top: 12px; padding: 22px; border: 2px dashed #6587ba; background: #eef6ff; text-align: center; }
+    .coin { display: inline-block; padding: 10px 16px; background: #ffde75; color: #5c3e00; border: 2px solid #a67c00; border-radius: 24px; cursor: grab; user-select: none; }
+    code { font-family: Consolas, monospace; }
+    .events-list { background: #e2efff; border-left: 4px solid navy; padding: 14px; }
+    footer { margin-top: 28px; padding-top: 16px; border-top: 1px solid #b7cce0; }
+    @media (max-width: 650px) {
+      body { padding: 14px; }
+      h1 { font-size: 26px; }
+      .grid { grid-template-columns: 1fr; }
+      .card, .foundation { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <p class="version">Version 1.0.0 · GameDev Shunta 2026</p>
+  <h1>t1a10-events-shunta.html</h1>
+
+  <!-- The teacher's original examples stay at the top. -->
+  <section class="foundation">
+    <h2>Teacher's Examples</h2>
+    <a href="https://way2tutorial.com/html/html5_events_handler_list.php">
+      Good reference to HTML Events
+    </a><br><br>
+
+    Events are HTML code that activates JavaScript code.
+    <br><br>
+
+    <label for="myText01">Input:</label>
+    <input type="text" id="myText01" value="3"><br><br>
+
+    <input type="button" value="Example onClick" onClick="{
+      document.getElementById('myDiv01').innerHTML =
+        document.getElementById('myText01').value;
+    }">
+
+    <div id="myDiv01" class="output">...</div>
+    <br>
+
+    <b id="myB02" onMouseOut="{
+      document.getElementById('myB02').innerHTML = 'This is nice.';
+    }" onMouseOver="{
+      document.getElementById('myB02').innerHTML = 'This is cool.';
+    }">This is bold</b><br><br>
+
+    <span class="hint">Click the button. Then move the mouse onto and off the bold text.</span>
+  </section>
+
+  <h2>My Event Experiments</h2>
+  <p>Try each experiment. The event name and its result are shown on the page.</p>
+  <p class="events-list">
+    <strong>Extra event types:</strong>
+    <code>ondblclick</code>, <code>oninput</code>, <code>onchange</code>,
+    <code>onfocus</code>, <code>onblur</code>, <code>onkeydown</code>,
+    <code>onkeyup</code>, <code>onmousemove</code>, <code>onmouseleave</code>,
+    <code>ontouchstart</code>, <code>ontouchmove</code>, <code>ontouchend</code>,
+    <code>ontouchcancel</code>, <code>ondragstart</code>, <code>ondragover</code>,
+    <code>ondrop</code>, <code>ondragend</code>, <code>onsubmit</code>.
+  </p>
+
+  <div class="grid">
+    <section class="card">
+      <h3>1. Double-click Star Counter</h3>
+      <p><code>ondblclick</code> runs when you double-click.</p>
+      <input type="button" value="Double-click for a star" ondblclick="{
+        let myCount = Number(document.getElementById('myStars').value) + 1;
+        document.getElementById('myStars').value = myCount;
+        document.getElementById('myDiv02').textContent =
+          'Stars collected: ' + myCount + ' ★';
+      }">
+      <input type="hidden" id="myStars" value="0">
+      <div id="myDiv02" class="output" role="status">Stars collected: 0</div>
+      <p class="hint">Best tested with a mouse or trackpad.</p>
+    </section>
+
+    <section class="card">
+      <h3>2. Live Player Name</h3>
+      <p><code>oninput</code> runs each time the text changes.</p>
+      <label for="myName">Type a name:</label><br>
+      <input type="text" id="myName" value="Shunta" maxlength="24" oninput="{
+        let myName = document.getElementById('myName').value;
+        document.getElementById('myDiv03').textContent =
+          'Player: ' + (myName || '(no name yet)') + ' | Characters: ' + myName.length;
+      }">
+      <div id="myDiv03" class="output">Player: Shunta | Characters: 6</div>
+    </section>
+
+    <section class="card">
+      <h3>3. Choose a Team Color</h3>
+      <p><code>onchange</code> runs when a new option is selected.</p>
+      <label for="myTeam">Team:</label>
+      <select id="myTeam" onchange="{
+        let myColor = document.getElementById('myTeam').value;
+        document.getElementById('myDiv04').style.backgroundColor = myColor;
+        document.getElementById('myDiv04').textContent =
+          'Selected team: ' + this.options[this.selectedIndex].text;
+      }">
+        <option value="lightblue">Ocean</option>
+        <option value="lightgreen">Forest</option>
+        <option value="pink">Bloom</option>
+        <option value="khaki">Sunshine</option>
+      </select>
+      <div id="myDiv04" class="output" style="background-color:lightblue;" role="status">Selected team: Ocean</div>
+    </section>
+
+    <section class="card">
+      <h3>4. Focus and Blur</h3>
+      <p><code>onfocus</code>: enter the box. <code>onblur</code>: leave it.</p>
+      <label for="myFocus">Click here, then click somewhere else:</label><br>
+      <input type="text" id="myFocus" placeholder="Try focusing on me" onfocus="{
+        this.style.backgroundColor = 'lightyellow';
+        document.getElementById('myDiv05').textContent = 'onfocus: this input is active.';
+      }" onblur="{
+        this.style.backgroundColor = 'white';
+        document.getElementById('myDiv05').textContent = 'onblur: this input is no longer active.';
+      }">
+      <div id="myDiv05" class="output" role="status">This input has not been focused yet.</div>
+    </section>
+
+    <section class="card">
+      <h3>5. Keyboard Press and Release</h3>
+      <p><code>onkeydown</code>: press. <code>onkeyup</code>: release.</p>
+      <label for="myKeyboard">Click the box and try your keyboard:</label><br>
+      <input type="text" id="myKeyboard" placeholder="Press a key" onkeydown="{
+        let myKey = event.key === ' ' ? 'Space' : event.key;
+        document.getElementById('myDiv06').textContent = 'onkeydown: ' + myKey;
+        document.getElementById('myDiv06').style.backgroundColor = 'lightgreen';
+      }" onkeyup="{
+        let myKey = event.key === ' ' ? 'Space' : event.key;
+        document.getElementById('myDiv06').textContent = 'onkeyup: ' + myKey;
+        document.getElementById('myDiv06').style.backgroundColor = 'lightblue';
+      }">
+      <div id="myDiv06" class="output">No keyboard event yet.</div>
+      <p class="hint">Use a physical keyboard for this experiment. Phone keyboards may send different events.</p>
+    </section>
+
+    <section class="card">
+      <h3>6. Follow the Mouse</h3>
+      <p><code>onmousemove</code> gives the position. <code>onmouseleave</code> detects leaving.</p>
+      <div class="mouse-area" onmousemove="{
+        let myRect = this.getBoundingClientRect();
+        let myX = Math.max(10, Math.min(this.clientWidth - 10, event.clientX - myRect.left - this.clientLeft));
+        let myY = Math.max(10, Math.min(this.clientHeight - 10, event.clientY - myRect.top - this.clientTop));
+        document.getElementById('myMouseDot').style.transform =
+          'translate(' + (myX - 10) + 'px, ' + (myY - 10) + 'px)';
+        document.getElementById('myDiv07').textContent =
+          'onmousemove: x = ' + Math.round(myX) + ', y = ' + Math.round(myY);
+      }" onmouseleave="{
+        document.getElementById('myDiv07').textContent = 'onmouseleave: the mouse left the area.';
+      }">
+        <span class="area-label">Move your mouse inside this area.</span>
+        <span id="myMouseDot" class="dot" style="transform:translate(30px,70px);"></span>
+      </div>
+      <div id="myDiv07" class="output">The dot follows your mouse.</div>
+    </section>
+
+    <section class="card">
+      <h3>7. Touch Tracker</h3>
+      <p><code>ontouchstart</code>, <code>ontouchmove</code>, <code>ontouchend</code>, <code>ontouchcancel</code>.</p>
+      <div class="touch-area" ontouchstart="{
+        if (event.cancelable) { event.preventDefault(); }
+        let myTouch = event.touches[0];
+        let myRect = this.getBoundingClientRect();
+        let myX = Math.max(10, Math.min(this.clientWidth - 10, myTouch.clientX - myRect.left - this.clientLeft));
+        let myY = Math.max(10, Math.min(this.clientHeight - 10, myTouch.clientY - myRect.top - this.clientTop));
+        document.getElementById('myTouchDot').style.transform =
+          'translate(' + (myX - 10) + 'px, ' + (myY - 10) + 'px)';
+        document.getElementById('myDiv08').textContent = 'ontouchstart: your finger touched the area.';
+      }" ontouchmove="{
+        if (event.cancelable) { event.preventDefault(); }
+        let myTouch = event.touches[0];
+        let myRect = this.getBoundingClientRect();
+        let myX = Math.max(10, Math.min(this.clientWidth - 10, myTouch.clientX - myRect.left - this.clientLeft));
+        let myY = Math.max(10, Math.min(this.clientHeight - 10, myTouch.clientY - myRect.top - this.clientTop));
+        document.getElementById('myTouchDot').style.transform =
+          'translate(' + (myX - 10) + 'px, ' + (myY - 10) + 'px)';
+        document.getElementById('myDiv08').textContent =
+          'ontouchmove: x = ' + Math.round(myX) + ', y = ' + Math.round(myY);
+      }" ontouchend="{
+        document.getElementById('myDiv08').textContent = 'ontouchend: your finger lifted.';
+      }" ontouchcancel="{
+        document.getElementById('myDiv08').textContent = 'ontouchcancel: the touch was interrupted.';
+      }">
+        <span class="area-label">On a phone or tablet, touch and slide here.</span>
+        <span id="myTouchDot" class="dot" style="transform:translate(30px,70px);"></span>
+      </div>
+      <div id="myDiv08" class="output" role="status">Try this on a touchscreen.</div>
+    </section>
+
+    <section class="card">
+      <h3>8. Drag a Coin into the Basket</h3>
+      <p><code>ondragstart</code>, <code>ondragover</code>, <code>ondrop</code>, <code>ondragend</code>.</p>
+      <span id="myCoin" class="coin" draggable="true" ondragstart="{
+        event.dataTransfer.setData('text/plain', 'myCoin');
+        event.dataTransfer.effectAllowed = 'move';
+        document.getElementById('myDiv09').textContent = 'ondragstart: dragging the coin.';
+      }" ondragend="{
+        if (this.style.display !== 'none') {
+          document.getElementById('myDiv09').textContent = 'ondragend: try dropping the coin inside the basket.';
+        }
+      }">COIN ★</span>
+      <div id="myBasket" class="drop-area" ondragover="{
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+        document.getElementById('myDiv09').textContent = 'ondragover: release the coin here.';
+      }" ondrop="{
+        event.preventDefault();
+        if (event.dataTransfer.getData('text/plain') === 'myCoin') {
+          document.getElementById('myCoin').style.display = 'none';
+          this.textContent = 'Coin collected! ★';
+          this.style.backgroundColor = 'lightgreen';
+          document.getElementById('myDiv09').textContent = 'ondrop: the basket received the coin.';
+        }
+      }">Drop the coin here</div>
+      <div id="myDiv09" class="output" role="status">Drag the coin with your mouse or trackpad.</div>
+      <br>
+      <input type="button" value="Reset coin" onclick="{
+        document.getElementById('myCoin').style.display = 'inline-block';
+        document.getElementById('myBasket').textContent = 'Drop the coin here';
+        document.getElementById('myBasket').style.backgroundColor = '#eef6ff';
+        document.getElementById('myDiv09').textContent = 'Ready to drag again.';
+      }">
+      <p class="hint">Best tested with a mouse or trackpad.</p>
+    </section>
+
+    <section class="card">
+      <h3>9. Submit a Practice Form</h3>
+      <p><code>onsubmit</code> runs when a valid form is submitted.</p>
+      <form onsubmit="{
+        let myPlayer = document.getElementById('myPlayerName').value.trim();
+        if (myPlayer === '') {
+          document.getElementById('myDiv10').textContent = 'Please enter a player name.';
+        } else {
+          document.getElementById('myDiv10').textContent =
+            'onsubmit: Welcome, ' + myPlayer + '! This is a practice form.';
+        }
+        return false;
+      }">
+        <label for="myPlayerName">Player name:</label><br>
+        <input type="text" id="myPlayerName" required maxlength="24" placeholder="Shunta">
+        <button type="submit">Join practice game</button>
+      </form>
+      <div id="myDiv10" class="output" role="status">No form submitted yet.</div>
+      <p class="hint">Nothing is sent or saved. Pressing Enter in the box also submits the form.</p>
+    </section>
+
+    <section class="card">
+      <h3>What I Learned</h3>
+      <p>An event starts a piece of JavaScript when something happens.</p>
+      <p><code>onclick</code> is one example. Typing, focusing, dragging, and touching can start code too.</p>
+      <p><code>event.key</code> tells me which key was pressed. <code>event.clientX</code> and <code>event.clientY</code> give positions.</p>
+      <p>I use <code>textContent</code> to display text in my extra experiments.</p>
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element#events">MDN event reference</a>
+    </section>
+  </div>
+
+  <footer><a href="index.html">← Back to Home</a> · T1A10 Events by Shunta</footer>
+</main>
+</body>
+</html>
+
+
