@@ -1,0 +1,1163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080e18">
+<title>X — INFINITY Fractal Atlas by Shunta</title>
+<meta name="description" content="An interactive Mandelbrot expedition by Shunta Nakamura. Explore with a precise click-to-zoom frame, changing colours, touch controls and a guided journey.">
+<style>:root{color-scheme:dark;--myInk:#f4f5ed;--myMuted:#b3bbc3;--myLine:rgba(236,243,246,.18);--myGlass:rgba(8,13,22,.79);--myAccent:#daed95}
+*{box-sizing:border-box}body{margin:0;overflow:hidden;background:#000;color:var(--myInk);font:14px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button,a,input,select{-webkit-tap-highlight-color:transparent}button{cursor:pointer;color:inherit}button:disabled{opacity:.4;cursor:wait}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,canvas:focus-visible{outline:2px solid var(--myAccent);outline-offset:4px}button{border:1px solid var(--myLine);border-radius:9px;background:rgba(11,16,26,.76);padding:9px 13px;transition:background .15s,border-color .15s}button:hover{background:rgba(40,49,62,.95);border-color:rgba(255,255,255,.5)}[hidden]{display:none!important}.myMono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase}#myCanvas,#myOverlay{position:fixed;inset:0;width:100%;height:100%;display:block}#myCanvas{background:#000;touch-action:none;cursor:crosshair}#myOverlay{pointer-events:none}#myHud{position:fixed;inset:0;pointer-events:none}.myInteractive{pointer-events:auto}.myGlass{background:var(--myGlass);border:1px solid var(--myLine);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 12px 35px rgba(0,0,0,.2)}#myHeader{position:absolute;top:max(24px,env(safe-area-inset-top));left:26px;right:26px;display:flex;justify-content:space-between;gap:20px;align-items:flex-start}#myHint{padding:15px 18px;text-align:left;border-radius:13px;max-width:380px}#myHint .myEyebrow{display:block;color:var(--myAccent);margin-bottom:5px}#myHint .myBrand{font-size:25px;letter-spacing:.08em;font-weight:700;line-height:1.1}#myHint .mySubtitle{display:block;color:var(--myMuted);font-size:11px;margin-top:7px;letter-spacing:.04em}#myHint .myInfoMark{display:inline-grid;place-items:center;width:18px;height:18px;border:1px solid var(--myLine);border-radius:50%;font-size:11px;margin-left:10px;vertical-align:middle}#myTopButtons{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;max-width:490px}#myTopButtons button{backdrop-filter:blur(12px)}.myPrimary{background:var(--myAccent);color:#111b20;border-color:var(--myAccent);font-weight:650}.myPrimary:hover{background:#f0ffbd;border-color:#f0ffbd}#myStatusPanel{position:absolute;top:155px;left:26px;width:190px;padding:13px 15px;border-radius:12px}#myZoomValue{font-size:29px;letter-spacing:-.05em;font-variant-numeric:tabular-nums;line-height:1.2;margin:5px 0 8px}.myMuted{color:var(--myMuted)}#myLocation{font-family:ui-monospace,Consolas,monospace;font-size:10px;line-height:1.7;overflow-wrap:anywhere}#myMap{display:block;width:100%;height:86px;margin:12px 0 7px;border:1px solid var(--myLine);border-radius:6px;background:#000;cursor:crosshair}#myDetail{width:100%;margin-top:5px;background:#0c121f;color:var(--myInk);border:1px solid var(--myLine);padding:5px;border-radius:5px;font-size:11px}#myPalettePanel{position:absolute;top:155px;right:26px;width:167px;padding:14px;border-radius:12px}#myPaletteButtons{display:grid;gap:7px;margin:10px 0}#myPaletteButtons button{display:flex;gap:8px;align-items:center;padding:6px 9px;text-align:left;font-size:12px}#myPaletteButtons button[aria-pressed=true]{border-color:var(--myAccent)}.mySwatch{width:34px;height:11px;border-radius:3px;flex-shrink:0}#myCycle{width:100%;font-size:11px;padding:6px}.myControlLabel{display:flex;justify-content:space-between;gap:6px;align-items:center;font-size:11px;margin-top:14px}#myScale{width:100%;accent-color:var(--myAccent);margin:6px 0 0}#myFooter{position:absolute;left:26px;right:26px;bottom:max(22px,env(safe-area-inset-bottom));display:flex;align-items:flex-end;justify-content:space-between;gap:20px}#myDestinations{width:min(660px,calc(100vw - 240px))}#myDestinationLabel{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 3px 8px;text-shadow:0 1px 8px #000}#myDestinationLabel span:last-child{font-size:11px;color:#d5dce2}#myPlaces{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.myPlace{padding:0;border-radius:10px;overflow:hidden;position:relative;text-align:left;background:#08111c}.myPlace canvas{display:block;width:100%;height:74px;object-fit:cover}.myPlace .myPlaceText{display:block;padding:8px 10px}.myPlace strong{display:block;font-size:11px;font-weight:600;white-space:nowrap}.myPlace small{font-size:9px;color:var(--myMuted);letter-spacing:.02em}.myPlace .myNumber{position:absolute;left:8px;top:6px;z-index:1;font-size:10px;text-shadow:0 1px 5px #000;color:#fff}#myFooterRight{text-align:right;padding-bottom:3px;text-shadow:0 1px 8px #000}#myFooterRight button{font-size:11px;padding:5px 9px}#myFooterRight p{font-size:10px;color:#cad1d8;margin:8px 0 0}#myFooterRight a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.4)}#myRenderStatus{position:absolute;left:50%;top:max(25px,env(safe-area-inset-top));transform:translateX(-50%);padding:7px 13px;border-radius:30px;background:#0d1520d9;border:1px solid var(--myLine);font-size:10px;white-space:nowrap;box-shadow:0 3px 20px #0003;pointer-events:none}#myRenderProgress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--myAccent);box-shadow:0 0 12px var(--myAccent);transition:width .12s;pointer-events:none}#myToast{position:fixed;left:50%;bottom:185px;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 32px);border-radius:10px;padding:10px 16px;background:#101927ed;border:1px solid var(--myLine);color:var(--myInk);font-size:12px;text-align:center;pointer-events:none}#myReveal{position:fixed;left:24px;top:24px;z-index:2;background:#0b1424dc;font-size:11px}#myLoader{position:fixed;inset:0;display:grid;place-items:center;background:#060b12;pointer-events:none;z-index:8}.myLoaderInner{text-align:center}.myLoaderInner p{color:var(--myMuted);font-size:12px}.myLoaderInner strong{font-size:37px;letter-spacing:.13em}.myLoaderLine{width:120px;height:2px;margin:22px auto;background:#303d4e;overflow:hidden}.myLoaderLine:after{content:"";display:block;width:45%;height:100%;background:var(--myAccent);animation:myLoad 1.1s ease-in-out infinite alternate}@keyframes myLoad{to{transform:translateX(150%)}}#myModal{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(12px);display:grid;place-items:center;padding:20px;z-index:10}#myDialog{position:relative;width:min(860px,100%);max-height:90dvh;overflow:auto;border:1px solid var(--myLine);border-radius:20px;padding:28px;background:#0b1220;box-shadow:0 30px 130px #0008}#myCloseModal{position:absolute;right:18px;top:16px;padding:5px 12px;font-size:20px}#myDialog h2{font-size:28px;line-height:1.15;letter-spacing:-.02em;max-width:600px;margin:12px 35px 20px 0}#myDialog h3{font-size:14px;margin:19px 0 6px}#myDialog p{color:#c5ced8;font-size:12px;line-height:1.7}#myDialog a{color:#daf1a7}#myDialog code{font-family:ui-monospace,Consolas,monospace}.myModalColumns{display:grid;grid-template-columns:1.03fr 1fr;gap:26px}.myEquation{padding:13px 15px;border-left:2px solid var(--myAccent);background:#121e2e;font-family:ui-monospace,Consolas,monospace;font-size:20px;letter-spacing:.01em;margin:15px 0}.myKeys{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:11px;color:#bec8d2;margin:14px 0}.myKeys dt{font-family:ui-monospace,Consolas,monospace;color:var(--myInk)}.myKeys dd{margin:0}#myOrbitCanvas{width:100%;height:230px;display:block;background:#080e18;border:1px solid var(--myLine);border-radius:10px}#myOrbitButtons{display:flex;gap:5px;flex-wrap:wrap;margin:9px 0}#myOrbitButtons button{font-size:10px;padding:5px 8px}#myOrbitSlider{width:100%;accent-color:var(--myAccent)}#myOrbitCaption{min-height:52px;font-family:ui-monospace,Consolas,monospace;font-size:11px!important}#myShareBox{margin-top:18px;padding:14px;background:#152034;border:1px solid var(--myLine);border-radius:10px}#myShareText{width:100%;padding:8px;background:#080e19;color:#fff;border:1px solid var(--myLine);border-radius:5px;font-size:11px}.myNote{color:#9aa7b4!important;font-size:10px!important}.myRequirement{margin-top:22px;padding-top:15px;border-top:1px solid var(--myLine)}
+@media(min-width:1700px){#myHint .myBrand{font-size:30px}#myDestinations{width:730px}.myPlace canvas{height:90px}}
+@media(max-width:1050px){#myHeader{left:18px;right:18px;top:18px}#myHint{padding:12px 14px;max-width:315px}#myHint .myBrand{font-size:21px}#myHint .mySubtitle{font-size:10px}#myTopButtons{max-width:335px}#myTopButtons button{font-size:11px;padding:8px 10px}#myRenderStatus{top:116px}#myStatusPanel{left:18px;top:165px;width:164px}#myPalettePanel{right:18px;top:165px;width:149px}#myFooter{left:18px;right:18px;bottom:18px}#myDestinations{width:min(640px,calc(100vw - 170px))}.myPlace strong{font-size:10px}.myPlace .myPlaceText{padding:7px}#myZoomValue{font-size:25px}}
+@media(max-width:680px){#myHeader{top:max(12px,env(safe-area-inset-top));left:12px;right:12px;gap:8px}#myHint{padding:10px 12px;border-radius:10px;max-width:240px}#myHint .myBrand{font-size:17px;letter-spacing:.065em}#myHint .myEyebrow{font-size:8px;letter-spacing:.1em}#myHint .mySubtitle{max-width:170px;font-size:9px;line-height:1.5;margin-top:4px}#myHint .myInfoMark{width:15px;height:15px;font-size:9px;margin-left:3px}#myTopButtons{max-width:138px;gap:5px}#myTopButtons button{padding:6px 8px;font-size:10px;border-radius:7px}#myCopyLink{display:none}#myRenderStatus{top:124px;font-size:9px}#myStatusPanel{top:167px;left:12px;width:132px;padding:10px 11px}#myZoomValue{font-size:21px;margin-bottom:4px}#myLocation{font-size:8px}#myMap{height:61px;margin:8px 0 5px}#myStatusPanel>.myMono{font-size:8px}#myDetail{font-size:9px;padding:4px}#myPalettePanel{right:12px;top:167px;width:115px;padding:10px}#myPalettePanel>.myMono{font-size:8px}#myPaletteButtons{gap:5px;margin:7px 0}#myPaletteButtons button{font-size:9px;gap:5px;padding:5px}.mySwatch{width:24px;height:9px}#myCycle{font-size:9px;padding:5px}.myControlLabel{font-size:9px;margin-top:9px}#myScale{margin-top:4px}#myFooter{left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));display:block}#myDestinations{width:100%}#myPlaces{gap:5px}.myPlace canvas{height:57px}.myPlace .myPlaceText{padding:6px 5px}.myPlace strong{font-size:8px;white-space:normal;line-height:1.35;min-height:22px}.myPlace small{font-size:7px}.myPlace .myNumber{font-size:8px;left:5px;top:4px}#myDestinationLabel span{font-size:8px!important}#myFooterRight{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0 0}#myFooterRight p{margin:0;font-size:8px}#myFooterRight button{padding:4px 7px;font-size:9px}#myToast{bottom:167px;font-size:11px}#myDialog{padding:21px 18px;max-height:93dvh;border-radius:14px}#myDialog h2{font-size:23px}.myModalColumns{grid-template-columns:1fr;gap:8px}#myOrbitCanvas{height:200px}.myRequirement{margin-top:15px}#myReveal{top:12px;left:12px}}
+@media(max-height:570px){#myStatusPanel{top:140px}#myMap,#myLocation,#myStatusPanel label{display:none}#myPalettePanel{top:140px}#myPaletteButtons{grid-template-columns:repeat(2,1fr);gap:4px}#myPalettePanel{width:205px}#myPaletteButtons button{font-size:9px;padding:4px}#myPalettePanel .myControlLabel,#myScale{display:none}.myPlace canvas{height:45px}#myFooter{bottom:10px}#myRenderStatus{top:112px}#myToast{bottom:155px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}.myLoaderLine:after{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="myCanvas" tabindex="0" aria-label="Mandelbrot explorer. Wheel changes the zoom frame. Click to zoom. Drag to pan. Use plus, minus, arrows and B on a keyboard."></canvas>
+<canvas id="myOverlay" aria-hidden="true"></canvas>
+<div id="myHud">
+  <header id="myHeader">
+    <button id="myHint" class="myGlass myInteractive" aria-haspopup="dialog" aria-controls="myModal">
+      <span class="myEyebrow myMono">An expedition into mathematics</span>
+      <span class="myBrand">INFINITY<span class="myInfoMark">i</span></span>
+      <span class="mySubtitle">Wheel sizes the frame. Click to travel.<br>Drag to move. Tap here to learn why.</span>
+    </button>
+    <nav id="myTopButtons" class="myInteractive" aria-label="Explorer controls">
+      <button id="myBack" title="Previous view (B)" disabled>← Back</button>
+      <button id="myOverview" title="See the whole set (Home)">Overview</button>
+      <button id="myJourney" class="myPrimary" aria-pressed="false">▶ Journey</button>
+      <button id="myExport" title="Render and save a detailed PNG">Save PNG ↗</button>
+      <button id="myCopyLink" title="Copy a link with these coordinates and colours">Copy view</button>
+    </nav>
+  </header>
+  <aside id="myStatusPanel" class="myGlass myInteractive" aria-label="Current view">
+    <div class="myMono myMuted">Magnification</div>
+    <div id="myZoomValue">100×</div>
+    <div id="myLocation"></div>
+    <canvas id="myMap" width="180" height="100" aria-label="Overview map. Click to move your current view." tabindex="0"></canvas>
+    <div class="myMono myMuted">Your place in the set</div>
+    <label class="myControlLabel" for="myDetail">Drawing detail</label>
+    <select id="myDetail">
+      <option value="0.7">Fast</option>
+      <option value="1" selected>Balanced</option>
+      <option value="1.8">Fine</option>
+    </select>
+  </aside>
+  <aside id="myPalettePanel" class="myGlass myInteractive" aria-label="Colours and zoom frame">
+    <div class="myMono myMuted">Atmosphere</div>
+    <div id="myPaletteButtons"></div>
+    <button id="myCycle" aria-pressed="true">◉ Colours flowing</button>
+    <label class="myControlLabel" for="myScale">Next zoom <span id="myScaleValue">2.2×</span></label>
+    <input id="myScale" type="range" min="0.05" max="0.85" step="0.01" value="0.45" aria-label="Size of the next zoom frame">
+  </aside>
+  <div id="myRenderStatus" role="status">Charting the first view…</div>
+  <footer id="myFooter">
+    <section id="myDestinations" class="myInteractive" aria-label="Fractal destinations">
+      <div id="myDestinationLabel"><span class="myMono">Choose a destination</span><span>Four doors. One equation.</span></div>
+      <div id="myPlaces"></div>
+    </section>
+    <div id="myFooterRight" class="myInteractive">
+      <button id="myHideHud" title="Hide controls (H)">Hide controls · H</button>
+      <p>X ASSIGNMENT · SHUNTA NAKAMURA<br><a href="index.html">Back to index ↗</a></p>
+    </div>
+  </footer>
+</div>
+<button id="myReveal" hidden>Show controls · H</button>
+<div id="myRenderProgress" aria-hidden="true"></div>
+<div id="myToast" role="status" hidden></div>
+<div id="myLoader"><div class="myLoaderInner"><div class="myMono myMuted">Fractal atlas / Shunta Nakamura</div><strong>INFINITY</strong><div class="myLoaderLine"></div><p>A universe made from one equation.</p></div></div>
+<div id="myModal" hidden>
+  <section id="myDialog" role="dialog" aria-modal="true" aria-labelledby="myDialogTitle" tabindex="-1">
+    <button id="myCloseModal" aria-label="Close explanation">×</button>
+    <div class="myMono" style="color:var(--myAccent)">A small rule. An enormous world.</div>
+    <h2 id="myDialogTitle">You are looking at a calculation.</h2>
+    <div class="myModalColumns">
+      <div>
+        <div class="myEquation">z<sub>n+1</sub> = z<sub>n</sub>² + c</div>
+        <p>Every pixel supplies a complex number <code>c = a + bi</code>. Start at <code>z = 0</code>, square it, add <code>c</code>, then repeat. Changing the pixel changes the entire journey.</p>
+        <p>When the size of <code>z</code> exceeds 2, the orbit will escape. The colour records how quickly that happens. Black means no escape was found within this drawing's iteration budget; it is a finite approximation.</p>
+        <p>Fractional escape counts blend the bands smoothly. Colour cycling changes the palette over time, while the mathematics stays the same.</p>
+        <h3>Explore it your way</h3>
+        <dl class="myKeys">
+          <dt>Wheel</dt><dd>Resize the dashed preview frame.</dd>
+          <dt>Click / tap</dt><dd>Fill the screen with the framed region.</dd>
+          <dt>Drag / pinch</dt><dd>Move around / zoom with two fingers.</dd>
+          <dt>+ / −</dt><dd>Zoom in / out at the centre.</dd>
+          <dt>B / Home</dt><dd>Previous view / full-set overview.</dd>
+          <dt>Arrows</dt><dd>Pan in the direction of the arrow.</dd>
+          <dt>C / Space</dt><dd>Next palette / pause colour cycling.</dd>
+          <dt>H / Escape</dt><dd>Hide controls / close this window.</dd>
+        </dl>
+        <p class="myNote">The frame always keeps the screen's proportions. It can extend past the edge when your cursor is near a corner. Deep zoom stops at a practical 64-bit precision limit.</p>
+      </div>
+      <div>
+        <h3 style="margin-top:0">Watch a single pixel's orbit</h3>
+        <canvas id="myOrbitCanvas" width="460" height="280" aria-label="A plotted orbit of the Mandelbrot equation"></canvas>
+        <div id="myOrbitButtons">
+          <button id="myOrbitInside">Inside: c = −1</button>
+          <button id="myOrbitOutside">Outside: c = 0.5 + 0.5i</button>
+          <button id="myOrbitHere">View centre</button>
+        </div>
+        <label class="myControlLabel" for="myOrbitSlider">Iteration <span id="myOrbitStep">0</span></label>
+        <input id="myOrbitSlider" type="range" min="0" max="16" step="1" value="0">
+        <p id="myOrbitCaption"></p>
+        <p class="myNote">Move the slider to follow the rule one step at a time. The dashed circle is the escape radius, |z| = 2.</p>
+        <h3>What I added for this X assignment</h3>
+        <p>Curated destinations, a guided zoom expedition, a location map, pan and pinch gestures, four palettes, PNG export and coordinate links. Calculations run in small batches, with a worker when available.</p>
+      </div>
+    </div>
+    <div id="myShareBox" hidden><label for="myShareText">Copy this view link:</label><input id="myShareText" readonly></div>
+    <div class="myRequirement">
+      <p class="myNote">Built for the class Mandelbrot prompt: a full-window black canvas, smooth vivid colour cycling, a cursor-tracking dashed frame, wheel-controlled frame size, click-centred zoom and a top-left explanation. JavaScript uses descriptive <code>my</code> names, <code>async/await</code> and direct event properties.</p>
+      <p class="myNote">Math reference: <a href="https://linas.org/art-gallery/escape/smooth.html" target="_blank" rel="noopener">Linas Vepstas — smooth exterior shading</a>. Browser reference: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers" target="_blank" rel="noopener">MDN — Web Workers</a>.</p>
+    </div>
+  </section>
+</div>
+<script>
+'use strict';
+// MY_MATH_START — the same mathematics is used by the page, worker and PNG export.
+const myPalettes = [
+  { myName: 'Nebula', myColors: [[9, 15, 45], [75, 45, 170], [19, 161, 208], [151, 246, 227], [255, 207, 125], [191, 53, 120]] },
+  { myName: 'Ember', myColors: [[20, 10, 29], [87, 22, 75], [200, 44, 70], [255, 120, 52], [255, 221, 144], [104, 43, 90]] },
+  { myName: 'Aurora', myColors: [[4, 21, 35], [5, 87, 110], [39, 205, 156], [211, 252, 177], [136, 97, 209], [45, 42, 116]] },
+  { myName: 'Glacier', myColors: [[7, 16, 39], [28, 65, 137], [60, 150, 208], [179, 235, 250], [244, 251, 252], [76, 124, 165]] }
+];
+
+function myClamp(myValue, myMin, myMax) {
+  return Math.max(myMin, Math.min(myMax, myValue));
+}
+
+function myEscapeValue(myReal, myImaginary, myLimit) {
+  // These two tests identify the main cardioid and the period-two bulb.
+  let myShifted = myReal - 0.25;
+  let myQ = myShifted * myShifted + myImaginary * myImaginary;
+  if (myQ * (myQ + myShifted) <= 0.25 * myImaginary * myImaginary) return -1;
+  if ((myReal + 1) * (myReal + 1) + myImaginary * myImaginary <= 0.0625) return -1;
+
+  let myZReal = 0;
+  let myZImaginary = 0;
+  let myRealSquared = 0;
+  let myImaginarySquared = 0;
+  let myIteration = 0;
+  while (myIteration < myLimit) {
+    myZImaginary = 2 * myZReal * myZImaginary + myImaginary;
+    myZReal = myRealSquared - myImaginarySquared + myReal;
+    myRealSquared = myZReal * myZReal;
+    myImaginarySquared = myZImaginary * myZImaginary;
+    myIteration++;
+    if (myRealSquared + myImaginarySquared > 4096) {
+      // A fractional iteration count removes hard colour bands.
+      let myLogMagnitude = Math.log(myRealSquared + myImaginarySquared) / 2;
+      return Math.max(0, myIteration + 1 - Math.log(myLogMagnitude) / Math.LN2);
+    }
+  }
+  return -1; // No escape was found within this finite iteration budget.
+}
+
+function myFillRow(myValues, myRow, myConfig) {
+  let myImaginary = myConfig.myCenterImaginary + myConfig.mySpanY * (0.5 - (myRow + 0.5) / myConfig.myHeight);
+  let myOffset = myRow * myConfig.myWidth;
+  for (let myColumn = 0; myColumn < myConfig.myWidth; myColumn++) {
+    let myReal = myConfig.myCenterReal + myConfig.mySpanX * ((myColumn + 0.5) / myConfig.myWidth - 0.5);
+    myValues[myOffset + myColumn] = myEscapeValue(myReal, myImaginary, myConfig.myLimit);
+  }
+}
+
+function myCreateConfig(myView, myWidth, myHeight, myAspect, myLimit) {
+  return {
+    myWidth, myHeight, myLimit,
+    myCenterReal: myView.myReal,
+    myCenterImaginary: myView.myImaginary,
+    mySpanX: myView.mySpan,
+    mySpanY: myView.mySpan / myAspect
+  };
+}
+
+function myMapPoint(myView, myX, myY, myWidth, myHeight) {
+  return {
+    myReal: myView.myReal + (myX / myWidth - 0.5) * myView.mySpan,
+    myImaginary: myView.myImaginary + (0.5 - myY / myHeight) * myView.mySpan * myHeight / myWidth
+  };
+}
+
+function myZoomTarget(myView, myX, myY, myWidth, myHeight, myScale) {
+  let myPoint = myMapPoint(myView, myX, myY, myWidth, myHeight);
+  return { myReal: myPoint.myReal, myImaginary: myPoint.myImaginary, mySpan: myView.mySpan * myScale };
+}
+
+function mySampleColor(myValue, myPalette, myPhase) {
+  if (myValue < 0) return [0, 0, 0];
+  let myPosition = myValue * 0.022 + 0.13 * Math.log1p(myValue) + myPhase;
+  myPosition = ((myPosition % 1) + 1) % 1;
+  let mySegment = Math.floor(myPosition * 6);
+  let myBlend = (1 - Math.cos((myPosition * 6 - mySegment) * Math.PI)) / 2;
+  let myFirst = myPalette.myColors[mySegment];
+  let mySecond = myPalette.myColors[(mySegment + 1) % 6];
+  let myLight = 0.86 + 0.14 * Math.sin(myValue * 0.17);
+  return [0, 1, 2].map(function(myChannel) {
+    return Math.round((myFirst[myChannel] * (1 - myBlend) + mySecond[myChannel] * myBlend) * myLight);
+  });
+}
+
+function myColorPixels(myValues, myPalette, myPhase) {
+  let myPixels = new Uint8ClampedArray(myValues.length * 4);
+  for (let myIndex = 0; myIndex < myValues.length; myIndex++) {
+    let myValue = myValues[myIndex];
+    if (myValue >= 0) {
+      let myPosition = myValue * 0.022 + 0.13 * Math.log1p(myValue) + myPhase;
+      myPosition = ((myPosition % 1) + 1) % 1;
+      let mySegment = Math.floor(myPosition * 6);
+      let myBlend = (1 - Math.cos((myPosition * 6 - mySegment) * Math.PI)) / 2;
+      let myFirst = myPalette.myColors[mySegment];
+      let mySecond = myPalette.myColors[(mySegment + 1) % 6];
+      let myLight = 0.86 + 0.14 * Math.sin(myValue * 0.17);
+      for (let myChannel = 0; myChannel < 3; myChannel++) {
+        myPixels[myIndex * 4 + myChannel] = Math.round((myFirst[myChannel] * (1 - myBlend) + mySecond[myChannel] * myBlend) * myLight);
+      }
+    }
+    myPixels[myIndex * 4 + 3] = 255;
+  }
+  return myPixels;
+}
+
+function myPackValues(myValues) {
+  let myPixels = new Uint8Array(myValues.length * 4);
+  for (let myIndex = 0; myIndex < myValues.length; myIndex++) {
+    let myValue = myValues[myIndex];
+    if (myValue < 0) continue;
+    let myPacked = Math.round(myValue * 512);
+    myPixels[myIndex * 4] = (myPacked >> 16) & 255;
+    myPixels[myIndex * 4 + 1] = (myPacked >> 8) & 255;
+    myPixels[myIndex * 4 + 2] = myPacked & 255;
+    myPixels[myIndex * 4 + 3] = 255;
+  }
+  return myPixels;
+}
+
+function myIterationBudget(mySpan, myDetail) {
+  return Math.round(myClamp((360 + 145 * Math.max(0, Math.log10(3.4 / mySpan))) * myDetail, 200, 6000));
+}
+
+function myMakeOrbit(myReal, myImaginary, myCount) {
+  let myPoints = [{ myReal: 0, myImaginary: 0 }];
+  let myZReal = 0;
+  let myZImaginary = 0;
+  for (let myStep = 0; myStep < myCount; myStep++) {
+    let myNextReal = myZReal * myZReal - myZImaginary * myZImaginary + myReal;
+    myZImaginary = 2 * myZReal * myZImaginary + myImaginary;
+    myZReal = myNextReal;
+    myPoints.push({ myReal: myZReal, myImaginary: myZImaginary });
+    if (myZReal * myZReal + myZImaginary * myZImaginary > 4) break;
+  }
+  return myPoints;
+}
+// MY_MATH_END
+
+const myMinimumSpan = 2e-11;
+const myMaximumSpan = 12;
+const myFullView = { myReal: -0.55, myImaginary: 0, mySpan: 3.4 };
+const myMapView = { myReal: -0.55, myImaginary: 0, mySpan: 4.2 };
+const myDestinations = [
+  { myName: 'Seahorse Bay', myCaption: 'A coastline of curls', myReal: -0.743517, myImaginary: 0.13153, mySpan: 0.034, myPalette: 0 },
+  { myName: 'Electric Spiral', myCaption: 'Follow the fine threads', myReal: -0.743643887037151, myImaginary: 0.13182590420533, mySpan: 0.00012, myPalette: 1 },
+  { myName: 'Small Universe', myCaption: 'A world within a world', myReal: -1.768, myImaginary: 0, mySpan: 0.070, myPalette: 2 },
+  { myName: 'Northern Crown', myCaption: 'Beyond the familiar', myReal: -0.16070135, myImaginary: 1.0375665, mySpan: 0.0095, myPalette: 3 }
+];
+let myCanvas = document.getElementById('myCanvas');
+const myOverlay = document.getElementById('myOverlay');
+const myOverlayContext = myOverlay.getContext('2d');
+const myColorCanvas = document.createElement('canvas');
+const myColorContext = myColorCanvas.getContext('2d');
+let myCpuContext = null;
+let myGpu = null;
+let myField = null;
+let myView = { ...myDestinations[0] };
+let myDisplayedView = { ...myView };
+let myTransition = null;
+let myPaletteIndex = 0;
+let myPhase = 0.13;
+let myFrameScale = 0.45;
+let myDetail = 1;
+let myHistory = [];
+let myRenderToken = 0;
+let myRequestId = 0;
+let myWorker = null;
+let myWorkerDisabled = false;
+let myPendingJobs = new Map();
+let myBusy = false;
+let myExporting = false;
+let myReadyPromise = Promise.resolve();
+let myReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let myCycling = !myReducedMotion;
+let myLastAnimationTime = 0;
+let myLastCpuPaint = 0;
+let myColorDirty = true;
+let myPointer = { myX: window.innerWidth / 2, myY: window.innerHeight / 2, myVisible: false };
+let myPointers = new Map();
+let myGesture = null;
+let mySuppressClickUntil = 0;
+let myTourToken = 0;
+let myTourActive = false;
+let myLastFocus = null;
+let myToastTimer = 0;
+let myResizeTimer = 0;
+let myOrbit = myMakeOrbit(-1, 0, 16);
+let myOrbitParameter = { myReal: -1, myImaginary: 0 };
+let myMapImage = null;
+
+function myPause(myMilliseconds = 0) {
+  return new Promise(function(myResolve) { setTimeout(myResolve, myMilliseconds); });
+}
+
+// Yield regularly, so both workers and the fallback can cancel outdated views.
+async function myCalculateField(myConfig, myProgress, myIsActive) {
+  let myValues = new Float32Array(myConfig.myWidth * myConfig.myHeight);
+  for (let myRow = 0; myRow < myConfig.myHeight; myRow++) {
+    if (!myIsActive()) return null;
+    myFillRow(myValues, myRow, myConfig);
+    if (myRow % 6 === 5) {
+      myProgress((myRow + 1) / myConfig.myHeight);
+      await myPause(0);
+    }
+  }
+  myProgress(1);
+  return myValues;
+}
+
+function myStartWorker() {
+  if (myWorkerDisabled || typeof Worker === 'undefined') return null;
+  if (myWorker) return myWorker;
+  let myWorkerSource = [myEscapeValue, myFillRow, myPause, myCalculateField].map(function(myFunction) {
+    return myFunction.toString();
+  }).join('\n') + `
+let myActiveJob = -1;
+self.onmessage = async function(myEvent) {
+  let myJob = myEvent.data;
+  if (myJob.myCancel) { myActiveJob = -1; return; }
+  myActiveJob = myJob.myId;
+  try {
+    let myValues = await myCalculateField(myJob.myConfig,
+      function(myProgress) { if (myActiveJob === myJob.myId) self.postMessage({ myId: myJob.myId, myProgress }); },
+      function() { return myActiveJob === myJob.myId; });
+    if (myValues && myActiveJob === myJob.myId) {
+      self.postMessage({ myId: myJob.myId, myBuffer: myValues.buffer }, [myValues.buffer]);
+    }
+  } catch (myError) { self.postMessage({ myId: myJob.myId, myError: String(myError) }); }
+};`;
+  let myWorkerUrl = null;
+  try {
+    myWorkerUrl = URL.createObjectURL(new Blob([myWorkerSource], { type: 'text/javascript' }));
+    myWorker = new Worker(myWorkerUrl);
+    myWorker.onmessage = function(myEvent) {
+      let myReply = myEvent.data;
+      let myJob = myPendingJobs.get(myReply.myId);
+      if (!myJob) return;
+      if (myReply.myError) { myDisableWorker(); return; }
+      if (myReply.myBuffer) {
+        myPendingJobs.delete(myReply.myId);
+        myJob.myResolve(new Float32Array(myReply.myBuffer));
+      } else if (Number.isFinite(myReply.myProgress)) myJob.myProgress(myReply.myProgress);
+    };
+    myWorker.onerror = function(myEvent) {
+      if (myEvent.preventDefault) myEvent.preventDefault();
+      myDisableWorker();
+    };
+  } catch (myError) { myWorkerDisabled = true; myWorker = null; }
+  finally { if (myWorkerUrl) URL.revokeObjectURL(myWorkerUrl); }
+  return myWorker;
+}
+
+function myDisableWorker() {
+  myWorkerDisabled = true;
+  if (myWorker) myWorker.terminate();
+  myWorker = null;
+  for (let myJob of myPendingJobs.values()) {
+    myCalculateField(myJob.myConfig, myJob.myProgress, myJob.myIsActive).then(myJob.myResolve).catch(function() { myJob.myResolve(null); });
+  }
+  myPendingJobs.clear();
+}
+
+function myCancelJobs() {
+  if (myWorker) myWorker.postMessage({ myCancel: true });
+  for (let myJob of myPendingJobs.values()) myJob.myResolve(null);
+  myPendingJobs.clear();
+}
+
+async function myRequestField(myConfig, myProgress, myToken) {
+  let myIsActive = function() { return myToken === myRenderToken; };
+  let myActiveWorker = myStartWorker();
+  if (!myActiveWorker) return myCalculateField(myConfig, myProgress, myIsActive);
+  return new Promise(function(myResolve) {
+    let myId = ++myRequestId;
+    myPendingJobs.set(myId, { myResolve, myProgress, myIsActive, myConfig });
+    myActiveWorker.postMessage({ myId, myConfig });
+  });
+}
+
+function myCompileShader(myGl, myType, mySource) {
+  let myShader = myGl.createShader(myType);
+  myGl.shaderSource(myShader, mySource);
+  myGl.compileShader(myShader);
+  if (!myGl.getShaderParameter(myShader, myGl.COMPILE_STATUS)) throw new Error('Colour shader unavailable');
+  return myShader;
+}
+
+function myStartRenderer() {
+  try {
+    let myGl = myCanvas.getContext('webgl', { alpha: false, antialias: false, depth: false, powerPreference: 'low-power' });
+    if (!myGl || myGl.getShaderPrecisionFormat(myGl.FRAGMENT_SHADER, myGl.HIGH_FLOAT).precision < 16) throw new Error('Use canvas fallback');
+    let myVertexSource = `attribute vec2 myPosition; varying vec2 myUv;
+void main() { myUv = vec2((myPosition.x + 1.0) * 0.5, (1.0 - myPosition.y) * 0.5); gl_Position = vec4(myPosition, 0.0, 1.0); }`;
+    let myFragmentSource = `precision highp float; varying vec2 myUv;
+uniform sampler2D myTexture; uniform vec4 myCamera; uniform float myPhase;
+uniform vec3 myColor0; uniform vec3 myColor1; uniform vec3 myColor2;
+uniform vec3 myColor3; uniform vec3 myColor4; uniform vec3 myColor5;
+void main() {
+  vec2 myPoint = vec2(0.5) + myCamera.xy + (myUv - 0.5) * myCamera.zw;
+  if (myPoint.x < 0.0 || myPoint.y < 0.0 || myPoint.x > 1.0 || myPoint.y > 1.0) { gl_FragColor = vec4(0.0,0.0,0.0,1.0); return; }
+  vec4 myPacked = texture2D(myTexture, myPoint);
+  if (myPacked.a < 0.5) { gl_FragColor = vec4(0.0,0.0,0.0,1.0); return; }
+  float myValue = dot(myPacked.rgb * 255.0, vec3(65536.0,256.0,1.0)) / 512.0;
+  float myPosition = fract(myValue * 0.022 + 0.13 * log(1.0 + myValue) + myPhase) * 6.0;
+  float myBlend = (1.0 - cos(fract(myPosition) * 3.14159265359)) * 0.5;
+  vec3 myFirst; vec3 mySecond;
+  if (myPosition < 1.0) { myFirst=myColor0; mySecond=myColor1; }
+  else if (myPosition < 2.0) { myFirst=myColor1; mySecond=myColor2; }
+  else if (myPosition < 3.0) { myFirst=myColor2; mySecond=myColor3; }
+  else if (myPosition < 4.0) { myFirst=myColor3; mySecond=myColor4; }
+  else if (myPosition < 5.0) { myFirst=myColor4; mySecond=myColor5; }
+  else { myFirst=myColor5; mySecond=myColor0; }
+  gl_FragColor=vec4(mix(myFirst,mySecond,myBlend)*(0.86+0.14*sin(myValue*0.17)),1.0);
+}`;
+    let myProgram = myGl.createProgram();
+    myGl.attachShader(myProgram, myCompileShader(myGl, myGl.VERTEX_SHADER, myVertexSource));
+    myGl.attachShader(myProgram, myCompileShader(myGl, myGl.FRAGMENT_SHADER, myFragmentSource));
+    myGl.linkProgram(myProgram);
+    if (!myGl.getProgramParameter(myProgram, myGl.LINK_STATUS)) throw new Error('Use canvas fallback');
+    myGl.useProgram(myProgram);
+    let myBuffer = myGl.createBuffer();
+    myGl.bindBuffer(myGl.ARRAY_BUFFER, myBuffer);
+    myGl.bufferData(myGl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), myGl.STATIC_DRAW);
+    let myAttribute = myGl.getAttribLocation(myProgram, 'myPosition');
+    myGl.enableVertexAttribArray(myAttribute);
+    myGl.vertexAttribPointer(myAttribute, 2, myGl.FLOAT, false, 0, 0);
+    let myTexture = myGl.createTexture();
+    myGl.bindTexture(myGl.TEXTURE_2D, myTexture);
+    myGl.texParameteri(myGl.TEXTURE_2D, myGl.TEXTURE_MIN_FILTER, myGl.NEAREST);
+    myGl.texParameteri(myGl.TEXTURE_2D, myGl.TEXTURE_MAG_FILTER, myGl.NEAREST);
+    myGl.texParameteri(myGl.TEXTURE_2D, myGl.TEXTURE_WRAP_S, myGl.CLAMP_TO_EDGE);
+    myGl.texParameteri(myGl.TEXTURE_2D, myGl.TEXTURE_WRAP_T, myGl.CLAMP_TO_EDGE);
+    let myUniforms = {};
+    for (let myName of ['myCamera','myPhase','myTexture','myColor0','myColor1','myColor2','myColor3','myColor4','myColor5']) {
+      myUniforms[myName] = myGl.getUniformLocation(myProgram, myName);
+    }
+    myGl.uniform1i(myUniforms.myTexture, 0);
+    myGpu = { myGl, myProgram, myTexture, myUniforms };
+    // Context loss is a specialized event; a listener is more widely supported.
+    myCanvas.addEventListener('webglcontextlost', function(myEvent) {
+      myEvent.preventDefault();
+      myUseCpuCanvas();
+      myBindCanvasEvents();
+      myResizeCanvases();
+      if (myField) myInstallField(myField);
+    }, false);
+  } catch (myError) { myUseCpuCanvas(); }
+}
+
+function myUseCpuCanvas() {
+  let myReplacement = myCanvas.cloneNode(false);
+  myCanvas.replaceWith(myReplacement);
+  myCanvas = myReplacement;
+  myGpu = null;
+  myCpuContext = myCanvas.getContext('2d', { alpha: false });
+}
+
+function myResizeCanvases() {
+  let myPixelScale = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(2400000 / (window.innerWidth * window.innerHeight)));
+  myCanvas.width = Math.max(1, Math.round(window.innerWidth * myPixelScale));
+  myCanvas.height = Math.max(1, Math.round(window.innerHeight * myPixelScale));
+  myOverlay.width = window.innerWidth;
+  myOverlay.height = window.innerHeight;
+  if (myGpu) myGpu.myGl.viewport(0, 0, myCanvas.width, myCanvas.height);
+  myColorDirty = true;
+}
+
+function myInstallField(myNewField) {
+  myField = myNewField;
+  if (myGpu) {
+    let myGl = myGpu.myGl;
+    myGl.bindTexture(myGl.TEXTURE_2D, myGpu.myTexture);
+    myGl.texImage2D(myGl.TEXTURE_2D, 0, myGl.RGBA, myField.myConfig.myWidth, myField.myConfig.myHeight, 0, myGl.RGBA, myGl.UNSIGNED_BYTE, myPackValues(myField.myValues));
+  } else {
+    myColorCanvas.width = myField.myConfig.myWidth;
+    myColorCanvas.height = myField.myConfig.myHeight;
+  }
+  myColorDirty = true;
+  document.getElementById('myLoader').hidden = true;
+}
+
+function myPaintFractal(myRefreshColors) {
+  if (!myField) return;
+  let myConfig = myField.myConfig;
+  let mySpanY = myDisplayedView.mySpan * window.innerHeight / window.innerWidth;
+  if (myGpu) {
+    let myGl = myGpu.myGl;
+    let myUniforms = myGpu.myUniforms;
+    myGl.uniform4f(myUniforms.myCamera,
+      (myDisplayedView.myReal - myConfig.myCenterReal) / myConfig.mySpanX,
+      -(myDisplayedView.myImaginary - myConfig.myCenterImaginary) / myConfig.mySpanY,
+      myDisplayedView.mySpan / myConfig.mySpanX, mySpanY / myConfig.mySpanY);
+    myGl.uniform1f(myUniforms.myPhase, myPhase);
+    for (let myIndex = 0; myIndex < 6; myIndex++) {
+      let myColor = myPalettes[myPaletteIndex].myColors[myIndex];
+      myGl.uniform3f(myUniforms['myColor' + myIndex], myColor[0]/255, myColor[1]/255, myColor[2]/255);
+    }
+    myGl.drawArrays(myGl.TRIANGLES, 0, 6);
+  } else {
+    if (myRefreshColors) {
+      let myImage = myColorContext.createImageData(myConfig.myWidth, myConfig.myHeight);
+      myImage.data.set(myColorPixels(myField.myValues, myPalettes[myPaletteIndex], myPhase));
+      myColorContext.putImageData(myImage, 0, 0);
+    }
+    let myLeft = (0.5 + (myConfig.myCenterReal - myDisplayedView.myReal - myConfig.mySpanX / 2) / myDisplayedView.mySpan) * myCanvas.width;
+    let myTop = (0.5 + (myDisplayedView.myImaginary - myConfig.myCenterImaginary - myConfig.mySpanY / 2) / mySpanY) * myCanvas.height;
+    myCpuContext.fillStyle = '#000';
+    myCpuContext.fillRect(0, 0, myCanvas.width, myCanvas.height);
+    myCpuContext.drawImage(myColorCanvas, myLeft, myTop, myConfig.mySpanX / myDisplayedView.mySpan * myCanvas.width, myConfig.mySpanY / mySpanY * myCanvas.height);
+  }
+}
+
+function myPaintFrame(myTime) {
+  myOverlayContext.clearRect(0, 0, myOverlay.width, myOverlay.height);
+  if (!myPointer.myVisible || myGesture || !document.getElementById('myModal').hidden) return;
+  let myWidth = window.innerWidth * myFrameScale;
+  let myHeight = window.innerHeight * myFrameScale;
+  let myLeft = myPointer.myX - myWidth / 2;
+  let myTop = myPointer.myY - myHeight / 2;
+  myOverlayContext.save();
+  myOverlayContext.strokeStyle = 'rgba(0,0,0,.7)';
+  myOverlayContext.lineWidth = 3;
+  myOverlayContext.strokeRect(myLeft, myTop, myWidth, myHeight);
+  myOverlayContext.setLineDash([7, 6]);
+  myOverlayContext.lineDashOffset = myReducedMotion ? 0 : -myTime / 160;
+  myOverlayContext.strokeStyle = '#f2ffe2';
+  myOverlayContext.lineWidth = 1;
+  myOverlayContext.strokeRect(myLeft, myTop, myWidth, myHeight);
+  myOverlayContext.setLineDash([]);
+  myOverlayContext.beginPath();
+  myOverlayContext.arc(myPointer.myX, myPointer.myY, 4, 0, Math.PI * 2);
+  myOverlayContext.stroke();
+  let myLabel = 'CLICK TO ENTER  ·  ' + (1 / myFrameScale).toFixed(1) + '×';
+  myOverlayContext.font = '10px ui-monospace,Consolas,monospace';
+  let myLabelWidth = myOverlayContext.measureText(myLabel).width + 20;
+  let myLabelX = myClamp(myLeft, 8, window.innerWidth - myLabelWidth - 8);
+  let myLabelY = myClamp(myTop - 27, 8, window.innerHeight - 28);
+  myOverlayContext.fillStyle = '#0b1421e8';
+  myOverlayContext.fillRect(myLabelX, myLabelY, myLabelWidth, 22);
+  myOverlayContext.fillStyle = '#efffd7';
+  myOverlayContext.fillText(myLabel, myLabelX + 10, myLabelY + 15);
+  myOverlayContext.restore();
+}
+
+function myUpdateAnimation(myTime) {
+  let myElapsed = Math.min(80, myTime - (myLastAnimationTime || myTime));
+  myLastAnimationTime = myTime;
+  if (myCycling && !document.hidden && document.getElementById('myModal').hidden) myPhase = (myPhase + myElapsed * 0.000013) % 1;
+  if (myTransition) {
+    let myFraction = myClamp((myTime - myTransition.myStarted) / myTransition.myDuration, 0, 1);
+    let myEase = myFraction * myFraction * (3 - 2 * myFraction);
+    myDisplayedView = {
+      myReal: myTransition.myFrom.myReal + (myTransition.myTo.myReal - myTransition.myFrom.myReal) * myEase,
+      myImaginary: myTransition.myFrom.myImaginary + (myTransition.myTo.myImaginary - myTransition.myFrom.myImaginary) * myEase,
+      mySpan: Math.exp(Math.log(myTransition.myFrom.mySpan) * (1 - myEase) + Math.log(myTransition.myTo.mySpan) * myEase)
+    };
+    if (myFraction === 1) { myDisplayedView = { ...myView }; myTransition = null; }
+  }
+  let myRefresh = myColorDirty || (myCycling && myTime - myLastCpuPaint > 170);
+  if (myGpu || myRefresh || myTransition || myGesture) myPaintFractal(myRefresh);
+  if (myRefresh) { myColorDirty = false; myLastCpuPaint = myTime; }
+  myPaintFrame(myTime);
+  requestAnimationFrame(myUpdateAnimation);
+}
+
+function myShowProgress(myMessage, myFraction) {
+  document.getElementById('myRenderStatus').textContent = myMessage;
+  let myProgress = document.getElementById('myRenderProgress');
+  myProgress.hidden = false;
+  myProgress.style.width = (myClamp(myFraction, 0, 1) * 100) + '%';
+}
+
+async function myRenderView() {
+  let myToken = ++myRenderToken;
+  myCancelJobs();
+  myBusy = true;
+  document.getElementById('myExport').disabled = true;
+  let mySnapshot = { ...myView };
+  let myAspect = window.innerWidth / window.innerHeight;
+  let myLimit = myIterationBudget(mySnapshot.mySpan, myDetail);
+  let myStartTime = performance.now();
+  let myPixelBudget = myDetail < 1 ? 260000 : myDetail > 1 ? 1450000 : 850000;
+  if (!myGpu) myPixelBudget = Math.min(myPixelBudget, myDetail > 1 ? 700000 : 420000);
+  let myScale = Math.min(1.25, Math.sqrt(myPixelBudget / (window.innerWidth * window.innerHeight)));
+  let myWidth = Math.max(80, Math.round(window.innerWidth * myScale));
+  let myHeight = Math.max(80, Math.round(window.innerHeight * myScale));
+  try {
+    let myQuickScale = Math.min(1, Math.sqrt(85000 / (myWidth * myHeight)));
+    if (myQuickScale < 0.8) {
+      let myQuickConfig = myCreateConfig(mySnapshot, Math.max(40, Math.round(myWidth * myQuickScale)), Math.max(40, Math.round(myHeight * myQuickScale)), myAspect, myLimit);
+      let myQuick = await myRequestField(myQuickConfig, function(myProgress) {
+        if (myToken === myRenderToken) myShowProgress('Finding the view… ' + Math.round(myProgress * 100) + '%', myProgress * 0.18);
+      }, myToken);
+      if (!myQuick || myToken !== myRenderToken) return;
+      if (myTransition) await myPause(Math.max(0, myTransition.myStarted + myTransition.myDuration - performance.now()));
+      if (myToken !== myRenderToken) return;
+      myInstallField({ myValues: myQuick, myConfig: myQuickConfig });
+    }
+    let myConfig = myCreateConfig(mySnapshot, myWidth, myHeight, myAspect, myLimit);
+    let myValues = await myRequestField(myConfig, function(myProgress) {
+      if (myToken === myRenderToken) myShowProgress('Drawing the details… ' + Math.round(myProgress * 100) + '%', 0.18 + myProgress * 0.82);
+    }, myToken);
+    if (!myValues || myToken !== myRenderToken) return;
+    myInstallField({ myValues, myConfig });
+    document.getElementById('myRenderStatus').textContent = myTourActive ? 'Expedition in progress · Enjoy the view' : 'Ready to explore · ' + myLimit.toLocaleString() + ' iterations';
+    document.getElementById('myRenderStatus').title = 'Drawing time: ' + ((performance.now() - myStartTime) / 1000).toFixed(2) + ' s';
+  } catch (myError) {
+    if (myToken === myRenderToken) {
+      document.getElementById('myLoader').hidden = true;
+      myToast('This drawing could not finish. Try Fast detail or another destination.');
+      document.getElementById('myRenderStatus').textContent = 'Choose another view to try again';
+    }
+  } finally {
+    if (myToken === myRenderToken) {
+      myBusy = false;
+      document.getElementById('myExport').disabled = false;
+      document.getElementById('myRenderProgress').hidden = true;
+    }
+  }
+}
+
+function myQueueRender() {
+  myReadyPromise = myRenderView();
+  return myReadyPromise;
+}
+
+function myToast(myMessage) {
+  clearTimeout(myToastTimer);
+  let myToastElement = document.getElementById('myToast');
+  myToastElement.textContent = myMessage;
+  myToastElement.hidden = false;
+  myToastTimer = setTimeout(function() { myToastElement.hidden = true; }, 3400);
+}
+
+function myPushHistory(myOldView) {
+  myHistory.push({ ...myOldView });
+  if (myHistory.length > 60) myHistory.shift();
+  document.getElementById('myBack').disabled = false;
+}
+
+function myChangeView(myNewView, myRecord = true, myAnimate = true) {
+  let myCleanView = {
+    myReal: myNewView.myReal,
+    myImaginary: myNewView.myImaginary,
+    mySpan: myClamp(myNewView.mySpan, myMinimumSpan, myMaximumSpan)
+  };
+  if (!Number.isFinite(myCleanView.myReal) || !Number.isFinite(myCleanView.myImaginary)) return Promise.resolve();
+  if (myRecord) myPushHistory(myView);
+  let myOldView = { ...myDisplayedView };
+  myView = myCleanView;
+  if (myAnimate && !myReducedMotion && myField) {
+    myTransition = { myFrom: myOldView, myTo: { ...myView }, myStarted: performance.now(), myDuration: 380 };
+  } else { myDisplayedView = { ...myView }; myTransition = null; }
+  myUpdateStats();
+  myWriteHash();
+  return myQueueRender();
+}
+
+function myUpdateStats() {
+  let myZoom = myFullView.mySpan / myView.mySpan;
+  document.getElementById('myZoomValue').textContent = myZoom < 1000000 ? myZoom.toLocaleString('en-US', { maximumFractionDigits: myZoom < 10 ? 1 : 0 }) + '×' : myZoom.toExponential(2) + '×';
+  document.getElementById('myLocation').textContent = 'Re ' + myView.myReal.toPrecision(13) + '\nIm ' + myView.myImaginary.toPrecision(13);
+  document.getElementById('myLocation').style.whiteSpace = 'pre-line';
+  myPaintMap();
+}
+
+function mySetFrameScale(myScale) {
+  myFrameScale = myClamp(myScale, 0.05, 0.85);
+  document.getElementById('myScale').value = String(myFrameScale);
+  document.getElementById('myScaleValue').textContent = (1 / myFrameScale).toFixed(1) + '×';
+}
+
+function mySetPalette(myIndex) {
+  myPaletteIndex = ((myIndex % myPalettes.length) + myPalettes.length) % myPalettes.length;
+  for (let myButton of document.getElementById('myPaletteButtons').children) {
+    myButton.setAttribute('aria-pressed', String(Number(myButton.dataset.myPalette) === myPaletteIndex));
+  }
+  myColorDirty = true;
+  myWriteHash();
+}
+
+function myToggleCycle() {
+  myCycling = !myCycling;
+  myUpdateCycleButton();
+}
+
+function myUpdateCycleButton() {
+  let myButton = document.getElementById('myCycle');
+  myButton.textContent = myCycling ? '◉ Colours flowing' : 'Ⅱ Colours paused';
+  myButton.setAttribute('aria-pressed', String(myCycling));
+}
+
+function myWriteHash() {
+  let myParameters = new URLSearchParams({ r: String(myView.myReal), i: String(myView.myImaginary), s: String(myView.mySpan), p: String(myPaletteIndex) });
+  try { history.replaceState(null, '', '#' + myParameters.toString()); } catch (myError) { /* Some local-file browsers restrict history. */ }
+}
+
+function myReadHash() {
+  let myParameters = new URLSearchParams(location.hash.slice(1));
+  if (!['r','i','s'].every(function(myKey) { return myParameters.has(myKey); })) return;
+  let myReal = Number(myParameters.get('r'));
+  let myImaginary = Number(myParameters.get('i'));
+  let mySpan = Number(myParameters.get('s'));
+  if (!Number.isFinite(myReal) || !Number.isFinite(myImaginary) || !Number.isFinite(mySpan) || Math.abs(myReal) > 4 || Math.abs(myImaginary) > 4 || mySpan < myMinimumSpan || mySpan > myMaximumSpan) return;
+  myView = { myReal, myImaginary, mySpan };
+  myDisplayedView = { ...myView };
+  let myPalette = Number(myParameters.get('p'));
+  if (Number.isInteger(myPalette) && myPalette >= 0 && myPalette < myPalettes.length) myPaletteIndex = myPalette;
+}
+
+function myStopTour() {
+  myTourToken++;
+  if (!myTourActive) return;
+  myTourActive = false;
+  let myButton = document.getElementById('myJourney');
+  myButton.textContent = '▶ Journey';
+  myButton.setAttribute('aria-pressed', 'false');
+}
+
+function myManualAction() {
+  myStopTour();
+  if (myExporting) myToast('The export will stop when you choose a new view.');
+}
+
+function myZoomAt(myX, myY, myScale) {
+  myManualAction();
+  let myTarget = myZoomTarget(myDisplayedView, myX, myY, window.innerWidth, window.innerHeight, myScale);
+  if (myTarget.mySpan < myMinimumSpan) {
+    myToast('You reached the practical precision limit. Use Back to explore another branch.');
+    return;
+  }
+  if (myTarget.mySpan > myMaximumSpan) { myToast('This is the widest view.'); return; }
+  myChangeView(myTarget);
+}
+
+function myGoBack() {
+  myManualAction();
+  if (!myHistory.length) return;
+  myChangeView(myHistory.pop(), false);
+  document.getElementById('myBack').disabled = !myHistory.length;
+}
+
+function myGoOverview() {
+  myManualAction();
+  myChangeView({ ...myFullView, mySpan: Math.max(3.4, 2.5 * window.innerWidth / window.innerHeight) });
+}
+
+async function myRunJourney() {
+  if (myTourActive) { myStopTour(); return; }
+  if (myExporting) return;
+  myTourActive = true;
+  let myToken = ++myTourToken;
+  let myButton = document.getElementById('myJourney');
+  myButton.textContent = 'Ⅱ Stop journey';
+  myButton.setAttribute('aria-pressed', 'true');
+  myPushHistory(myView);
+  let myDestination = myDestinations[1];
+  let myRoute = [0.7, 0.12, 0.022, 0.004, 0.0007, 0.00012, 0.000016, 0.0000018];
+  mySetPalette(0);
+  for (let myIndex = 0; myIndex < myRoute.length; myIndex++) {
+    if (myToken !== myTourToken) return;
+    await myChangeView({ myReal: myDestination.myReal, myImaginary: myDestination.myImaginary, mySpan: myRoute[myIndex] }, false);
+    if (myToken !== myTourToken) return;
+    document.getElementById('myRenderStatus').textContent = 'Spiral expedition · ' + (myIndex + 1) + ' / ' + myRoute.length;
+    await myPause(myReducedMotion ? 1900 : 1400);
+  }
+  if (myToken === myTourToken) {
+    myStopTour();
+    document.getElementById('myRenderStatus').textContent = 'Journey complete · Your exploration begins here';
+    myToast('You travelled almost two million times closer. Keep exploring.');
+  }
+}
+
+function myBindCanvasEvents() {
+  myCanvas.onwheel = function(myEvent) {
+    myEvent.preventDefault();
+    let myDelta = myEvent.deltaY * (myEvent.deltaMode === 1 ? 16 : myEvent.deltaMode === 2 ? window.innerHeight : 1);
+    mySetFrameScale(myFrameScale * Math.exp(myClamp(myDelta, -180, 180) * 0.0025));
+    myPointer = { myX: myEvent.clientX, myY: myEvent.clientY, myVisible: true };
+  };
+  myCanvas.onclick = function(myEvent) {
+    if (performance.now() < mySuppressClickUntil || myGesture) return;
+    myZoomAt(myEvent.clientX, myEvent.clientY, myFrameScale);
+  };
+  myCanvas.onpointerdown = function(myEvent) {
+    if (myEvent.button !== 0 && myEvent.pointerType !== 'touch') return;
+    myManualAction();
+    // A new gesture starts from the exact camera currently visible on screen.
+    if (myTransition) {
+      myView = { ...myDisplayedView };
+      myTransition = null;
+      myUpdateStats();
+      myQueueRender();
+    }
+    myCanvas.focus({ preventScroll: true });
+    try { myCanvas.setPointerCapture(myEvent.pointerId); } catch (myError) { /* Capture is optional. */ }
+    myPointers.set(myEvent.pointerId, { myX: myEvent.clientX, myY: myEvent.clientY });
+    if (myPointers.size === 1) {
+      myGesture = { myInitialView: { ...myView }, myView: { ...myDisplayedView }, myX: myEvent.clientX, myY: myEvent.clientY, myMoved: false, myPinch: false };
+      myTransition = null;
+    } else if (myPointers.size === 2) {
+      let myPoints = [...myPointers.values()];
+      let myMidX = (myPoints[0].myX + myPoints[1].myX) / 2;
+      let myMidY = (myPoints[0].myY + myPoints[1].myY) / 2;
+      myGesture.myView = { ...myDisplayedView };
+      myGesture.myDistance = Math.max(5, Math.hypot(myPoints[0].myX - myPoints[1].myX, myPoints[0].myY - myPoints[1].myY));
+      myGesture.myAnchor = myMapPoint(myDisplayedView, myMidX, myMidY, window.innerWidth, window.innerHeight);
+      myGesture.myPinch = true;
+      myGesture.myMoved = true;
+      myPointer.myVisible = false;
+    }
+  };
+  myCanvas.onpointermove = function(myEvent) {
+    myPointer = { myX: myEvent.clientX, myY: myEvent.clientY, myVisible: myEvent.pointerType !== 'touch' };
+    if (!myPointers.has(myEvent.pointerId) || !myGesture) return;
+    myPointers.set(myEvent.pointerId, { myX: myEvent.clientX, myY: myEvent.clientY });
+    if (myPointers.size >= 2 && myGesture.myPinch) {
+      let myPoints = [...myPointers.values()];
+      let myDistance = Math.max(5, Math.hypot(myPoints[0].myX - myPoints[1].myX, myPoints[0].myY - myPoints[1].myY));
+      let myMidX = (myPoints[0].myX + myPoints[1].myX) / 2;
+      let myMidY = (myPoints[0].myY + myPoints[1].myY) / 2;
+      let mySpan = myClamp(myGesture.myView.mySpan * myGesture.myDistance / myDistance, myMinimumSpan, myMaximumSpan);
+      myDisplayedView = {
+        myReal: myGesture.myAnchor.myReal - (myMidX / window.innerWidth - 0.5) * mySpan,
+        myImaginary: myGesture.myAnchor.myImaginary + (myMidY / window.innerHeight - 0.5) * mySpan * window.innerHeight / window.innerWidth,
+        mySpan
+      };
+      myColorDirty = true;
+    } else if (!myGesture.myPinch) {
+      let myDeltaX = myEvent.clientX - myGesture.myX;
+      let myDeltaY = myEvent.clientY - myGesture.myY;
+      if (Math.hypot(myDeltaX, myDeltaY) > 6) myGesture.myMoved = true;
+      if (myGesture.myMoved) {
+        myDisplayedView = {
+          myReal: myGesture.myView.myReal - myDeltaX / window.innerWidth * myGesture.myView.mySpan,
+          myImaginary: myGesture.myView.myImaginary + myDeltaY / window.innerWidth * myGesture.myView.mySpan,
+          mySpan: myGesture.myView.mySpan
+        };
+        myColorDirty = true;
+      }
+    }
+  };
+  myCanvas.onpointerup = function(myEvent) {
+    myPointers.delete(myEvent.pointerId);
+    if (myPointers.size || !myGesture) return;
+    let myFinished = myGesture;
+    myGesture = null;
+    if (myFinished.myMoved) {
+      mySuppressClickUntil = performance.now() + 450;
+      myPushHistory(myFinished.myInitialView);
+      myChangeView(myDisplayedView, false, false);
+    } else {
+      myDisplayedView = { ...myView };
+      myColorDirty = true;
+    }
+  };
+  myCanvas.onpointercancel = function() {
+    myPointers.clear();
+    myGesture = null;
+    myDisplayedView = { ...myView };
+    mySuppressClickUntil = performance.now() + 450;
+    myColorDirty = true;
+  };
+  myCanvas.onpointerleave = function() { if (!myPointers.size) myPointer.myVisible = false; };
+  myCanvas.oncontextmenu = function(myEvent) { myEvent.preventDefault(); myGoBack(); };
+}
+
+function myHideControls() {
+  let myHud = document.getElementById('myHud');
+  myHud.hidden = !myHud.hidden;
+  document.getElementById('myReveal').hidden = !myHud.hidden;
+}
+
+function myOpenExplanation() {
+  myLastFocus = document.activeElement;
+  document.getElementById('myModal').hidden = false;
+  document.getElementById('myCloseModal').focus();
+  myDrawOrbit();
+}
+
+function myCloseExplanation() {
+  document.getElementById('myModal').hidden = true;
+  document.getElementById('myShareBox').hidden = true;
+  if (myLastFocus && myLastFocus.focus) myLastFocus.focus();
+}
+
+function myChooseOrbit(myReal, myImaginary) {
+  myOrbitParameter = { myReal, myImaginary };
+  myOrbit = myMakeOrbit(myReal, myImaginary, 16);
+  let mySlider = document.getElementById('myOrbitSlider');
+  mySlider.max = String(myOrbit.length - 1);
+  mySlider.value = '0';
+  myDrawOrbit();
+}
+
+function myDrawOrbit() {
+  let myOrbitCanvas = document.getElementById('myOrbitCanvas');
+  let myContext = myOrbitCanvas.getContext('2d');
+  let myWidth = myOrbitCanvas.width;
+  let myHeight = myOrbitCanvas.height;
+  let myCount = Number(document.getElementById('myOrbitSlider').value);
+  let myScale = Math.min(myWidth, myHeight) / 5.4;
+  let myCenterX = myWidth / 2;
+  let myCenterY = myHeight / 2;
+  myContext.clearRect(0, 0, myWidth, myHeight);
+  myContext.fillStyle = '#080e18'; myContext.fillRect(0, 0, myWidth, myHeight);
+  myContext.strokeStyle = '#203047'; myContext.lineWidth = 1;
+  for (let myIndex = -2; myIndex <= 2; myIndex++) {
+    myContext.beginPath();
+    myContext.moveTo(myCenterX + myIndex * myScale, 0); myContext.lineTo(myCenterX + myIndex * myScale, myHeight);
+    myContext.moveTo(0, myCenterY + myIndex * myScale); myContext.lineTo(myWidth, myCenterY + myIndex * myScale);
+    myContext.stroke();
+  }
+  myContext.strokeStyle = '#91a873'; myContext.setLineDash([5, 6]);
+  myContext.beginPath(); myContext.arc(myCenterX, myCenterY, myScale * 2, 0, Math.PI * 2); myContext.stroke(); myContext.setLineDash([]);
+  myContext.save();
+  myContext.beginPath(); myContext.rect(0, 0, myWidth, myHeight); myContext.clip();
+  myContext.strokeStyle = '#8cf2e1'; myContext.lineWidth = 2; myContext.beginPath();
+  for (let myIndex = 0; myIndex <= myCount; myIndex++) {
+    let myPoint = myOrbit[myIndex];
+    let myX = myCenterX + myPoint.myReal * myScale;
+    let myY = myCenterY - myPoint.myImaginary * myScale;
+    if (myIndex === 0) myContext.moveTo(myX, myY); else myContext.lineTo(myX, myY);
+  }
+  myContext.stroke();
+  for (let myIndex = 0; myIndex <= myCount; myIndex++) {
+    let myPoint = myOrbit[myIndex];
+    myContext.beginPath(); myContext.arc(myCenterX + myPoint.myReal * myScale, myCenterY - myPoint.myImaginary * myScale, myIndex === myCount ? 5 : 2.5, 0, Math.PI * 2);
+    myContext.fillStyle = myIndex === myCount ? '#eeffb0' : '#7ddbd0'; myContext.fill();
+  }
+  myContext.restore();
+  myContext.font = '11px monospace'; myContext.fillStyle = '#aabccd'; myContext.fillText('Re →', myWidth - 44, myCenterY - 8); myContext.fillText('Im ↑', myCenterX + 8, 17);
+  let myCurrent = myOrbit[myCount];
+  let myMagnitude = Math.hypot(myCurrent.myReal, myCurrent.myImaginary);
+  document.getElementById('myOrbitStep').textContent = String(myCount);
+  document.getElementById('myOrbitCaption').textContent = 'c = ' + myOrbitParameter.myReal.toFixed(6) + (myOrbitParameter.myImaginary >= 0 ? ' + ' : ' − ') + Math.abs(myOrbitParameter.myImaginary).toFixed(6) + 'i\nz[' + myCount + '] = ' + myCurrent.myReal.toFixed(5) + (myCurrent.myImaginary >= 0 ? ' + ' : ' − ') + Math.abs(myCurrent.myImaginary).toFixed(5) + 'i · |z| = ' + myMagnitude.toFixed(3) + (myMagnitude > 2 ? '\nEscaped: this orbit crossed the circle.' : '\nStill within the circle at this step.');
+  document.getElementById('myOrbitCaption').style.whiteSpace = 'pre-line';
+}
+
+function myPaintMap() {
+  let myMap = document.getElementById('myMap');
+  let myContext = myMap.getContext('2d');
+  if (!myMapImage) return;
+  myContext.putImageData(myMapImage, 0, 0);
+  let myX = (0.5 + (myView.myReal - myMapView.myReal) / myMapView.mySpan) * myMap.width;
+  let myY = (0.5 - (myView.myImaginary - myMapView.myImaginary) / (myMapView.mySpan * myMap.height / myMap.width)) * myMap.height;
+  let myWidth = myView.mySpan / myMapView.mySpan * myMap.width;
+  let myHeight = myView.mySpan * window.innerHeight / window.innerWidth / myMapView.mySpan * myMap.width;
+  myContext.strokeStyle = '#eeffb0'; myContext.lineWidth = 1;
+  myContext.strokeRect(myX - myWidth / 2, myY - myHeight / 2, myWidth, myHeight);
+  myContext.beginPath(); myContext.moveTo(myX - 4, myY); myContext.lineTo(myX + 4, myY); myContext.moveTo(myX, myY - 4); myContext.lineTo(myX, myY + 4); myContext.stroke();
+}
+
+async function myMakeThumbnails() {
+  for (let myIndex = 0; myIndex < myDestinations.length; myIndex++) {
+    let myThumbnail = document.getElementById('myThumbnail' + myIndex);
+    let myConfig = myCreateConfig(myDestinations[myIndex], myThumbnail.width, myThumbnail.height, myThumbnail.width / myThumbnail.height, myIterationBudget(myDestinations[myIndex].mySpan, 1));
+    let myValues = await myCalculateField(myConfig, function() {}, function() { return true; });
+    let myContext = myThumbnail.getContext('2d');
+    let myImage = myContext.createImageData(myConfig.myWidth, myConfig.myHeight);
+    myImage.data.set(myColorPixels(myValues, myPalettes[myDestinations[myIndex].myPalette], 0.13));
+    myContext.putImageData(myImage, 0, 0);
+  }
+  let myMap = document.getElementById('myMap');
+  let myConfig = myCreateConfig(myMapView, myMap.width, myMap.height, myMap.width / myMap.height, 220);
+  let myValues = await myCalculateField(myConfig, function() {}, function() { return true; });
+  myMapImage = myMap.getContext('2d').createImageData(myConfig.myWidth, myConfig.myHeight);
+  myMapImage.data.set(myColorPixels(myValues, myPalettes[3], 0.1));
+  myPaintMap();
+}
+
+function myMakeControls() {
+  for (let myIndex = 0; myIndex < myPalettes.length; myIndex++) {
+    let myButton = document.createElement('button');
+    myButton.dataset.myPalette = String(myIndex);
+    myButton.setAttribute('aria-pressed', String(myIndex === myPaletteIndex));
+    let mySwatch = document.createElement('span');
+    mySwatch.className = 'mySwatch'; mySwatch.setAttribute('aria-hidden', 'true');
+    mySwatch.style.background = 'linear-gradient(90deg,' + myPalettes[myIndex].myColors.map(function(myColor) { return 'rgb(' + myColor.join(',') + ')'; }).join(',') + ')';
+    myButton.appendChild(mySwatch); myButton.appendChild(document.createTextNode(myPalettes[myIndex].myName));
+    myButton.onclick = function() { mySetPalette(myIndex); };
+    document.getElementById('myPaletteButtons').appendChild(myButton);
+  }
+  for (let myIndex = 0; myIndex < myDestinations.length; myIndex++) {
+    let myDestination = myDestinations[myIndex];
+    let myButton = document.createElement('button');
+    myButton.className = 'myPlace'; myButton.setAttribute('aria-label', 'Explore ' + myDestination.myName);
+    let myNumber = document.createElement('span'); myNumber.className = 'myNumber myMono'; myNumber.textContent = '0' + (myIndex + 1);
+    let myThumbnail = document.createElement('canvas'); myThumbnail.width = 200; myThumbnail.height = 100; myThumbnail.id = 'myThumbnail' + myIndex; myThumbnail.setAttribute('aria-hidden', 'true');
+    let myText = document.createElement('span'); myText.className = 'myPlaceText';
+    let myName = document.createElement('strong'); myName.textContent = myDestination.myName;
+    let myCaption = document.createElement('small'); myCaption.textContent = myDestination.myCaption;
+    myText.appendChild(myName); myText.appendChild(myCaption); myButton.appendChild(myNumber); myButton.appendChild(myThumbnail); myButton.appendChild(myText);
+    myButton.onclick = function() { myManualAction(); mySetPalette(myDestination.myPalette); myChangeView(myDestination); myToast(myDestination.myName + ' · Wheel, click and explore'); };
+    document.getElementById('myPlaces').appendChild(myButton);
+  }
+}
+
+async function mySavePng() {
+  if (myExporting || myBusy) return;
+  myStopTour();
+  myExporting = true;
+  let myButton = document.getElementById('myExport');
+  myButton.disabled = true; myButton.textContent = 'Saving…';
+  let myToken = ++myRenderToken;
+  myCancelJobs();
+  let mySnapshot = { ...myView };
+  let myPalette = myPalettes[myPaletteIndex];
+  let mySavedPhase = myPhase;
+  let myAspect = window.innerWidth / window.innerHeight;
+  let myWidth = Math.min(2048, Math.round(Math.sqrt(2300000 * myAspect)));
+  let myHeight = Math.max(1, Math.round(myWidth / myAspect));
+  let myConfig = myCreateConfig(mySnapshot, myWidth, myHeight, myAspect, myIterationBudget(mySnapshot.mySpan, Math.max(1.4, myDetail)));
+  try {
+    let myValues = await myRequestField(myConfig, function(myProgress) {
+      if (myToken === myRenderToken) myShowProgress('Making your PNG… ' + Math.round(myProgress * 100) + '%', myProgress);
+    }, myToken);
+    if (!myValues || myToken !== myRenderToken) { myToast('Export stopped because the view changed.'); return; }
+    let myOutput = document.createElement('canvas'); myOutput.width = myWidth; myOutput.height = myHeight;
+    let myContext = myOutput.getContext('2d');
+    let myImage = myContext.createImageData(myWidth, myHeight); myImage.data.set(myColorPixels(myValues, myPalette, mySavedPhase)); myContext.putImageData(myImage, 0, 0);
+    let myBlob = await new Promise(function(myResolve) { myOutput.toBlob(myResolve, 'image/png'); });
+    if (!myBlob) throw new Error('PNG could not be created');
+    let myUrl = URL.createObjectURL(myBlob);
+    let myLink = document.createElement('a'); myLink.href = myUrl;
+    myLink.download = 'INFINITY-Shunta-' + Math.round(myFullView.mySpan / mySnapshot.mySpan) + 'x.png';
+    document.body.appendChild(myLink); myLink.click(); myLink.remove();
+    setTimeout(function() { URL.revokeObjectURL(myUrl); }, 10000);
+    myToast('PNG prepared · ' + myWidth + ' × ' + myHeight + ' pixels');
+    document.getElementById('myRenderStatus').textContent = 'Your view is ready · Keep exploring';
+  } catch (myError) { myToast('PNG could not be saved here. Try another browser or view.'); }
+  finally {
+    myExporting = false; myButton.textContent = 'Save PNG ↗';
+    myButton.disabled = myBusy;
+    if (myToken === myRenderToken) document.getElementById('myRenderProgress').hidden = true;
+  }
+}
+
+async function myCopyView() {
+  myWriteHash();
+  let myUrl = new URL(location.href);
+  myUrl.hash = new URLSearchParams({ r: String(myView.myReal), i: String(myView.myImaginary), s: String(myView.mySpan), p: String(myPaletteIndex) }).toString();
+  try {
+    if (!navigator.clipboard || location.protocol === 'file:') throw new Error('Use selectable link');
+    await navigator.clipboard.writeText(myUrl.href);
+    myToast('View link copied · Coordinates and palette included');
+  } catch (myError) {
+    myOpenExplanation();
+    document.getElementById('myShareBox').hidden = false;
+    let myInput = document.getElementById('myShareText'); myInput.value = myUrl.href; myInput.focus(); myInput.select();
+    if (location.protocol === 'file:') myToast('Publish this HTML on GitHub Pages to share a web link.');
+  }
+}
+
+function myBindControls() {
+  document.getElementById('myHint').onclick = myOpenExplanation;
+  document.getElementById('myCloseModal').onclick = myCloseExplanation;
+  document.getElementById('myModal').onclick = function(myEvent) { if (myEvent.target === this) myCloseExplanation(); };
+  document.getElementById('myBack').onclick = myGoBack;
+  document.getElementById('myOverview').onclick = myGoOverview;
+  document.getElementById('myJourney').onclick = myRunJourney;
+  document.getElementById('myExport').onclick = mySavePng;
+  document.getElementById('myCopyLink').onclick = myCopyView;
+  document.getElementById('myCycle').onclick = myToggleCycle;
+  document.getElementById('myScale').oninput = function() { mySetFrameScale(Number(this.value)); };
+  document.getElementById('myDetail').onchange = function() { myManualAction(); myDetail = Number(this.value); myQueueRender(); };
+  document.getElementById('myHideHud').onclick = myHideControls;
+  document.getElementById('myReveal').onclick = myHideControls;
+  document.getElementById('myOrbitInside').onclick = function() { myChooseOrbit(-1, 0); };
+  document.getElementById('myOrbitOutside').onclick = function() { myChooseOrbit(0.5, 0.5); };
+  document.getElementById('myOrbitHere').onclick = function() { myChooseOrbit(myView.myReal, myView.myImaginary); };
+  document.getElementById('myOrbitSlider').oninput = myDrawOrbit;
+  document.getElementById('myMap').onclick = function(myEvent) {
+    myManualAction();
+    let myRect = this.getBoundingClientRect();
+    let myPoint = myMapPoint(myMapView, (myEvent.clientX - myRect.left) / myRect.width * this.width, (myEvent.clientY - myRect.top) / myRect.height * this.height, this.width, this.height);
+    myChangeView({ ...myPoint, mySpan: myView.mySpan });
+  };
+  document.getElementById('myMap').onkeydown = function(myEvent) { if (myEvent.key === 'Enter') { myEvent.preventDefault(); myGoOverview(); } };
+  document.onkeydown = function(myEvent) {
+    if (!document.getElementById('myModal').hidden) {
+      if (myEvent.key === 'Escape') { myEvent.preventDefault(); myCloseExplanation(); return; }
+      if (myEvent.key === 'Tab') {
+        let myFocusable = [...document.getElementById('myDialog').querySelectorAll('button,a,input,select,[tabindex="0"]')].filter(function(myElement) { return !myElement.disabled && myElement.getClientRects().length > 0; });
+        let myFirst = myFocusable[0]; let myLast = myFocusable[myFocusable.length - 1];
+        if (myEvent.shiftKey && document.activeElement === myFirst) { myEvent.preventDefault(); myLast.focus(); }
+        else if (!myEvent.shiftKey && document.activeElement === myLast) { myEvent.preventDefault(); myFirst.focus(); }
+      }
+      return;
+    }
+    if (myEvent.ctrlKey || myEvent.metaKey || myEvent.altKey || /INPUT|SELECT|TEXTAREA/.test(myEvent.target.tagName)) return;
+    if (myEvent.key.toLowerCase() === 'h') { myHideControls(); return; }
+    if (myEvent.key.toLowerCase() === 'c') { mySetPalette(myPaletteIndex + 1); return; }
+    if (myEvent.key === ' ' && !/BUTTON|A/.test(myEvent.target.tagName)) { myEvent.preventDefault(); myToggleCycle(); return; }
+    if (myEvent.key === 'Home') { myEvent.preventDefault(); myGoOverview(); return; }
+    if (myEvent.key.toLowerCase() === 'b' || myEvent.key === 'Backspace') { myEvent.preventDefault(); myGoBack(); return; }
+    if (myEvent.key === '+' || myEvent.key === '=') { myEvent.preventDefault(); myZoomAt(window.innerWidth/2, window.innerHeight/2, myFrameScale); return; }
+    if (myEvent.key === '-' || myEvent.key === '_') { myEvent.preventDefault(); myZoomAt(window.innerWidth/2, window.innerHeight/2, 1/myFrameScale); return; }
+    if (myEvent.key.startsWith('Arrow')) {
+      myEvent.preventDefault(); myManualAction();
+      let myNext = { ...myView };
+      if (myEvent.key === 'ArrowLeft') myNext.myReal -= myView.mySpan * 0.15;
+      if (myEvent.key === 'ArrowRight') myNext.myReal += myView.mySpan * 0.15;
+      if (myEvent.key === 'ArrowUp') myNext.myImaginary += myView.mySpan * window.innerHeight / window.innerWidth * 0.15;
+      if (myEvent.key === 'ArrowDown') myNext.myImaginary -= myView.mySpan * window.innerHeight / window.innerWidth * 0.15;
+      myChangeView(myNext);
+    }
+    if (myEvent.key === 'Escape') myStopTour();
+  };
+  window.onresize = function() {
+    clearTimeout(myResizeTimer);
+    myResizeCanvases(); myUpdateStats();
+    myResizeTimer = setTimeout(function() { myQueueRender(); }, 200);
+  };
+  window.onhashchange = function() { myManualAction(); myReadHash(); myUpdateStats(); mySetPalette(myPaletteIndex); myQueueRender(); };
+}
+
+async function myInitialize() {
+  myReadHash();
+  myMakeControls();
+  myStartRenderer();
+  myResizeCanvases();
+  myBindCanvasEvents();
+  myBindControls();
+  myUpdateStats();
+  mySetPalette(myPaletteIndex);
+  myUpdateCycleButton();
+  mySetFrameScale(myFrameScale);
+  requestAnimationFrame(myUpdateAnimation);
+  let myFirstRender = myQueueRender();
+  // Thumbnail work yields often and does not use the main worker's job queue.
+  myMakeThumbnails().catch(function() { /* The explorer works without thumbnails. */ });
+  await myFirstRender;
+}
+
+myInitialize().catch(function() {
+  document.getElementById('myLoader').hidden = true;
+  document.getElementById('myRenderStatus').textContent = 'Canvas is unavailable in this browser';
+});
+
+</script>
+</body>
+</html>
