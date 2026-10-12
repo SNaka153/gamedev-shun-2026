@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#12263b">
   <meta name="description" content="写真の文字・撮影日時・撮影場所・自動タグ・自分のタグを検索する。写真と記録をひとつのファイルに保存して、別の端末でも開けます。">
-  <meta name="memory-lens-version" content="2026-10-11-r21">
+  <meta name="memory-lens-version" content="2026-10-12-r22">
   <title>Memory Lens — 写真の記憶を検索</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2312263b'/%3E%3Crect x='7' y='7' width='18' height='18' rx='4' fill='none' stroke='%238be5ff' stroke-width='2'/%3E%3Ccircle cx='15' cy='15' r='4' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='m18 18 5 5' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
   <style>
@@ -80,7 +80,7 @@
         <div class="result-grid" id="results"><div class="empty"><div class="empty-icon" aria-hidden="true">Aa</div><h2>写真の記録を読み込もう</h2><p>写真を選んで文字を読み取れます。保存した記録やショートカットのtxtも開けます。</p><p class="detail-note">上の「写真を追加」から始めてください。保存した記録は「保存ファイルを開く」で戻せます。</p><div class="empty-actions"></div></div></div><nav id="resultPages" class="result-pages" aria-label="検索結果のページ"></nav>
       </section>
     </div>
-    <footer class="foot"><p>写真の解析と検索はこの端末内で行います。ファイルの「保存」はバックアップや別の端末への移動に使えます。</p><span class="release-stamp">2026-10-11-r21</span></footer>
+    <footer class="foot"><p>写真の解析と検索はこの端末内で行います。ファイルの「保存」はバックアップや別の端末への移動に使えます。</p><span class="release-stamp">2026-10-12-r22</span></footer>
   </main>
   <dialog id="deleteDialog" aria-labelledby="deleteTitle"><div class="dialog-head"><h2 id="deleteTitle">選択した記録を削除</h2></div><div class="dialog-body"><p id="deleteSummary"></p><p class="detail-note">写真・文字・日時・タグをこの一覧から削除します。携帯の元写真と保存済みのZIPは残ります。直前の削除は、この画面を閉じる前なら「元に戻す」で取り消せます。</p><p id="deleteError" role="alert"></p></div><div class="dialog-footer"><button id="deleteCancel">キャンセル</button><button class="danger" id="deleteConfirm">削除する</button></div></dialog>
   <dialog id="deviceDialog" aria-labelledby="deviceTitle"><div class="dialog-head"><h2 id="deviceTitle">この端末の保存設定</h2><button class="close" data-close-dialog="deviceDialog" aria-label="保存設定を閉じる">×</button></div><div class="dialog-body"><label class="device-switch"><input id="deviceAuto" type="checkbox" disabled="">このブラウザーに自動保存</label><div class="export-actions"><button id="deviceRestore" hidden="" disabled="">保存した記録を戻す</button><button id="deviceRetry" hidden="" disabled="">保存をもう一度試す</button></div><p>自動保存は、自分でオンにするまで行いません。オンにすると、写真・文字・撮影日時・撮影場所・屋内外の予想をこのブラウザーに保存します。次に同じサイトを開くと復元します。</p><p class="detail-note">オフにしても前の保存は残ります。「データを閉じる」でも消えません。再びオンにすると、今の一覧を保存します。空の一覧なら前の保存を戻します。</p><p class="detail-note">SafariとChrome、GitHubのページと別のサイト、ほかの端末では保存が別々です。ブラウザーのデータを消すと記録も消えるため、大切な記録は「保存」でファイルにも残してください。</p><p class="detail-note">「保存中…」が「保存済み」に変わってから画面を閉じてください。</p><p id="deviceDialogStatus" role="status" aria-live="polite" class="detail-note" data-error="false">端末の保存を確認しています…</p><div class="export-actions"><button id="deviceForget" disabled="">端末の保存を削除</button></div><div id="deviceConfirm" hidden=""><p id="deviceConfirmText"></p><div class="export-actions"><button class="primary" id="deviceConfirmApply" disabled="">実行する</button><button id="deviceConfirmCancel">キャンセル</button></div></div></div><div class="dialog-footer"><button class="quiet" data-close-dialog="deviceDialog">閉じる</button></div></dialog>
@@ -90,10 +90,12 @@
     <div class="dialog-body">
       <div id="phoneReceiver"><p>PCと携帯を、できれば同じWi-Fiにつないでください。両方の画面を開いたまま使います。</p><ol class="phone-import-steps"><li>「接続用QRを作る」を押す。</li><li>携帯のカメラでQRを読み、表示されたサイトをブラウザーで開く。</li><li>携帯に下の6桁を入力し、写真を選ぶ。</li></ol><p class="detail-note">今選んでいる言語と読み取り方法を使います。PCは元の画質で認識したあと、800pxまでの画像と検索情報だけを保存します。携帯の写真は消しません。</p><button id="phoneHostStart" class="primary">接続用QRを作る</button><div id="phoneInvite" hidden=""><div id="phoneQR" aria-label="携帯で読む接続用QR"></div><p class="phone-code">携帯に入力する番号：<strong id="phoneCode"></strong></p><label for="phoneLink">QRが読めないときは、このURLを携帯で開く</label><input id="phoneLink" type="text" readonly=""><button id="phoneCopyLink" type="button">URLをコピー</button><p class="detail-note">QRは接続待ちの間、10分間有効です。閉じると接続も終わります。</p></div></div>
       <div id="phoneSender" hidden=""><p>QRを出したPCに写真を送ります。PCに表示されている6桁を入力してください。</p><label for="phonePin">PCの6桁</label><input id="phonePin" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="off"><button id="phoneJoin" class="primary">PCにつなぐ</button><div id="phoneSendControls" hidden=""><p>送る写真をまとめて選べます。1枚ずつ送り、PCで認識・保存が終わってから次へ進みます。</p><button id="phoneSelect" class="primary">写真を選んで送る</button><button id="phoneSendStop" hidden="">今の1枚で止める</button><input id="phoneFiles" class="sr-only" type="file" accept="image/*" multiple="" aria-label="PCへ送る写真を選ぶ"><p class="detail-note">画面を閉じたりロックしたりすると止まることがあります。送信済みの写真はPCに残ります。再接続して同じ写真を選び直しても、同じ元画像は重複して追加しません。</p></div></div>
+      <section id="phoneRetryPanel" hidden="" aria-label="写真の再送"><p id="phoneRetrySummary" role="status"></p><ul id="phoneRetryList"></ul><button id="phoneRetrySend" class="primary" type="button">失敗した写真・残りを再送</button><button id="phoneRetryDiscard" type="button">待機中の送信を取り消す</button><p class="detail-note">このページを開いている間は、未送信の写真を選び直さずに再送できます。PCに保存できた分は重複させません。ページを閉じたり再読み込みした場合は、同じ写真を選び直してください。</p><details><summary>PCでQRを作り直した場合</summary><p class="detail-note">このページを開いたまま、PCの新しい「URLをコピー」のURLを下に貼り付け、上の6桁も新しい番号に直して再送してください。</p><label for="phoneRetryLink">新しい接続用URL（必要なときだけ）</label><input id="phoneRetryLink" type="url" autocomplete="off" placeholder="PCの接続用URL"></details></section>
       <p id="phoneProgress" role="status" aria-live="polite"></p><p id="phoneError" class="dialog-error" role="alert"></p>
       <details class="phone-import-help"><summary>接続について・うまくつながらないとき</summary><p>iPhone・iPadはSafari、AndroidとPCはChromeなど、WebRTCを使える最近のブラウザーで試してください。写真は自分で選んだ分だけ扱います。</p><p>接続先を見つけるためにPeerJSの接続仲介サービスとGoogleのSTUNを使います。接続情報はこれらのサービスに渡ります。画像データは暗号化した端末間の通信で送り、写真の中継・保管サービスは使いません。</p><p>学校や会社のWi-Fiなど、通信が制限されたネットワークではつながらないことがあります。両方を同じ自宅のWi-Fiなどに変えて、QRを作り直してください。このサイトがログインを求めたら、携帯でも同じアカウントで開いてください。</p><p>1枚30MBまで。PC側でHEICを開けない場合は、JPEGの写真で試してください。この版では写真ライブラリーの自動同期は行いません。</p></details>
     </div><div class="dialog-footer"><button class="quiet" data-close-phone="">接続を閉じる</button></div>
   </dialog>
+  <button id="phoneResumeQueue" class="quiet" type="button" hidden="">PCへの送信の残りを再開</button>
   <!-- PHONE DIALOG END -->
   <!-- DIRECT DIALOG START -->
   <dialog id="directDialog" aria-labelledby="directTitle">
@@ -119,7 +121,7 @@
       <label for="directLanguage">写真の文字の言語</label><select id="directLanguage" disabled=""><option value="eng">英語</option><option value="jpn">日本語</option><option value="jpn+eng">英語と日本語</option></select>
       <p class="detail-note">日本語の写真は言語を変えてください。初回は認識データの準備が必要です。文字が見つからなければ、長い再試行をせず写真だけ残します。</p>
       <details id="directAdvanced"><summary>読み取りを調整する</summary>
-        <label for="directQuality">読み取り方</label><select id="directQuality" disabled=""><option value="balanced">通常（速さと精度のバランス）</option><option value="best">詳しく再読する（英語の手書きにも対応）</option></select>
+        <label for="directQuality">読み取り方</label><select id="directQuality" disabled=""><option value="balanced">通常（速さと精度のバランス）</option><option value="best">詳しく再読する（英語の手書きにも対応）</option><option id="directHandwritingOption" value="handwriting" disabled="">手書きを予測して読む（英語・再読用）</option></select>
         <label for="directLayout">文字の配置</label><select id="directLayout" disabled=""><option value="auto">自動</option><option value="page">プリント・まとまった文章</option><option value="sparse">黒板・掲示板・離れた文字</option></select>
         <label for="directDirection">文字の向き</label><select id="directDirection" disabled=""><option value="auto">自動で確認する</option><option value="0">このまま読む</option><option value="90">右に90°回して読む</option><option value="180">180°回して読む</option><option value="270">左に90°回して読む</option></select>
         <label id="directForceRow" class="calendar-check" hidden=""><input id="directForce" type="checkbox" disabled="">文字が写っているので、検出できなくても再読する</label>
@@ -127,10 +129,11 @@
         <p class="detail-note">英語の詳しい再読では、手書きに対応した認識で文字の行を探して読みます。初回だけ約13MBの追加データを取得します。通常の読み取りでも、文字らしい部分があるのに読めない場合はこの方式で確認します。読めない文字や誤読が残ることもあります。日本語は今までの認識を使います。</p>
         <p class="detail-note">細かい文字は、下の「読む範囲を選ぶ」で紙や黒板だけを囲むと読みやすくなります。元写真は変更しません。検索の枠は、手書き認識では一致した行全体を囲みます。</p>
       </details>
+      <p class="detail-note">英語の手書き予測は、行の見た目と単語のつながりで読みます。初回は合計約81MBを準備し、以後は端末のキャッシュを使います。写真は端末内で読みます。通常の取り込みでは準備しません。</p>
       <details id="directRegionSettings" hidden=""><summary>読む範囲を選ぶ</summary><p class="detail-note">マウスや指で文字のある部分を囲んでください。下の数値でも調整できます。紙の周りの机や壁を除くと、必要な文字を大きく読めます。</p><div id="directRegionFrame" aria-label="読む範囲のプレビュー" aria-disabled="true"><img id="directRegionImage" alt="読み直す写真" draggable="false"><div id="directRegionBox" style="left: 0%; top: 0%; width: 100%; height: 100%;"></div></div><div class="reading-region-grid"><div><label for="directRegionLeft">左端（%）</label><input id="directRegionLeft" type="number" min="0" max="100" step="1" disabled=""></div><div><label for="directRegionTop">上端（%）</label><input id="directRegionTop" type="number" min="0" max="100" step="1" disabled=""></div><div><label for="directRegionRight">右端（%）</label><input id="directRegionRight" type="number" min="0" max="100" step="1" disabled=""></div><div><label for="directRegionBottom">下端（%）</label><input id="directRegionBottom" type="number" min="0" max="100" step="1" disabled=""></div></div><p id="directRegionNote" class="detail-note" role="status">写真全体を読みます。</p><button id="directRegionReset" type="button" disabled="">写真全体に戻す</button></details>
       <div class="export-actions"><button class="primary" id="directChoose" disabled="">写真を選ぶ</button><button id="phoneConnect" type="button" disabled="">携帯から受け取る</button><button id="bulkFolder" type="button" disabled="">フォルダーを選ぶ（PC）</button><input id="bulkFolderInput" class="sr-only" type="file" webkitdirectory="" multiple="" aria-label="写真フォルダーを選ぶ"><button id="directResume" hidden="" disabled="">残りを続ける</button><button id="directStop" hidden="">ここで止める</button></div><p id="directProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="directError" role="alert"></p>
       <div id="bulkStorageNote"><p class="detail-note">選んだ写真と読み取った情報を、このブラウザーへ保存します。携帯から受け取るときは、接続したPCへ選んだ写真だけを送ります。同じブラウザー・同じサイトを開くと続けられます。新しく撮った写真も、自分で追加できます。</p><p id="bulkStorageInfo" class="detail-note"></p><details id="bulkDiscard" hidden=""><summary>待機中の取り込みを取り消す</summary><p class="detail-note">まだ追加していない写真の途中保存を削除します。追加済みの写真と文字は残ります。</p><button id="bulkDiscardButton" type="button" disabled="">待機中の取り込みを取り消す</button></details></div><section id="directQueue" hidden="" aria-labelledby="directQueueTitle"><h3 id="directQueueTitle">今回の写真</h3><ol id="directQueueList"></ol></section><p class="detail-note">1枚30MB、1回20,000枚までです。端末の保存容量が足りなくなったら止まります。軽量保存では元画像を1枚ずつ処理します。途中でページを閉じたら、まだ処理していない写真を選び直してください。動画は対象外です。</p>
-      <section id="directReview" hidden="" aria-label="文字の読み直し結果"><h3>今の文字</h3><pre id="directBefore"></pre><h3>読み直した文字</h3><pre id="directAfter"></pre><button class="primary" id="directApply" disabled="">この文字で更新</button><p class="detail-note">写真と見比べて、よい結果だけを採用してください。閉じると今の文字を保ちます。</p></section>
+      <section id="directReview" hidden="" aria-label="文字の読み直し結果"><h3>今の文字</h3><pre id="directBefore"></pre><h3>読み直した文字</h3><pre id="directAfter"></pre><section id="directPrediction" hidden=""><h3>単語・行のつながりから予測した候補</h3><pre id="directPredictionText"></pre><p class="detail-note">読みにくい部分は推測を含みます。名前・数字・日付・数式を写真と見比べてください。</p><label class="calendar-check"><input id="directUsePrediction" type="checkbox" disabled="">この予測候補を更新に使う</label></section><button class="primary" id="directApply" disabled="">この文字で更新</button><p class="detail-note">写真と見比べて、よい結果だけを採用してください。閉じると今の文字を保ちます。</p></section>
       <p class="detail-note">初回の準備には通信が必要です。写真の文字は取り込む端末内で読み取ります。撮影日時と位置情報がない場合は「不明」にします。</p>
     </div><div class="dialog-footer"><button class="quiet" data-close-direct="">閉じる</button></div>
   </dialog>
@@ -190,7 +193,7 @@
   <!-- TRANSFER DIALOG END -->
 
   <dialog id="exportDialog" aria-labelledby="exportTitle"><div class="dialog-head"><h2 id="exportTitle">写真と記録を保存</h2><button class="close" data-close-dialog="exportDialog" aria-label="保存画面を閉じる">×</button></div><div class="dialog-body"><label for="exportScope">保存する範囲</label><select id="exportScope"><option value="all">すべての記録</option><option value="visible">今の検索結果だけ</option></select><p id="exportSummary"></p><div id="exportParts" hidden=""><label for="exportPartSelect">分割した保存ファイル</label><select id="exportPartSelect"></select><button id="exportPartChoose" type="button">この分を準備</button><p class="detail-note">表示したZIPを保存してから、次の分を準備してください。すべての分を保存すると、全写真を戻せます。</p></div><p id="exportNote">写真・文字・日時・場所・タグ・検索の枠をZIPに保存します。大きな一覧は分けて保存します。別の端末でも「保存ファイルを開く」から戻せます。写真を圧縮し直さず、元の画像を残します。</p><p id="exportProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="exportError" role="alert"></p><div class="export-actions"><a class="primary save-link" id="exportDownload" hidden="">ZIPを保存</a><button id="exportPicker" hidden="">保存先を選んで保存</button><button id="exportShare" hidden="">共有して保存</button><button id="exportRetry" hidden="">もう一度作る</button><button id="exportRepair" hidden="">読めない写真を選び直す</button></div><p class="detail-note">大切な記録はファイルにも保存してください。自動保存の設定は、画面上部の「その他」にあります。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="exportDialog">閉じる</button></div></dialog>
-  <dialog id="codeDialog" aria-labelledby="codeTitle"><div class="dialog-head"><h2 id="codeTitle">サイトのコードを保存</h2><button class="close" data-close-dialog="codeDialog" aria-label="コードの保存画面を閉じる">×</button></div><div class="dialog-body"><p>版：2026-10-11-r21 · 写真の分類・読み取りを修正</p><p>iPhoneでは「ZIPを共有して保存」から「ファイルに保存」を選んでください。ZIPを開くと、中にmemory-lens.htmlがあります。</p><p id="codeProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="codeError" role="alert"></p><div class="code-methods"><a class="primary" id="codeZip" hidden="">ZIPを保存</a><button id="codeShare" hidden="">ZIPを共有して保存</button><button id="codePicker" hidden="">HTMLの保存先を選ぶ</button><a id="codeHtml" hidden="">HTMLを保存</a></div><a id="codeServerZip" href="./downloads/memory-lens-2026-10-11-r21.zip" download="memory-lens-2026-10-11-r21.zip" hidden="">ZIPを直接ダウンロード</a><p class="detail-note">保存するのはサイトのコードです。読み込んだ写真・文字・撮影場所は含みません。写真の記録は「保存」で保存できます。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="codeDialog">閉じる</button></div></dialog>
+  <dialog id="codeDialog" aria-labelledby="codeTitle"><div class="dialog-head"><h2 id="codeTitle">サイトのコードを保存</h2><button class="close" data-close-dialog="codeDialog" aria-label="コードの保存画面を閉じる">×</button></div><div class="dialog-body"><p>版：2026-10-12-r22 · 写真の分類・読み取りを修正</p><p>iPhoneでは「ZIPを共有して保存」から「ファイルに保存」を選んでください。ZIPを開くと、中にmemory-lens.htmlがあります。</p><p id="codeProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="codeError" role="alert"></p><div class="code-methods"><a class="primary" id="codeZip" hidden="">ZIPを保存</a><button id="codeShare" hidden="">ZIPを共有して保存</button><button id="codePicker" hidden="">HTMLの保存先を選ぶ</button><a id="codeHtml" hidden="">HTMLを保存</a></div><a id="codeServerZip" href="./downloads/memory-lens-2026-10-12-r22.zip" download="memory-lens-2026-10-12-r22.zip" hidden="">ZIPを直接ダウンロード</a><p class="detail-note">保存するのはサイトのコードです。読み込んだ写真・文字・撮影場所は含みません。写真の記録は「保存」で保存できます。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="codeDialog">閉じる</button></div></dialog>
   <script>
     'use strict';
     // CORE START — UIから独立した、テキスト解析と検索の処理。
@@ -1317,7 +1320,7 @@ zen_garden=禅の庭園
         };
       });
     }
-    function deviceMeta(item,index){return {key:item.key,name:item.name,capturedAt:item.capturedAt,text:item.text,location:item.location,source:item.source,sample:item.sample,scene:item.scene,ocr:item.ocr,contentTags:item.contentTags,autoInfo:item.autoInfo,environment:item.environment,readingStatus:item.readingStatus,order:index,photoKey:item.photo?item.key:null};}
+    function deviceMeta(item,index){return {key:item.key,name:item.name,capturedAt:item.capturedAt,text:item.text,location:item.location,source:item.source,sample:item.sample,scene:item.scene,ocr:item.ocr,contentTags:item.contentTags,autoInfo:item.autoInfo,environment:item.environment,readingStatus:item.readingStatus,textGuess:checkedTextGuess(item.textGuess),order:index,photoKey:item.photo?item.key:null};}
     function deviceWrite(records,enabled,extra=null){
       const expected=deviceState.revision,nextCache=new Map();
       const operation=libraryTransaction(['snapshot','entries','images','jobs','pending','queue'],'readwrite',(stores,result,abort)=>{
@@ -1356,7 +1359,7 @@ zen_garden=禅の庭園
         if(!item||typeof item.source!=='string'||item.source.length>2000||typeof item.sample!=='boolean')throw deviceError('端末に保存された記録の項目が正しくありません。');
         const record=MemoryLensCore.fromFields(item.name,item.capturedAt,item.text,item.location);
         if(fingerprints.has(record.fingerprint))throw deviceError('端末の保存に同じ記録が重複しています。');fingerprints.add(record.fingerprint);
-        const scene=MemoryLensScene.validate(item.scene),ocr=MemoryLensPositions.validate(item.ocr),contentTags=MemoryLensTags.validate(item.contentTags),autoInfo=MemoryLensAuto.validate(item.autoInfo),environment=checkedEnvironment(item.environment),readingStatus=checkedReadingStatus(item.readingStatus);let photo=null;
+        const scene=MemoryLensScene.validate(item.scene),ocr=MemoryLensPositions.validate(item.ocr),contentTags=MemoryLensTags.validate(item.contentTags),autoInfo=MemoryLensAuto.validate(item.autoInfo),environment=checkedEnvironment(item.environment),readingStatus=checkedReadingStatus(item.readingStatus),textGuess=checkedTextGuess(item.textGuess);let photo=null;
         if(item.photo!==null){
           const value=item.photo;
           if(!value||typeof value.name!=='string'||!value.name||value.name.length>1000||!(value.blob instanceof Blob)||!value.blob.size||value.blob.size>30000000||value.blob.type&&!value.blob.type.startsWith('image/'))throw deviceError('端末に保存された写真の情報が正しくありません。');
@@ -1371,13 +1374,13 @@ zen_garden=禅の庭園
         const key=typeof item.key==='string'&&item.key.length<200?item.key:deviceRevision();if(keys.has(key))throw deviceError('端末の保存に同じ識別子が重複しています。');keys.add(key);
         if(autoInfo&&!photo)throw deviceError('自動分類に対応する写真がありません。');
         if(environment&&!photo)throw deviceError('屋内・屋外の設定に対応する写真がありません。');
-        return {...record,storageKey:key,source:item.source,sample:item.sample,photo,scene,ocr,contentTags,autoInfo,environment,readingStatus};
+        return {...record,storageKey:key,source:item.source,sample:item.sample,photo,scene,ocr,contentTags,autoInfo,environment,readingStatus,textGuess};
       });
       return checked;
     }
     function devicePackRecords(records=state.records){
       if(records.length>LIBRARY_RECORD_LIMIT)throw deviceError('この版の端末への保存は20,000件までです。現在の記録は画面に残っています。');
-      const items=records.map(record=>({key:record.storageKey||(record.storageKey=deviceRevision()),name:record.name,capturedAt:record.dateRaw,text:record.body,location:record.location||'',source:record.source||'写真の記録',sample:!!record.sample,photo:record.photo?{name:record.photo.name,blob:record.photo.blob,width:record.photo.width,height:record.photo.height,previewBlob:record.photo.previewBlob||null,digest:record.photo.digest||null,original:checkedPhotoOriginal(record.photo.original)}:null,scene:MemoryLensScene.validate(record.scene),ocr:MemoryLensPositions.checkPhoto(MemoryLensPositions.validate(record.ocr),record.photo),contentTags:MemoryLensTags.validate(record.contentTags),autoInfo:MemoryLensAuto.validate(record.autoInfo),environment:checkedEnvironment(record.environment),readingStatus:checkedReadingStatus(record.readingStatus)}));
+      const items=records.map(record=>({key:record.storageKey||(record.storageKey=deviceRevision()),name:record.name,capturedAt:record.dateRaw,text:record.body,location:record.location||'',source:record.source||'写真の記録',sample:!!record.sample,photo:record.photo?{name:record.photo.name,blob:record.photo.blob,width:record.photo.width,height:record.photo.height,previewBlob:record.photo.previewBlob||null,digest:record.photo.digest||null,original:checkedPhotoOriginal(record.photo.original)}:null,scene:MemoryLensScene.validate(record.scene),ocr:MemoryLensPositions.checkPhoto(MemoryLensPositions.validate(record.ocr),record.photo),contentTags:MemoryLensTags.validate(record.contentTags),autoInfo:MemoryLensAuto.validate(record.autoInfo),environment:checkedEnvironment(record.environment),readingStatus:checkedReadingStatus(record.readingStatus),textGuess:checkedTextGuess(record.textGuess)}));
       deviceCheckEntries(items);return items;
     }
     function deviceAcceptSnapshot(snapshot){deviceState.revision=snapshot.revision;deviceState.enabled=snapshot.enabled;deviceState.hasSaved=Array.isArray(snapshot.records);}
@@ -1421,7 +1424,7 @@ zen_garden=禅の庭園
           }
         }
         const latest=await deviceTransaction('readonly',(store,result)=>{const request=store.get('current');request.onsuccess=()=>result(request.result);});if(latest?.revision!==snapshot.revision)throw deviceError('復元中に別のタブで保存が変わりました。もう一度「保存した記録を戻す」を押してください。','MemoryLensConflict');
-        deviceCache.clear();for(const [index,record] of prepared.entries()){const item={key:record.storageKey,name:record.name,capturedAt:record.dateRaw,text:record.body,location:record.location||'',source:record.source||'写真の記録',sample:!!record.sample,scene:record.scene,ocr:record.ocr,contentTags:record.contentTags,autoInfo:record.autoInfo,environment:record.environment,readingStatus:record.readingStatus,photo:record.photo};deviceCache.set(record.storageKey,{signature:JSON.stringify(deviceMeta(item,index)),blob:record.photo?.blob,preview:record.photo?.previewBlob,photoName:record.photo?.name,digest:record.photo?.digest});}return prepared;
+        deviceCache.clear();for(const [index,record] of prepared.entries()){const item={key:record.storageKey,name:record.name,capturedAt:record.dateRaw,text:record.body,location:record.location||'',source:record.source||'写真の記録',sample:!!record.sample,scene:record.scene,ocr:record.ocr,contentTags:record.contentTags,autoInfo:record.autoInfo,environment:record.environment,readingStatus:record.readingStatus,textGuess:checkedTextGuess(record.textGuess),photo:record.photo};deviceCache.set(record.storageKey,{signature:JSON.stringify(deviceMeta(item,index)),blob:record.photo?.blob,preview:record.photo?.previewBlob,photoName:record.photo?.name,digest:record.photo?.digest});}return prepared;
       }catch(error){for(const record of prepared)if(record.photo)releasePhoto(record.photo);throw error;}
     }
     function deviceApplyRestored(snapshot,prepared){
@@ -1710,6 +1713,44 @@ zen_garden=禅の庭園
       return {dimensions,candidate,readableText,read,rotated,lighting,skew,inspect};
     })();
     // READING CORE END
+    // HANDWRITING CONTEXT START — 行の見た目と単語のつながりから英語の手書き候補を作る。
+    const MemoryLensHandwriting=(()=>{
+      const base='https://huggingface.co/Xenova/trocr-small-handwritten/resolve/2432e24d184b1d964d07ed04f5d9e21d31a59141/';
+      const assets=[
+        {url:base+'onnx/encoder_model_quantized.onnx',bytes:23082942,sha:'2f29edbd925f8a49c9c7d1349895f960cf09d2efdc76fe23f957048d476e0d03'},
+        {url:base+'onnx/decoder_model_merged_quantized.onnx',bytes:40527613,sha:'51076aa396ab5939c4668db9de901ad51765094b4c05c4c8c1f8ae2012ba1e08'},
+        {url:base+'tokenizer.json',bytes:4494727,sha:'68bcb5468c854362a615f3d2ff6a5e4091a85f4c8198993ed9a30afe0b143737'}
+      ];
+      async function engineFactory(ort,canvas,models){
+        const options={executionProviders:['wasm'],graphOptimizationLevel:'all'},encoder=await ort.InferenceSession.create(models[0],options);let decoder;
+        try{decoder=await ort.InferenceSession.create(models[1],options);}catch(error){await encoder.release();throw error;}
+        const tokenizer=JSON.parse(new TextDecoder().decode(models[2])),vocab=tokenizer.model.vocab.map(v=>v[0]);if(vocab.length!==64002)throw new Error('手書き予測の文字表が一致しません。');
+        async function predict(source,{deadline=Date.now()+8000}={}){
+          const c=canvas(384,384),x=c.getContext('2d');let encoded,input=null;const empty=[],ids=[2],scores=[];let text='',ended=false;
+          try{
+            x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';x.drawImage(source,0,0,384,384);const p=x.getImageData(0,0,384,384).data,n=384*384,data=new Float32Array(n*3);for(let i=0;i<n;i++)for(let k=0;k<3;k++)data[k*n+i]=(p[i*4+k]/255-.5)*2;
+            input=new ort.Tensor('float32',data,[1,3,384,384]);encoded=await encoder.run({pixel_values:input});const hidden=encoded.last_hidden_state;
+            for(let step=0;step<96&&Date.now()<deadline;step++){
+              // This checkpoint sets use_cache=false. Full-prefix decoding preserves position and cross-attention.
+              const tokens=new ort.Tensor('int64',BigInt64Array.from(ids.map(BigInt)),[1,ids.length]),branch=new ort.Tensor('bool',new Uint8Array([0]),[1]),feed={input_ids:tokens,encoder_hidden_states:hidden,use_cache_branch:branch};
+              for(const name of decoder.inputNames)if(name.startsWith('past_key_values.')){const value=new ort.Tensor('float32',new Float32Array(0),[1,8,0,32]);feed[name]=value;empty.push(value);}
+              let output;try{output=await decoder.run(feed);const logits=output.logits.data,offset=logits.length-64044;let id=0,peak=-Infinity;for(let j=0;j<64044;j++)if(logits[offset+j]>peak){peak=logits[offset+j];id=j;}let sum=0;for(let j=0;j<64044;j++)sum+=Math.exp(logits[offset+j]-peak);if(id===2){ended=true;break;}ids.push(id);if(id>3&&id<vocab.length){text+=vocab[id];scores.push(1/sum);}if(ids.length>15&&new Set(ids.slice(-12)).size<4)break;
+              }finally{tokens.dispose?.();branch.dispose?.();for(const value of empty.splice(0))value.dispose?.();if(output)for(const value of Object.values(output))value.dispose?.();}
+            }
+            text=text.replaceAll('▁',' ').replace(/\s+([.,!?;:])/g,'$1').trim();const letters=(text.match(/[A-Za-z]/g)||[]).length,score=scores.length?Math.exp(scores.reduce((s,p)=>s+Math.log(Math.max(p,1e-12)),0)/scores.length):0;
+            if(!ended||letters<3||text.length>500||score<.6||scores.filter(p=>p<.05).length>1)return {text:'',score:0};
+            return {text,score};
+          }finally{c.width=1;c.height=1;input?.dispose?.();if(encoded)for(const value of Object.values(encoded))value.dispose?.();for(const value of empty)value.dispose?.();}
+        }
+        return {predict,dispose:async()=>{await encoder.release();await decoder.release();}};
+      }
+      return {assets,engineFactory};
+    })();
+    function checkedTextGuess(value){if(value===null||value===undefined)return null;if(!value||value.version!==1||value.engine!=='trocr-small-handwritten'||typeof value.rawText!=='string'||value.rawText.length>2000000||typeof value.predictedAt!=='string'||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value.predictedAt)||!Number.isFinite(Date.parse(value.predictedAt)))throw new Error('保存された手書き予測の記録が正しくありません。');return {version:1,engine:value.engine,rawText:value.rawText,predictedAt:value.predictedAt};}
+    function directReviewChoice(){const review=directState.review;return review&&$('directUsePrediction').checked&&review.prediction?review.prediction:review;}
+    function directReviewControls(){const choice=directReviewChoice();$('directApply').hidden=!choice?.text?.trim()&&!directState.review?.before?.trim();$('directApply').textContent=choice?.text?.trim()?($('directUsePrediction').checked?'予測した文字で更新':'この文字で更新'):'文字なしにする';}
+    // HANDWRITING CONTEXT END
+
     // NEURAL READING START — 英語の手書き・離れた文字を行検出＋認識で読む。写真は端末外へ送らない。
     // PP-OCRv5 weights: PaddlePaddle / Baidu; ONNX conversion: RapidAI. Apache-2.0.
     const MemoryLensNeural=(()=>{
@@ -1720,7 +1761,7 @@ zen_garden=禅の庭園
       ];
       const runtime='https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/';
       const dictionary=["","0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","!","\"","#","$","%","&","'","(",")","*","+",",","-",".","/",":",";","<","=",">","?","@","[","\\","]","_","`","{","|","}","^","~","©","®","℉","№","Ω","℮","™","∆","✓","✔","✗","✘","✕","☑","☒","●","▪","▫","◼","▶","◀","⬆","¤","¦","§","¨","ª","«","¬","¯","°","²","³","´","µ","¶","¸","¹","º","»","¼","½","¾","¿","×","‐","‑","‒","—","―","‖","‗","‘","’","‚","‛","“","”","„","‟","†","‡","‣","․","…","‧","‰","‴","‵","‶","‷","‸","‹","›","※","‼","‽","‾","−","₤","₡","₹","₽","₴","₿","¢","€","£","¥","Ⅰ","Ⅱ","Ⅲ","Ⅳ","Ⅴ","Ⅵ","Ⅶ","Ⅷ","Ⅸ","Ⅹ","Ⅺ","Ⅻ","ⅰ","ⅱ","ⅲ","ⅳ","ⅴ","ⅵ","ⅶ","ⅷ","ⅸ","ⅹ","ⅺ","ⅻ","➀","➁","➂","➃","➄","➅","➆","➇","➈","➉","➊","➋","➌","➍","➎","➏","➐","➑","➒","➓","❶","❷","❸","❹","❺","❻","❼","❽","❾","❿","①","②","③","④","⑤","⑥","⑦","⑧","⑨","⑩","↑","→","↓","↕","←","↔","⇒","⇐","⇔","∀","∃","∄","∴","∵","∝","∞","∩","∪","∂","∫","∬","∭","∮","∯","∰","∑","∏","√","∛","∜","∱","∲","∳","∶","∷","∼","∖","∗","≈","≠","≡","≤","≥","⊂","⊃","⊥","⊾","⊿","□","∥","∋","ƒ","′","″","À","Á","Â","Ã","Ä","Å","Æ","Ç","È","É","Ê","Ë","Ì","Í","Î","Ï","Ð","Ñ","Ò","Ó","Ô","Õ","Ö","Ø","Ù","Ú","Û","Ü","Ý","Þ","à","á","â","ã","ä","å","æ","ç","è","é","ê","ë","ì","í","î","ï","ð","ñ","ò","ó","ô","õ","ö","ø","ù","ú","û","ü","ý","þ","ÿ","Α","Β","Γ","Δ","Ε","Ζ","Η","Θ","Ι","Κ","Λ","Μ","Ν","Ξ","Ο","Π","Ρ","Σ","Τ","Υ","Φ","Χ","Ψ","Ω","α","β","γ","δ","ε","ζ","η","θ","ι","κ","λ","μ","ν","ξ","ο","π","ρ","σ","ς","τ","υ","φ","χ","ψ","ω","Å","ℏ","⌀","⍺","⍵","𝑢","𝜓","०","‥","︽","﹥","•","÷","∕","∙","⋅","·","±","∓","∟","∠","∡","∢","℧","☺"," "];
-      let worker=null,ready=null,current=null,serial=0,idle=null;
+      let worker=null,ready=null,current=null,serial=0,idle=null,readyMode=false;
       function stop(){clearTimeout(idle);idle=null;current?.reject(new Error('読み取りを中止しました。'));current=null;worker?.terminate();worker=null;ready=null;}
       async function bytes(asset,signal){
         let cache=null,response=null;try{cache=await caches.open('memory-lens-english-v5-'+asset.sha);response=await cache.match(asset.url);}catch{}
@@ -1746,37 +1787,38 @@ zen_garden=禅の庭園
           try{worker.postMessage({...message,id},transfer);}catch(error){finish(reject,error);stop();}
         });
       }
-      async function prepare(signal,progress){
-        if(ready)return ready;
+      async function prepare(signal,progress,handwriting=false){
+        if(ready&&readyMode===handwriting)return ready;if(ready)stop();readyMode=handwriting;
         if(typeof Worker!=='function'||typeof OffscreenCanvas!=='function'||!crypto?.subtle)throw new Error('このブラウザーでは手書きの読み取りを使えません。');
         ready=(async()=>{
-          progress('英語の手書き認識を準備しています… 初回は約13MBを取得します。');
-          const controller=new AbortController(),abort=()=>controller.abort();signal.addEventListener('abort',abort,{once:true});const timer=setTimeout(abort,45000);
-          let models;try{models=await Promise.all(assets.map(asset=>bytes(asset,controller.signal)));if(signal.aborted)throw new DOMException('中止','AbortError');}catch(error){controller.abort();throw error;}
+          progress(handwriting?'単語のつながりを使う手書き予測を準備しています… 初回は約81MBを取得します。':'英語の手書き認識を準備しています… 初回は約13MBを取得します。');
+          const controller=new AbortController(),abort=()=>controller.abort();signal.addEventListener('abort',abort,{once:true});const timer=setTimeout(abort,handwriting?120000:45000);
+          let models;try{models=await Promise.all(assets.concat(handwriting?MemoryLensHandwriting.assets:[]).map(asset=>bytes(asset,controller.signal)));if(signal.aborted)throw new DOMException('中止','AbortError');}catch(error){controller.abort();throw error;}
           finally{clearTimeout(timer);signal.removeEventListener('abort',abort);}
-          const source=`const engineFactory=${engineFactory.toString()};let engine;self.onmessage=async e=>{const m=e.data;try{if(m.type==='init'){importScripts(m.runtime+'ort.min.js');ort.env.wasm.numThreads=1;ort.env.wasm.proxy=false;ort.env.wasm.wasmPaths=m.runtime;engine=await engineFactory(ort,(w,h)=>new OffscreenCanvas(w,h),m.dictionary,m.models);postMessage({id:m.id,result:true});}else{const c=new OffscreenCanvas(m.width,m.height);c.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(m.pixels),m.width,m.height),0,0);try{const result=await engine.read(c,m.options,text=>postMessage({id:m.id,progress:text}));postMessage({id:m.id,result});}finally{c.width=1;c.height=1;}}}catch(error){postMessage({id:m.id,error:String(error.message||error)});}};`;
+          const source=`const handwritingFactory=${MemoryLensHandwriting.engineFactory.toString()};const engineFactory=${engineFactory.toString()};let engine;self.onmessage=async e=>{const m=e.data;try{if(m.type==='init'){importScripts(m.runtime+'ort.min.js');ort.env.wasm.numThreads=1;ort.env.wasm.proxy=false;ort.env.wasm.wasmPaths=m.runtime;engine=await engineFactory(ort,(w,h)=>new OffscreenCanvas(w,h),m.dictionary,m.models.slice(0,2),m.models.length>2?await handwritingFactory(ort,(w,h)=>new OffscreenCanvas(w,h),m.models.slice(2)):null);postMessage({id:m.id,result:true});}else{const c=new OffscreenCanvas(m.width,m.height);c.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(m.pixels),m.width,m.height),0,0);try{const result=await engine.read(c,m.options,text=>postMessage({id:m.id,progress:text}));postMessage({id:m.id,result});}finally{c.width=1;c.height=1;}}}catch(error){postMessage({id:m.id,error:String(error.message||error)});}};`;
           const url=URL.createObjectURL(new Blob([source],{type:'text/javascript'}));
           try{worker=new Worker(url);}finally{URL.revokeObjectURL(url);}
           const active=worker;
           worker.onmessage=event=>{const message=event.data;if(worker!==active||message.id!==current?.id)return;if(message.progress){current.progress?.(message.progress);return;}if(message.error){current.reject(new Error(message.error));stop();}else current.resolve(message.result);};
           worker.onerror=()=>{if(worker!==active)return;current?.reject(new Error('手書きの読み取りを続けられませんでした。'));stop();};
-          await request({type:'init',runtime,dictionary,models},models,signal,45000,progress);
+          await request({type:'init',runtime,dictionary,models},models,signal,handwriting?60000:45000,progress);
           return true;
         })().catch(error=>{stop();throw error;});
         return ready;
       }
-      async function read(canvas,{signal,progress=()=>{},direction='auto',quality='balanced',region={x:0,y:0,width:1,height:1},photoWidth,photoHeight}){
-        clearTimeout(idle);await prepare(signal,progress);if(signal.aborted)throw new DOMException('中止','AbortError');
+      async function read(canvas,{signal,progress=()=>{},direction='auto',quality='balanced',region={x:0,y:0,width:1,height:1},photoWidth,photoHeight,force=false}){
+        clearTimeout(idle);const handwriting=quality==='handwriting';await prepare(signal,progress,handwriting);if(signal.aborted)throw new DOMException('中止','AbortError');
         // Own the transferred buffer; some canvas implementations return non-transferable backing memory.
         const pixels=Uint8ClampedArray.from(canvas.getContext('2d',{willReadFrequently:true}).getImageData(0,0,canvas.width,canvas.height).data).buffer;
-        const result=await request({type:'read',pixels,width:canvas.width,height:canvas.height,options:{direction,edge:quality==='best'?960:736,budget:quality==='best'?55000:12000}},[pixels],signal,quality==='best'?60000:18000,progress);
+        const result=await request({type:'read',pixels,width:canvas.width,height:canvas.height,options:{direction,edge:handwriting||quality==='best'?960:736,budget:handwriting?60000:quality==='best'?55000:12000,force}},[pixels],signal,handwriting?65000:quality==='best'?60000:18000,progress);
         idle=setTimeout(stop,120000);
-        const words=result.lines.map((line,index)=>({text:line.text,line:index,points:line.points.flatMap(([x,y])=>[region.x+Math.max(0,Math.min(1,(x-10)/(canvas.width-20)))*region.width,region.y+Math.max(0,Math.min(1,(y-10)/(canvas.height-20)))*region.height])})).filter(word=>{let sum=0;for(let i=0;i<4;i++){const j=(i+1)%4;sum+=word.points[i*2]*word.points[j*2+1]-word.points[j*2]*word.points[i*2+1];}return Math.abs(sum)>1e-12;});
+        const makeWords=field=>result.lines.map((line,index)=>({text:field==='prediction'?(line.prediction||line.text):line.text,line:index,points:line.points.flatMap(([x,y])=>[region.x+Math.max(0,Math.min(1,(x-10)/(canvas.width-20)))*region.width,region.y+Math.max(0,Math.min(1,(y-10)/(canvas.height-20)))*region.height])})).filter(word=>{if(!word.text)return false;let sum=0;for(let i=0;i<4;i++){const j=(i+1)%4;sum+=word.points[i*2]*word.points[j*2+1]-word.points[j*2]*word.points[i*2+1];}return Math.abs(sum)>1e-12;});
+        const words=makeWords('text'),predictionWords=makeWords('prediction'),predictionText=predictionWords.map(w=>w.text).join('\n'),prediction=handwriting&&result.lines.some(line=>line.prediction&&line.prediction!==line.text)?{text:predictionText,ocr:predictionWords.length?MemoryLensPositions.validate({version:1,width:photoWidth,height:photoHeight,words:predictionWords}):null,status:'text'}:null;
         const text=words.map(x=>x.text).join('\n'),count=(text.match(/[\p{L}\p{N}]/gu)||[]).length;
-        return {text,count,confidence:result.confidence*100,status:count?'text':'no-text',ocr:words.length?MemoryLensPositions.validate({version:1,width:photoWidth,height:photoHeight,words}):null,partial:result.partial,engine:'english-v5'};
+        return {text,count,confidence:result.confidence*100,status:count?'text':'no-text',ocr:words.length?MemoryLensPositions.validate({version:1,width:photoWidth,height:photoHeight,words}):null,partial:result.partial,engine:handwriting?'english-handwriting-context':'english-v5',prediction};
       }
       // Also exercised directly with the actual WASM models in Node; no OpenCV dependency.
-      async function engineFactory(ort,canvas,characters,models){
+      async function engineFactory(ort,canvas,characters,models,predictor=null){
         const options={executionProviders:['wasm'],graphOptimizationLevel:'all'},det=await ort.InferenceSession.create(models[0],options);let rec;
         try{rec=await ort.InferenceSession.create(models[1],options);}catch(error){await det.release();throw error;}
         const release=c=>{c.width=1;c.height=1;};
@@ -1811,21 +1853,21 @@ zen_garden=禅の庭園
           for(let i=0;i<output.dims[1];i++){let id=0,score=-Infinity;for(let j=0;j<characters.length;j++){const value=output.data[i*characters.length+j];if(value>score){id=j;score=value;}}if(id&&id!==previous){const char=characters[id];text+=char;if(char.trim()){sum+=score;count++;part.text+=char;part.sum+=score;part.count++;if(score>=.9){strong++;part.strong++;}}else finish();}previous=id;}finish();
           return {text:text.trim(),score:count?sum/count:0,count,strong,parts};
         }
-        async function read(source,{direction='auto',edge=736,budget=12000}={},progress=()=>{}){const start=Date.now(),angle=direction==='auto'?0:Number(direction);if(![0,90,180,270].includes(angle))throw new Error('文字の向きを選び直してください。');let image=angle?turn(source,angle):source,lines=[],sum=0,total=0,partial=false;
-          try{progress('文字の行を探しています…');const boxes=await detect(image,edge),pixels=boxes.length?image.getContext('2d',{willReadFrequently:true}).getImageData(0,0,image.width,image.height).data:null;let index=0;for(const box of boxes){if(Date.now()-start>budget||lines.length>=1000){partial=true;break;}progress(`見つかった文字の行を読んでいます… ${++index} / ${boxes.length}`);const cropped=crop(image,box.points,pixels),c=cropped.image;let item,axis=cropped.axis;try{item=await recognize(c);if(direction==='auto'&&item.score<.93&&Date.now()-start<budget){const flipped=turn(c,180);try{const alternative=await recognize(flipped);if(alternative.score>item.score+.025){item=alternative;axis=axis.map(n=>-n);}}finally{release(flipped);}}}finally{release(c);}
+        async function read(source,{direction='auto',edge=736,budget=12000,force=false}={},progress=()=>{}){const start=Date.now(),angle=direction==='auto'?0:Number(direction);if(![0,90,180,270].includes(angle))throw new Error('文字の向きを選び直してください。');let image=angle?turn(source,angle):source,lines=[],sum=0,total=0,partial=false;
+          try{progress('文字の行を探しています…');const boxes=await detect(image,edge),pixels=boxes.length?image.getContext('2d',{willReadFrequently:true}).getImageData(0,0,image.width,image.height).data:null;let index=0;for(const box of boxes){if(Date.now()-start>budget||lines.length>=1000){partial=true;break;}progress(`見つかった文字の行を読んでいます… ${++index} / ${boxes.length}`);const cropped=crop(image,box.points,pixels),c=cropped.image;let item,prediction='',predictionScore=0,flippedChoice=false,axis=cropped.axis;try{item=await recognize(c);if(direction==='auto'&&item.score<.93&&Date.now()-start<budget){const flipped=turn(c,180);try{const alternative=await recognize(flipped);if(alternative.score>item.score+.025){item=alternative;flippedChoice=true;axis=axis.map(n=>-n);}}finally{release(flipped);}}if(predictor&&(force||item.count>=3&&item.score>=.35)&&Date.now()-start<budget){progress('単語のつながりから手書きを予測しています… '+index+' / '+boxes.length);const oriented=flippedChoice?turn(c,180):c;try{const result=await predictor.predict(oriented,{deadline:Math.min(start+budget,Date.now()+8000)}),anchors=item.parts.filter(p=>p.score>=.87&&p.text.replace(/[^A-Za-z]/g,'').length>=3).map(p=>p.text.toLowerCase().replace(/[^a-z]/g,'')),normal=result.text.toLowerCase().replace(/[^a-z]/g,'');if(result.text&&(!anchors.length||anchors.some(word=>normal.includes(word)))){prediction=result.text;predictionScore=result.score;}}finally{if(oriented!==c)release(oriented);}}}finally{release(c);}
               // A weak name must not discard a clearly read word on the same handwritten line.
               const kept=item.parts.filter(part=>part.score>=.87&&part.strong>=Math.min(2,part.count)&&(/[\p{L}\p{N}]/u.test(part.text))),count=kept.reduce((n,part)=>n+(part.text.match(/[\p{L}\p{N}]/gu)||[]).length,0);
               item={...item,text:kept.map(part=>part.text).join(' '),score:kept.reduce((n,part)=>n+part.sum,0)/Math.max(1,kept.reduce((n,part)=>n+part.count,0)),strong:kept.reduce((n,part)=>n+part.strong,0)};
               const noise=(item.text.match(/[^\p{L}\p{N}\s.,:;!?()\[\]{}'"\-/%+=]/gu)||[]).length;
-              if(count<3||item.score<.83||item.strong<2||noise>count*.2||item.text.length>500)continue;
-              const points=box.points.map(([x,y])=>angle===90?[y,source.height-x]:angle===180?[source.width-x,source.height-y]:angle===270?[source.width-y,x]:[x,y]);lines.push({text:item.text,points,axis,weight:item.score*count,center:box.points.reduce((p,[x,y])=>[p[0]+x/4,p[1]+y/4],[0,0])});sum+=item.score*count;total+=count;
+              if(count<3||item.score<.83||item.strong<2||noise>count*.2||item.text.length>500)item={...item,text:'',score:0};if(!item.text&&!prediction)continue;
+              const points=box.points.map(([x,y])=>angle===90?[y,source.height-x]:angle===180?[source.width-x,source.height-y]:angle===270?[source.width-y,x]:[x,y]);lines.push({text:item.text,prediction,points,axis,weight:item.score*count||predictionScore*prediction.length,center:box.points.reduce((p,[x,y])=>[p[0]+x/4,p[1]+y/4],[0,0])});sum+=item.score*count;total+=count;
           }
           // Sort in the common reading direction, so a sideways or upside-down page keeps paragraph order.
           const votes=lines.reduce((sum,line)=>{const n=Math.hypot(...line.axis)||1;return [sum[0]+line.axis[0]/n*line.weight,sum[1]+line.axis[1]/n*line.weight];},[0,0]),turnAngle=Math.atan2(votes[1],votes[0]),cos=Math.cos(turnAngle),sin=Math.sin(turnAngle);
           lines.sort((a,b)=>(-a.center[0]*sin+a.center[1]*cos)-(-b.center[0]*sin+b.center[1]*cos)||a.center[0]*cos+a.center[1]*sin-b.center[0]*cos-b.center[1]*sin);
-          return {lines:lines.map(({text,points})=>({text,points})),confidence:total?sum/total:0,partial};}finally{if(image!==source)release(image);}
+          return {lines:lines.map(({text,points,prediction})=>({text,points,...(prediction?{prediction}:{})})),confidence:total?sum/total:0,partial};}finally{if(image!==source)release(image);}
         }
-        return {read,detect,recognize,dispose:async()=>{await det.release();await rec.release();}};
+        return {read,detect,recognize,dispose:async()=>{await det.release();await rec.release();await predictor?.dispose();}};
       }
       return {read,stop,engineFactory};
     })();
@@ -1911,7 +1953,7 @@ zen_garden=禅の庭園
         signal.addEventListener('abort',cancel,{once:true});
         image.onerror=()=>{cleanup();reject(new Error('読み取り用に写真を開けませんでした。JPEGまたはPNGで試してください。'));};
         image.onload=()=>{cleanup();let canvas=null;try{
-          directCheck(task);const source=readingRegionSource(image.naturalWidth,image.naturalHeight,task.region);task.sourceRegion=source.region;const size=MemoryLensReading.dimensions(source.width,source.height,task.quality);
+          directCheck(task);const source=readingRegionSource(image.naturalWidth,image.naturalHeight,task.region);task.sourceRegion=source.region;const size=MemoryLensReading.dimensions(source.width,source.height,task.quality==='handwriting'?'best':task.quality);
           canvas=document.createElement('canvas');canvas.width=size.width+size.border*2;canvas.height=size.height+size.border*2;
           const context=canvas.getContext('2d');if(!context)throw new Error('この端末では文字を読み取れませんでした。Safariまたはパソコンでも試してください。');
           context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);context.imageSmoothingEnabled=true;context.imageSmoothingQuality='high';context.drawImage(image,source.left,source.top,source.width,source.height,size.border,size.border,size.width,size.height);resolve(canvas);
@@ -1948,18 +1990,18 @@ zen_garden=禅の庭園
         try{const result=await MemoryLensNeural.read(canvas,{...options,signal:task.controller.signal});options.check();if(result.partial)options.progress('制限時間までに読み取れた行を残しました。');return result;}
         catch(error){options.check();task.neuralUnavailable=true;options.progress('手書き認識を使えなかったため、通常の読み取りで確認します…');return null;}
       };
-      if(neuralAllowed&&options.quality==='best'){
-        const result=await neural();if(result?.count||result&&!options.evidence.likely&&!options.force)return result;
+      if(neuralAllowed&&['best','handwriting'].includes(options.quality)){
+        const result=await neural();if(result?.count||result?.prediction?.text||result&&!options.evidence.likely&&!options.force)return result;
       }
       if(!task.worker){const runtime=await directWait(loadDirectOCR(),task,50000);task.worker=await createDirectWorker(runtime,options.language,task);await directWait(task.worker.setParameters({tessedit_pageseg_mode:'3',user_defined_dpi:'300'}),task,15000);}
       let result=await MemoryLensReading.read(task.worker,canvas,options);options.check();
       // Clear printed text keeps the fast path. Only difficult, text-like English photos need a second engine.
-      if(neuralAllowed&&!task.neuralUnavailable&&options.quality!=='best'&&(options.evidence.likely||options.force)&&(!result.count||result.count<12&&result.confidence<86)){
+      if(neuralAllowed&&!task.neuralUnavailable&&!['best','handwriting'].includes(options.quality)&&(options.evidence.likely||options.force)&&(!result.count||result.count<12&&result.confidence<86)){
         const alternative=await neural();if(alternative?.count&&(!result.count||alternative.count>result.count*1.5&&alternative.confidence>=85))result=alternative;
       }
       return result;
     }
-    function clearDirectReview(){directState.review=null;$('directReview').hidden=true;for(const id of ['directBefore','directAfter'])$(id).textContent='';}
+    function clearDirectReview(){directState.review=null;$('directReview').hidden=true;$('directPrediction').hidden=true;$('directUsePrediction').checked=false;$('directPredictionText').textContent='';for(const id of ['directBefore','directAfter'])$(id).textContent='';}
     function openDirectImport(record=null){
       if(state.ioBusy||$('directInput').disabled)return;
       const target=record?.photo?.blob&&state.records.includes(record)?record:null;directState.recordId=target?.id||null;clearDirectReview();
@@ -1968,7 +2010,7 @@ zen_garden=禅の庭園
       $('directTitle').textContent=target?'写真の文字を読む':'写真を追加';$('directIntro').textContent=target?`${target.name}の写真を読みます。結果を見比べてから、文字を更新できます。`:'写真・フォルダーを選ぶと、このブラウザーに途中保存して取り込みます。保存済みの写真はページを開き直しても続けられます。';
       $('directModeRow').hidden=!!target;$('directForceRow').hidden=!target;$('directForce').checked=false;
       $('phoneImportGuide').hidden=!!target;$('phoneImportGuide').open=false;
-      if(!target)$('directQuality').value='balanced';
+      if(!target)$('directQuality').value='balanced';$('directHandwritingOption').disabled=!target;
       $('directChoose').textContent=target?'この写真を読み直す':'写真を選ぶ';
       $('directOriginalChoose').hidden=!target?.photo?.original;
       $('directSourceNote').hidden=!target;
@@ -1983,10 +2025,10 @@ zen_garden=禅の庭園
     function applyDirectReview(){
       if(state.ioBusy||!directState.review)return;const review=directState.review,record=state.records.find(item=>item.id===review.id);
       if(!record||record.photo!==review.photo||record.fingerprint!==review.fingerprint){$('directError').textContent='元の記録が変わりました。写真を開いて、もう一度読み直してください。';return;}
-      if(!review.text.trim()&&review.status!=='no-text')return;
-      let updated=MemoryLensCore.fromFields(record.name,record.dateRaw,review.text,record.location||''),number=1;
-      while(state.records.some(item=>item!==record&&item.fingerprint===updated.fingerprint))updated=MemoryLensCore.fromFields(`${record.name}（${++number}）`,record.dateRaw,review.text,record.location||'');
-      updated.ocr=MemoryLensPositions.checkPhoto(MemoryLensPositions.validate(review.ocr),record.photo);updated.readingStatus=review.status;
+      const choice=directReviewChoice();if(!choice.text.trim()&&choice.status!=='no-text')return;
+      let updated=MemoryLensCore.fromFields(record.name,record.dateRaw,choice.text,record.location||''),number=1;
+      while(state.records.some(item=>item!==record&&item.fingerprint===updated.fingerprint))updated=MemoryLensCore.fromFields(`${record.name}（${++number}）`,record.dateRaw,choice.text,record.location||'');
+      updated.ocr=MemoryLensPositions.checkPhoto(MemoryLensPositions.validate(choice.ocr),record.photo);updated.readingStatus=choice.status;updated.textGuess=choice===review.prediction?checkedTextGuess({version:1,engine:'trocr-small-handwritten',rawText:review.text,predictedAt:new Date().toISOString()}):null;
       if(!deviceState.enabled&&directEstimate(state.records.map(item=>item===record?{...record,...updated}:item))>PACKAGE_LIMIT){$('directError').textContent='更新すると保存できる64MBを超えます。今の記録を先に保存してください。';return;}
       Object.assign(record,updated);deviceRecordsChanged();closeDirectImport();render();if(state.detailId===record.id&&$('detailDialog').open)showDetail(record);setStatus('読み取った文字を更新しました。「保存」でファイルにも残せます。');
     }
@@ -1997,7 +2039,7 @@ zen_garden=禅の庭園
       if(!valid){$('directError').textContent='写真は20枚まで、1枚30MB以下で選んでください。';$('directInput').value='';return;}
       if(!target&&deviceState.enabled&&deviceState.blocked){$('directError').textContent='自動保存が完了していません。「保存」でファイルに残すか、自動保存を再試行してください。';return;}
       const language=$('directLanguage').value||'eng',direction=$('directDirection').value||'auto',quality=$('directQuality').value||'balanced',layout=$('directLayout').value||'auto',mode=target?'auto':$('directMode').value,force=!!target&&$('directForce').checked;let region;
-      try{if(!['eng','jpn','jpn+eng'].includes(language)||!['best','balanced','standard'].includes(quality)||!['auto','page','sparse'].includes(layout)||!['auto','photos'].includes(mode))throw new Error('読み取りの設定を選び直してください。');region=readingRegionGet(target);}catch(error){$('directError').textContent=error.message;return;}
+      try{if(!['eng','jpn','jpn+eng'].includes(language)||!['best','balanced','standard','handwriting'].includes(quality)||!['auto','page','sparse'].includes(layout)||!['auto','photos'].includes(mode))throw new Error('読み取りの設定を選び直してください。');if(quality==='handwriting'&&(!target||language!=='eng'))throw new Error('手書き予測は写真を開いた英語の再読で使えます。');region=readingRegionGet(target);}catch(error){$('directError').textContent=error.message;return;}
       clearDirectReview();
       const task={controller:new AbortController(),worker:null,currentPhoto:null,caption:'',phase:'',target,quality,layout,region,originalPhoto:target?.photo,originalFingerprint:target?.fingerprint,entries:files.map(file=>({name:file.name||target?.photo?.name||'写真',status:'waiting',message:'待機中'})),added:0,duplicates:0,failed:0,missingDates:0,missingLocations:0,index:-1,ocrUnavailable:false};directState.task=task;
       const errors=[];if(!target){directState.remaining=[];directState.queue=task.entries;}
@@ -2038,9 +2080,10 @@ zen_garden=禅の庭園
             directCheck(task);canvas.width=0;canvas.height=0;canvas=null;
             if(target){
               if(!state.records.includes(target)||target.photo!==task.originalPhoto||target.fingerprint!==task.originalFingerprint)throw new Error('元の写真が変わりました。もう一度開いて試してください。');
-              directState.review={id:target.id,photo:task.originalPhoto,fingerprint:task.originalFingerprint,text:result.text,ocr:target.photo.original?MemoryLensCompact.positions(result.ocr,target.photo):result.ocr,status:result.status};
+              directState.review={id:target.id,photo:task.originalPhoto,fingerprint:task.originalFingerprint,text:result.text,ocr:target.photo.original?MemoryLensCompact.positions(result.ocr,target.photo):result.ocr,status:result.status,before:target.body,prediction:result.prediction?{...result.prediction,ocr:target.photo.original?MemoryLensCompact.positions(result.prediction.ocr,target.photo):result.prediction.ocr}:null};
+              $('directPrediction').hidden=!result.prediction;$('directPredictionText').textContent=result.prediction?.text||'';
               $('directBefore').textContent=target.body||'文字なし';$('directAfter').textContent=result.text||'確かな文字は検出できませんでした。範囲・言語・向きを変えて再読することもできます。';$('directReview').hidden=false;$('directApply').hidden=!result.text.trim()&&!target.body;$('directApply').textContent=result.text.trim()?'この文字で更新':'文字なしにする';
-              directProgress(task,'読み取りが終わりました。写真と比べて、採用する場合だけ更新してください。');task.currentPhoto=null;return;
+              directReviewControls();directProgress(task,'読み取りが終わりました。写真と比べて、採用する場合だけ更新してください。');task.currentPhoto=null;return;
             }
             const updated=directRecord(file,{dateRaw:record.dateRaw,location:record.location},result.text,state.records.filter(item=>item!==record));
             if(!deviceState.enabled&&directEstimate(state.records.map(item=>item===record?{...record,...updated,ocr:result.ocr}:item))>PACKAGE_LIMIT){record.readingStatus='failed';errors.push(`${record.name}：読み取った文字を含めると64MBを超えるため、写真だけを保ちました。`);}
@@ -2066,7 +2109,7 @@ zen_garden=禅の庭園
       $('directChoose').addEventListener('click',()=>{if(state.ioBusy)return;const record=state.records.find(item=>item.id===directState.recordId);if(record?.photo?.blob){importDirectPhotos([record.photo.blob],record);return;}$('directInput').value='';$('directInput').click();});
       $('directOriginalChoose').addEventListener('click',()=>{if(state.ioBusy)return;const record=state.records.find(item=>item.id===directState.recordId);if(!record?.photo?.original)return;$('directOriginalInput').value='';$('directOriginalInput').click();});
       $('detailReread').addEventListener('click',()=>{const record=state.records.find(item=>item.id===state.detailId);if(record?.photo)openDirectImport(record);});
-      $('directApply').addEventListener('click',applyDirectReview);
+      $('directApply').addEventListener('click',applyDirectReview);$('directUsePrediction').addEventListener('change',directReviewControls);
       $('directOriginalInput').addEventListener('change',event=>{const file=event.target.files?.[0];if(file)rereadCompactOriginal(file);});
       $('directInput').addEventListener('change',event=>bulkRun(Array.from(event.target.files||[])));
       $('directStop').addEventListener('click',stopDirectImport);
@@ -2156,7 +2199,7 @@ zen_garden=禅の庭園
     // COMPACT PHOTOS END
 
     // PHONE TRANSFER START — 1枚を保存できたことを確認してから、次の元画像を受け取る。
-    const phoneState={session:null,invite:null};
+    const phoneState={session:null,invite:null,retry:null};
     const PHONE_CHUNK=16384,PHONE_MAX=30000000;
     function phoneRandom(bytes){const value=new Uint8Array(bytes);window.crypto.getRandomValues(value);return Array.from(value,n=>n.toString(16).padStart(2,'0')).join('');}
     function phoneLibrary(){if(!window.Peer)(0,eval)(atob($('phonePeerLibrary').textContent));if(!window.qrcode)(0,eval)(atob($('phoneQRLibrary').textContent));if(!window.Peer||!window.qrcode)throw new Error('接続の準備ができませんでした。');}
@@ -2179,15 +2222,35 @@ zen_garden=禅の庭園
     function phoneEnd(s,message=''){
       if(!s||s.closed)return;s.closed=true;clearTimeout(s.expire);clearTimeout(s.completeTimer);clearInterval(s.heartbeat);s.task?.controller.abort();if(s.sendTask)s.sendTask.stop=true;
       for(const cancel of [...s.waits])cancel();s.waits.clear();s.conn?.close();s.peer?.destroy();s.receiving=null;s.wake?.release?.().catch(()=>{});
-      if(phoneState.session===s){$('phoneHostStart').disabled=false;$('phoneJoin').disabled=false;$('phoneSelect').disabled=true;$('phoneSendStop').hidden=true;if(s.role==='receiver')$('phoneInvite').hidden=true;if(message)$('phoneProgress').textContent=message;}
+      if(phoneState.session===s){$('phoneHostStart').disabled=false;$('phoneJoin').disabled=false;$('phoneSelect').disabled=true;$('phoneSendStop').hidden=true;if(s.role==='receiver')$('phoneInvite').hidden=true;if(message)$('phoneProgress').textContent=message;phoneRetryUpdate();}
       Promise.resolve(s.operation).catch(()=>{}).then(async()=>{
         if(s.task){if(s.task.worker)await Promise.resolve(s.task.worker.terminate()).catch(()=>{});await bulkLease(s.task.owner,true).catch(()=>{});if(directState.task===s.task)directState.task=null;}
         if(s.ownsBusy){setIOBusy(false);render();s.ownsBusy=false;}
       });
     }
-    function phoneClose(){phoneEnd(phoneState.session,'接続を閉じました。保存済みの記録は残っています。');if($('phoneDialog').open)$('phoneDialog').close();}
+    function phoneRetryUpdate(){
+      const queue=phoneState.retry,pending=queue?.entries.filter(e=>e.file)||[],s=phoneState.session,sending=!!s?.sendTask;
+      $('phoneResumeQueue').hidden=!pending.length||$('phoneDialog').open;$('phoneRetryPanel').hidden=$('phoneSender').hidden||!pending.length;$('phoneRetrySend').disabled=sending;$('phoneRetryDiscard').disabled=sending;
+      $('phoneRetrySummary').textContent=queue?'完了 '+queue.entries.filter(e=>!e.file).length+' / '+queue.entries.length+'枚 · 失敗 '+pending.filter(e=>e.status==='failed').length+'枚 · 残り '+pending.length+'枚':'';
+      $('phoneRetryList').replaceChildren();for(const e of pending.slice(0,8))$('phoneRetryList').append(element('li','',e.name+' · '+(e.status==='failed'?'再試行待ち':'待機中')));
+      if(pending.length>8)$('phoneRetryList').append(element('li','', 'ほか '+(pending.length-8)+'枚'));
+      if(s?.role==='sender')$('phoneSelect').disabled=!phoneValid(s)||!s.authenticated||sending||!!pending.length;
+    }
+    async function phoneRetrySend(){
+      const q=phoneState.retry;if(!q||phoneState.session?.sendTask)return;
+      const link=$('phoneRetryLink').value.trim();if(link){try{const url=new URL(link);if(url.origin!==location.origin||url.pathname!==location.pathname)throw new Error('PCと同じMemory Lensの接続用URLを貼り付けてください。');const invite=phoneInviteValue(url.hash);if(!invite)throw new Error('PCの「URLをコピー」で接続用URLをコピーしてください。');phoneState.invite=invite;$('phoneRetryLink').value='';phoneEnd(phoneState.session);}catch(error){$('phoneError').textContent=error.message;return;}}
+      let s=phoneState.session;if(!phoneValid(s)||!s.authenticated||!s.conn?.open){await phoneJoin();s=phoneState.session;}
+      if(phoneValid(s)&&s.authenticated&&phoneState.retry===q)await phoneSendFiles(q.entries.filter(e=>e.file).map(e=>e.file),true);
+    }
+    function phoneRecoverHost(s){
+      if(!phoneValid(s)||s.role!=='receiver')return;s.conn=null;s.authenticated=false;s.authorizing=false;s.batchComplete=false;clearTimeout(s.completeTimer);s.recovering=true;
+      const old=s.task;old.controller.abort();phoneProblem(s,'通信が切れました。携帯の「失敗した写真・残りを再送」で続けられます。');$('phoneInvite').hidden=false;
+      clearTimeout(s.expire);s.expire=setTimeout(()=>phoneEnd(s,'再接続待ちが10分を過ぎました。QRを作り直してください。'),600000);
+      s.recovery=Promise.resolve(s.operation).catch(()=>{}).then(async()=>{if(old.worker)await Promise.resolve(old.worker.terminate()).catch(()=>{});if(!phoneValid(s))return;s.receiving=null;s.operation=null;s.task={...old,controller:new AbortController(),worker:null,ocrUnavailable:false,neuralUnavailable:false,caption:''};directState.task=s.task;s.recovering=false;phoneStatus(s,'再接続を待っています。PCに保存できた写真は保っています。');});
+    }
+    function phoneClose(){const s=phoneState.session,message='接続を閉じました。保存済みの記録は残っています。';if(phoneValid(s)&&s.role==='sender'&&s.authenticated&&s.conn?.open){s.intentionalClosing=true;if(s.sendTask)s.sendTask.stop=true;try{phoneSend(s,{kind:'cancel-batch'});}catch{}setTimeout(()=>phoneEnd(s,message),100);}else phoneEnd(s,message);if($('phoneDialog').open)$('phoneDialog').close();}
     function phoneOpenReceiver(){
-      if(state.ioBusy)return;closeDirectImport();phoneEnd(phoneState.session);$('phoneTitle').textContent='携帯から受け取る';$('phoneReceiver').hidden=false;$('phoneSender').hidden=true;$('phoneInvite').hidden=true;$('phoneQR').replaceChildren();$('phoneLink').value='';$('phoneCode').textContent='';$('phoneProgress').textContent='まずは写真3枚で試してください。';$('phoneError').textContent='';$('phoneHostStart').disabled=false;$('phoneDialog').showModal();
+      if(state.ioBusy)return;closeDirectImport();phoneEnd(phoneState.session);$('phoneTitle').textContent='携帯から受け取る';$('phoneReceiver').hidden=false;$('phoneSender').hidden=true;$('phoneInvite').hidden=true;$('phoneQR').replaceChildren();$('phoneLink').value='';$('phoneCode').textContent='';$('phoneProgress').textContent='まずは写真3枚で試してください。';$('phoneError').textContent='';$('phoneHostStart').disabled=false;phoneRetryUpdate();$('phoneDialog').showModal();
     }
     async function phoneStartHost(){
       if(state.ioBusy||!bulkState.ready)return;const s=phoneCreateSession('receiver');$('phoneHostStart').disabled=true;$('phoneError').textContent='';$('phoneInvite').hidden=true;phoneStatus(s,'接続を準備しています…');
@@ -2199,22 +2262,23 @@ zen_garden=禅の庭園
         await bulkLease(s.task.owner);if(!phoneValid(s)){await bulkLease(s.task.owner,true);return;}s.heartbeat=setInterval(()=>bulkLease(s.task.owner).catch(error=>{phoneProblem(s,error.message);phoneEnd(s);}),20000);
         directState.task=s.task;s.ownsBusy=true;setIOBusy(true);s.id='ml-'+phoneRandom(16);s.token=phoneRandom(24);s.pin=String(window.crypto.getRandomValues(new Uint32Array(1))[0]%1000000).padStart(6,'0');
         await phonePeerReady(s,s.id);if(!phoneValid(s))return;
-        s.peer.on('connection',conn=>phoneAccept(s,conn));const link=new URL(location.href);link.search='';link.hash='ml-send='+btoa(JSON.stringify({version:1,id:s.id,token:s.token})).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+        s.peer.on('connection',conn=>phoneAccept(s,conn));const link=new URL(location.href);link.search='?release='+CODE_RELEASE;link.hash='ml-send='+btoa(JSON.stringify({version:1,id:s.id,token:s.token})).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
         const qr=window.qrcode(0,'M');qr.addData(link.href);qr.make();$('phoneQR').innerHTML=qr.createSvgTag({scalable:true,margin:4});$('phoneLink').value=link.href;$('phoneCode').textContent=s.pin;$('phoneInvite').hidden=false;phoneStatus(s,'携帯を待っています。QRを読んで、携帯に6桁を入力してください。');phoneWake(s);
         s.expire=setTimeout(()=>phoneEnd(s,'接続待ちが10分を過ぎました。QRを作り直してください。'),600000);
       }catch(error){phoneProblem(s,error.message);phoneEnd(s);}
     }
     function phoneAccept(s,conn){
-      if(!phoneValid(s)||s.conn){conn.close();return;}s.conn=conn;const timer=setTimeout(()=>{if(!s.authenticated){conn.close();if(s.conn===conn)s.conn=null;}},30000);
+      if(!phoneValid(s)||s.conn){conn.close();return;}s.conn=conn;let authorizing=false;const timer=setTimeout(()=>{if(!s.authenticated){conn.close();if(s.conn===conn)s.conn=null;}},30000);
       conn.on('data',data=>{
         if(!phoneValid(s)||s.conn!==conn)return;
-        if(!s.authenticated){try{const m=phoneParse(data);if(m.kind!=='hello'||m.version!==1||m.token!==s.token||m.pin!==s.pin)throw new Error('番号が一致しません。PCの6桁を確認してください。');clearTimeout(timer);clearTimeout(s.expire);s.authenticated=true;$('phoneInvite').hidden=true;phoneSend(s,{kind:'ready',version:1});phoneStatus(s,'携帯と接続しました。携帯で写真を選んでください。');}catch{try{conn.send(JSON.stringify({kind:'reject',message:'番号が一致しません。PCの6桁を確認して、もう一度つないでください。'}));}catch{}setTimeout(()=>{conn.close();if(s.conn===conn&&!s.authenticated)s.conn=null;},100);}return;}
+        if(!s.authenticated){try{const m=phoneParse(data);if(m.kind!=='hello'||m.version!==1||m.token!==s.token||m.pin!==s.pin)throw new Error('番号が一致しません。PCの6桁を確認してください。');if(authorizing)return;authorizing=true;Promise.resolve(s.recovery).then(()=>{if(!phoneValid(s)||s.conn!==conn)return;clearTimeout(timer);clearTimeout(s.expire);authorizing=false;s.authenticated=true;$('phoneInvite').hidden=true;$('phoneError').textContent='';phoneSend(s,{kind:'ready',version:1});phoneStatus(s,'携帯と接続しました。携帯で写真を選ぶか、残りを再送してください。');}).catch(error=>{phoneProblem(s,error.message);phoneEnd(s);});}catch{try{conn.send(JSON.stringify({kind:'reject',message:'番号が一致しません。PCの6桁を確認して、もう一度つないでください。'}));}catch{}setTimeout(()=>{conn.close();if(s.conn===conn&&!s.authenticated)s.conn=null;},100);}return;}
         try{if(typeof data==='string')phoneReceiveControl(s,phoneParse(data));else phoneReceiveChunk(s,data);}catch(error){phoneProblem(s,error.message);phoneEnd(s);}
       });
-      conn.on('close',()=>{clearTimeout(timer);if(s.conn===conn){if(s.authenticated){if(s.batchComplete&&!s.receiving&&!s.operation)phoneEnd(s,'接続が終わりました。保存済みの写真を検索できます。');else{phoneProblem(s,'携帯との接続が切れました。保存済みの写真は残っています。QRを作り直すと続けられます。');phoneEnd(s);}}else s.conn=null;}});
-      conn.on('error',()=>{phoneProblem(s,'端末間の通信を開始できませんでした。同じWi-FiでQRを作り直してください。');phoneEnd(s);});
+      conn.on('close',()=>{clearTimeout(timer);if(s.conn===conn){if(s.authenticated){if(s.batchComplete&&!s.receiving&&!s.operation)phoneEnd(s,'接続が終わりました。保存済みの写真を検索できます。');else phoneRecoverHost(s);}else s.conn=null;}});
+      conn.on('error',()=>{if(s.conn!==conn)return;conn.close();if(phoneValid(s))phoneRecoverHost(s);});
     }
     function phoneReceiveControl(s,m){
+      if(m.kind==='cancel-batch'){phoneEnd(s,'携帯側で接続を閉じました。保存済みの写真を検索できます。');return;}
       if(m.kind==='begin'){
         s.batchComplete=false;
         if(s.receiving||s.operation)throw new Error('前の写真の保存がまだ終わっていません。');
@@ -2226,8 +2290,8 @@ zen_garden=禅の庭園
         const r=s.receiving;if(!r||r.id!==m.id||r.phase!=='receiving'||r.bytes!==r.size)throw new Error('写真のデータが途中で切れました。');r.phase='processing';s.task.caption=r.name;
         s.operation=(async()=>{
           try{const blob=new Blob(r.parts,{type:r.type});r.parts=[];const digest=await directWait(directPhotoHash(blob),s.task,30000);if(digest!==r.digest)throw new Error('受信した写真の内容を確認できませんでした。選び直してください。');
-            const result=await MemoryLensCompact.received(new File([blob],r.name,{type:r.type,lastModified:r.modified}),s.task,digest);if(result.kind==='duplicate')s.duplicate++;else{s.saved++;s.storedBytes+=result.bytes;if(result.readingStatus==='failed')s.unread++;}if(phoneValid(s)){phoneSend(s,{kind:'saved',id:r.id,result:result.kind,readingStatus:result.readingStatus,bytes:result.bytes||0});phoneStatus(s,'追加 '+s.saved+'枚 · 重複 '+s.duplicate+'枚 · 保存した画像 '+(s.storedBytes/1000000).toFixed(1)+' MB'+(s.unread?' · 文字の読み取り未完了 '+s.unread+'枚':''));}
-          }catch(error){if(phoneValid(s)){phoneProblem(s,error.message);try{phoneSend(s,{kind:'failed',id:r.id,message:error.message.slice(0,1000)});}catch{}}}
+            const result=await MemoryLensCompact.received(new File([blob],r.name,{type:r.type,lastModified:r.modified}),s.task,digest);if(result.kind==='duplicate')s.duplicate++;else{s.saved++;s.storedBytes+=result.bytes;if(result.readingStatus==='failed')s.unread++;}if(phoneValid(s)&&s.authenticated&&s.conn?.open){phoneSend(s,{kind:'saved',id:r.id,result:result.kind,readingStatus:result.readingStatus,bytes:result.bytes||0});phoneStatus(s,'追加 '+s.saved+'枚 · 重複 '+s.duplicate+'枚 · 保存した画像 '+(s.storedBytes/1000000).toFixed(1)+' MB'+(s.unread?' · 文字の読み取り未完了 '+s.unread+'枚':''));}
+          }catch(error){if(phoneValid(s)&&s.authenticated&&s.conn?.open){phoneProblem(s,error.message);try{phoneSend(s,{kind:'failed',id:r.id,message:error.message.slice(0,1000)});}catch{}}}
           finally{if(s.receiving===r)s.receiving=null;s.operation=null;}
         })();return;
       }
@@ -2239,17 +2303,18 @@ zen_garden=禅の庭園
       throw new Error('接続先の送信手順を確認できません。');
     }
     function phoneReceiveChunk(s,data){const r=s.receiving;if(!r||r.phase!=='receiving'||!(data instanceof ArrayBuffer)||!data.byteLength||data.byteLength>PHONE_CHUNK||r.bytes+data.byteLength>r.size)throw new Error('写真の受信データが正しくありません。');r.parts.push(data);r.bytes+=data.byteLength;}
-    function phoneInviteFromHash(){
-      if(!location.hash.startsWith('#ml-send='))return null;
-      try{const raw=location.hash.slice(9);if(raw.length>500)return null;const value=JSON.parse(atob(raw.replace(/-/g,'+').replace(/_/g,'/')));if(value.version!==1||typeof value.id!=='string'||!/^ml-[a-f0-9]{32}$/.test(value.id)||typeof value.token!=='string'||!/^[a-f0-9]{48}$/.test(value.token))return null;return value;}catch{return null;}
+    function phoneInviteValue(hash){
+      if(!hash.startsWith('#ml-send='))return null;
+      try{const raw=hash.slice(9);if(raw.length>500)return null;const value=JSON.parse(atob(raw.replace(/-/g,'+').replace(/_/g,'/')));if(value.version!==1||typeof value.id!=='string'||!/^ml-[a-f0-9]{32}$/.test(value.id)||typeof value.token!=='string'||!/^[a-f0-9]{48}$/.test(value.token))return null;return value;}catch{return null;}
     }
+    function phoneInviteFromHash(){return phoneInviteValue(location.hash);}
     function phoneOpenSender(invite){
-      phoneEnd(phoneState.session);phoneState.invite=invite;$('phoneTitle').textContent='PCに写真を送る';$('phoneReceiver').hidden=true;$('phoneSender').hidden=false;$('phoneSendControls').hidden=true;$('phonePin').value='';$('phoneProgress').textContent='PCに表示されている6桁を入力してください。';$('phoneError').textContent='';$('phoneJoin').disabled=false;$('phoneDialog').showModal();
+      phoneEnd(phoneState.session);phoneState.invite=invite;$('phoneTitle').textContent='PCに写真を送る';$('phoneReceiver').hidden=true;$('phoneSender').hidden=false;$('phoneSendControls').hidden=true;$('phonePin').value='';$('phoneProgress').textContent='PCに表示されている6桁を入力してください。';$('phoneError').textContent='';$('phoneJoin').disabled=false;phoneRetryUpdate();$('phoneDialog').showModal();
     }
     function phoneWaitMessage(s,kinds,id=null,timeout=180000){return new Promise((resolve,reject)=>{
       const finish=(error,m)=>{if(done)return;done=true;clearTimeout(timer);s.waits.delete(cancel);if(s.reply===reply)s.reply=null;error?reject(error):resolve(m);};let done=false;
       const cancel=()=>finish(new Error('接続が切れました。保存済みの写真はPCに残っています。')),timer=setTimeout(()=>finish(new Error('PCの応答を確認できませんでした。両方の画面と接続を確認してください。')),timeout);
-      const reply=m=>{if(m.kind==='reject'||m.kind==='failed')return finish(new Error(m.message||'PCで写真を保存できませんでした。'));if(kinds.includes(m.kind)&&(id===null||m.id===id))finish(null,m);};s.reply=reply;s.waits.add(cancel);
+      const reply=m=>{if(m.kind==='failed'&&id!==null&&m.id!==id)return;if(m.kind==='reject'||m.kind==='failed')return finish(new Error(m.message||'PCで写真を保存できませんでした。'));if(kinds.includes(m.kind)&&(id===null||m.id===id))finish(null,m);};s.reply=reply;s.waits.add(cancel);
     });}
     async function phoneJoin(){
       if(!phoneState.invite)return;const pin=$('phonePin').value.replace(/\s/g,'');if(!/^\d{6}$/.test(pin)){$('phoneError').textContent='PCに表示されている6桁を入力してください。';return;}
@@ -2258,36 +2323,39 @@ zen_garden=禅の庭園
         if(!window.RTCPeerConnection||!window.crypto?.subtle||location.protocol!=='https:')throw new Error('HTTPSのページを、SafariまたはChromeなどの最近のブラウザーで開いてください。');phoneLibrary();await phonePeerReady(s,'ml-phone-'+phoneRandom(16));if(!phoneValid(s))return;
         const conn=s.peer.connect(phoneState.invite.id,{serialization:'raw',reliable:true,label:'memory-lens-photo-v1'});s.conn=conn;
         conn.on('data',data=>{try{const m=phoneParse(data);if(m.kind==='progress')phoneStatus(s,m.message);else s.reply?.(m);}catch(error){phoneProblem(s,error.message);phoneEnd(s);}});
-        conn.on('close',()=>{if(phoneValid(s)){if(s.lastBatch&&!s.sendTask)phoneEnd(s,'送信が終わりました。追加 '+s.lastBatch.saved+'枚 · 重複 '+s.lastBatch.duplicate+'枚。PCに保存済みです。'+(s.lastBatch.unread?' 文字の読み取りは'+s.lastBatch.unread+'枚未完了です。':''));else{phoneProblem(s,'PCとの接続が切れました。PCでQRを作り直してください。');phoneEnd(s);}}});conn.on('error',()=>{phoneProblem(s,'端末間の通信を開始できませんでした。同じWi-Fiで試してください。');phoneEnd(s);});
+        conn.on('close',()=>{if(phoneValid(s)){if(s.intentionalClosing){phoneEnd(s,'接続を閉じました。保存済みの記録は残っています。');return;}if(s.lastBatch&&!s.sendTask)phoneEnd(s,'送信が終わりました。追加 '+s.lastBatch.saved+'枚 · 重複 '+s.lastBatch.duplicate+'枚。PCに保存済みです。'+(s.lastBatch.unread?' 文字の読み取りは'+s.lastBatch.unread+'枚未完了です。':''));else{phoneProblem(s,'通信が切れました。「失敗した写真・残りを再送」で再接続できます。PCでQRを作り直した場合は、新しいURLと6桁を使ってください。');phoneEnd(s);}}});conn.on('error',()=>{phoneProblem(s,'端末間の通信を開始できませんでした。同じWi-Fiで試してください。');phoneEnd(s);});
         await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{s.waits.delete(cancel);reject(new Error('PCにつながりませんでした。同じWi-FiでQRを作り直してください。'));},25000),cancel=()=>{clearTimeout(timer);s.waits.delete(cancel);reject(new Error('接続を閉じました。'));};s.waits.add(cancel);conn.on('open',()=>{clearTimeout(timer);s.waits.delete(cancel);resolve();});});if(!phoneValid(s))return;
-        const ready=phoneWaitMessage(s,['ready'],null,30000);phoneSend(s,{kind:'hello',version:1,token:phoneState.invite.token,pin});await ready;if(!phoneValid(s))return;s.authenticated=true;$('phoneSendControls').hidden=false;$('phoneSelect').disabled=false;$('phoneJoin').disabled=true;phoneStatus(s,'PCと接続しました。写真を選んでください。');phoneWake(s);
+        const ready=phoneWaitMessage(s,['ready'],null,30000);phoneSend(s,{kind:'hello',version:1,token:phoneState.invite.token,pin});await ready;if(!phoneValid(s))return;s.authenticated=true;$('phoneSendControls').hidden=false;$('phoneSelect').disabled=false;$('phoneJoin').disabled=true;phoneStatus(s,'PCと接続しました。'+(phoneState.retry?'残りを再送できます。':'写真を選んでください。'));phoneRetryUpdate();phoneWake(s);
       }catch(error){phoneProblem(s,error.message);phoneEnd(s);}
     }
-    async function phoneSendFiles(files){
+    async function phoneSendFiles(files,retry=false){
       const s=phoneState.session;if(!phoneValid(s)||s.role!=='sender'||!s.authenticated||s.sendTask)return;
       const valid=files.filter(file=>file.size>0&&file.size<=PHONE_MAX&&(/^image\//.test(file.type||'')||!file.type&&/\.(jpe?g|png|webp|avif|gif|bmp|heic|heif|tiff?)$/i.test(file.name||'')));if(!valid.length||valid.length>LIBRARY_RECORD_LIMIT){phoneProblem(s,'写真を1〜20,000枚で選んでください。1枚30MBまでです。');return;}
-      const job={stop:false,saved:0,duplicate:0,unread:0};s.sendTask=job;s.lastBatch=null;$('phoneSelect').disabled=true;$('phoneSendStop').hidden=false;$('phoneError').textContent='';
+      if(!retry&&phoneState.retry?.entries.some(e=>e.file)){phoneProblem(s,'残りを再送するか、待機中の送信を取り消してください。');return;}
+      const queue=retry?phoneState.retry:{entries:valid.map(file=>({file,name:file.name,status:'waiting'}))};phoneState.retry=queue;const pending=queue.entries.filter(e=>e.file),job={stop:false,saved:0,duplicate:0,unread:0,current:null};s.sendTask=job;phoneRetryUpdate();s.lastBatch=null;$('phoneSelect').disabled=true;$('phoneSendStop').hidden=false;$('phoneError').textContent='';
       try{
-        for(let index=0;index<valid.length;index++){
-          if(job.stop||!phoneValid(s))break;const file=valid[index];phoneStatus(s,(index+1)+' / '+valid.length+'枚 · '+file.name+'を準備しています…');const bytes=await photoBytes(file);if(!phoneValid(s))throw new Error('接続を閉じました。');
-          const digest=Array.from(new Uint8Array(await window.crypto.subtle.digest('SHA-256',bytes)),n=>n.toString(16).padStart(2,'0')).join(''),id=phoneRandom(12);const accepted=phoneWaitMessage(s,['accept','saved'],id,30000);phoneSend(s,{kind:'begin',id,name:file.name,type:file.type||'',size:file.size,modified:Math.max(0,Math.floor(file.lastModified||0)),digest});const first=await accepted;
-          if(first.kind==='saved'){job.duplicate++;continue;}
+        for(let index=0;index<pending.length;index++){
+          if(job.stop||!phoneValid(s))break;const entry=pending[index],file=entry.file;job.current=entry;entry.status='sending';phoneStatus(s,(index+1)+' / '+valid.length+'枚 · '+file.name+'を準備しています…');let bytes=null;if(!entry.digest){bytes=await photoBytes(file);if(!phoneValid(s))throw new Error('接続を閉じました。');entry.digest=Array.from(new Uint8Array(await window.crypto.subtle.digest('SHA-256',bytes)),n=>n.toString(16).padStart(2,'0')).join('');}
+          const digest=entry.digest,id=phoneRandom(12);const accepted=phoneWaitMessage(s,['accept','saved'],id,30000);phoneSend(s,{kind:'begin',id,name:file.name,type:file.type||'',size:file.size,modified:Math.max(0,Math.floor(file.lastModified||0)),digest});const first=await accepted;
+          if(first.kind==='saved'){job.duplicate++;entry.status='duplicate';entry.file=null;job.current=null;phoneRetryUpdate();continue;}
+          if(!bytes){bytes=await photoBytes(file);if(!phoneValid(s))throw new Error('接続を閉じました。');const checked=Array.from(new Uint8Array(await window.crypto.subtle.digest('SHA-256',bytes)),n=>n.toString(16).padStart(2,'0')).join('');if(checked!==digest)throw new Error('選んだ写真の内容が変わりました。同じ元写真を選び直してください。');}
           for(let offset=0;offset<bytes.byteLength;offset+=PHONE_CHUNK){
             const deadline=Date.now()+20000;while(phoneValid(s)&&(s.conn.dataChannel?.bufferedAmount>262144||s.conn.bufferSize>8)){if(Date.now()>deadline)throw new Error('写真の送信が進んでいません。両方の画面とWi-Fiを確認してください。');await new Promise(resolve=>setTimeout(resolve,10));}if(!phoneValid(s))throw new Error('接続が切れました。');s.conn.send(bytes.slice(offset,offset+PHONE_CHUNK));
             if(offset%524288===0){phoneStatus(s,(index+1)+' / '+valid.length+'枚 · '+file.name+'を送っています… '+Math.round(offset/bytes.byteLength*100)+'%');await new Promise(resolve=>setTimeout(resolve,0));}
           }
-          const stored=phoneWaitMessage(s,['saved'],id,300000);phoneSend(s,{kind:'end',id});phoneStatus(s,(index+1)+' / '+valid.length+'枚 · PCが読み取り・保存しています…');const result=await stored;if(result.result==='duplicate')job.duplicate++;else{job.saved++;if(result.readingStatus==='failed')job.unread++;}
+          const stored=phoneWaitMessage(s,['saved'],id,300000);phoneSend(s,{kind:'end',id});phoneStatus(s,(index+1)+' / '+valid.length+'枚 · PCが読み取り・保存しています…');const result=await stored;if(result.result==='duplicate')job.duplicate++;else{job.saved++;if(result.readingStatus==='failed')job.unread++;}entry.status=result.result==='duplicate'?'duplicate':'saved';entry.file=null;job.current=null;phoneRetryUpdate();
         }
-        if(phoneValid(s)){s.lastBatch={saved:job.saved,duplicate:job.duplicate,unread:job.unread};phoneSend(s,{kind:'batch-end'});phoneStatus(s,(job.stop?'ここで止めました。':'送信が終わりました。')+'追加 '+job.saved+'枚 · 重複 '+job.duplicate+'枚。PCに保存済みです。'+(job.unread?' 文字の読み取りは'+job.unread+'枚未完了です。':'')+(valid.length<files.length?' 対象外のファイルは送りませんでした。':''));}
-      }catch(error){phoneProblem(s,error.message+' 保存済みの写真はPCに残っています。');phoneEnd(s);}
-      finally{s.sendTask=null;if(phoneState.session===s){$('phoneSelect').disabled=!phoneValid(s);$('phoneSendStop').hidden=true;$('phoneFiles').value='';}}
+        if(phoneValid(s)&&!queue.entries.some(e=>e.file)){phoneState.retry=null;s.lastBatch={saved:job.saved,duplicate:job.duplicate,unread:job.unread};phoneSend(s,{kind:'batch-end'});phoneStatus(s,(job.stop?'ここで止めました。':'送信が終わりました。')+'追加 '+job.saved+'枚 · 重複 '+job.duplicate+'枚。PCに保存済みです。'+(job.unread?' 文字の読み取りは'+job.unread+'枚未完了です。':'')+(valid.length<files.length?' 対象外のファイルは送りませんでした。':''));}
+      else if(phoneValid(s))phoneStatus(s,'ここで止めました。残りは「失敗した写真・残りを再送」で続けられます。');
+      }catch(error){if(job.current)job.current.status='failed';if(phoneState.session===s&&!s.intentionalClosing)$('phoneError').textContent=error.message+' 保存済みの写真はPCに残っています。再送は失敗した写真と残りだけです。';phoneEnd(s);}
+      finally{s.sendTask=null;if(phoneState.session===s){$('phoneSelect').disabled=!phoneValid(s);$('phoneSendStop').hidden=true;$('phoneFiles').value='';phoneRetryUpdate();}}
     }
     function initializePhoneTransfer(){
-      $('phoneConnect').addEventListener('click',phoneOpenReceiver);$('phoneHostStart').addEventListener('click',phoneStartHost);$('phoneJoin').addEventListener('click',phoneJoin);
+      $('phoneConnect').addEventListener('click',phoneOpenReceiver);$('phoneHostStart').addEventListener('click',phoneStartHost);$('phoneJoin').addEventListener('click',phoneJoin);$('phoneRetrySend').addEventListener('click',phoneRetrySend);$('phoneResumeQueue').addEventListener('click',()=>{if(!phoneState.invite)return;const pin=$('phonePin').value;phoneOpenSender(phoneState.invite);$('phonePin').value=pin;phoneRetryUpdate();});$('phoneRetryDiscard').addEventListener('click',()=>{if(phoneState.session?.sendTask)return;const q=phoneState.retry,s=phoneState.session;phoneState.retry=null;if(phoneValid(s)&&s.role==='sender'&&s.authenticated){s.lastBatch={saved:q?.entries.filter(e=>e.status==='saved').length||0,duplicate:q?.entries.filter(e=>e.status==='duplicate').length||0,unread:0};try{phoneSend(s,{kind:'batch-end'});}catch{}}phoneRetryUpdate();$('phoneProgress').textContent='待機中の送信を取り消しました。PCに保存済みの写真は残っています。';});
       $('phoneSelect').addEventListener('click',()=>{const s=phoneState.session;if(phoneValid(s)&&s.authenticated&&!s.sendTask){$('phoneFiles').value='';$('phoneFiles').click();}});
       $('phoneFiles').addEventListener('change',event=>phoneSendFiles(Array.from(event.target.files||[])));$('phoneSendStop').addEventListener('click',()=>{const s=phoneState.session;if(s?.sendTask){s.sendTask.stop=true;phoneStatus(s,'今の写真の保存が終わったら止めます。');}});
       $('phoneCopyLink').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('phoneLink').value);$('phoneProgress').textContent='URLをコピーしました。携帯でこのURLを開いてください。';}catch{$('phoneLink').select();$('phoneProgress').textContent='URLを選択しました。コピーして携帯で開いてください。';}});
-      for(const button of document.querySelectorAll('[data-close-phone]'))button.addEventListener('click',phoneClose);$('phoneDialog').addEventListener('cancel',event=>{event.preventDefault();phoneClose();});$('phoneDialog').addEventListener('close',()=>{if(!$('phoneDialog').open)phoneEnd(phoneState.session);});window.addEventListener('pagehide',()=>phoneEnd(phoneState.session));
+      for(const button of document.querySelectorAll('[data-close-phone]'))button.addEventListener('click',phoneClose);$('phoneDialog').addEventListener('cancel',event=>{event.preventDefault();phoneClose();});$('phoneDialog').addEventListener('close',()=>{if(!$('phoneDialog').open&&!phoneState.session?.intentionalClosing)phoneEnd(phoneState.session);phoneRetryUpdate();});window.addEventListener('pagehide',()=>phoneEnd(phoneState.session));
       const invite=phoneInviteFromHash();if(invite){history.replaceState(null,'',location.pathname+location.search);phoneOpenSender(invite);}
     }
     // PHONE TRANSFER END
@@ -2702,7 +2770,7 @@ zen_garden=禅の庭園
         const updated=MemoryLensCore.fromFields($('editName').value,recordEditDate(draft),$('editText').value,$('editLocation').value);
         updated.contentTags=contentTagsEditValue(record);
         updated.environment=record.photo?checkedEnvironment($('editEnvironment').value):'';
-        if(updated.body!==record.body){updated.ocr=null;updated.readingStatus=updated.body?'text':'no-text';}
+        if(updated.body!==record.body){updated.ocr=null;updated.textGuess=null;updated.readingStatus=updated.body?'text':'no-text';}
         if(state.records.some(item=>item!==record&&item.fingerprint===updated.fingerprint))throw new Error('同じ写真名・日時・文字の記録があります。写真名を変えてから保存してください。');
         const changed=updated.fingerprint!==record.fingerprint||updated.location!==(record.location||'')||MemoryLensTags.signature(updated.contentTags)!==draft.tags||updated.environment!==draft.environment;
         if(changed){
@@ -2887,7 +2955,7 @@ zen_garden=禅の庭園
     // RECORD TRANSFER START — 別の端末のファイルを比較し、選んだ内容だけを追加する。
     const transferState={epoch:0,task:null,entries:[],rows:[],snapshot:[]};
     function transferAbort(){throw new DOMException('取り込みを中止しました。','AbortError');}
-    function transferSignature(record){return JSON.stringify([record.name,record.dateRaw,record.body,record.location||'',record.scene||null,record.ocr||null,!!record.sample,MemoryLensTags.validate(record.contentTags),MemoryLensAuto.validate(record.autoInfo),checkedEnvironment(record.environment),checkedReadingStatus(record.readingStatus)]);}
+    function transferSignature(record){return JSON.stringify([record.name,record.dateRaw,record.body,record.location||'',record.scene||null,record.ocr||null,!!record.sample,MemoryLensTags.validate(record.contentTags),MemoryLensAuto.validate(record.autoInfo),checkedEnvironment(record.environment),checkedReadingStatus(record.readingStatus),checkedTextGuess(record.textGuess)]);}
     function transferSnapshot(){return state.records.map(record=>({record,signature:transferSignature(record),photo:record.photo}));}
     function transferSnapshotCurrent(snapshot){return snapshot.length===state.records.length&&snapshot.every((item,index)=>state.records[index]===item.record&&transferSignature(item.record)===item.signature&&item.record.photo===item.photo);}
     function transferRelease(){
@@ -3029,7 +3097,8 @@ zen_garden=禅の庭園
           const contentTags=Object.prototype.hasOwnProperty.call(row.entry,'contentTags')?row.entry.contentTags:keepPhoto?row.target.contentTags:null;
           const environment=Object.prototype.hasOwnProperty.call(row.entry,'environment')?row.entry.environment:keepPhoto?row.target.environment:'';
           const autoInfo=Object.prototype.hasOwnProperty.call(row.entry,'autoInfo')?row.entry.autoInfo:keepPhoto?row.target.autoInfo:null;
-          const record={...row.entry,id:row.target.id,storageKey:row.target.storageKey,photo,contentTags,autoInfo,environment,scene:row.entry.scene||(keepPhoto?row.target.scene:null),ocr:row.entry.ocr||(keepPhoto&&row.entry.body===row.target.body?row.target.ocr:null)};
+          const textGuess=Object.prototype.hasOwnProperty.call(row.entry,'textGuess')?row.entry.textGuess:row.entry.body===row.target.body?row.target.textGuess:null;
+          const record={...row.entry,textGuess,id:row.target.id,storageKey:row.target.storageKey,photo,contentTags,autoInfo,environment,scene:row.entry.scene||(keepPhoto?row.target.scene:null),ocr:row.entry.ocr||(keepPhoto&&row.entry.body===row.target.body?row.target.ocr:null)};
           if(next.some((other,i)=>i!==index&&other.fingerprint===record.fingerprint))throw new Error('更新後の記録が、ほかの記録と重複します。「別の記録として追加」を選んでください。');
           MemoryLensPositions.checkPhoto(record.ocr,photo);next[index]=record;if(row.entry.photo)used.add(row.entry);updated++;
         }
@@ -3060,7 +3129,7 @@ zen_garden=禅の庭園
     // RECORD TRANSFER END
 
     // 保存ファイルは端末のファイルとして持ち運ぶ。画像と記録を同じ配列要素に入れ、名前の一致に頼らない。
-    function setIOBusy(busy){state.ioBusy=busy;for(const id of ['photoInput','openPaste','importPaste','closeData','openDirect','directInput','directChoose','directMode','directForce','directLanguage','directQuality','directLayout','directDirection','directStorage','directOriginalInput','directOriginalChoose','phoneConnect','directApply','directResume','detailReread','detailEdit','editSave','editName','editDate','editTime','editClearDate','editLocation','editEnvironment','editText','detailPhotoChange'])$(id).disabled=busy;for(const el of document.querySelectorAll('[data-open-file]'))el.disabled=busy;$('exportRecords').disabled=busy||!state.records.length;const detail=state.records.find(record=>record.id===state.detailId);$('detailPredict').disabled=busy||!detail?.photo||autoState.current===detail;deviceUpdateUI();calendarUpdateDisabled();readingRegionUpdateDisabled();transferUpdateDisabled();contentTagsUpdateDisabled();bulkUpdateUI();recordSelectionUpdate();autoSchedule();}
+    function setIOBusy(busy){state.ioBusy=busy;for(const id of ['photoInput','openPaste','importPaste','closeData','openDirect','directInput','directChoose','directMode','directForce','directLanguage','directQuality','directLayout','directDirection','directStorage','directOriginalInput','directOriginalChoose','phoneConnect','directApply','directUsePrediction','directResume','detailReread','detailEdit','editSave','editName','editDate','editTime','editClearDate','editLocation','editEnvironment','editText','detailPhotoChange'])$(id).disabled=busy;for(const el of document.querySelectorAll('[data-open-file]'))el.disabled=busy;$('exportRecords').disabled=busy||!state.records.length;const detail=state.records.find(record=>record.id===state.detailId);$('detailPredict').disabled=busy||!detail?.photo||autoState.current===detail;deviceUpdateUI();calendarUpdateDisabled();readingRegionUpdateDisabled();transferUpdateDisabled();contentTagsUpdateDisabled();bulkUpdateUI();recordSelectionUpdate();autoSchedule();}
     // FILE EXPORT START — 大きな一覧は、一つずつ保存できるZIPへ分ける。
     let exportPlan=null;
     function releaseExport(){state.exportEpoch++;if(state.exportUrl)URL.revokeObjectURL(state.exportUrl);state.exportUrl=null;state.exportFile=null;exportPlan=null;$('exportDownload').hidden=true;$('exportDownload').removeAttribute('href');$('exportShare').hidden=true;$('exportPicker').hidden=true;$('exportParts').hidden=true;}
@@ -3092,13 +3161,13 @@ zen_garden=禅の庭園
     // PORTABLE BACKUP START — 写真をBase64にせず、検証可能なZIPで持ち運ぶ。
     function checkedEnvironment(value){if(value===undefined||value===null||value==='')return '';if(!['indoor','outdoor','unknown'].includes(value))throw new Error('保存された屋内・屋外の設定が正しくありません。');return value;}
     function checkedReadingStatus(value){if(value===undefined||value===null)return null;if(!['text','no-text','not-read','failed'].includes(value))throw new Error('保存された文字の読み取り状態が正しくありません。');return value;}
-    function readingLabel(record){return {'text':`${record.body.length.toLocaleString('ja-JP')}文字`,'no-text':'文字を検出できず','not-read':'文字は未読','failed':'文字の読み取り未完了'}[record.readingStatus]||(record.body?`${record.body.length.toLocaleString('ja-JP')}文字`:'文字なし');}
+    function readingLabel(record){if(record.textGuess)return '手書きの予測を含む · '+record.body.length.toLocaleString('ja-JP')+'文字';return {'text':`${record.body.length.toLocaleString('ja-JP')}文字`,'no-text':'文字を検出できず','not-read':'文字は未読','failed':'文字の読み取り未完了'}[record.readingStatus]||(record.body?`${record.body.length.toLocaleString('ja-JP')}文字`:'文字なし');}
     const MemoryLensBackup=(()=>{
       const encoder=new TextEncoder(),decoder=new TextDecoder('utf-8',{fatal:true}),table=new Uint32Array(256);
       for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1;table[n]=c>>>0;}
       const turn=()=>new Promise(resolve=>setTimeout(resolve,0));
       async function checksum(bytes,check){let c=0xffffffff;for(let start=0;start<bytes.length;start+=1048576){check();for(let end=Math.min(bytes.length,start+1048576),i=start;i<end;i++)c=table[(c^bytes[i])&255]^(c>>>8);if(start)await turn();}check();return (c^0xffffffff)>>>0;}
-      function item(record,photo){return {name:record.name,capturedAt:record.dateRaw,text:record.body,location:record.location||'',sample:!!record.sample,photo,environment:checkedEnvironment(record.environment),readingStatus:checkedReadingStatus(record.readingStatus),contentTags:MemoryLensTags.validate(record.contentTags),autoInfo:MemoryLensAuto.validate(record.autoInfo),scene:MemoryLensScene.validate(record.scene),ocr:MemoryLensPositions.checkPhoto(MemoryLensPositions.validate(record.ocr),record.photo)};}
+      function item(record,photo){return {name:record.name,capturedAt:record.dateRaw,text:record.body,location:record.location||'',sample:!!record.sample,photo,environment:checkedEnvironment(record.environment),readingStatus:checkedReadingStatus(record.readingStatus),textGuess:checkedTextGuess(record.textGuess),contentTags:MemoryLensTags.validate(record.contentTags),autoInfo:MemoryLensAuto.validate(record.autoInfo),scene:MemoryLensScene.validate(record.scene),ocr:MemoryLensPositions.checkPhoto(MemoryLensPositions.validate(record.ocr),record.photo)};}
       function header(length){const bytes=new Uint8Array(length);return {bytes,view:new DataView(bytes.buffer)};}
       async function create(records,{check=()=>{},progress=()=>{}}={}){
         if(!records.length||records.length>1000)throw new Error('保存する記録は1〜1,000件で選んでください。');
@@ -3183,6 +3252,7 @@ zen_garden=禅の庭園
       const fields=MemoryLensCore.fromFields(item.name,item.capturedAt,item.text,version>=2?item.location:'');
       const entry={...fields,source,sample:item.sample===true,photo:null,scene:version>=3?MemoryLensScene.validate(item.scene):null,autoInfo:MemoryLensAuto.validate(item.autoInfo),ocr:MemoryLensPositions.validate(item.ocr),environment:checkedEnvironment(item.environment),readingStatus:checkedReadingStatus(item.readingStatus)};
       if(!Object.prototype.hasOwnProperty.call(item,'autoInfo'))delete entry.autoInfo;
+      if(Object.prototype.hasOwnProperty.call(item,'textGuess'))entry.textGuess=checkedTextGuess(item.textGuess);
       if(Object.prototype.hasOwnProperty.call(item,'contentTags'))entry.contentTags=MemoryLensTags.validate(item.contentTags);
       if(!Object.prototype.hasOwnProperty.call(item,'environment'))delete entry.environment;
       try{
@@ -3239,7 +3309,7 @@ zen_garden=禅の庭園
     window.addEventListener('pagehide',event=>{if(!event.persisted){releaseExport();for(const record of state.records)if(record.photo)releasePhoto(record.photo);}});
     $('importPaste').addEventListener('click',()=>{if(state.ioBusy)return;try{const before=locationCount();const added=addRecord($('paste').value,'貼り付け');render();$('pasteDialog').close();$('paste').value='';setStatus(added?'1件の写真の記録を読み込みました。':locationCount()>before?'読み込み済みの記録に撮影場所を追加しました。':'同じ記録はすでに読み込まれています。');}catch(error){$('pasteError').textContent=error.message;}});
     // CODE DOWNLOAD START — 起動時のコードだけを保存し、写真や検索結果を含めない。
-    const CODE_RELEASE='2026-10-11-r21';
+    const CODE_RELEASE='2026-10-12-r22';
     const codeState={template:null,epoch:0,htmlFile:null,zipFile:null,urls:[]};
     const CODE_MODEL_MARKER='__MEMORY_LENS_ORIGINAL_MODEL__';
     const CODE_OBJECT_MARKER='__MEMORY_LENS_ORIGINAL_OBJECT_MODEL__';
