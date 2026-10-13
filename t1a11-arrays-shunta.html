@@ -5,30 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>T1A11 Arrays by Shunta</title>
   <style>
-    body { background-color: aliceblue; color: navy; max-width: 900px; margin: 20px auto; padding: 0 16px; font-family: Arial, sans-serif; line-height: 1.5; }
-    h1 { background-color: navy; color: white; padding: 14px; text-align: center; overflow-wrap: anywhere; }
-    h2 { color: darkgreen; font-size: 21px; }
-    section { background-color: white; border: 1px solid lightsteelblue; padding: 16px; margin: 18px 0; }
-    input { margin: 4px 4px 4px 0; padding: 6px; max-width: 100%; }
-    input[type=number] { width: 90px; }
-    input[type=button] { cursor: pointer; color: navy; }
-    .myOutput { background-color: #f1f5fa; padding: 10px; margin-top: 12px; min-height: 24px; white-space: pre-wrap; overflow-wrap: anywhere; }
-    code { background-color: #eef2f7; padding: 2px 4px; }
-    table { border-collapse: collapse; margin-top: 8px; }
-    th, td { border: 1px solid lightsteelblue; padding: 7px 10px; }
-    input:focus-visible, a:focus-visible { outline: 2px solid darkgreen; outline-offset: 2px; }
+    body { background-color: aliceblue; color: navy; font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
+    h1 { text-align: center; }
+    h2 { color: green; }
+    input { margin: 4px 0; max-width: 100%; }
+    input[type=number] { width: 75px; }
+    .myOutput { white-space: pre-wrap; margin: 10px 0; }
+    table { border-collapse: collapse; }
+    th, td { border: 1px solid navy; padding: 5px 8px; }
   </style>
 </head>
 <body>
 
-<h6>Version 0.0.1</h6>
+<h6>Version 0.0.2</h6>
 <h1>t1a11-arrays-shunta.html</h1>
 <p><b>Shunta Nakamura · October 13, 2026</b></p>
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="noopener">Good reference to JavaScript Arrays</a>
 <p>An array stores several values under one name. The first index is <b>0</b>.</p>
 
 <section>
-  <h2>1. Teacher's Example Working Array Code</h2>
+  <h2>1. Teacher's Example</h2>
   <p>Fred, Mary and Lizzy are stored at indices 0, 1 and 2.</p>
 
   <label for="myText01">Max Array Entry:</label>
@@ -61,7 +57,7 @@
 </section>
 
 <section>
-  <h2>2. Read a Game Inventory Entry</h2>
+  <h2>2. Game Inventory</h2>
   <p>Inventory: Sword, Shield, Potion, Map.</p>
   <label for="myIndex02">Choose an index, 0 to 3:</label>
   <input type="number" id="myIndex02" value="2" min="0" max="3" step="1" required>
@@ -83,8 +79,8 @@
 </section>
 
 <section>
-  <h2>3. Change a Player in an Array</h2>
-  <p>Starting players: Shunta, Ken, Mia. Each click starts with this array.</p>
+  <h2>3. Change a Player</h2>
+  <p>Players: Shunta, Ken, Mia. Choose one to change.</p>
   <label for="myIndex03">Index:</label>
   <input type="number" id="myIndex03" value="1" min="0" max="2" step="1" required>
   <label for="myName03">New name:</label>
@@ -110,8 +106,8 @@
 </section>
 
 <section>
-  <h2>4. Add and Remove Items in My Volleyball Bag</h2>
-  <p>This array keeps its changes while the page is open.</p>
+  <h2>4. My Volleyball Bag</h2>
+  <p>Add an item or remove the last one.</p>
   <label for="myItem04">New item:</label>
   <input type="text" id="myItem04" value="Knee pads" maxlength="40">
 
@@ -147,8 +143,8 @@ Items: 3</div>
 </section>
 
 <section>
-  <h2>5. Calculate Volleyball Practice Points</h2>
-  <p>Enter numbers separated by commas. The loop finds the total, average and highest score.</p>
+  <h2>5. Practice Points</h2>
+  <p>Type scores with commas between them.</p>
   <label for="myScores05">Points:</label>
   <input type="text" id="myScores05" value="12, 7, 18, 9, 14" maxlength="100" size="28">
 
@@ -189,7 +185,7 @@ Items: 3</div>
 </section>
 
 <section>
-  <h2>6. Sort a Number Array</h2>
+  <h2>6. Sort Numbers</h2>
   <label for="myNumbers06">Numbers separated by commas:</label>
   <input type="text" id="myNumbers06" value="12, 3, 20, 7, 15" maxlength="100" size="28">
 
@@ -204,20 +200,26 @@ Items: 3</div>
       }
       myNumbers.push(myNumber)
     }
-    let mySorted = myNumbers.slice()
-    mySorted.sort(function(myA, myB) {
-      return myA - myB
-    })
+    let myBefore = myNumbers.join(', ')
+    for (let myLoop = 0; myLoop < myNumbers.length; myLoop++) {
+      for (let myNext = myLoop + 1; myNext < myNumbers.length; myNext++) {
+        if (myNumbers[myNext] < myNumbers[myLoop]) {
+          let myTemp = myNumbers[myLoop]
+          myNumbers[myLoop] = myNumbers[myNext]
+          myNumbers[myNext] = myTemp
+        }
+      }
+    }
     document.getElementById('myDiv06').textContent =
-      'Original: ' + myNumbers.join(', ') + '\nSorted: ' + mySorted.join(', ')
+      'Original: ' + myBefore + '\nSorted: ' + myNumbers.join(', ')
   }">
 
   <div id="myDiv06" class="myOutput" aria-live="polite">Try numbers such as 2 and 10.</div>
-  <p><code>slice()</code> makes a copy. The sorting function compares the numbers.</p>
+  <p>The loops compare numbers and swap them when needed.</p>
 </section>
 
 <section>
-  <h2>7. Find Scores That Reach a Target</h2>
+  <h2>7. Find Scores</h2>
   <p>Scores: 4, 12, 7, 18, 9, 15.</p>
   <label for="myTarget07">Minimum score:</label>
   <input type="number" id="myTarget07" value="10" step="any" required>
@@ -235,19 +237,23 @@ Items: 3</div>
         myMatches.push(myScores[myLoop])
       }
     }
+    let myReply = 'None'
+    if (myMatches.length > 0) {
+      myReply = myMatches.join(', ')
+    }
     document.getElementById('myDiv07').textContent =
       'Target: ' + myTarget
-      + '\nMatching scores: ' + (myMatches.length > 0 ? myMatches.join(', ') : 'None')
+      + '\nMatching scores: ' + myReply
       + '\nNumber of matches: ' + myMatches.length
   }">
 
   <div id="myDiv07" class="myOutput" aria-live="polite">Find scores at or above the target.</div>
-  <p>A loop and an <code>if</code> statement build a new array of matching values.</p>
+  <p>The loop checks which scores reach the target.</p>
 </section>
 
 <section>
-  <h2>8. A 2D Volleyball Practice Array</h2>
-  <p>Each row is another array. Choose a row and a column to read a skill.</p>
+  <h2>8. 2D Practice Array</h2>
+  <p>Choose a row and column.</p>
   <label for="myRow08">Row, 0 to 1:</label>
   <input type="number" id="myRow08" value="1" min="0" max="1" step="1" required>
   <label for="myColumn08">Column, 0 to 2:</label>
@@ -285,7 +291,7 @@ Items: 3</div>
   <p><code>myPractice[1][0]</code> means row 1, column 0: Block.</p>
 </section>
 
-<p><b>What I practised:</b> array indices, changing values, push/pop, length, loops, number calculations, sorting and 2D arrays.</p>
+<p>I used arrays with names, items and numbers.</p>
 <p><a href="index.html">Back to Home</a></p>
 
 <script>
@@ -295,4 +301,3 @@ Items: 3</div>
 
 </body>
 </html>
-
