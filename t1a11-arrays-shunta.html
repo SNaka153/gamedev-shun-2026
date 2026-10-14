@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>T1A11 Arrays by Shunta</title>
+  <style>
+    body { background-color: aliceblue; color: navy; font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
+    h1 { text-align: center; }
+    h2 { color: green; }
+    input { margin: 4px 0; max-width: 100%; }
+    input[type=number] { width: 75px; }
+    .myOutput { white-space: pre-wrap; margin: 10px 0; }
+    table { border-collapse: collapse; }
+    th, td { border: 1px solid navy; padding: 5px 8px; }
+  </style>
+</head>
+<body>
+
+<h6>Version 0.0.2</h6>
+<h1>t1a11-arrays-shunta.html</h1>
+<p><b>Shunta Nakamura · October 13, 2026</b></p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="noopener">Good reference to JavaScript Arrays</a>
+<p>An array stores several values under one name. The first index is <b>0</b>.</p>
+
+<section>
+  <h2>1. Teacher's Example</h2>
+  <p>Fred, Mary and Lizzy are stored at indices 0, 1 and 2.</p>
+
+  <label for="myText01">Max Array Entry:</label>
+  <input type="number" id="myText01" value="3" min="0" max="10" step="1" required><br>
+
+  <!-- I added let and an input check. The original array and loop are kept. -->
+  <input type="button" id="myButton01" value="Example onClick" onClick="{
+    let myTemp = document.getElementById('myText01').value
+    let mySum = ''
+    document.getElementById('myDiv01').innerHTML = ' '
+
+    if (!document.getElementById('myText01').checkValidity()) {
+      document.getElementById('myDiv01').textContent = 'Enter a whole number from 0 to 10.'
+      return
+    }
+
+    let myArray = new Array()
+    myArray[0] = 'Fred'
+    myArray[1] = 'Mary'
+    myArray[2] = 'Lizzy'
+
+    for (let myLoop = 0; myLoop < myTemp; myLoop++) {
+      mySum += 'Loop #: ' + myLoop + ' array entry: ' + myArray[myLoop] + '<br>'
+    }
+    document.getElementById('myDiv01').innerHTML = mySum
+  }">
+
+  <div id="myDiv01" class="myOutput" aria-live="polite">...</div>
+  <p>Try 1, 2, 3, then 4. At 4, the extra entry is <code>undefined</code> because index 3 has no value.</p>
+</section>
+
+<section>
+  <h2>2. Game Inventory</h2>
+  <p>Inventory: Sword, Shield, Potion, Map.</p>
+  <label for="myIndex02">Choose an index, 0 to 3:</label>
+  <input type="number" id="myIndex02" value="2" min="0" max="3" step="1" required>
+
+  <input type="button" id="myButton02" value="Read item" onclick="{
+    let myInventory = ['Sword', 'Shield', 'Potion', 'Map']
+    if (!document.getElementById('myIndex02').checkValidity()) {
+      document.getElementById('myDiv02').textContent = 'Choose a whole-number index from 0 to 3.'
+      return
+    }
+    let myIndex = Number(document.getElementById('myIndex02').value)
+    document.getElementById('myDiv02').textContent =
+      'myInventory[' + myIndex + '] = ' + myInventory[myIndex]
+      + '\nArray length: ' + myInventory.length
+  }">
+
+  <div id="myDiv02" class="myOutput" aria-live="polite">Choose an entry.</div>
+  <p><code>myInventory[2]</code> reads the third item.</p>
+</section>
+
+<section>
+  <h2>3. Change a Player</h2>
+  <p>Players: Shunta, Ken, Mia. Choose one to change.</p>
+  <label for="myIndex03">Index:</label>
+  <input type="number" id="myIndex03" value="1" min="0" max="2" step="1" required>
+  <label for="myName03">New name:</label>
+  <input type="text" id="myName03" value="Alex" maxlength="30">
+
+  <input type="button" id="myButton03" value="Change player" onclick="{
+    let myPlayers = ['Shunta', 'Ken', 'Mia']
+    let myName = document.getElementById('myName03').value.trim()
+    if (!document.getElementById('myIndex03').checkValidity() || myName === '') {
+      document.getElementById('myDiv03').textContent = 'Choose index 0 to 2 and type a name.'
+      return
+    }
+    let myIndex = Number(document.getElementById('myIndex03').value)
+    let myOldName = myPlayers[myIndex]
+    myPlayers[myIndex] = myName
+    document.getElementById('myDiv03').textContent =
+      'Changed ' + myOldName + ' to ' + myName
+      + '\nPlayers: ' + myPlayers.join(', ')
+  }">
+
+  <div id="myDiv03" class="myOutput" aria-live="polite">Change one entry.</div>
+  <p><code>myPlayers[myIndex] = myName</code> replaces a value.</p>
+</section>
+
+<section>
+  <h2>4. My Volleyball Bag</h2>
+  <p>Add an item or remove the last one.</p>
+  <label for="myItem04">New item:</label>
+  <input type="text" id="myItem04" value="Knee pads" maxlength="40">
+
+  <input type="button" id="myAdd04" value="Add item" onclick="{
+    let myItem = document.getElementById('myItem04').value.trim()
+    if (myItem === '') {
+      document.getElementById('myDiv04').textContent = 'Type an item first.'
+      return
+    }
+    myBag.push(myItem)
+    document.getElementById('myDiv04').textContent =
+      'Added: ' + myItem + '\nBag: ' + myBag.join(', ') + '\nItems: ' + myBag.length
+  }">
+
+  <input type="button" id="myRemove04" value="Remove last item" onclick="{
+    if (myBag.length === 0) {
+      document.getElementById('myDiv04').textContent = 'The bag is already empty.'
+      return
+    }
+    let myRemoved = myBag.pop()
+    document.getElementById('myDiv04').textContent =
+      'Removed: ' + myRemoved + '\nBag: ' + myBag.join(', ') + '\nItems: ' + myBag.length
+  }">
+
+  <input type="button" id="myReset04" value="Reset bag" onclick="{
+    myBag = ['Ball', 'Shoes', 'Water']
+    document.getElementById('myDiv04').textContent = 'Bag: ' + myBag.join(', ') + '\nItems: ' + myBag.length
+  }">
+
+  <div id="myDiv04" class="myOutput" aria-live="polite">Bag: Ball, Shoes, Water
+Items: 3</div>
+  <p><code>push()</code> adds to the end. <code>pop()</code> removes the last item.</p>
+</section>
+
+<section>
+  <h2>5. Practice Points</h2>
+  <p>Type scores with commas between them.</p>
+  <label for="myScores05">Points:</label>
+  <input type="text" id="myScores05" value="12, 7, 18, 9, 14" maxlength="100" size="28">
+
+  <input type="button" id="myButton05" value="Calculate points" onclick="{
+    let myEntries = document.getElementById('myScores05').value.split(',')
+    let myScores = []
+    for (let myLoop = 0; myLoop < myEntries.length; myLoop++) {
+      let myNumber = Number(myEntries[myLoop])
+      if (myEntries[myLoop].trim() === '' || !Number.isFinite(myNumber)) {
+        document.getElementById('myDiv05').textContent = 'Enter numbers separated by commas, such as 12, 7, 18.'
+        return
+      }
+      myScores.push(myNumber)
+    }
+
+    let myTotal = 0
+    let myHighest = myScores[0]
+    for (let myLoop = 0; myLoop < myScores.length; myLoop++) {
+      myTotal += myScores[myLoop]
+      if (myScores[myLoop] > myHighest) {
+        myHighest = myScores[myLoop]
+      }
+    }
+    if (!Number.isFinite(myTotal)) {
+      document.getElementById('myDiv05').textContent = 'These numbers are too large to add in this example.'
+      return
+    }
+    let myAverage = myTotal / myScores.length
+    document.getElementById('myDiv05').textContent =
+      'Scores: ' + myScores.join(', ')
+      + '\nTotal: ' + myTotal
+      + '\nAverage: ' + myAverage.toFixed(2)
+      + '\nHighest: ' + myHighest
+  }">
+
+  <div id="myDiv05" class="myOutput" aria-live="polite">Calculate the scores.</div>
+  <p><code>myTotal += myScores[myLoop]</code> adds each array entry.</p>
+</section>
+
+<section>
+  <h2>6. Sort Numbers</h2>
+  <label for="myNumbers06">Numbers separated by commas:</label>
+  <input type="text" id="myNumbers06" value="12, 3, 20, 7, 15" maxlength="100" size="28">
+
+  <input type="button" id="myButton06" value="Sort smallest to largest" onclick="{
+    let myEntries = document.getElementById('myNumbers06').value.split(',')
+    let myNumbers = []
+    for (let myLoop = 0; myLoop < myEntries.length; myLoop++) {
+      let myNumber = Number(myEntries[myLoop])
+      if (myEntries[myLoop].trim() === '' || !Number.isFinite(myNumber)) {
+        document.getElementById('myDiv06').textContent = 'Enter a list of numbers separated by commas.'
+        return
+      }
+      myNumbers.push(myNumber)
+    }
+    let myBefore = myNumbers.join(', ')
+    for (let myLoop = 0; myLoop < myNumbers.length; myLoop++) {
+      for (let myNext = myLoop + 1; myNext < myNumbers.length; myNext++) {
+        if (myNumbers[myNext] < myNumbers[myLoop]) {
+          let myTemp = myNumbers[myLoop]
+          myNumbers[myLoop] = myNumbers[myNext]
+          myNumbers[myNext] = myTemp
+        }
+      }
+    }
+    document.getElementById('myDiv06').textContent =
+      'Original: ' + myBefore + '\nSorted: ' + myNumbers.join(', ')
+  }">
+
+  <div id="myDiv06" class="myOutput" aria-live="polite">Try numbers such as 2 and 10.</div>
+  <p>The loops compare numbers and swap them when needed.</p>
+</section>
+
+<section>
+  <h2>7. Find Scores</h2>
+  <p>Scores: 4, 12, 7, 18, 9, 15.</p>
+  <label for="myTarget07">Minimum score:</label>
+  <input type="number" id="myTarget07" value="10" step="any" required>
+
+  <input type="button" id="myButton07" value="Find matching scores" onclick="{
+    if (!document.getElementById('myTarget07').checkValidity()) {
+      document.getElementById('myDiv07').textContent = 'Enter a minimum score.'
+      return
+    }
+    let myTarget = Number(document.getElementById('myTarget07').value)
+    let myScores = [4, 12, 7, 18, 9, 15]
+    let myMatches = []
+    for (let myLoop = 0; myLoop < myScores.length; myLoop++) {
+      if (myScores[myLoop] >= myTarget) {
+        myMatches.push(myScores[myLoop])
+      }
+    }
+    let myReply = 'None'
+    if (myMatches.length > 0) {
+      myReply = myMatches.join(', ')
+    }
+    document.getElementById('myDiv07').textContent =
+      'Target: ' + myTarget
+      + '\nMatching scores: ' + myReply
+      + '\nNumber of matches: ' + myMatches.length
+  }">
+
+  <div id="myDiv07" class="myOutput" aria-live="polite">Find scores at or above the target.</div>
+  <p>The loop checks which scores reach the target.</p>
+</section>
+
+<section>
+  <h2>8. 2D Practice Array</h2>
+  <p>Choose a row and column.</p>
+  <label for="myRow08">Row, 0 to 1:</label>
+  <input type="number" id="myRow08" value="1" min="0" max="1" step="1" required>
+  <label for="myColumn08">Column, 0 to 2:</label>
+  <input type="number" id="myColumn08" value="0" min="0" max="2" step="1" required>
+
+  <input type="button" id="myButton08" value="Show practice grid" onclick="{
+    if (!document.getElementById('myRow08').checkValidity() || !document.getElementById('myColumn08').checkValidity()) {
+      document.getElementById('myDiv08').textContent = 'Choose row 0 to 1 and column 0 to 2.'
+      return
+    }
+    let myPractice = [
+      ['Serve', 'Pass', 'Set'],
+      ['Block', 'Dig', 'Spike']
+    ]
+    let myRow = Number(document.getElementById('myRow08').value)
+    let myColumn = Number(document.getElementById('myColumn08').value)
+    let myResult = 'myPractice[' + myRow + '][' + myColumn + '] = ' + myPractice[myRow][myColumn]
+    myResult += '<table><tr><th>Row / Col</th><th>0</th><th>1</th><th>2</th></tr>'
+    for (let myRowLoop = 0; myRowLoop < myPractice.length; myRowLoop++) {
+      myResult += '<tr><th>' + myRowLoop + '</th>'
+      for (let myColLoop = 0; myColLoop < myPractice[myRowLoop].length; myColLoop++) {
+        if (myRowLoop === myRow && myColLoop === myColumn) {
+          myResult += '<td style=background-color:lightyellow>' + myPractice[myRowLoop][myColLoop] + '</td>'
+        } else {
+          myResult += '<td>' + myPractice[myRowLoop][myColLoop] + '</td>'
+        }
+      }
+      myResult += '</tr>'
+    }
+    myResult += '</table>'
+    document.getElementById('myDiv08').innerHTML = myResult
+  }">
+
+  <div id="myDiv08" class="myOutput" aria-live="polite">Choose a skill.</div>
+  <p><code>myPractice[1][0]</code> means row 1, column 0: Block.</p>
+</section>
+
+<p>I used arrays with names, items and numbers.</p>
+<p><a href="index.html">Back to Home</a></p>
+
+<script>
+  // This array stays available to the three bag buttons.
+  let myBag = ['Ball', 'Shoes', 'Water']
+</script>
+
+</body>
+</html>
