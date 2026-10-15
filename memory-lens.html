@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#12263b">
   <meta name="description" content="写真の文字・撮影日時・撮影場所・自動タグ・自分のタグを検索する。写真と記録をひとつのファイルに保存して、別の端末でも開けます。">
-  <meta name="memory-lens-version" content="2026-10-14-r27">
+  <meta name="memory-lens-version" content="2026-10-14-r28">
   <title>Memory Lens — 写真の記憶を検索</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2312263b'/%3E%3Crect x='7' y='7' width='18' height='18' rx='4' fill='none' stroke='%238be5ff' stroke-width='2'/%3E%3Ccircle cx='15' cy='15' r='4' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='m18 18 5 5' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
   <style>
@@ -86,7 +86,7 @@
         <div class="result-grid" id="results"></div><nav id="resultPages" class="result-pages" aria-label="検索結果のページ"></nav>
       </section>
     </div>
-    <footer class="foot"><p>写真の解析と検索はこの端末内で行います。ファイルの「保存」はバックアップや別の端末への移動に使えます。</p><span class="release-stamp">2026-10-14-r27</span></footer>
+    <footer class="foot"><p>写真の解析と検索はこの端末内で行います。ファイルの「保存」はバックアップや別の端末への移動に使えます。</p><span class="release-stamp">2026-10-14-r28</span></footer>
   </main>
   <dialog id="deleteDialog" aria-labelledby="deleteTitle"><div class="dialog-head"><h2 id="deleteTitle">選択した記録を削除</h2></div><div class="dialog-body"><p id="deleteSummary"></p><p class="detail-note">写真・文字・日時・タグをこの一覧から削除します。携帯の元写真と保存済みのZIPは残ります。直前の削除は、この画面を閉じる前なら「元に戻す」で取り消せます。</p><p id="deleteError" role="alert"></p></div><div class="dialog-footer"><button id="deleteCancel">キャンセル</button><button class="danger" id="deleteConfirm">削除する</button></div></dialog>
   <dialog id="deviceDialog" aria-labelledby="deviceTitle"><div class="dialog-head"><h2 id="deviceTitle">この端末の保存設定</h2><button class="close" data-close-dialog="deviceDialog" aria-label="保存設定を閉じる">×</button></div><div class="dialog-body"><label class="device-switch"><input id="deviceAuto" type="checkbox" disabled>このブラウザーに自動保存</label><div class="export-actions"><button id="deviceRestore" hidden>保存した記録を戻す</button><button id="deviceRetry" hidden>保存をもう一度試す</button></div><p>自動保存は、自分でオンにするまで行いません。オンにすると、写真・文字・撮影日時・撮影場所・屋内外の予想をこのブラウザーに保存します。次に同じサイトを開くと復元します。</p><p class="detail-note">オフにしても前の保存は残ります。「データを閉じる」でも消えません。再びオンにすると、今の一覧を保存します。空の一覧なら前の保存を戻します。</p><p class="detail-note">SafariとChrome、GitHubのページと別のサイト、ほかの端末では保存が別々です。ブラウザーのデータを消すと記録も消えるため、大切な記録は「保存」でファイルにも残してください。</p><p class="detail-note">「保存中…」が「保存済み」に変わってから画面を閉じてください。</p><p id="deviceDialogStatus" role="status" aria-live="polite" class="detail-note"></p><div class="export-actions"><button id="deviceForget" disabled>端末の保存を削除</button></div><div id="deviceConfirm" hidden><p id="deviceConfirmText"></p><div class="export-actions"><button class="primary" id="deviceConfirmApply">実行する</button><button id="deviceConfirmCancel">キャンセル</button></div></div></div><div class="dialog-footer"><button class="quiet" data-close-dialog="deviceDialog">閉じる</button></div></dialog>
@@ -114,6 +114,9 @@
       <button id="aiCheckConnection" type="button">接続を確認する</button>
       <label class="calendar-check"><input id="aiUseLocal" type="checkbox" disabled>このPCでの取り込み・再読にAIを使う</label>
       <p class="detail-note">オンにすると、これからPCに追加・携帯から受信する写真を最初からAIで読み取ります。写真を先に保存し、文字は1枚ずつ順番に追加します。途中で止めても「残りを続ける」で再開できます。「写真だけ追加する」を選んだ場合は読み取りません。登録済みの文字は、自動では変更しません。</p>
+      <label for="aiSpeed">AIの読み取り速度</label><select id="aiSpeed"><option value="standard">標準（これまでの読み取り）</option><option value="fast">速さ優先（大きな文字向け）</option></select>
+      <p id="aiSpeedNote" class="detail-note">速さ優先は画像を小さくして処理を軽くします。小さな手書きや細かいプリントは標準がおすすめです。選んだ設定は次に開始する取り込み・再読に使います。</p>
+      <details><summary>直近の読み取り時間</summary><p id="aiTimingSummary" class="detail-note" style="white-space:pre-line"></p><p class="detail-note">新しい順に最大4回を表示します。写真や範囲が違うと時間も変わります。同じ写真・同じ範囲で比べてください。記録するのは時間・画像サイズ・設定のみです。</p></details>
       <p class="detail-note">1枚に約1分かかる場合があります。読めない部分や誤読も残ります。AIの読み取りでは、写真上の文字の位置はまだ取得しません。検索は読み取った文字で行えます。</p>
       <p class="detail-note"><a href="https://snaka153.github.io/gamedev-shun-2026/memory-lens.html" target="_blank" rel="noopener noreferrer">GitHubのMemory Lensを開く</a> · <a href="https://memory-lens-shunta.p5n6kkyjrs.chatgpt.site" target="_blank" rel="noopener noreferrer">専用サイトを開く</a></p>
     </div><div class="dialog-footer"><button class="quiet" data-close-ai>閉じる</button></div>
@@ -215,7 +218,7 @@
   <!-- TRANSFER DIALOG END -->
 
   <dialog id="exportDialog" aria-labelledby="exportTitle"><div class="dialog-head"><h2 id="exportTitle">写真と記録を保存</h2><button class="close" data-close-dialog="exportDialog" aria-label="保存画面を閉じる">×</button></div><div class="dialog-body"><label for="exportScope">保存する範囲</label><select id="exportScope"><option value="all">すべての記録</option><option value="visible">今の検索結果だけ</option></select><p id="exportSummary"></p><div id="exportParts" hidden><label for="exportPartSelect">分割した保存ファイル</label><select id="exportPartSelect"></select><button id="exportPartChoose" type="button">この分を準備</button><p class="detail-note">表示したZIPを保存してから、次の分を準備してください。すべての分を保存すると、全写真を戻せます。</p></div><p id="exportNote">写真・文字・日時・場所・タグ・検索の枠をZIPに保存します。大きな一覧は分けて保存します。別の端末でも「保存ファイルを開く」から戻せます。写真を圧縮し直さず、元の画像を残します。</p><p id="exportProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="exportError" role="alert"></p><div class="export-actions"><a class="primary save-link" id="exportDownload" hidden>ZIPを保存</a><button id="exportPicker" hidden>保存先を選んで保存</button><button id="exportShare" hidden>共有して保存</button><button id="exportRetry" hidden>もう一度作る</button><button id="exportRepair" hidden>読めない写真を選び直す</button></div><p class="detail-note">大切な記録はファイルにも保存してください。自動保存の設定は、画面上部の「その他」にあります。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="exportDialog">閉じる</button></div></dialog>
-  <dialog id="codeDialog" aria-labelledby="codeTitle"><div class="dialog-head"><h2 id="codeTitle">サイトのコードを保存</h2><button class="close" data-close-dialog="codeDialog" aria-label="コードの保存画面を閉じる">×</button></div><div class="dialog-body"><p>版：2026-10-14-r27 · 取り込み時からPCのAIで文字を読む</p><p>iPhoneでは「ZIPを共有して保存」から「ファイルに保存」を選んでください。ZIPを開くと、中にmemory-lens.htmlがあります。</p><p id="codeProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="codeError" role="alert"></p><div class="code-methods"><a class="primary" id="codeZip" hidden>ZIPを保存</a><button id="codeShare" hidden>ZIPを共有して保存</button><button id="codePicker" hidden>HTMLの保存先を選ぶ</button><a id="codeHtml" hidden>HTMLを保存</a></div><a id="codeServerZip" href="./downloads/memory-lens-2026-10-14-r27.zip" download="memory-lens-2026-10-14-r27.zip" hidden>ZIPを直接ダウンロード</a><p class="detail-note">保存するのはサイトのコードです。読み込んだ写真・文字・撮影場所は含みません。写真の記録は「保存」で保存できます。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="codeDialog">閉じる</button></div></dialog>
+  <dialog id="codeDialog" aria-labelledby="codeTitle"><div class="dialog-head"><h2 id="codeTitle">サイトのコードを保存</h2><button class="close" data-close-dialog="codeDialog" aria-label="コードの保存画面を閉じる">×</button></div><div class="dialog-body"><p>版：2026-10-14-r28 · AIの速さ優先と読み取り時間の表示</p><p>iPhoneでは「ZIPを共有して保存」から「ファイルに保存」を選んでください。ZIPを開くと、中にmemory-lens.htmlがあります。</p><p id="codeProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="codeError" role="alert"></p><div class="code-methods"><a class="primary" id="codeZip" hidden>ZIPを保存</a><button id="codeShare" hidden>ZIPを共有して保存</button><button id="codePicker" hidden>HTMLの保存先を選ぶ</button><a id="codeHtml" hidden>HTMLを保存</a></div><a id="codeServerZip" href="./downloads/memory-lens-2026-10-14-r28.zip" download="memory-lens-2026-10-14-r28.zip" hidden>ZIPを直接ダウンロード</a><p class="detail-note">保存するのはサイトのコードです。読み込んだ写真・文字・撮影場所は含みません。写真の記録は「保存」で保存できます。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="codeDialog">閉じる</button></div></dialog>
   <script>
     'use strict';
     // CORE START — UIから独立した、テキスト解析と検索の処理。
@@ -2009,7 +2012,7 @@ zen_garden=禅の庭園
     async function readLocalPhoto(task,canvas,options){
       if(options.quality==='local-ai'){
         options.check();let rotated=null;
-        try{const angle=options.direction==='auto'?0:Number(options.direction);if(angle)rotated=MemoryLensReading.rotated(canvas,angle,1024);const result=await MemoryLensAISettings.read(rotated||canvas,{signal:task.controller.signal,progress:options.progress,language:options.language});options.check();return result;}
+        try{const angle=options.direction==='auto'?0:Number(options.direction);if(angle)rotated=MemoryLensReading.rotated(canvas,angle,1024);const result=await MemoryLensAISettings.read(rotated||canvas,{signal:task.controller.signal,progress:options.progress,language:options.language,profile:task.aiProfile||task.settings?.aiProfile||'standard'});options.check();return result;}
         finally{if(rotated){rotated.width=0;rotated.height=0;}}
       }
       options.check();const neuralAllowed=options.language==='eng'&&options.quality!=='standard'&&!task.neuralUnavailable;
@@ -2069,7 +2072,7 @@ zen_garden=禅の庭園
       const language=$('directLanguage').value||'eng',direction=$('directDirection').value||'auto',quality=$('directQuality').value||'balanced',layout=$('directLayout').value||'auto',mode=target?'auto':$('directMode').value,force=!!target&&$('directForce').checked;let region;
       try{if(!['eng','jpn','jpn+eng'].includes(language)||!['best','balanced','standard','handwriting','local-ai'].includes(quality)||!['auto','0','90','180','270'].includes(direction)||!['auto','page','sparse'].includes(layout)||!['auto','photos'].includes(mode))throw new Error('読み取りの設定を選び直してください。');if(quality==='handwriting'&&(!target||language!=='eng'))throw new Error('手書き予測は写真を開いた英語の再読で使えます。');if(quality==='local-ai'&&!target)throw new Error('AI読み取りは、追加した写真を開いてから使ってください。');region=readingRegionGet(target);}catch(error){$('directError').textContent=error.message;return;}
       clearDirectReview();
-      const task={controller:new AbortController(),worker:null,currentPhoto:null,caption:'',phase:'',target,quality,layout,region,originalPhoto:target?.photo,originalFingerprint:target?.fingerprint,entries:files.map(file=>({name:file.name||target?.photo?.name||'写真',status:'waiting',message:'待機中'})),added:0,duplicates:0,failed:0,missingDates:0,missingLocations:0,index:-1,ocrUnavailable:false};directState.task=task;
+      const task={controller:new AbortController(),worker:null,currentPhoto:null,caption:'',phase:'',target,quality,aiProfile:MemoryLensAISettings.profile(),layout,region,originalPhoto:target?.photo,originalFingerprint:target?.fingerprint,entries:files.map(file=>({name:file.name||target?.photo?.name||'写真',status:'waiting',message:'待機中'})),added:0,duplicates:0,failed:0,missingDates:0,missingLocations:0,index:-1,ocrUnavailable:false};directState.task=task;
       const errors=[];if(!target){directState.remaining=[];directState.queue=task.entries;}
       setIOBusy(true);render();$('directStop').hidden=false;$('directStop').textContent=target?'読み取りを中止':'ここで止める';showDirectQueue();directProgress(task,'写真を確認しています…');
       try{
@@ -2111,7 +2114,7 @@ zen_garden=禅の庭園
               directState.review={id:target.id,photo:task.originalPhoto,fingerprint:task.originalFingerprint,text:result.text,ocr:target.photo.original?MemoryLensCompact.positions(result.ocr,target.photo):result.ocr,status:result.status,before:target.body,ai:!!result.ai,prediction:result.prediction?{...result.prediction,ocr:target.photo.original?MemoryLensCompact.positions(result.prediction.ocr,target.photo):result.prediction.ocr}:null};
               $('directPrediction').hidden=!result.prediction;$('directPredictionText').textContent=result.prediction?.text||'';
               $('directBefore').textContent=target.body||'文字なし';$('directAfter').textContent=result.text||'確かな文字は検出できませんでした。範囲・言語・向きを変えて再読することもできます。';$('directReview').hidden=false;$('directApply').hidden=!result.text.trim()&&!target.body;$('directApply').textContent=result.text.trim()?'この文字で更新':'文字なしにする';
-              directReviewControls();directProgress(task,result.ai?'PCのAIで読み取りが終わりました。写真と比べて採用してください。この結果では文字の位置の枠は付けません。':'読み取りが終わりました。写真と比べて、採用する場合だけ更新してください。');task.currentPhoto=null;return;
+              directReviewControls();directProgress(task,result.ai?'PCのAIで読み取りが終わりました'+(result.timing?'（'+MemoryLensAISettings.timingLabel(result.timing)+'）':'')+'。写真と比べて採用してください。この結果では文字の位置の枠は付けません。':'読み取りが終わりました。写真と比べて、採用する場合だけ更新してください。');task.currentPhoto=null;return;
             }
             const updated=directRecord(file,{dateRaw:record.dateRaw,location:record.location},result.text,state.records.filter(item=>item!==record));
             if(!deviceState.enabled&&directEstimate(state.records.map(item=>item===record?{...record,...updated,ocr:result.ocr}:item))>PACKAGE_LIMIT){record.readingStatus='failed';errors.push(`${record.name}：読み取った文字を含めると64MBを超えるため、写真だけを保ちました。`);}
@@ -2349,7 +2352,7 @@ zen_garden=禅の庭園
         await bulkRefresh();if(bulkRemaining())throw new Error('未完了の取り込みがあります。「写真を追加」で残りを完了するか、待機中の取り込みを取り消してから接続してください。');
         if(!deviceState.enabled)await deviceSetEnabled(true);if(!deviceState.enabled||deviceState.blocked||!await deviceFlush())throw new Error(deviceState.error||'PCの保存を準備できませんでした。');if(!phoneValid(s))return;
         const quality=$('directQuality').value|| (MemoryLensAISettings.enabled()?'local-ai':'balanced');
-        phoneLibrary();s.task={controller:new AbortController(),worker:null,owner:deviceRevision(),remote:true,settings:{mode:$('directMode').value||'auto',language:$('directLanguage').value||'eng',quality,layout:$('directLayout').value||'auto',direction:$('directDirection').value||'auto',storage:'compact'},quality,layout:$('directLayout').value||'auto',region:{x:0,y:0,width:1,height:1},caption:'',exifPromise:loadDirectExif().catch(()=>null),progress:message=>{phoneStatus(s,message);if(s.authenticated&&s.receiving?.phase==='processing')try{phoneSend(s,{kind:'progress',message:message.slice(0,1000)});}catch{}}};
+        phoneLibrary();s.task={controller:new AbortController(),worker:null,owner:deviceRevision(),remote:true,settings:{mode:$('directMode').value||'auto',language:$('directLanguage').value||'eng',quality,layout:$('directLayout').value||'auto',direction:$('directDirection').value||'auto',storage:'compact',aiProfile:MemoryLensAISettings.profile()},quality,layout:$('directLayout').value||'auto',region:{x:0,y:0,width:1,height:1},caption:'',exifPromise:loadDirectExif().catch(()=>null),progress:message=>{phoneStatus(s,message);if(s.authenticated&&s.receiving?.phase==='processing')try{phoneSend(s,{kind:'progress',message:message.slice(0,1000)});}catch{}}};
         await bulkLease(s.task.owner);if(!phoneValid(s)){await bulkLease(s.task.owner,true);return;}s.heartbeat=setInterval(()=>bulkLease(s.task.owner).catch(error=>{phoneProblem(s,error.message);phoneEnd(s);}),20000);
         directState.task=s.task;s.ownsBusy=true;setIOBusy(true);
         if(s.task.quality==='local-ai'&&s.task.settings.mode==='auto')await bulkWrite(s.task,{job:{version:1,id:deviceRevision(),settings:s.task.settings,revision:null},reset:true});
@@ -2462,6 +2465,7 @@ zen_garden=禅の庭園
       if(!job)return null;
       if(job.version!==1||typeof job.id!=='string'||typeof job.revision!=='string'||!['eng','jpn','jpn+eng'].includes(job.settings?.language)||!['auto','photos'].includes(job.settings?.mode)||!['balanced','best','local-ai'].includes(job.settings?.quality)||!['auto','page','sparse'].includes(job.settings?.layout)||!['auto','0','90','180','270'].includes(job.settings?.direction)||job.settings.storage!==undefined&&!['compact','original'].includes(job.settings.storage)||!Array.isArray(entries)||entries.length>LIBRARY_RECORD_LIMIT)throw deviceError('途中保存した取り込みを確認できません。端末の保存は変更していません。');
       const keys=new Set();for(const entry of entries){if(!entry||typeof entry.key!=='string'||keys.has(entry.key)||typeof entry.name!=='string'||entry.name.length>1000||typeof entry.selection!=='string'||!['unstaged','waiting','reading','done','duplicate','failed'].includes(entry.status)||!Number.isInteger(entry.index)||entry.index<0||entry.index>LIBRARY_RECORD_LIMIT||!Number.isInteger(entry.size)||entry.size<1||entry.size>30000000||entry.recordKey!==null&&typeof entry.recordKey!=='string'||entry.hash!==null&&!/^[a-f0-9]{64}$/.test(entry.hash))throw deviceError('途中保存した写真の項目が正しくありません。');keys.add(entry.key);}
+      if(job.settings.aiProfile!==undefined&&!['standard','fast'].includes(job.settings.aiProfile))throw deviceError('AIの読み取り速度を確認できません。');
       if(entries.some(entry=>entry.aiPrepared!==undefined&&typeof entry.aiPrepared!=='boolean'))throw deviceError('AIの途中保存を確認できません。');return job;
     }
     function bulkRead(){return libraryTransaction(['jobs','queue'],'readonly',(stores,result)=>{const job=stores.jobs.get('current'),queue=stores.queue.getAll();let count=0;const finish=()=>{if(++count===2){const entries=queue.result.sort((a,b)=>a.index-b.index);result({job:bulkJobValid(job.result||null,entries),entries});}};job.onsuccess=finish;queue.onsuccess=finish;});}
@@ -2553,7 +2557,7 @@ zen_garden=禅の庭園
           bulkCheck(task);if(!state.records.includes(record)||record.fingerprint!==entry.fingerprint||record.photo?.digest!==entry.hash)throw new Error('元の記録が変わりました。今の文字は保っています。');
           const before={...record},fields=directRecord({name:record.name+'.jpg'},{dateRaw:record.dateRaw,location:record.location||''},result.text,state.records.filter(value=>value!==record));
           Object.assign(record,fields,{ocr:null,readingStatus:result.status,textGuess:result.ai?checkedTextGuess({version:1,engine:result.engine,rawText:record.body,predictedAt:new Date().toISOString()}):null});
-          try{await bulkCommit(task,{...entry,status:'done',fingerprint:record.fingerprint,message:readingLabel(record)},true);}catch(error){Object.assign(record,before);throw error;}
+          try{await bulkCommit(task,{...entry,status:'done',fingerprint:record.fingerprint,message:readingLabel(record)+(result.timing?' · '+MemoryLensAISettings.timingLabel(result.timing):'')},true);}catch(error){Object.assign(record,before);throw error;}
           render();if(state.detailId===record.id&&$('detailDialog').open)showDetail(record);
         }catch(error){
           if(error.name!=='AbortError'){const previous=record.readingStatus;record.readingStatus='failed';try{await bulkCommit(task,{...entry,status:'waiting',message:'写真は保存済み・AIを再開できます'});}catch(storageError){record.readingStatus=previous;throw storageError;}throw new Error(error.message+' 写真は保存済みです。AIの起動画面を確認して「残りを続ける」で再開できます。');}
@@ -2616,9 +2620,9 @@ zen_garden=禅の庭園
       try{
         if(!deviceState.enabled||!state.records.length&&deviceState.hasSaved){await deviceSetEnabled(true);if(!deviceState.enabled||deviceState.blocked)throw deviceError(deviceState.error||'端末への保存をオンにできません。');}
         if(!await deviceFlush())throw deviceError(deviceState.error);await bulkRefresh();
-        const remaining=bulkRemaining(),settings=remaining?bulkState.job.settings:{language:$('directLanguage').value||'eng',mode:$('directMode').value||'auto',quality:$('directQuality').value||'balanced',layout:$('directLayout').value||'auto',direction:$('directDirection').value||'auto',storage:$('directStorage').value||'compact'};
+        const remaining=bulkRemaining(),settings=remaining?bulkState.job.settings:{language:$('directLanguage').value||'eng',mode:$('directMode').value||'auto',quality:$('directQuality').value||'balanced',layout:$('directLayout').value||'auto',direction:$('directDirection').value||'auto',storage:$('directStorage').value||'compact',aiProfile:MemoryLensAISettings.profile()};
         if(!['balanced','best','local-ai'].includes(settings.quality))throw new Error('取り込みの読み取り方を選び直してください。');
-        task={controller:new AbortController(),owner:bulkState.owner,worker:null,target:null,quality:settings.quality,layout:settings.layout,region:{x:0,y:0,width:1,height:1},settings,caption:'',phase:'',exifPromise:loadDirectExif().catch(()=>null)};bulkState.task=task;directState.task=task;setIOBusy(true);$('directStop').hidden=false;$('directStop').textContent='ここで止める';
+        task={controller:new AbortController(),owner:bulkState.owner,worker:null,target:null,quality:settings.quality,aiProfile:settings.aiProfile||'standard',layout:settings.layout,region:{x:0,y:0,width:1,height:1},settings,caption:'',phase:'',exifPromise:loadDirectExif().catch(()=>null)};bulkState.task=task;directState.task=task;setIOBusy(true);$('directStop').hidden=false;$('directStop').textContent='ここで止める';
         await bulkLease(task.owner);heartbeat=setInterval(()=>{bulkLease(task.owner).catch(error=>{if(bulkState.task===task){task.controller.abort();$('directError').textContent=error.message;}});},20000);
         if(files?.length){
           const valid=files.filter(file=>file.size>0&&file.size<=30000000&&String(file.name||'').length<=1000&&(/^image\//.test(file.type||'')||!file.type&&/\.(jpe?g|png|webp|avif|gif|bmp|heic|heif|tiff?)$/i.test(file.name||'')));
@@ -3467,9 +3471,27 @@ zen_garden=禅の庭園
     $('importPaste').addEventListener('click',()=>{if(state.ioBusy)return;try{const before=locationCount();const added=addRecord($('paste').value,'貼り付け');render();$('pasteDialog').close();$('paste').value='';setStatus(added?'1件の写真の記録を読み込みました。':locationCount()>before?'読み込み済みの記録に撮影場所を追加しました。':'同じ記録はすでに読み込まれています。');}catch(error){$('pasteError').textContent=error.message;}});
     // AI SETTINGS START — オンにしたPCでは取り込み時からOllamaを使う。写真はループバック以外へ送らない。
     const MemoryLensAISettings=(()=>{
-      const endpoint='http://127.0.0.1:11435',model='qwen3-vl:4b-instruct',key='memory-lens-local-ai-v1';
+      const endpoint='http://127.0.0.1:11435',model='qwen3-vl:4b-instruct',key='memory-lens-local-ai-v1',profileKey='memory-lens-ai-speed-v1',timingKey='memory-lens-ai-timing-v1';
       let controller=null,epoch=0,ready=false,reading=false;
       function enabled(){try{return localStorage.getItem(key)==='enabled';}catch{return false;}}
+      function profile(){try{return localStorage.getItem(profileKey)==='fast'?'fast':'standard';}catch{return 'standard';}}
+      function profileName(value){return value==='fast'?'速さ優先':'標準';}
+      function timingLabel(value){return value?profileName(value.profile)+' · '+(value.elapsedMs/1000).toFixed(1)+'秒':'';}
+      function timingHistory(){
+        try{const data=JSON.parse(localStorage.getItem(timingKey)||'[]');if(!Array.isArray(data))return [];return data.filter(v=>v&&['standard','fast'].includes(v.profile)&&Number.isFinite(v.elapsedMs)&&v.elapsedMs>=0&&v.elapsedMs<=3600000&&Number.isInteger(v.width)&&v.width>0&&v.width<=1024&&Number.isInteger(v.height)&&v.height>0&&v.height<=1024&&typeof v.at==='string'&&Number.isFinite(Date.parse(v.at))).slice(0,4).map(v=>({profile:v.profile,elapsedMs:v.elapsedMs,width:v.width,height:v.height,at:v.at,...Object.fromEntries(['loadMs','inputMs','outputMs'].filter(k=>Number.isFinite(v[k])&&v[k]>=0&&v[k]<=3600000).map(k=>[k,v[k]]))}));}catch{return [];}
+      }
+      let timings=timingHistory();
+      function showTimings(){
+        const node=$('aiTimingSummary');if(!node)return;
+        node.textContent=timings.length?timings.map(v=>{const parts=[['loadMs','準備'],['inputMs','入力'],['outputMs','出力']].filter(([key])=>Number.isFinite(v[key])).map(([key,label])=>label+' '+(v[key]/1000).toFixed(1)+'秒');return timingLabel(v)+' · '+v.width+'×'+v.height+(parts.length?'\n'+parts.join(' ／ '):'');}).join('\n\n'):'読み取りが終わると、かかった時間がここに表示されます。';
+      }
+      function resizedInput(canvas,mode){
+        if(!Number.isInteger(canvas?.width)||!Number.isInteger(canvas?.height)||canvas.width<1||canvas.height<1)throw new Error('読み取り用の画像を確認できませんでした。');
+        const limit=mode==='fast'?768:1024,scale=Math.min(1,limit/Math.max(canvas.width,canvas.height));if(scale===1)return canvas;
+        const small=document.createElement('canvas');small.width=Math.max(1,Math.round(canvas.width*scale));small.height=Math.max(1,Math.round(canvas.height*scale));
+        try{const context=small.getContext('2d');if(!context)throw new Error('AI用の画像を準備できませんでした。');context.fillStyle='#fff';context.fillRect(0,0,small.width,small.height);context.imageSmoothingEnabled=true;context.imageSmoothingQuality='high';context.drawImage(canvas,0,0,small.width,small.height);return small;}
+        catch(error){small.width=0;small.height=0;throw error;}
+      }
       function allowedPage(){return location.protocol==='https:'&&['memory-lens-shunta.p5n6kkyjrs.chatgpt.site','snaka153.github.io'].includes(location.hostname);}
       function show(title,note){$('aiConnectionTitle').textContent=title;$('aiConnectionNote').textContent=note;}
       function cancel(){epoch++;controller?.abort();controller=null;$('aiCheckConnection').disabled=false;}
@@ -3495,21 +3517,22 @@ zen_garden=禅の庭園
           show('このPCのAIに接続できませんでした',error.message==='missing-model'?'qwen3-vl:4b-instructが見つかりません。確認ツールv2で準備してから再試行してください。':'起動ファイルを開いたままにして、「接続を確認する」で再試行してください。Chromeのサイト設定でローカルネットワークの許可も確認できます。');
         }finally{clearTimeout(timer);if(current===epoch){controller=null;$('aiCheckConnection').disabled=false;}}
       }
-      async function read(canvas,{signal,progress=()=>{},language='eng'}={}){
+      async function read(canvas,{signal,progress=()=>{},language='eng',profile:requestedProfile=profile()}={}){
         if(!allowedPage())throw new Error('AI読み取りは、GitHubまたは専用サイトをPCで開いて使ってください。');
         if(reading)throw new Error('別のAI読み取りが終わってから試してください。');
         if(signal?.aborted){const e=new Error('読み取りを中止しました。');e.name='AbortError';throw e;}
-        reading=true;const own=new AbortController(),started=Date.now();let timedOut=false,reader=null;
+        const mode=requestedProfile==='fast'?'fast':'standard',clock=()=>typeof performance!=='undefined'?performance.now():Date.now();
+        reading=true;const own=new AbortController(),started=clock();let timedOut=false,reader=null,prepared=null;
         const abort=()=>own.abort();signal?.addEventListener('abort',abort,{once:true});
         const timer=setTimeout(()=>{timedOut=true;own.abort();},180000);
-        const heartbeat=setInterval(()=>progress(`PCのAIで読み取っています… ${Math.floor((Date.now()-started)/1000)}秒 · 中止できます`),1000);
+        const heartbeat=setInterval(()=>progress(`PCのAIで読み取っています… ${profileName(mode)} · ${Math.floor(Math.max(0,clock()-started)/1000)}秒 · 中止できます`),1000);
         let text='',thinking=0,last=null,bytes=0,pending='';
         try{
-          const image=canvas.toDataURL('image/png').split(',')[1];
+          prepared=resizedInput(canvas,mode);const image=prepared.toDataURL('image/png').split(',')[1];
           if(!image||image.length>6000000)throw new Error('AIに渡す画像を準備できませんでした。読む範囲を小さくして試してください。');
           const lang=language==='jpn'?'Japanese':language==='jpn+eng'?'Japanese and English':'English';
           const prompt=`Transcribe all visible ${lang} text in this photo, line by line. Keep numbers, units, names, spelling and chemical formulas as written. Use [?] for unclear characters. Do not explain, summarize or invent missing words. If there is no visible text, return exactly [NO_TEXT]. Return only the transcription.`;
-          progress('PCのAIで写真を読み取っています… 約1分かかる場合があります。');
+          progress('PCのAIで写真を読み取っています… '+profileName(mode)+'。一時停止できます。');
           const response=await fetch(endpoint+'/api/chat',{method:'POST',mode:'cors',credentials:'omit',redirect:'error',cache:'no-store',signal:own.signal,headers:{'Content-Type':'application/json'},body:JSON.stringify({model,stream:true,think:false,keep_alive:'5m',messages:[{role:'user',content:prompt,images:[image]}],options:{temperature:0,num_ctx:2048,num_predict:768}})});
           if(!response.ok||!response.body)throw new Error('AIに接続できませんでした。起動ファイルとブラウザーの接続許可を確認してください。');
           const consume=line=>{
@@ -3527,29 +3550,33 @@ zen_garden=禅の庭園
           if(own.signal.aborted){const error=new Error('cancelled');error.name='AbortError';throw error;}
           if(!last?.done||last.done_reason!=='stop')throw new Error('AIの回答が途中で止まりました。文字を更新せず、読む範囲を絞って再試行してください。');
           text=text.trim();if(!text)throw new Error('AIから文字が返りませんでした。今の文字を保って再試行できます。');
-          return {text:text==='[NO_TEXT]'?'':text,ocr:null,status:text==='[NO_TEXT]'?'no-text':'text',engine:model,ai:true};
+          const timing={profile:mode,elapsedMs:Math.round(Math.max(0,clock()-started)),width:prepared.width,height:prepared.height,at:new Date().toISOString()};
+          for(const [name,field] of [['loadMs','load_duration'],['inputMs','prompt_eval_duration'],['outputMs','eval_duration']])if(Number.isFinite(last[field])&&last[field]>=0&&last[field]<=3600000000000)timing[name]=Math.round(last[field]/1000000);
+          timings=[timing,...timings].slice(0,4);try{localStorage.setItem(timingKey,JSON.stringify(timings));}catch{}showTimings();
+          return {text:text==='[NO_TEXT]'?'':text,ocr:null,status:text==='[NO_TEXT]'?'no-text':'text',engine:model,ai:true,timing};
         }catch(error){
           if(timedOut)throw new Error('AIの読み取りが3分を超えたため止めました。今の文字は保っています。読む範囲を絞って再試行してください。');
           if(signal?.aborted){const cancelled=new Error('読み取りを中止しました。');cancelled.name='AbortError';throw cancelled;}
           if(error instanceof TypeError)throw new Error('このPCのAIに接続できませんでした。起動ファイルとローカルネットワークの許可を確認してください。');
           throw error;
-        }finally{own.abort();clearTimeout(timer);clearInterval(heartbeat);signal?.removeEventListener('abort',abort);try{await reader?.cancel();}catch{}reading=false;}
+        }finally{own.abort();clearTimeout(timer);clearInterval(heartbeat);signal?.removeEventListener('abort',abort);try{await reader?.cancel();}catch{}if(prepared&&prepared!==canvas){prepared.width=0;prepared.height=0;}reading=false;}
       }
       function initialize(){
         const button=$('aiSettings'),dialog=$('aiDialog');if(!button||!dialog||button.dataset.initialized==='true')return;
-        button.dataset.initialized='true';$('aiUseLocal').checked=enabled();$('aiUseLocal').disabled=!enabled();
+        button.dataset.initialized='true';$('aiUseLocal').checked=enabled();$('aiUseLocal').disabled=!enabled();$('aiSpeed').value=profile();showTimings();
         button.addEventListener('click',()=>{$('appMenu').open=false;if(!dialog.open)dialog.showModal();});
         $('aiCheckConnection').addEventListener('click',check);
         $('aiUseLocal').addEventListener('change',()=>{try{const next=$('aiUseLocal').checked&&ready;$('aiUseLocal').checked=next;localStorage.setItem(key,next?'enabled':'disabled');$('aiUseLocal').disabled=!next&&!ready;}catch{$('aiUseLocal').checked=false;show('設定を保存できませんでした','ブラウザーの保存設定を確認してください。');}});
+        $('aiSpeed').addEventListener('change',()=>{const next=$('aiSpeed').value==='fast'?'fast':'standard';try{localStorage.setItem(profileKey,next);$('aiSpeedNote').textContent='次に開始する取り込み・再読から「'+profileName(next)+'」を使います。途中の取り込みは開始時の設定で続けます。';}catch{$('aiSpeed').value=profile();$('aiSpeedNote').textContent='設定を保存できませんでした。ブラウザーの保存設定を確認してください。';}});
         dialog.addEventListener('close',cancel);for(const close of document.querySelectorAll('[data-close-ai]'))close.addEventListener('click',()=>dialog.close());
       }
-      return {initialize,enabled,read,endpoint,model};
+      return {initialize,enabled,read,profile,timingLabel,endpoint,model};
     })();
     function initializeAISettings(){MemoryLensAISettings.initialize();}
     // AI SETTINGS END
 
     // CODE DOWNLOAD START — 起動時のコードだけを保存し、写真や検索結果を含めない。
-    const CODE_RELEASE='2026-10-14-r27';
+    const CODE_RELEASE='2026-10-14-r28';
     const codeState={template:null,epoch:0,htmlFile:null,zipFile:null,urls:[]};
     const CODE_MODEL_MARKER='__MEMORY_LENS_ORIGINAL_MODEL__';
     const CODE_OBJECT_MARKER='__MEMORY_LENS_ORIGINAL_OBJECT_MODEL__';
