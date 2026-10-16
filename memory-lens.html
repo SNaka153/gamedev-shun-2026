@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#12263b">
   <meta name="description" content="写真の文字・撮影日時・撮影場所・自動タグ・自分のタグを検索する。写真と記録をひとつのファイルに保存して、別の端末でも開けます。">
-  <meta name="memory-lens-version" content="2026-10-14-r29">
+  <meta name="memory-lens-version" content="2026-10-16-r30">
   <title>Memory Lens — 写真の記憶を検索</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2312263b'/%3E%3Crect x='7' y='7' width='18' height='18' rx='4' fill='none' stroke='%238be5ff' stroke-width='2'/%3E%3Ccircle cx='15' cy='15' r='4' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='m18 18 5 5' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
   <style>
@@ -86,7 +86,7 @@
         <div class="result-grid" id="results"></div><nav id="resultPages" class="result-pages" aria-label="検索結果のページ"></nav>
       </section>
     </div>
-    <footer class="foot"><p>写真の解析と検索はこの端末内で行います。ファイルの「保存」はバックアップや別の端末への移動に使えます。</p><span class="release-stamp">2026-10-14-r29</span></footer>
+    <footer class="foot"><p>写真の解析と検索はこの端末内で行います。ファイルの「保存」はバックアップや別の端末への移動に使えます。</p><span class="release-stamp">2026-10-16-r30</span></footer>
   </main>
   <dialog id="deleteDialog" aria-labelledby="deleteTitle"><div class="dialog-head"><h2 id="deleteTitle">選択した記録を削除</h2></div><div class="dialog-body"><p id="deleteSummary"></p><p class="detail-note">写真・文字・日時・タグをこの一覧から削除します。携帯の元写真と保存済みのZIPは残ります。直前の削除は、この画面を閉じる前なら「元に戻す」で取り消せます。</p><p id="deleteError" role="alert"></p></div><div class="dialog-footer"><button id="deleteCancel">キャンセル</button><button class="danger" id="deleteConfirm">削除する</button></div></dialog>
   <dialog id="deviceDialog" aria-labelledby="deviceTitle"><div class="dialog-head"><h2 id="deviceTitle">この端末の保存設定</h2><button class="close" data-close-dialog="deviceDialog" aria-label="保存設定を閉じる">×</button></div><div class="dialog-body"><label class="device-switch"><input id="deviceAuto" type="checkbox" disabled>このブラウザーに自動保存</label><div class="export-actions"><button id="deviceRestore" hidden>保存した記録を戻す</button><button id="deviceRetry" hidden>保存をもう一度試す</button></div><p>自動保存は、自分でオンにするまで行いません。オンにすると、写真・文字・撮影日時・撮影場所・屋内外の予想をこのブラウザーに保存します。次に同じサイトを開くと復元します。</p><p class="detail-note">オフにしても前の保存は残ります。「データを閉じる」でも消えません。再びオンにすると、今の一覧を保存します。空の一覧なら前の保存を戻します。</p><p class="detail-note">SafariとChrome、GitHubのページと別のサイト、ほかの端末では保存が別々です。ブラウザーのデータを消すと記録も消えるため、大切な記録は「保存」でファイルにも残してください。</p><p class="detail-note">「保存中…」が「保存済み」に変わってから画面を閉じてください。</p><p id="deviceDialogStatus" role="status" aria-live="polite" class="detail-note"></p><div class="export-actions"><button id="deviceForget" disabled>端末の保存を削除</button></div><div id="deviceConfirm" hidden><p id="deviceConfirmText"></p><div class="export-actions"><button class="primary" id="deviceConfirmApply">実行する</button><button id="deviceConfirmCancel">キャンセル</button></div></div></div><div class="dialog-footer"><button class="quiet" data-close-dialog="deviceDialog">閉じる</button></div></dialog>
@@ -94,11 +94,11 @@
   <dialog id="phoneDialog" aria-labelledby="phoneTitle">
     <div class="dialog-head"><h2 id="phoneTitle">携帯から受け取る</h2><button class="close" data-close-phone aria-label="携帯との接続を閉じる">×</button></div>
     <div class="dialog-body">
-      <div id="phoneReceiver"><p>PCと携帯を、できれば同じWi-Fiにつないでください。両方の画面を開いたまま使います。</p><ol class="phone-import-steps"><li>「接続用QRを作る」を押す。</li><li>携帯のカメラでQRを読み、表示されたサイトをブラウザーで開く。</li><li>携帯に下の6桁を入力し、写真を選ぶ。</li></ol><p class="detail-note">今選んでいる言語と読み取り方法を使います。PCのAIを使う場合は写真を先に保存し、文字を順番に追加します。AI用の一時画像は読み取り後に消し、800pxまでの画像と検索情報を残します。通常の認識も選べます。携帯の写真は消しません。</p><label class="phone-relay-choice" for="phoneRelay"><input id="phoneRelay" type="checkbox"><span>中継も使って接続する（つながらないとき）</span></label><p class="detail-note">選ぶとPeerJSの中継サービスも試します。接続情報と暗号化した通信が中継サービスに渡ります。QRを作る前に選んでください。</p><button id="phoneHostStart" class="primary">接続用QRを作る</button><div id="phoneInvite" hidden><div id="phoneQR" aria-label="携帯で読む接続用QR"></div><p class="phone-code">携帯に入力する番号：<strong id="phoneCode"></strong></p><label for="phoneLink">QRが読めないときは、このURLを携帯で開く</label><input id="phoneLink" type="text" readonly><button id="phoneCopyLink" type="button">URLをコピー</button><p class="detail-note">QRは接続待ちの間、10分間有効です。閉じると接続も終わります。</p></div></div>
-      <div id="phoneSender" hidden><p>QRを出したPCに写真を送ります。PCに表示されている6桁を入力してください。</p><label for="phonePin">PCの6桁</label><input id="phonePin" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="off"><button id="phoneJoin" class="primary">PCにつなぐ</button><div id="phoneSendControls" hidden><p>送る写真をまとめて選べます。1枚ずつ送り、PCで写真の保存が終わってから次へ進みます。PCのAIを使う場合、文字は受信後に順番に読み取ります。</p><button id="phoneSelect" class="primary">写真を選んで送る</button><button id="phoneSendStop" hidden>今の1枚で止める</button><input id="phoneFiles" class="sr-only" type="file" accept="image/*" multiple aria-label="PCへ送る写真を選ぶ"><p class="detail-note">画面を閉じたりロックしたりすると止まることがあります。送信済みの写真はPCに残ります。再接続して同じ写真を選び直しても、同じ元画像は重複して追加しません。</p></div></div>
+      <div id="phoneReceiver"><p>PCと携帯を、できれば同じWi-Fiにつないでください。両方の画面を開いたまま使います。</p><ol class="phone-import-steps"><li>「接続用QRを作る」を押す。</li><li>携帯のカメラでQRを読み、表示されたサイトをブラウザーで開く。</li><li>携帯に下の6桁を入力し、写真を選ぶ。</li></ol><p class="detail-note">今選んでいる言語と読み取り方法を使います。PCのAIを使う場合は写真を先に保存し、文字を順番に追加します。AI用の一時画像は読み取り後に消し、800pxまでの画像と検索情報を残します。通常の認識も選べます。携帯の写真は消しません。</p><label class="phone-relay-choice" for="phoneRelay"><input id="phoneRelay" type="checkbox"><span>中継も使って接続する（つながらないとき）</span></label><p class="detail-note">選ぶとPeerJSの中継サービスも試します。初回に失敗した場合は、中継だけで1回再試行します。接続情報と暗号化した通信が中継サービスに渡ります。QRを作る前に選んでください。</p><button id="phoneHostStart" class="primary">接続用QRを作る</button><div id="phoneInvite" hidden><div id="phoneQR" aria-label="携帯で読む接続用QR"></div><p class="phone-code">携帯に入力する番号：<strong id="phoneCode"></strong></p><label for="phoneLink">QRが読めないときは、このURLを携帯で開く</label><input id="phoneLink" type="text" readonly><button id="phoneCopyLink" type="button">URLをコピー</button><p class="detail-note">QRは接続待ちの間、10分間有効です。閉じると接続も終わります。</p></div></div>
+      <div id="phoneSender" hidden><p>QRを出したPCに写真を送ります。PCに表示されている6桁を入力してください。</p><label for="phonePin">PCの6桁</label><input id="phonePin" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="off"><button id="phoneJoin" class="primary">PCにつなぐ</button><p class="detail-note">通信経路の接続に失敗した場合は、1回だけ自動でやり直します。PCの受信画面は開いたままにしてください。</p><div id="phoneSendControls" hidden><p>送る写真をまとめて選べます。1枚ずつ送り、PCで写真の保存が終わってから次へ進みます。PCのAIを使う場合、文字は受信後に順番に読み取ります。</p><button id="phoneSelect" class="primary">写真を選んで送る</button><button id="phoneSendStop" hidden>今の1枚で止める</button><input id="phoneFiles" class="sr-only" type="file" accept="image/*" multiple aria-label="PCへ送る写真を選ぶ"><p class="detail-note">画面を閉じたりロックしたりすると止まることがあります。送信済みの写真はPCに残ります。再接続して同じ写真を選び直しても、同じ元画像は重複して追加しません。</p></div></div>
       <section id="phoneRetryPanel" hidden aria-label="写真の再送"><p id="phoneRetrySummary" role="status"></p><ul id="phoneRetryList"></ul><button id="phoneRetrySend" class="primary" type="button">失敗した写真・残りを再送</button><button id="phoneRetryDiscard" type="button">待機中の送信を取り消す</button><p class="detail-note">このページを開いている間は、未送信の写真を選び直さずに再送できます。PCに保存できた分は重複させません。ページを閉じたり再読み込みした場合は、同じ写真を選び直してください。</p><details><summary>PCでQRを作り直した場合</summary><p class="detail-note">このページを開いたまま、PCの新しい「URLをコピー」のURLを下に貼り付け、上の6桁も新しい番号に直して再送してください。</p><label for="phoneRetryLink">新しい接続用URL（必要なときだけ）</label><input id="phoneRetryLink" type="url" autocomplete="off" placeholder="PCの接続用URL"></details></section>
-      <p id="phoneProgress" role="status" aria-live="polite"></p><p id="phoneError" class="dialog-error" role="alert"></p><details id="phoneDiagnostics" hidden><summary>接続エラーの詳細</summary><p id="phoneDiagnosticText" class="detail-note"></p><p class="detail-note">つながらない場合は、この表示を伝えてください。写真・番号・接続用URLは含みません。</p></details>
-      <details class="phone-import-help"><summary>接続について・うまくつながらないとき</summary><p>iPhone・iPadはSafari、AndroidとPCはChromeなど、WebRTCを使える最近のブラウザーで試してください。写真は自分で選んだ分だけ扱います。</p><p>接続先を見つけるためにPeerJSの接続仲介サービスとGoogleのSTUNを使います。接続情報はこれらのサービスに渡ります。通常は画像データを暗号化した端末間の通信で送ります。PCで「中継も使って接続する」を選ぶと、同梱したPeerJSの中継経路も試します。中継サービスには接続情報と暗号化された通信が渡ります。</p><p>学校や会社のWi-Fiなど、通信が制限されたネットワークではつながらないことがあります。同じWi-Fiでも接続を保証できません。PCと携帯のページを開いたまま、新しいQRで試してください。直接接続ができない場合は、PCで「中継も使って接続する」を選んでからQRを作り直せます。中継サービスも通信制限やサービスの状態によって使えないことがあります。このサイトがログインを求めたら、携帯でも同じアカウントで開いてください。</p><p>1枚30MBまで。PC側でHEICを開けない場合は、JPEGの写真で試してください。この版では写真ライブラリーの自動同期は行いません。</p></details>
+      <p id="phoneProgress" role="status" aria-live="polite"></p><p id="phoneError" class="dialog-error" role="alert"></p><details id="phoneDiagnostics" hidden><summary>接続エラーの詳細</summary><p id="phoneDiagnosticText" class="detail-note"></p><p class="detail-note">つながらない場合は、この表示を伝えてください。写真・番号・接続用URLは含みません。「中継候補」は、利用できる可能性のある経路で、接続成功を示すものではありません。</p></details>
+      <details class="phone-import-help"><summary>接続について・うまくつながらないとき</summary><p>iPhone・iPadはSafari、AndroidとPCはChromeなど、WebRTCを使える最近のブラウザーで試してください。写真は自分で選んだ分だけ扱います。</p><p>接続先を見つけるためにPeerJSの接続仲介サービスとGoogleのSTUNを使います。接続情報はこれらのサービスに渡ります。通常は画像データを暗号化した端末間の通信で送ります。PCで「中継も使って接続する」を選ぶと、同梱したPeerJSの中継経路も試します。中継サービスには接続情報と暗号化された通信が渡ります。</p><p>学校や会社のWi-Fiなど、通信が制限されたネットワークではつながらないことがあります。同じWi-Fiでも接続を保証できません。失敗した場合は1回だけ新しい接続で自動再試行します。PCと携帯のページを開いたまま、新しいQRで試してください。直接接続ができない場合は、PCで「中継も使って接続する」を選んでからQRを作り直せます。中継サービスも通信制限やサービスの状態によって使えないことがあります。続く場合は家庭のWi-Fiなどでも試すと、ネットワークによる違いを確認できます。写真を通常のファイルとしてPCへ移し、「写真を追加」から取り込む方法も使えます。このサイトがログインを求めたら、携帯でも同じアカウントで開いてください。</p><p>1枚30MBまで。PC側でHEICを開けない場合は、JPEGの写真で試してください。この版では写真ライブラリーの自動同期は行いません。</p></details>
     </div><div class="dialog-footer"><button class="quiet" data-close-phone>接続を閉じる</button></div>
   </dialog>
   <button id="phoneResumeQueue" class="quiet" type="button" hidden>PCへの送信の残りを再開</button>
@@ -218,7 +218,7 @@
   <!-- TRANSFER DIALOG END -->
 
   <dialog id="exportDialog" aria-labelledby="exportTitle"><div class="dialog-head"><h2 id="exportTitle">写真と記録を保存</h2><button class="close" data-close-dialog="exportDialog" aria-label="保存画面を閉じる">×</button></div><div class="dialog-body"><label for="exportScope">保存する範囲</label><select id="exportScope"><option value="all">すべての記録</option><option value="visible">今の検索結果だけ</option></select><p id="exportSummary"></p><div id="exportParts" hidden><label for="exportPartSelect">分割した保存ファイル</label><select id="exportPartSelect"></select><button id="exportPartChoose" type="button">この分を準備</button><p class="detail-note">表示したZIPを保存してから、次の分を準備してください。すべての分を保存すると、全写真を戻せます。</p></div><p id="exportNote">写真・文字・日時・場所・タグ・検索の枠をZIPに保存します。大きな一覧は分けて保存します。別の端末でも「保存ファイルを開く」から戻せます。写真を圧縮し直さず、元の画像を残します。</p><p id="exportProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="exportError" role="alert"></p><div class="export-actions"><a class="primary save-link" id="exportDownload" hidden>ZIPを保存</a><button id="exportPicker" hidden>保存先を選んで保存</button><button id="exportShare" hidden>共有して保存</button><button id="exportRetry" hidden>もう一度作る</button><button id="exportRepair" hidden>読めない写真を選び直す</button></div><p class="detail-note">大切な記録はファイルにも保存してください。自動保存の設定は、画面上部の「その他」にあります。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="exportDialog">閉じる</button></div></dialog>
-  <dialog id="codeDialog" aria-labelledby="codeTitle"><div class="dialog-head"><h2 id="codeTitle">サイトのコードを保存</h2><button class="close" data-close-dialog="codeDialog" aria-label="コードの保存画面を閉じる">×</button></div><div class="dialog-body"><p>版：2026-10-14-r29 · 一覧の読み取り状況と残り時間の目安</p><p>iPhoneでは「ZIPを共有して保存」から「ファイルに保存」を選んでください。ZIPを開くと、中にmemory-lens.htmlがあります。</p><p id="codeProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="codeError" role="alert"></p><div class="code-methods"><a class="primary" id="codeZip" hidden>ZIPを保存</a><button id="codeShare" hidden>ZIPを共有して保存</button><button id="codePicker" hidden>HTMLの保存先を選ぶ</button><a id="codeHtml" hidden>HTMLを保存</a></div><a id="codeServerZip" href="./downloads/memory-lens-2026-10-14-r29.zip" download="memory-lens-2026-10-14-r29.zip" hidden>ZIPを直接ダウンロード</a><p class="detail-note">保存するのはサイトのコードです。読み込んだ写真・文字・撮影場所は含みません。写真の記録は「保存」で保存できます。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="codeDialog">閉じる</button></div></dialog>
+  <dialog id="codeDialog" aria-labelledby="codeTitle"><div class="dialog-head"><h2 id="codeTitle">サイトのコードを保存</h2><button class="close" data-close-dialog="codeDialog" aria-label="コードの保存画面を閉じる">×</button></div><div class="dialog-body"><p>版：2026-10-16-r30 · 携帯接続の自動再試行と通信エラーの見直し</p><p>iPhoneでは「ZIPを共有して保存」から「ファイルに保存」を選んでください。ZIPを開くと、中にmemory-lens.htmlがあります。</p><p id="codeProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="codeError" role="alert"></p><div class="code-methods"><a class="primary" id="codeZip" hidden>ZIPを保存</a><button id="codeShare" hidden>ZIPを共有して保存</button><button id="codePicker" hidden>HTMLの保存先を選ぶ</button><a id="codeHtml" hidden>HTMLを保存</a></div><a id="codeServerZip" href="./downloads/memory-lens-2026-10-16-r30.zip" download="memory-lens-2026-10-16-r30.zip" hidden>ZIPを直接ダウンロード</a><p class="detail-note">保存するのはサイトのコードです。読み込んだ写真・文字・撮影場所は含みません。写真の記録は「保存」で保存できます。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="codeDialog">閉じる</button></div></dialog>
   <script>
     'use strict';
     // CORE START — UIから独立した、テキスト解析と検索の処理。
@@ -2257,6 +2257,16 @@ zen_garden=禅の庭園
     function phoneParse(data){if(typeof data!=='string'||data.length>8000)throw new Error('接続先からのメッセージを確認できません。');const value=JSON.parse(data);if(!value||typeof value!=='object'||typeof value.kind!=='string')throw new Error('接続先からのメッセージが正しくありません。');return value;}
     function phoneClearIssue(){ $('phoneError').textContent='';$('phoneDiagnostics').hidden=true;$('phoneDiagnosticText').textContent=''; }
     function phoneConnectionError(code){const e=new Error(code);e.phoneCode=code;return e;}
+    function phoneRetryable(error){return ['negotiation-failed','link-timeout','connection-closed'].includes(error?.phoneCode||error?.type||error?.error?.type);}
+    function phoneWatchConnection(s,conn){
+      s.iceCleanup?.();const pc=conn.peerConnection,info={host:0,srflx:0,relay:0,errors:[],gathering:pc?.iceGatheringState||'new'};s.iceInfo=info;
+      if(!pc?.addEventListener){s.iceCleanup=null;return;}
+      const candidate=event=>{if(!phoneValid(s)||s.conn!==conn)return;const value=event.candidate,type=value?.type||value?.candidate?.match(/\btyp (host|srflx|relay)\b/)?.[1];if(Object.hasOwn(info,type))info[type]++;};
+      const error=event=>{if(!phoneValid(s)||s.conn!==conn)return;const code=event.errorCode;if(Number.isInteger(code)&&code>=300&&code<=799&&!info.errors.includes(code)&&info.errors.length<4)info.errors.push(code);};
+      const gathering=()=>{if(phoneValid(s)&&s.conn===conn)info.gathering=pc.iceGatheringState;};
+      pc.addEventListener('icecandidate',candidate);pc.addEventListener('icecandidateerror',error);pc.addEventListener('icegatheringstatechange',gathering);
+      s.iceCleanup=()=>{pc.removeEventListener('icecandidate',candidate);pc.removeEventListener('icecandidateerror',error);pc.removeEventListener('icegatheringstatechange',gathering);};
+    }
     function phoneIssue(s,error,phase=s.phase){
       const messages={
         'peer-unavailable':'PCの接続先が見つかりません。PCで新しいQRを作り、携帯で読み直してください。',
@@ -2268,8 +2278,8 @@ zen_garden=禅の庭園
         'disconnected':'接続仲介サービスとの通信が切れました。PCでQRを作り直して、もう一度つないでください。',
         'signaling-timeout':'接続仲介サービスからの応答がありません。同じWi-Fiでも、このサービスへの通信ができないと接続できません。少し待って再接続してください。',
         'webrtc':'ブラウザーが端末間の通信を開始できませんでした。両方のページを開き直して再接続してください。',
-        'negotiation-failed':'ブラウザー同士の通信の準備に失敗しました。iPhone・iPadはSafari、PCはChromeなどでページを開き直してください。',
-        'link-timeout':'PCとの通信を確立できませんでした。同じWi-Fiでも端末同士の通信が制限される場合があります。PCで「中継も使って接続する」を選び、新しいQRで試してください。',
+        'negotiation-failed':'携帯とPCの通信経路を作れませんでした。同じWi-Fiでも端末間の通信が制限される場合があります。両方の画面を開いたまま、もう一度つないでください。',
+        'link-timeout':'PCとの通信経路を確立できませんでした。両方の画面を開いたまま、もう一度つないでください。同じWi-Fiでも接続できない場合があります。',
         'connection-closed':'PCとの通信が切れました。両方の画面を開いたまま、もう一度つないでください。',
         'auth-timeout':'PCとの通信は開きましたが、番号確認の応答がありません。PCの受信画面を開いたまま、もう一度つないでください。',
         'unavailable-id':'接続番号を準備できませんでした。PCでQRを作り直してください。'
@@ -2279,12 +2289,14 @@ zen_garden=禅の庭園
       const name=error?.error?.name||error?.name;
       const native=['OperationError','InvalidStateError','NotSupportedError','SecurityError','RTCError','TypeError'].includes(name)?name:'';
       const states=new Set(['new','checking','connected','completed','disconnected','failed','closed','connecting']);
-      const pc=s.conn?.peerConnection,ice=states.has(pc?.iceConnectionState)?pc.iceConnectionState:'unknown',rtc=states.has(pc?.connectionState)?pc.connectionState:'unknown';
+      const pc=s.conn?.peerConnection,snapshot=phase==='link'?s.lastLinkState:null,iceValue=snapshot?.ice||pc?.iceConnectionState,rtcValue=snapshot?.rtc||pc?.connectionState,ice=states.has(iceValue)?iceValue:'unknown',rtc=states.has(rtcValue)?rtcValue:'unknown';
       const stages={service:'接続仲介サービス',link:'携帯とPCの通信',pin:'6桁の確認',send:'写真の送信・保存'};
       const stage=stages[phase]||'接続の準備';
-      const message=messages[code]||(phase==='link'?'端末間の通信を開始できませんでした。両方の画面を開き直してください。続く場合はPCで「中継も使って接続する」を選び、新しいQRで試してください。':String(error?.message||'接続できませんでした。もう一度つないでください。'));
+      let message=messages[code]||(phase==='link'?'端末間の通信を開始できませんでした。両方の画面を開いたまま、もう一度つないでください。':String(error?.message||'接続できませんでした。もう一度つないでください。'));
+      if(phase==='link'&&phoneRetryable(error))message+=(s.relay?' 中継を許可していても、通信制限や中継サービスの状態で接続できないことがあります。':' PCで「中継も使って接続する」を選び、新しいQRで試す方法もあります。');
+      const info=s.iceInfo,relayInfo=s.relay?(info?.relay?'中継候補 '+info.relay+'件':(pc?.iceGatheringState||info?.gathering)==='complete'?'中継候補 0件':'中継候補は未確認'):'中継は使用しない';
       $('phoneDiagnostics').hidden=false;
-      $('phoneDiagnosticText').textContent=CODE_RELEASE+' · '+(s.role==='receiver'?'PC':'携帯')+' · '+stage+' · '+code+(native?' / '+native:'')+' · ICE '+ice+' / 通信 '+rtc+' · '+(s.relay?'中継あり':'直接接続');
+      $('phoneDiagnosticText').textContent=CODE_RELEASE+' · '+(s.role==='receiver'?'PC':'携帯')+' · '+stage+' · '+code+(native?' / '+native:'')+' · ICE '+ice+' / 通信 '+rtc+' · '+(s.relay?'中継を許可 · ':'')+relayInfo+(s.attempt?' · 接続 '+s.attempt+'/2':'')+(s.forceRelay?' · 中継のみで再試行':'')+(info?.errors?.length?' · ICE応答 '+info.errors.join(','):'');
       return message;
     }
     function phoneFailure(s,error,phase=s.phase){if(!phoneValid(s))return;s.failure=error;phoneProblem(s,phoneIssue(s,error,phase));phoneStatus(s,s.authenticated?'送信を止めました。保存済みの写真はPCに残っています。':'接続できませんでした。もう一度試せます。');$('phoneJoin').textContent='もう一度PCにつなぐ';phoneEnd(s);}
@@ -2297,21 +2309,21 @@ zen_garden=禅の庭園
         if(!relay.length)throw new Error('中継の設定を準備できませんでした。ページを開き直してください。');
         iceServers.push(...relay);
       }
-      return new window.Peer(id,{host:'0.peerjs.com',port:443,path:'/',secure:true,debug:0,config:{iceServers,iceTransportPolicy:'all'}});
+      return new window.Peer(id,{host:'0.peerjs.com',port:443,path:'/',secure:true,debug:0,config:{iceServers,iceTransportPolicy:s.relay&&s.forceRelay?'relay':'all'}});
     }
     function phonePeerReady(s,id){return new Promise((resolve,reject)=>{
       const peer=phonePeer(id,s);s.peer=peer;let done=false;
       const finish=(error,value)=>{if(done)return;done=true;clearTimeout(timer);s.waits.delete(cancel);error?reject(error):resolve(value);};
       const cancel=()=>finish(s.failure||new Error('接続を閉じました。')),timer=setTimeout(()=>finish(phoneConnectionError('signaling-timeout')),25000);s.waits.add(cancel);
-      peer.on('open',value=>{if(!phoneValid(s))return cancel();finish(null,value);});
-      peer.on('error',error=>{if(!phoneValid(s))return;if(!done)finish(error);else if(!s.authenticated)phoneFailure(s,error);else phoneProblem(s,phoneIssue(s,error,'service'));});
-      peer.on('disconnected',()=>{if(phoneValid(s)&&!s.authenticated)phoneFailure(s,phoneConnectionError('disconnected'),'service');});
+      peer.on('open',value=>{if(!phoneValid(s)||s.peer!==peer)return cancel();finish(null,value);});
+      peer.on('error',error=>{if(!phoneValid(s)||s.peer!==peer)return;if(!done)finish(error);else if(!s.authenticated){if(s.phase==='link'&&s.linkFail&&phoneRetryable(error))s.linkFail(error);else if(s.role==='receiver'&&phoneRetryable(error)){phoneProblem(s,phoneIssue(s,error,'link'));phoneStatus(s,'携帯の再接続を待っています。同じQRと6桁で試せます。');}else phoneFailure(s,error);}else phoneProblem(s,phoneIssue(s,error,'service'));});
+      peer.on('disconnected',()=>{if(phoneValid(s)&&s.peer===peer&&!s.authenticated)phoneFailure(s,phoneConnectionError('disconnected'),'service');});
     });}
     async function phoneWake(s){try{s.wake=await navigator.wakeLock?.request?.('screen');if(!phoneValid(s))await s.wake?.release?.();}catch{}}
     function phoneCreateSession(role){const s={role,phase:'service',relay:false,failure:null,closed:false,peer:null,conn:null,waits:new Set(),authenticated:false,task:null,receiving:null,operation:null,sendTask:null,heartbeat:null,expire:null,completeTimer:null,wake:null,saved:0,duplicate:0,unread:0,storedBytes:0};phoneState.session=s;return s;}
     function phoneEnd(s,message=''){
       if(!s||s.closed)return;s.closed=true;clearTimeout(s.expire);clearTimeout(s.completeTimer);clearInterval(s.heartbeat);s.task?.controller.abort();if(s.sendTask)s.sendTask.stop=true;
-      for(const cancel of [...s.waits])cancel();s.waits.clear();s.conn?.close();s.peer?.destroy();s.receiving=null;s.wake?.release?.().catch(()=>{});
+      for(const cancel of [...s.waits])cancel();s.waits.clear();s.iceCleanup?.();s.iceCleanup=null;s.conn?.close();s.peer?.destroy();s.receiving=null;s.wake?.release?.().catch(()=>{});
       if(phoneState.session===s){$('phoneHostStart').disabled=false;$('phoneRelay').disabled=false;$('phoneJoin').disabled=false;$('phoneSelect').disabled=true;$('phoneSendStop').hidden=true;if(s.role==='receiver')$('phoneInvite').hidden=true;if(message)$('phoneProgress').textContent=message;phoneRetryUpdate();}
       Promise.resolve(s.operation).catch(()=>{}).then(async()=>{
         if(s.task){if(s.task.worker)await Promise.resolve(s.task.worker.terminate()).catch(()=>{});await bulkLease(s.task.owner,true).catch(()=>{});if(directState.task===s.task)directState.task=null;}
@@ -2364,14 +2376,14 @@ zen_garden=禅の庭園
       }catch(error){phoneFailure(s,error);}
     }
     function phoneAccept(s,conn){
-      if(!phoneValid(s)||s.conn){conn.close();return;}s.conn=conn;s.phase='link';let authorizing=false;const timer=setTimeout(()=>{if(!s.authenticated){conn.close();if(s.conn===conn)s.conn=null;}},60000);
+      if(!phoneValid(s)||s.authenticated){conn.close();return;}if(s.conn){const previous=s.conn;s.conn=null;previous.close();}s.conn=conn;s.phase='link';phoneWatchConnection(s,conn);let authorizing=false;const timer=setTimeout(()=>{if(!s.authenticated){if(s.conn===conn)s.conn=null;conn.close();}},60000);
       conn.on('data',data=>{
         if(!phoneValid(s)||s.conn!==conn)return;
         if(!s.authenticated){try{const m=phoneParse(data);if(m.kind!=='hello'||m.version!==1||m.token!==s.token||m.pin!==s.pin)throw new Error('番号が一致しません。PCの6桁を確認してください。');if(authorizing)return;authorizing=true;Promise.resolve(s.recovery).then(()=>{if(!phoneValid(s)||s.conn!==conn)return;clearTimeout(timer);clearTimeout(s.expire);authorizing=false;s.authenticated=true;s.phase='send';$('phoneInvite').hidden=true;phoneClearIssue();phoneSend(s,{kind:'ready',version:1});phoneStatus(s,'携帯と接続しました。携帯で写真を選ぶか、残りを再送してください。');}).catch(error=>{phoneProblem(s,error.message);phoneEnd(s);});}catch{try{conn.send(JSON.stringify({kind:'reject',message:'番号が一致しません。PCの6桁を確認して、もう一度つないでください。'}));}catch{}setTimeout(()=>{conn.close();if(s.conn===conn&&!s.authenticated)s.conn=null;},100);}return;}
         try{if(typeof data==='string')phoneReceiveControl(s,phoneParse(data));else phoneReceiveChunk(s,data);}catch(error){phoneFailure(s,error);}
       });
-      conn.on('close',()=>{clearTimeout(timer);if(s.conn===conn){if(s.authenticated){if(s.batchComplete&&!s.receiving&&!s.operation)phoneEnd(s,'接続が終わりました。保存済みの写真を検索できます。');else phoneRecoverHost(s);}else s.conn=null;}});
-      conn.on('error',()=>{if(s.conn!==conn)return;conn.close();if(phoneValid(s))phoneRecoverHost(s);});
+      conn.on('close',()=>{clearTimeout(timer);if(s.conn===conn){if(s.authenticated){if(s.batchComplete&&!s.receiving&&!s.operation)phoneEnd(s,'接続が終わりました。保存済みの写真を検索できます。');else phoneRecoverHost(s);}else{s.conn=null;if(phoneValid(s))phoneStatus(s,'携帯の再接続を待っています。同じQRと6桁で試せます。');}}});
+      conn.on('error',error=>{if(!phoneValid(s)||s.conn!==conn)return;clearTimeout(timer);if(s.authenticated){conn.close();if(s.conn===conn)phoneRecoverHost(s);return;}const message=phoneIssue(s,error,'link');s.conn=null;s.phase='service';conn.close();phoneProblem(s,message);phoneStatus(s,'携帯の再接続を待っています。同じQRと6桁で試せます。');});
     }
     function phoneReceiveControl(s,m){
       if(m.kind==='cancel-batch'){phoneEnd(s,'携帯側で接続を閉じました。保存済みの写真を検索できます。');return;}
@@ -2412,15 +2424,31 @@ zen_garden=禅の庭園
       const cancel=()=>finish(s.failure||new Error('接続が切れました。保存済みの写真はPCに残っています。')),timer=setTimeout(()=>finish(s.phase==='pin'?phoneConnectionError('auth-timeout'):new Error('PCの応答を確認できませんでした。両方の画面と接続を確認してください。')),timeout);
       const reply=m=>{if(m.kind==='failed'&&id!==null&&m.id!==id)return;if(m.kind==='reject'||m.kind==='failed')return finish(new Error(m.message||'PCで写真を保存できませんでした。'));if(kinds.includes(m.kind)&&(id===null||m.id===id))finish(null,m);};s.reply=reply;s.waits.add(cancel);
     });}
+    function phoneOpenLink(s,invite){return new Promise((resolve,reject)=>{
+      const conn=s.peer.connect(invite.id,{serialization:'raw',reliable:true,label:'memory-lens-photo-v1'});s.conn=conn;s.lastLinkState=null;phoneWatchConnection(s,conn);let done=false,opened=false;
+      const finish=error=>{if(done)return;done=true;clearTimeout(timer);s.waits.delete(cancel);if(s.linkFail===fail)s.linkFail=null;if(error){const pc=conn.peerConnection;s.lastLinkState={ice:pc?.iceConnectionState,rtc:pc?.connectionState};reject(error);}else{opened=true;resolve();}};
+      const fail=error=>finish(error),cancel=()=>finish(s.failure||phoneConnectionError('connection-closed')),timer=setTimeout(()=>finish(phoneConnectionError('link-timeout')),30000);s.waits.add(cancel);s.linkFail=fail;
+      conn.on('data',data=>{if(!phoneValid(s)||s.conn!==conn)return;try{const m=phoneParse(data);if(m.kind==='progress')phoneStatus(s,m.message);else s.reply?.(m);}catch(error){phoneFailure(s,error);}});
+      conn.on('error',error=>{if(!phoneValid(s)||s.conn!==conn)return;if(!done)finish(error);else if(opened)phoneFailure(s,error);});
+      conn.on('close',()=>{if(!phoneValid(s)||s.conn!==conn)return;if(!done)return finish(phoneConnectionError('connection-closed'));if(!opened)return;if(s.intentionalClosing){phoneEnd(s,'接続を閉じました。保存済みの記録は残っています。');return;}if(s.lastBatch&&!s.sendTask)phoneEnd(s,'送信が終わりました。追加 '+s.lastBatch.saved+'枚 · 重複 '+s.lastBatch.duplicate+'枚。PCに保存済みです。'+(s.lastBatch.unread?' 文字の読み取りは'+s.lastBatch.unread+'枚未完了です。':''));else if(!s.authenticated)phoneFailure(s,phoneConnectionError('connection-closed'));else{phoneProblem(s,'通信が切れました。「失敗した写真・残りを再送」で再接続できます。PCでQRを作り直した場合は、新しいURLと6桁を使ってください。');phoneEnd(s,'送信を止めました。保存済みの写真はPCに残っています。');}});
+      conn.on('open',()=>finish());if(conn.open)finish();
+    });}
+    function phoneRetryDelay(s){return new Promise((resolve,reject)=>{const finish=error=>{clearTimeout(timer);s.waits.delete(cancel);error?reject(error):resolve();},cancel=()=>finish(phoneConnectionError('connection-closed')),timer=setTimeout(()=>finish(phoneValid(s)?null:phoneConnectionError('connection-closed')),700);s.waits.add(cancel);});}
     async function phoneJoin(){
       if(!phoneState.invite||phoneValid(phoneState.session)&&!phoneState.session.authenticated)return;const pin=$('phonePin').value.replace(/\s/g,'');if(!/^\d{6}$/.test(pin)){$('phoneError').textContent='PCに表示されている6桁を入力してください。';return;}
       phoneEnd(phoneState.session);const s=phoneCreateSession('sender');s.relay=phoneState.invite.relay===true;$('phoneJoin').disabled=true;$('phoneJoin').textContent='PCにつなぐ';phoneClearIssue();phoneStatus(s,'接続仲介サービスに接続しています…');
       try{
-        if(!window.RTCPeerConnection||!window.crypto?.subtle||location.protocol!=='https:')throw new Error('HTTPSのページを、SafariまたはChromeなどの最近のブラウザーで開いてください。');phoneLibrary();await phonePeerReady(s,'ml-phone-'+phoneRandom(16));if(!phoneValid(s))return;
-        s.phase='link';phoneStatus(s,'PCとの通信を準備しています…');const conn=s.peer.connect(phoneState.invite.id,{serialization:'raw',reliable:true,label:'memory-lens-photo-v1'});s.conn=conn;
-        conn.on('data',data=>{try{const m=phoneParse(data);if(m.kind==='progress')phoneStatus(s,m.message);else s.reply?.(m);}catch(error){phoneFailure(s,error);}});
-        conn.on('close',()=>{if(phoneValid(s)){if(s.intentionalClosing){phoneEnd(s,'接続を閉じました。保存済みの記録は残っています。');return;}if(s.lastBatch&&!s.sendTask)phoneEnd(s,'送信が終わりました。追加 '+s.lastBatch.saved+'枚 · 重複 '+s.lastBatch.duplicate+'枚。PCに保存済みです。'+(s.lastBatch.unread?' 文字の読み取りは'+s.lastBatch.unread+'枚未完了です。':''));else{if(!s.authenticated)phoneFailure(s,phoneConnectionError('connection-closed'));else{phoneProblem(s,'通信が切れました。「失敗した写真・残りを再送」で再接続できます。PCでQRを作り直した場合は、新しいURLと6桁を使ってください。');phoneEnd(s,'送信を止めました。保存済みの写真はPCに残っています。');}}}});conn.on('error',error=>phoneFailure(s,error));
-        await new Promise((resolve,reject)=>{let done=false;const finish=(error)=>{if(done)return;done=true;clearTimeout(timer);s.waits.delete(cancel);error?reject(error):resolve();},timer=setTimeout(()=>finish(phoneConnectionError('link-timeout')),s.relay?45000:25000),cancel=()=>finish(s.failure||new Error('接続を閉じました。'));s.waits.add(cancel);conn.on('open',()=>finish());if(conn.open)finish();});if(!phoneValid(s))return;
+        if(!window.RTCPeerConnection||!window.crypto?.subtle||location.protocol!=='https:')throw new Error('HTTPSのページを、SafariまたはChromeなどの最近のブラウザーで開いてください。');phoneLibrary();
+        const invite=phoneState.invite;
+        for(let attempt=1;attempt<=2;attempt++){
+          s.attempt=attempt;s.forceRelay=attempt===2&&s.relay;s.phase='service';s.lastLinkState=null;s.iceInfo=null;
+          try{await phonePeerReady(s,'ml-phone-'+phoneRandom(16));if(!phoneValid(s))return;s.phase='link';phoneStatus(s,'PCとの通信を準備しています… '+attempt+'/2'+(s.forceRelay?' · 中継だけで試しています':''));await phoneOpenLink(s,invite);break;}
+          catch(error){if(!phoneValid(s))return;if(attempt!==1||s.phase!=='link'||!phoneRetryable(error))throw error;
+            const conn=s.conn,peer=s.peer;s.conn=null;s.peer=null;s.iceCleanup?.();s.iceCleanup=null;conn?.close();peer?.destroy();
+            phoneStatus(s,'接続経路を変えてもう一度試しています… 2/2'+(s.relay?' · 許可済みの中継を使います':' · 同じPCに新しく接続します'));await phoneRetryDelay(s);
+          }
+        }
+        if(!phoneValid(s))return;
         s.phase='pin';phoneStatus(s,'PCの6桁を確認しています…');const ready=phoneWaitMessage(s,['ready'],null,30000);phoneSend(s,{kind:'hello',version:1,token:phoneState.invite.token,pin});await ready;if(!phoneValid(s))return;s.authenticated=true;s.phase='send';phoneClearIssue();$('phoneSendControls').hidden=false;$('phoneSelect').disabled=false;$('phoneJoin').disabled=true;phoneStatus(s,'PCと接続しました。'+(phoneState.retry?'残りを再送できます。':'写真を選んでください。'));phoneRetryUpdate();phoneWake(s);
       }catch(error){phoneFailure(s,error);}
     }
@@ -3617,7 +3645,7 @@ zen_garden=禅の庭園
     // AI SETTINGS END
 
     // CODE DOWNLOAD START — 起動時のコードだけを保存し、写真や検索結果を含めない。
-    const CODE_RELEASE='2026-10-14-r29';
+    const CODE_RELEASE='2026-10-16-r30';
     const codeState={template:null,epoch:0,htmlFile:null,zipFile:null,urls:[]};
     const CODE_MODEL_MARKER='__MEMORY_LENS_ORIGINAL_MODEL__';
     const CODE_OBJECT_MARKER='__MEMORY_LENS_ORIGINAL_OBJECT_MODEL__';
