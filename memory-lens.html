@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#12263b">
   <meta name="description" content="写真の文字・撮影日時・撮影場所・自動タグ・自分のタグを検索する。写真と記録をひとつのファイルに保存して、別の端末でも開けます。">
-  <meta name="memory-lens-version" content="2026-10-14-r28">
+  <meta name="memory-lens-version" content="2026-10-14-r29">
   <title>Memory Lens — 写真の記憶を検索</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2312263b'/%3E%3Crect x='7' y='7' width='18' height='18' rx='4' fill='none' stroke='%238be5ff' stroke-width='2'/%3E%3Ccircle cx='15' cy='15' r='4' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='m18 18 5 5' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
   <style>
@@ -49,7 +49,7 @@
 .dialog-body label.phone-relay-choice{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
 .phone-relay-choice input{width:22px;height:22px;margin:0;padding:0;accent-color:var(--blue);flex:none}
 .ai-info-list{padding-left:22px;font-size:.95rem;line-height:1.8;color:var(--muted)}.ai-info-list li{margin:12px 0}
-.import-activity{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0;padding:12px 16px;border:1px solid #c9d7ec;border-radius:12px;background:#edf4ff}.import-activity[hidden]{display:none}.import-activity>span{flex:1;min-width:200px}.import-activity button{flex:none}
+.import-activity{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0;padding:12px 16px;border:1px solid #c9d7ec;border-radius:12px;background:#edf4ff}.import-activity[hidden]{display:none}.import-summary{flex:1;min-width:0;flex-basis:320px;overflow-wrap:anywhere}.import-summary p{margin:3px 0}.import-summary>p:first-child{font-weight:650}.record-bottom>span[data-reading-kind="reading"]{color:#1544c0;font-weight:700}.record-bottom>span[data-reading-kind="waiting"],.record-bottom>span[data-reading-kind="paused"]{color:#815d12}.record-bottom>span[data-reading-kind="done"]{color:#21623c}.import-activity button{flex:none}
 </style>
 </head>
 <body>
@@ -67,7 +67,7 @@
     <input class="sr-only" id="directOriginalInput" type="file" accept="image/*" aria-label="軽量保存した写真の元画像を選ぶ">
     <input class="sr-only" id="directInput" type="file" accept="image/*" multiple aria-label="取り込む写真を選択">
     <p id="status" role="status" aria-live="polite"></p>
-    <div id="importActivity" class="import-activity" hidden><span id="importActivityText" role="status" aria-live="polite"></span><button class="quiet" id="importActivityOpen">状況を見る</button><button class="quiet" id="importActivityPause">一時停止</button></div>
+    <div id="importActivity" class="import-activity" hidden><div class="import-summary"><p id="importActivitySummary" role="status" aria-live="polite"></p><p id="importActivityText" class="detail-note"></p><p id="importActivityEstimate" class="detail-note"></p></div><button class="quiet" id="importActivityOpen">状況を見る</button><button class="quiet" id="importActivityPause">一時停止</button></div>
     <div id="autoClassifyBar" hidden><span id="autoClassifyText" role="status" aria-live="polite"></span><button class="quiet" id="autoClassifyToggle">一時停止</button></div>
     <div class="workspace">
       <details class="filters" id="filterPanel"><summary>日時・場所で絞り込む</summary><div class="filter-fields">
@@ -86,7 +86,7 @@
         <div class="result-grid" id="results"></div><nav id="resultPages" class="result-pages" aria-label="検索結果のページ"></nav>
       </section>
     </div>
-    <footer class="foot"><p>写真の解析と検索はこの端末内で行います。ファイルの「保存」はバックアップや別の端末への移動に使えます。</p><span class="release-stamp">2026-10-14-r28</span></footer>
+    <footer class="foot"><p>写真の解析と検索はこの端末内で行います。ファイルの「保存」はバックアップや別の端末への移動に使えます。</p><span class="release-stamp">2026-10-14-r29</span></footer>
   </main>
   <dialog id="deleteDialog" aria-labelledby="deleteTitle"><div class="dialog-head"><h2 id="deleteTitle">選択した記録を削除</h2></div><div class="dialog-body"><p id="deleteSummary"></p><p class="detail-note">写真・文字・日時・タグをこの一覧から削除します。携帯の元写真と保存済みのZIPは残ります。直前の削除は、この画面を閉じる前なら「元に戻す」で取り消せます。</p><p id="deleteError" role="alert"></p></div><div class="dialog-footer"><button id="deleteCancel">キャンセル</button><button class="danger" id="deleteConfirm">削除する</button></div></dialog>
   <dialog id="deviceDialog" aria-labelledby="deviceTitle"><div class="dialog-head"><h2 id="deviceTitle">この端末の保存設定</h2><button class="close" data-close-dialog="deviceDialog" aria-label="保存設定を閉じる">×</button></div><div class="dialog-body"><label class="device-switch"><input id="deviceAuto" type="checkbox" disabled>このブラウザーに自動保存</label><div class="export-actions"><button id="deviceRestore" hidden>保存した記録を戻す</button><button id="deviceRetry" hidden>保存をもう一度試す</button></div><p>自動保存は、自分でオンにするまで行いません。オンにすると、写真・文字・撮影日時・撮影場所・屋内外の予想をこのブラウザーに保存します。次に同じサイトを開くと復元します。</p><p class="detail-note">オフにしても前の保存は残ります。「データを閉じる」でも消えません。再びオンにすると、今の一覧を保存します。空の一覧なら前の保存を戻します。</p><p class="detail-note">SafariとChrome、GitHubのページと別のサイト、ほかの端末では保存が別々です。ブラウザーのデータを消すと記録も消えるため、大切な記録は「保存」でファイルにも残してください。</p><p class="detail-note">「保存中…」が「保存済み」に変わってから画面を閉じてください。</p><p id="deviceDialogStatus" role="status" aria-live="polite" class="detail-note"></p><div class="export-actions"><button id="deviceForget" disabled>端末の保存を削除</button></div><div id="deviceConfirm" hidden><p id="deviceConfirmText"></p><div class="export-actions"><button class="primary" id="deviceConfirmApply">実行する</button><button id="deviceConfirmCancel">キャンセル</button></div></div></div><div class="dialog-footer"><button class="quiet" data-close-dialog="deviceDialog">閉じる</button></div></dialog>
@@ -163,7 +163,7 @@
       <div id="bulkStorageNote"><p class="detail-note">選んだ写真と読み取った情報を、このブラウザーへ保存します。携帯から受け取るときは、接続したPCへ選んだ写真だけを送ります。同じブラウザー・同じサイトを開くと続けられます。新しく撮った写真も、自分で追加できます。</p><p id="bulkStorageInfo" class="detail-note"></p><details id="bulkDiscard" hidden><summary>待機中の取り込みを取り消す</summary><p class="detail-note">待機中の取り込み・読み取りと、その一時画像を取り消します。追加済みの写真と文字は残ります。</p><button id="bulkDiscardButton" type="button">待機中の取り込みを取り消す</button></details></div><section id="directQueue" hidden aria-labelledby="directQueueTitle"><h3 id="directQueueTitle">今回の写真</h3><ol id="directQueueList"></ol></section><p class="detail-note">1枚30MB、1回20,000枚までです。端末の保存容量が足りなくなったら止まります。軽量保存では元画像を1枚ずつ処理します。途中でページを閉じたら、まだ処理していない写真を選び直してください。動画は対象外です。</p>
       <section id="directReview" hidden aria-label="文字の読み直し結果"><h3>今の文字</h3><pre id="directBefore"></pre><h3>読み直した文字</h3><pre id="directAfter"></pre><section id="directPrediction" hidden><h3>単語・行のつながりから予測した候補</h3><pre id="directPredictionText"></pre><p class="detail-note">読みにくい部分は推測を含みます。名前・数字・日付・数式を写真と見比べてください。</p><label class="calendar-check"><input id="directUsePrediction" type="checkbox">この予測候補を更新に使う</label></section><button class="primary" id="directApply">この文字で更新</button><p class="detail-note">写真と見比べて、よい結果だけを採用してください。閉じると今の文字を保ちます。</p></section>
       <p class="detail-note">初回の準備には通信が必要です。写真の文字は取り込む端末内で読み取ります。撮影日時と位置情報がない場合は「不明」にします。</p>
-    </div><div class="dialog-footer"><button class="quiet" data-close-direct>閉じる</button></div>
+    </div><div class="dialog-footer"><button class="quiet" id="directBack" data-close-direct>一覧に戻る</button></div>
   </dialog>
   <!-- DIRECT DIALOG END -->
   <dialog id="photoSourceDialog" aria-labelledby="photoSourceTitle"><div class="dialog-head"><h2 id="photoSourceTitle">写真を追加</h2><button class="close" data-close-dialog="photoSourceDialog" aria-label="写真の選択を閉じる">×</button></div><div class="dialog-body"><p>保存してある写真を選ぶか、新しく撮影できます。</p><div class="photo-source-actions"><button class="primary" id="photoLibrary">ライブラリから選ぶ</button><button id="photoCamera">カメラで撮る</button></div></div><div class="dialog-footer"><button class="quiet" data-close-dialog="photoSourceDialog">キャンセル</button></div></dialog>
@@ -218,7 +218,7 @@
   <!-- TRANSFER DIALOG END -->
 
   <dialog id="exportDialog" aria-labelledby="exportTitle"><div class="dialog-head"><h2 id="exportTitle">写真と記録を保存</h2><button class="close" data-close-dialog="exportDialog" aria-label="保存画面を閉じる">×</button></div><div class="dialog-body"><label for="exportScope">保存する範囲</label><select id="exportScope"><option value="all">すべての記録</option><option value="visible">今の検索結果だけ</option></select><p id="exportSummary"></p><div id="exportParts" hidden><label for="exportPartSelect">分割した保存ファイル</label><select id="exportPartSelect"></select><button id="exportPartChoose" type="button">この分を準備</button><p class="detail-note">表示したZIPを保存してから、次の分を準備してください。すべての分を保存すると、全写真を戻せます。</p></div><p id="exportNote">写真・文字・日時・場所・タグ・検索の枠をZIPに保存します。大きな一覧は分けて保存します。別の端末でも「保存ファイルを開く」から戻せます。写真を圧縮し直さず、元の画像を残します。</p><p id="exportProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="exportError" role="alert"></p><div class="export-actions"><a class="primary save-link" id="exportDownload" hidden>ZIPを保存</a><button id="exportPicker" hidden>保存先を選んで保存</button><button id="exportShare" hidden>共有して保存</button><button id="exportRetry" hidden>もう一度作る</button><button id="exportRepair" hidden>読めない写真を選び直す</button></div><p class="detail-note">大切な記録はファイルにも保存してください。自動保存の設定は、画面上部の「その他」にあります。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="exportDialog">閉じる</button></div></dialog>
-  <dialog id="codeDialog" aria-labelledby="codeTitle"><div class="dialog-head"><h2 id="codeTitle">サイトのコードを保存</h2><button class="close" data-close-dialog="codeDialog" aria-label="コードの保存画面を閉じる">×</button></div><div class="dialog-body"><p>版：2026-10-14-r28 · AIの速さ優先と読み取り時間の表示</p><p>iPhoneでは「ZIPを共有して保存」から「ファイルに保存」を選んでください。ZIPを開くと、中にmemory-lens.htmlがあります。</p><p id="codeProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="codeError" role="alert"></p><div class="code-methods"><a class="primary" id="codeZip" hidden>ZIPを保存</a><button id="codeShare" hidden>ZIPを共有して保存</button><button id="codePicker" hidden>HTMLの保存先を選ぶ</button><a id="codeHtml" hidden>HTMLを保存</a></div><a id="codeServerZip" href="./downloads/memory-lens-2026-10-14-r28.zip" download="memory-lens-2026-10-14-r28.zip" hidden>ZIPを直接ダウンロード</a><p class="detail-note">保存するのはサイトのコードです。読み込んだ写真・文字・撮影場所は含みません。写真の記録は「保存」で保存できます。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="codeDialog">閉じる</button></div></dialog>
+  <dialog id="codeDialog" aria-labelledby="codeTitle"><div class="dialog-head"><h2 id="codeTitle">サイトのコードを保存</h2><button class="close" data-close-dialog="codeDialog" aria-label="コードの保存画面を閉じる">×</button></div><div class="dialog-body"><p>版：2026-10-14-r29 · 一覧の読み取り状況と残り時間の目安</p><p>iPhoneでは「ZIPを共有して保存」から「ファイルに保存」を選んでください。ZIPを開くと、中にmemory-lens.htmlがあります。</p><p id="codeProgress" role="status" aria-live="polite"></p><p class="dialog-error" id="codeError" role="alert"></p><div class="code-methods"><a class="primary" id="codeZip" hidden>ZIPを保存</a><button id="codeShare" hidden>ZIPを共有して保存</button><button id="codePicker" hidden>HTMLの保存先を選ぶ</button><a id="codeHtml" hidden>HTMLを保存</a></div><a id="codeServerZip" href="./downloads/memory-lens-2026-10-14-r29.zip" download="memory-lens-2026-10-14-r29.zip" hidden>ZIPを直接ダウンロード</a><p class="detail-note">保存するのはサイトのコードです。読み込んだ写真・文字・撮影場所は含みません。写真の記録は「保存」で保存できます。</p></div><div class="dialog-footer"><button class="quiet" data-close-dialog="codeDialog">閉じる</button></div></dialog>
   <script>
     'use strict';
     // CORE START — UIから独立した、テキスト解析と検索の処理。
@@ -2457,7 +2457,7 @@ zen_garden=禅の庭園
     // PHONE TRANSFER END
 
     // BULK IMPORT START — 写真ごとの待ち行列と記録を同じ端末へ途中保存する。
-    const bulkState={job:null,entries:[],task:null,files:new Map(),ready:false,starting:false,owner:deviceRevision(),notice:'',lastRender:0};
+    const bulkState={job:null,entries:[],task:null,files:new Map(),ready:false,starting:false,owner:deviceRevision(),notice:'',lastRender:0,indicatorIndex:null};
     function bulkRemaining(){return bulkState.entries.filter(entry=>!['done','duplicate'].includes(entry.status)).length;}
     function bulkKey(file){return JSON.stringify([file.webkitRelativePath||file.name,file.size,file.lastModified||0]);}
     function bulkCheck(task){directCheck(task);if(bulkState.task!==task&&!task.remote)throw directCancelled();}
@@ -2492,7 +2492,8 @@ zen_garden=禅の庭園
     }
     function bulkSummary(){const count=status=>bulkState.entries.filter(entry=>entry.status===status).length;return count('done')+'枚を追加済み · 重複 '+count('duplicate')+'枚 · 待機 '+(count('waiting')+count('reading'))+'枚'+(count('unstaged')?' · 未保存 '+count('unstaged')+'枚':'')+(count('failed')?' · 開けない写真 '+count('failed')+'枚':'');}
     function bulkUpdateUI(){
-      if(!$('bulkFolder'))return;const target=!!directState.recordId,remaining=bulkRemaining();
+      bulkState.indicatorIndex=null;bulkUpdateRecordIndicators();
+      if(!$('bulkFolder'))return;const target=!!directState.recordId,remaining=bulkRemaining();$('directBack').textContent=target?'閉じる':'一覧に戻る';
       $('bulkFolder').hidden=target||!('webkitdirectory' in $('bulkFolderInput'));$('bulkFolder').disabled=state.ioBusy||!bulkState.ready;
       $('bulkStorageNote').hidden=target;$('bulkDiscard').hidden=target||!remaining;$('bulkDiscardButton').disabled=state.ioBusy;
       $('directStorageRow').hidden=target;$('phoneConnect').hidden=target;$('phoneConnect').disabled=state.ioBusy||!bulkState.ready;
@@ -2507,12 +2508,52 @@ zen_garden=禅の庭園
       for(const id of ['directMode','directLanguage','directQuality','directLayout','directDirection','directStorage'])$(id).disabled=state.ioBusy||!!remaining;
       $('directChoose').disabled=state.ioBusy||!bulkState.ready;$('directAINote').hidden=$('directQuality').value!=='local-ai';$('directImportAINote').hidden=target||$('directQuality').value!=='local-ai';bulkAIUpdateUI();
     }
+    function bulkReadingIndicator(record){
+      const normal={label:readingLabel(record),kind:''};
+      if(!record?.storageKey||bulkState.job?.settings.quality!=='local-ai'||bulkState.job.settings.mode!=='auto')return normal;
+      if(!bulkState.indicatorIndex)bulkState.indicatorIndex=new Map(bulkState.entries.filter(entry=>entry.recordKey).map(entry=>[entry.recordKey,entry]));
+      const entry=bulkState.indicatorIndex.get(record.storageKey);
+      if(!entry||entry.fingerprint!==record.fingerprint||entry.hash!==record.photo?.digest)return normal;
+      if(['waiting','reading'].includes(entry.status)){
+        const task=bulkState.task,active=task?.quality==='local-ai'&&!task.controller.signal.aborted;
+        if(active&&task.aiReading?.key===entry.key)return {label:'AI読み取り中',kind:'reading'};
+        return active?{label:'AI読み取り待ち',kind:'waiting'}:{label:'AI一時停止中 ·「残りを続ける」で再開',kind:'paused'};
+      }
+      if(entry.status==='done'&&record.textGuess?.engine==='qwen3-vl:4b-instruct')return {label:record.body?'AI読み取り完了 · '+record.body.length.toLocaleString('ja-JP')+'文字':'AI読み取り完了 · 文字なし',kind:'done'};
+      return normal;
+    }
+    function bulkUpdateRecordIndicators(){
+      const records=new Map(state.records.filter(record=>record.storageKey).map(record=>[record.storageKey,record]));
+      for(const node of document.querySelectorAll('[data-reading-record]')){
+        const record=records.get(node.dataset.readingRecord);if(!record)continue;const value=bulkReadingIndicator(record);
+        if(node.textContent!==value.label)node.textContent=value.label;node.dataset.readingKind=value.kind;
+      }
+      if(state.detailId&&$('detailDialog').open){const record=state.records.find(value=>value.id===state.detailId);if(record)$('detailReadingStatus').textContent=bulkReadingIndicator(record).label;}
+    }
+    function bulkAIOverview(now=Date.now()){
+      const entries=bulkState.entries,active=bulkState.task?.quality==='local-ai'&&!bulkState.task.controller.signal.aborted;
+      const saved=entries.filter(entry=>entry.recordKey).length,finished=entries.filter(entry=>entry.recordKey&&entry.status==='done').length;
+      const waiting=entries.filter(entry=>entry.recordKey&&['reading','waiting'].includes(entry.status)).length,notSaved=entries.filter(entry=>!entry.recordKey&&!['done','duplicate','failed'].includes(entry.status)).length;
+      const failed=entries.filter(entry=>entry.status==='failed').length;
+      const summary='写真保存済み '+saved+'枚 · 読み取り完了 '+finished+'枚 · '+(active?'残り ':'一時停止中 ')+waiting+'枚'+(notSaved?' · 写真の保存待ち '+notSaved+'枚':'')+(failed?' · 開けない写真 '+failed+'枚':'');
+      if(notSaved)return {summary,estimate:'写真を先に保存しています。保存した写真は「一覧に戻る」で見られます。'};
+      if(!waiting)return {summary,estimate:''};
+      const profile=bulkState.job?.settings.aiProfile||'standard';
+      const samples=(MemoryLensAISettings.recentTimings?.()||[]).filter(value=>value.profile===profile&&Number.isFinite(value.elapsedMs)&&value.elapsedMs>0).slice(0,4);
+      if(samples.length<2)return {summary,estimate:'残り時間は同じ速度設定で2枚読んでから表示します。読み取り済みの文字・写真名・日時では先に検索できます。'};
+      const average=samples.reduce((sum,value)=>sum+value.elapsedMs,0)/samples.length,current=active?bulkState.task.aiReading:null,elapsed=current?Math.max(0,now-current.startedAt):0;
+      if(current&&elapsed>average*1.5)return {summary,estimate:'現在の写真にいつもより時間がかかっています。止めたいときは「一時停止」を押せます。'};
+      const remaining=Math.max(10000,waiting*average-elapsed),duration=ms=>ms<90000?Math.max(10,Math.ceil(ms/10000)*10)+'秒':Math.ceil(ms/60000)+'分';
+      const lower=duration(remaining*.7),upper=duration(remaining*1.3);
+      return {summary,estimate:(active?'残りの目安：約':'再開後の目安：約')+(lower===upper?lower:lower+'〜'+upper)+'（直近の実績から。写真により変わります）'};
+    }
     function bulkAIUpdateUI(message=null){
-      const bar=$('importActivity');if(!bar)return;const task=bulkState.task,active=task?.quality==='local-ai',pending=bulkState.job?.settings.quality==='local-ai'&&bulkRemaining()>0;
+      const bar=$('importActivity');if(!bar)return;const task=bulkState.task,active=task?.quality==='local-ai'&&task.settings.mode==='auto',pending=bulkState.job?.settings.quality==='local-ai'&&bulkState.job.settings.mode==='auto'&&bulkRemaining()>0;
       bar.hidden=!active&&!pending;if(bar.hidden)return;
       if(message!==null)$('importActivityText').textContent=message;
       else if(!active){const waiting=bulkState.entries.filter(entry=>!['done','duplicate'].includes(entry.status));$('importActivityText').textContent='写真の追加待ち '+waiting.filter(entry=>!entry.recordKey).length+'枚 · AIの読み取り待ち '+waiting.filter(entry=>entry.recordKey).length+'枚。「残りを続ける」で再開できます。';}
       $('importActivityPause').textContent=active?'一時停止':'残りを続ける';$('importActivityPause').disabled=state.ioBusy&&!active;
+      const overview=bulkAIOverview();$('importActivitySummary').textContent=overview.summary;$('importActivityEstimate').textContent=overview.estimate;
     }
     function bulkOpenProgress(){
       if(bulkState.task?.quality==='local-ai'){if(!$('directDialog').open)$('directDialog').showModal();return;}
@@ -2549,7 +2590,7 @@ zen_garden=禅の庭園
         if(!record||record.fingerprint!==entry.fingerprint||record.photo?.digest!==entry.hash){await bulkWrite(task,{entry:{...entry,status:'done',message:'変更した記録を保ちました'}});await libraryTransaction(['pending'],'readwrite',(stores,result)=>{stores.pending.delete(entry.key);result(true);});continue;}
         task.caption='AIで文字を追加 '+(entry.index+1)+' / '+bulkState.entries.length+'枚 · '+entry.name;
         try{
-          await bulkWrite(task,{entry:{...entry,status:'reading',message:'PCのAIで読み取り中'}});bulkUpdateUI();
+          await bulkWrite(task,{entry:{...entry,status:'reading',message:'PCのAIで読み取り中'}});task.aiReading={key:entry.key,startedAt:Date.now()};bulkUpdateUI();directProgress(task,task.caption+' · AIの読み取りを開始します');
           let source=record.photo;
           if(entry.aiPrepared){const blob=await bulkPending(entry.key);if(!blob)throw new Error('AI用の一時画像がありません。写真を開いて再読してください。');owned=await directWait(loadPhoto(new File([blob],entry.name,{type:blob.type}),{signal:task.controller.signal}),task,30000,releasePhoto);source=owned;}
           canvas=await directWait(directBitmap(source,task),task,30000,value=>{value.width=0;value.height=0;});const evidence=MemoryLensReading.inspect(canvas);
@@ -2562,7 +2603,7 @@ zen_garden=禅の庭園
         }catch(error){
           if(error.name!=='AbortError'){const previous=record.readingStatus;record.readingStatus='failed';try{await bulkCommit(task,{...entry,status:'waiting',message:'写真は保存済み・AIを再開できます'});}catch(storageError){record.readingStatus=previous;throw storageError;}throw new Error(error.message+' 写真は保存済みです。AIの起動画面を確認して「残りを続ける」で再開できます。');}
           throw error;
-        }finally{if(canvas){canvas.width=0;canvas.height=0;}if(owned)releasePhoto(owned);}
+        }finally{task.aiReading=null;if(canvas){canvas.width=0;canvas.height=0;}if(owned)releasePhoto(owned);}
         await directWait(new Promise(resolve=>setTimeout(resolve,0)),task,1000);
       }
     }
@@ -2830,7 +2871,7 @@ zen_garden=禅の庭園
     function closeRecordsNow(){resetRecordSelection({discardUndo:true});closeRecordEdit();closeCalendar();for(const record of state.records)if(record.photo)releasePhoto(record.photo);state.records=[];state.photoTarget=null;state.detailId=null;$('detailPhoto').replaceChildren();$('detailPhoto').hidden=true;if($('detailDialog').open)$('detailDialog').close();$('search').value='';resetFilters();setStatus('読み込んだデータを閉じました。端末に保存した記録ファイルと写真はそのままです。');}
     function showPaste(){if(state.ioBusy)return;$('pasteError').textContent='';$('pasteDialog').showModal();$('paste').focus();}
     function useDemo(){if(state.ioBusy)return;let added=0;for(const text of demoTexts){if(addRecord(text,'サンプルデータ',true))added++;}render();setStatus(added?`${added}件のサンプルを読み込みました。架空のデータです。`:'サンプルはすでに読み込まれています。');}
-    function showDetail(record){if(state.detailId!==record.id)detailHitsVisible=true;state.detailId=record.id;detailHitsQuery=$('search').value;$('detailEdit').disabled=state.ioBusy;$('detailCalendar').disabled=state.ioBusy;$('detailTitle').textContent=record.name;$('detailDate').textContent=MemoryLensCore.dateLabel(record);$('detailLocation').replaceChildren(highlighted(record.location||'場所の記録なし',MemoryLensCore.queryTokens($('search').value)));$('detailEnvironment').textContent=MemoryLensAuto.environmentLabel(record);$('detailReadingStatus').textContent=readingLabel(record);$('detailSource').textContent=record.source;$('detailText').replaceChildren(highlighted(record.body||'読み取れた文字がありません。',MemoryLensCore.queryTokens($('search').value)));$('detailPhoto').replaceChildren();$('detailPhoto').hidden=!record.photo;if(record.photo)$('detailPhoto').append(photoFrame(record,MemoryLensCore.queryTokens($('search').value)),element('p','',`選んだ写真：${record.photo.name}`),...(record.photo.original?[element('p','detail-note','軽量保存 · 表示中の写真から文字を読み直せます。細かい文字は、任意で元写真を選ぶと詳しく読めます。')]:[]));updatePhotoHitsDetail(record,MemoryLensCore.queryTokens($('search').value));updateContentTagsDetail(record);updateSceneDetail(record);if(!$('detailDialog').open)$('detailDialog').showModal();}
+    function showDetail(record){if(state.detailId!==record.id)detailHitsVisible=true;state.detailId=record.id;detailHitsQuery=$('search').value;$('detailEdit').disabled=state.ioBusy;$('detailCalendar').disabled=state.ioBusy;$('detailTitle').textContent=record.name;$('detailDate').textContent=MemoryLensCore.dateLabel(record);$('detailLocation').replaceChildren(highlighted(record.location||'場所の記録なし',MemoryLensCore.queryTokens($('search').value)));$('detailEnvironment').textContent=MemoryLensAuto.environmentLabel(record);$('detailReadingStatus').textContent=bulkReadingIndicator(record).label;$('detailSource').textContent=record.source;$('detailText').replaceChildren(highlighted(record.body||(['reading','waiting','paused'].includes(bulkReadingIndicator(record).kind)?'AIの読み取りが終わると、ここに文字が表示されます。':'読み取れた文字がありません。'),MemoryLensCore.queryTokens($('search').value)));$('detailPhoto').replaceChildren();$('detailPhoto').hidden=!record.photo;if(record.photo)$('detailPhoto').append(photoFrame(record,MemoryLensCore.queryTokens($('search').value)),element('p','',`選んだ写真：${record.photo.name}`),...(record.photo.original?[element('p','detail-note','軽量保存 · 表示中の写真から文字を読み直せます。細かい文字は、任意で元写真を選ぶと詳しく読めます。')]:[]));updatePhotoHitsDetail(record,MemoryLensCore.queryTokens($('search').value));updateContentTagsDetail(record);updateSceneDetail(record);if(!$('detailDialog').open)$('detailDialog').showModal();}
     // RECORD SELECTION START — 選択削除を保存成功後に確定し、直前の削除を戻せるようにする。
     const recordSelection={active:false,ids:new Set(),pending:null,undo:null};
     function recordSelectionBusy(){return state.ioBusy||deviceState.action||!!transferState.task||!!bulkState.task;}
@@ -2887,7 +2928,7 @@ zen_garden=禅の庭園
         if(record.photo)card.append(element('p','record-location',MemoryLensAuto.environmentLabel(record)));
         card.append(contentTagView(record,tokens));
         if(record.body){const excerpt=element('p','excerpt');const snippet=MemoryLensCore.snippet(record,tokens);excerpt.append(highlighted(snippet.length>140?snippet.slice(0,140)+' …':snippet,tokens));card.append(excerpt);}
-        const bottom=element('div','record-bottom');bottom.append(element('span','',readingLabel(record)));const open=element('button','','開く');open.setAttribute('aria-label',`${record.name}を開く`);open.addEventListener('click',()=>showDetail(record));bottom.append(open);card.append(bottom);root.append(card);
+        const bottom=element('div','record-bottom');const reading=element('span','',bulkReadingIndicator(record).label);reading.dataset.readingRecord=record.storageKey||'';reading.dataset.readingKind=bulkReadingIndicator(record).kind;bottom.append(reading);const open=element('button','','開く');open.setAttribute('aria-label',`${record.name}を開く`);open.addEventListener('click',()=>showDetail(record));bottom.append(open);card.append(bottom);root.append(card);
       }
     }
     // RECORD EDIT START — 写真の対応を保ち、保存するまで元の記録を変えない。
@@ -3570,13 +3611,13 @@ zen_garden=禅の庭園
         $('aiSpeed').addEventListener('change',()=>{const next=$('aiSpeed').value==='fast'?'fast':'standard';try{localStorage.setItem(profileKey,next);$('aiSpeedNote').textContent='次に開始する取り込み・再読から「'+profileName(next)+'」を使います。途中の取り込みは開始時の設定で続けます。';}catch{$('aiSpeed').value=profile();$('aiSpeedNote').textContent='設定を保存できませんでした。ブラウザーの保存設定を確認してください。';}});
         dialog.addEventListener('close',cancel);for(const close of document.querySelectorAll('[data-close-ai]'))close.addEventListener('click',()=>dialog.close());
       }
-      return {initialize,enabled,read,profile,timingLabel,endpoint,model};
+      return {initialize,enabled,read,profile,timingLabel,recentTimings:()=>timings.map(value=>({...value})),endpoint,model};
     })();
     function initializeAISettings(){MemoryLensAISettings.initialize();}
     // AI SETTINGS END
 
     // CODE DOWNLOAD START — 起動時のコードだけを保存し、写真や検索結果を含めない。
-    const CODE_RELEASE='2026-10-14-r28';
+    const CODE_RELEASE='2026-10-14-r29';
     const codeState={template:null,epoch:0,htmlFile:null,zipFile:null,urls:[]};
     const CODE_MODEL_MARKER='__MEMORY_LENS_ORIGINAL_MODEL__';
     const CODE_OBJECT_MARKER='__MEMORY_LENS_ORIGINAL_OBJECT_MODEL__';
