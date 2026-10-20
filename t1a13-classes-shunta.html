@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T1A13 Classes by Shunta</title>
+</head>
+<body>
+
+<h2 align=center>t1a13-Classes-by-Fred.html</h2>
+
+<a href="">Find a good reference to Javascript Classes</a><br>
+Classes are both Objects that store variables (Called Properties) and Functions
+that work on the variables (called Methods)
+
+<h4>Example working Classes code</h4>
+Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
+<input type=button value="Example Class Set and Show Class Animal" onClick="{
+
+  class myAnimal {
+    constructor(passName, passAge) {
+      this.myName = passName;
+      this.myAge = passAge;
+    }
+    myShow(){
+      document.getElementById('myDiv01').innerHTML = 'Hello '+ this.myName + '. You are ' + this.myAge + ' years old<br>'
+    }
+  } // end class myAnimal
+
+  myDog = new myAnimal('Snickers', 5)
+  myDog.myShow()
+
+}">
+
+<div id="myDiv01">...</div>
+
+<hr>
+<h3>My additions by Shunta</h3>
+<p>October 20, 2026</p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes" target="_blank" rel="noopener">JavaScript Classes reference</a><br>
+<p>I made a game player class. The buttons below use its properties and methods.</p>
+
+<script>
+  class myGamePlayer {
+    constructor(myName, myHealth) {
+      this.myName = myName;
+      this.myHealth = myHealth;
+      this.myMaxHealth = 100;
+      this.myLevel = 1;
+      this.myItems = ['Sword', 'Potion'];
+    }
+
+    myShow() {
+      return this.myName + '\nHealth: ' + this.myHealth + '/' + this.myMaxHealth
+        + '\nLevel: ' + this.myLevel + '\nItems: ' + this.myItems.join(', ');
+    }
+
+    myTakeDamage(myAmount) {
+      this.myHealth -= myAmount;
+      if (this.myHealth < 0) {
+        this.myHealth = 0;
+      }
+    }
+
+    myHeal(myAmount) {
+      this.myHealth += myAmount;
+      if (this.myHealth > this.myMaxHealth) {
+        this.myHealth = this.myMaxHealth;
+      }
+    }
+
+    myLevelUp() {
+      this.myLevel++;
+    }
+
+    myAddItem(myItem) {
+      this.myItems.push(myItem);
+    }
+  }
+
+  let myHero = new myGamePlayer('Knight', 50);
+</script>
+
+<h4>2. Create a Player</h4>
+<label for="myName02">Name:</label>
+<input type=text id="myName02" value="Shunta" maxlength="30"><br>
+<label for="myHealth02">Starting health (0 to 100):</label>
+<input type=number id="myHealth02" value="50" min="0" max="100" step="any"><br>
+<input type=button id="myButton02" value="Create player" onclick="{
+  let myName = document.getElementById('myName02').value.trim()
+  let myHealth = parseFloat(document.getElementById('myHealth02').value)
+  if (myName === '' || !Number.isFinite(myHealth) || myHealth < 0 || myHealth > 100) {
+    document.getElementById('myDiv02').textContent = 'Enter a name and health from 0 to 100.'
+    return
+  }
+  myHero = new myGamePlayer(myName, myHealth)
+  document.getElementById('myDiv02').textContent = myHero.myShow()
+}">
+<pre id="myDiv02">...</pre>
+
+<h4>3. Show the Player</h4>
+<input type=button id="myButton03" value="Show player" onclick="{
+  document.getElementById('myDiv03').textContent = myHero.myShow()
+}">
+<pre id="myDiv03">...</pre>
+
+<h4>4. Take Damage</h4>
+<label for="myDamage04">Damage:</label>
+<input type=number id="myDamage04" value="10" min="1" step="any"><br>
+<input type=button id="myButton04" value="Take damage" onclick="{
+  let myDamage = parseFloat(document.getElementById('myDamage04').value)
+  if (!Number.isFinite(myDamage) || myDamage <= 0) {
+    document.getElementById('myDiv04').textContent = 'Enter a positive number.'
+    return
+  }
+  myHero.myTakeDamage(myDamage)
+  document.getElementById('myDiv04').textContent = myHero.myShow()
+  if (myHero.myHealth === 0) {
+    document.getElementById('myDiv04').textContent += '\nGame Over!'
+  }
+}">
+<pre id="myDiv04">...</pre>
+
+<h4>5. Restore Health</h4>
+<label for="myHeal05">HP to restore:</label>
+<input type=number id="myHeal05" value="25" min="1" step="any"><br>
+<input type=button id="myButton05" value="Heal player" onclick="{
+  let myHeal = parseFloat(document.getElementById('myHeal05').value)
+  if (!Number.isFinite(myHeal) || myHeal <= 0) {
+    document.getElementById('myDiv05').textContent = 'Enter a positive number.'
+    return
+  }
+  myHero.myHeal(myHeal)
+  document.getElementById('myDiv05').textContent = myHero.myShow()
+}">
+<pre id="myDiv05">...</pre>
+
+<h4>6. Level Up</h4>
+<input type=button id="myButton06" value="Level up" onclick="{
+  myHero.myLevelUp()
+  document.getElementById('myDiv06').textContent = myHero.myShow()
+}">
+<pre id="myDiv06">...</pre>
+
+<h4>7. Add an Item</h4>
+<label for="myItem07">New item:</label>
+<input type=text id="myItem07" value="Shield" maxlength="30"><br>
+<input type=button id="myButton07" value="Add item" onclick="{
+  let myItem = document.getElementById('myItem07').value.trim()
+  if (myItem === '') {
+    document.getElementById('myDiv07').textContent = 'Type an item first.'
+    return
+  }
+  myHero.myAddItem(myItem)
+  document.getElementById('myDiv07').textContent = myHero.myShow()
+}">
+<pre id="myDiv07">...</pre>
+
+<h4>8. Two Objects from One Class</h4>
+<input type=button id="myButton08" value="Show two players" onclick="{
+  let myMage = new myGamePlayer('Mage', 80)
+  let myArcher = new myGamePlayer('Archer', 60)
+  myMage.myTakeDamage(20)
+  myMage.myAddItem('Staff')
+  document.getElementById('myDiv08').textContent =
+    myMage.myShow() + '\n\n' + myArcher.myShow()
+}">
+<pre id="myDiv08">...</pre>
+<p>Only Mage takes damage and receives a Staff. Each player has its own values and items.</p>
+
+<hr>
+<p>Properties store values, such as myHealth. Methods do things, such as myTakeDamage().</p>
+<p>The constructor sets the starting values when I use new. The buttons share myHero, so changes stay until I create a new player or refresh the page.</p>
+<a href="index.html">Back to Home</a>
+
+</body>
+</html>
