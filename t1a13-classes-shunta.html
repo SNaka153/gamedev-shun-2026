@@ -4,9 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>T1A13 Classes by Shunta</title>
+<style>
+/* Only my added examples use these styles. */
+#myAdditions { background-color: #f0effa; color: #28323c; font-family: Arial, sans-serif; padding: 20px; margin-top: 30px; }
+#myAdditions h3, #myAdditions h4 { color: #50468a; }
+#myAdditions p { line-height: 1.5; }
+#myAdditions label { display: block; }
+#myAdditions input { margin: 4px 0; max-width: 100%; box-sizing: border-box; }
+#myAdditions input[type=text] { width: 200px; padding: 5px; }
+#myAdditions input[type=number] { width: 80px; padding: 5px; }
+#myAdditions input[type=button] { background-color: #e0dcf2; color: #50468a; border: 1px solid #50468a; padding: 6px 10px; cursor: pointer; white-space: normal; }
+#myAdditions .myOutput, #myAdditions pre { background-color: white; border: 1px solid #bbc6d0; padding: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+#myAdditions hr { border: 0; border-top: 1px solid #bbc6d0; margin: 24px 0; }
+</style>
 </head>
 <body>
-
 <h2 align=center>t1a13-Classes-by-Fred.html</h2>
 
 <a href="">Find a good reference to Javascript Classes</a><br>
@@ -34,12 +46,10 @@ Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
 
 <div id="myDiv01">...</div>
 
-<hr>
+<section id="myAdditions">
 <h3>My additions by Shunta</h3>
-<p>October 20, 2026</p>
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes" target="_blank" rel="noopener">JavaScript Classes reference</a><br>
-<p>I made a game player class. The buttons below use its properties and methods.</p>
-
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes" target="_blank" rel="noopener">JavaScript reference</a>
+<p>I made a player class. The buttons use its properties and methods.</p>
 <script>
   class myGamePlayer {
     constructor(myName, myHealth) {
@@ -81,11 +91,12 @@ Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
   let myHero = new myGamePlayer('Knight', 50);
 </script>
 
-<h4>2. Create a Player</h4>
+<h4>1. Create a Player</h4>
+<p>Pass a name and starting HP to the <code>constructor</code>.</p>
 <label for="myName02">Name:</label>
-<input type=text id="myName02" value="Shunta" maxlength="30"><br>
+<input type=text id="myName02" value="Shunta" maxlength="30">
 <label for="myHealth02">Starting health (0 to 100):</label>
-<input type=number id="myHealth02" value="50" min="0" max="100" step="any"><br>
+<input type=number id="myHealth02" value="50" min="0" max="100" step="any">
 <input type=button id="myButton02" value="Create player" onclick="{
   let myName = document.getElementById('myName02').value.trim()
   let myHealth = parseFloat(document.getElementById('myHealth02').value)
@@ -96,17 +107,23 @@ Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
   myHero = new myGamePlayer(myName, myHealth)
   document.getElementById('myDiv02').textContent = myHero.myShow()
 }">
-<pre id="myDiv02">...</pre>
+<pre id="myDiv02" aria-live="polite">...</pre>
 
-<h4>3. Show the Player</h4>
+<hr>
+
+<h4>2. Show the Player</h4>
+<p>Call <code>myHero.myShow()</code> to read the current player.</p>
 <input type=button id="myButton03" value="Show player" onclick="{
   document.getElementById('myDiv03').textContent = myHero.myShow()
 }">
-<pre id="myDiv03">...</pre>
+<pre id="myDiv03" aria-live="polite">...</pre>
 
-<h4>4. Take Damage</h4>
+<hr>
+
+<h4>3. Take Damage</h4>
+<p>Call <code>myTakeDamage()</code>. HP cannot go below zero.</p>
 <label for="myDamage04">Damage:</label>
-<input type=number id="myDamage04" value="10" min="1" step="any"><br>
+<input type=number id="myDamage04" value="10" min="1" step="any">
 <input type=button id="myButton04" value="Take damage" onclick="{
   let myDamage = parseFloat(document.getElementById('myDamage04').value)
   if (!Number.isFinite(myDamage) || myDamage <= 0) {
@@ -119,11 +136,14 @@ Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
     document.getElementById('myDiv04').textContent += '\nGame Over!'
   }
 }">
-<pre id="myDiv04">...</pre>
+<pre id="myDiv04" aria-live="polite">...</pre>
 
-<h4>5. Restore Health</h4>
+<hr>
+
+<h4>4. Restore Health</h4>
+<p>Call <code>myHeal()</code>. HP cannot go above 100.</p>
 <label for="myHeal05">HP to restore:</label>
-<input type=number id="myHeal05" value="25" min="1" step="any"><br>
+<input type=number id="myHeal05" value="25" min="1" step="any">
 <input type=button id="myButton05" value="Heal player" onclick="{
   let myHeal = parseFloat(document.getElementById('myHeal05').value)
   if (!Number.isFinite(myHeal) || myHeal <= 0) {
@@ -133,18 +153,24 @@ Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
   myHero.myHeal(myHeal)
   document.getElementById('myDiv05').textContent = myHero.myShow()
 }">
-<pre id="myDiv05">...</pre>
+<pre id="myDiv05" aria-live="polite">...</pre>
 
-<h4>6. Level Up</h4>
+<hr>
+
+<h4>5. Level Up</h4>
+<p>Call <code>myLevelUp()</code> to increase the level.</p>
 <input type=button id="myButton06" value="Level up" onclick="{
   myHero.myLevelUp()
   document.getElementById('myDiv06').textContent = myHero.myShow()
 }">
-<pre id="myDiv06">...</pre>
+<pre id="myDiv06" aria-live="polite">...</pre>
 
-<h4>7. Add an Item</h4>
+<hr>
+
+<h4>6. Add an Item</h4>
+<p>Pass an item to <code>myAddItem()</code> to fill the inventory.</p>
 <label for="myItem07">New item:</label>
-<input type=text id="myItem07" value="Shield" maxlength="30"><br>
+<input type=text id="myItem07" value="Shield" maxlength="30">
 <input type=button id="myButton07" value="Add item" onclick="{
   let myItem = document.getElementById('myItem07').value.trim()
   if (myItem === '') {
@@ -154,9 +180,12 @@ Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
   myHero.myAddItem(myItem)
   document.getElementById('myDiv07').textContent = myHero.myShow()
 }">
-<pre id="myDiv07">...</pre>
+<pre id="myDiv07" aria-live="polite">...</pre>
 
-<h4>8. Two Objects from One Class</h4>
+<hr>
+
+<h4>7. Two Objects from One Class</h4>
+<p>Create two players with <code>new</code>. Each has its own properties.</p>
 <input type=button id="myButton08" value="Show two players" onclick="{
   let myMage = new myGamePlayer('Mage', 80)
   let myArcher = new myGamePlayer('Archer', 60)
@@ -165,13 +194,15 @@ Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
   document.getElementById('myDiv08').textContent =
     myMage.myShow() + '\n\n' + myArcher.myShow()
 }">
-<pre id="myDiv08">...</pre>
+<pre id="myDiv08" aria-live="polite">...</pre>
 <p>Only Mage takes damage and receives a Staff. Each player has its own values and items.</p>
 
 <hr>
+<h4>What I used</h4>
 <p>Properties store values, such as myHealth. Methods do things, such as myTakeDamage().</p>
-<p>The constructor sets the starting values when I use new. The buttons share myHero, so changes stay until I create a new player or refresh the page.</p>
+<p>The constructor sets the starting values when I use new. The buttons share myHero until I create a new player or refresh.</p>
 <a href="index.html">Back to Home</a>
+</section>
 
 </body>
 </html>
