@@ -5,13 +5,54 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>T1A12 Objects by Shunta</title>
 <style>
-  body { background-color: aliceblue; color: navy; font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
-  h1 { text-align: center; }
-  h3 { color: green; }
-  input { margin: 4px 0; max-width: 100%; }
-  input[type=number] { width: 75px; }
-  .myOutput { white-space: pre-wrap; margin: 10px 0; overflow-wrap: anywhere; }
+/* Only my added examples use these styles. */
+#myAdditions { background-color: #edf7f3; color: #28323c; font-family: Arial, sans-serif; padding: 20px; margin-top: 30px; }
+#myAdditions h3, #myAdditions h4 { color: #24624e; }
+#myAdditions p { line-height: 1.5; }
+#myAdditions label { display: block; }
+#myAdditions input { margin: 4px 0; max-width: 100%; box-sizing: border-box; }
+#myAdditions input[type=text] { width: 200px; padding: 5px; }
+#myAdditions input[type=number] { width: 80px; padding: 5px; }
+#myAdditions input[type=button] { background-color: #d2e9df; color: #24624e; border: 1px solid #24624e; padding: 6px 10px; cursor: pointer; white-space: normal; }
+#myAdditions .myOutput, #myAdditions pre { background-color: white; border: 1px solid #bbc6d0; padding: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+#myAdditions hr { border: 0; border-top: 1px solid #bbc6d0; margin: 24px 0; }
 </style>
+</head>
+<body>
+<h2 align=center>t1a12-objects-fred.html</h2>
+<script>
+// What might be a good idea to declare here?
+</script>
+
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects">Good reference to Javascript Objects (you find one)</a><br>
+Objects are stored named variables
+
+<h4> Example working Objects code</h4>
+Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
+
+<input type=button value="Example Object Set and Show" onClick="{
+  let myPerson = {
+    'firstName' : 'John',
+    'lastName'  : 'Doe',
+    'age'      : 50,
+    'eyeColor' : 'blue'
+  }
+
+  document.getElementById('myDiv01').innerHTML = '<br>myPerson Object has properties: <br>'
+  document.getElementById('myDiv01').innerHTML += 'firstName: ' + myPerson.firstName + '<br>'
+  document.getElementById('myDiv01').innerHTML += 'You do the others <br> '
+}">
+
+<div id="myDiv01">...</div>
+
+<b>Lets talk local and global variables, why might it be best to declare the object
+in the script tag?</b>
+<br>
+
+<section id="myAdditions">
+<h3>My additions by Shunta</h3>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects" target="_blank" rel="noopener">JavaScript reference</a>
+<p>These examples share myPlayer. After changing something, click Show player to see the new values.</p>
 <script>
   // The buttons below share this object.
   let myPlayer = {
@@ -23,39 +64,21 @@
     position: { x: 0, y: 0 }
   }
 </script>
-</head>
-<body>
 
-<h6>Version 0.0.1</h6>
-<h1>t1a12-objects-shunta.html</h1>
-<p>Shunta Nakamura · October 19, 2026</p>
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects" target="_blank" rel="noopener">Good reference to JavaScript Objects</a><br>
-<p>Objects store values using names called properties.</p>
-
-<h3>1. Teacher's Example: Set and Show an Object</h3>
-<p>I added the other three properties to the output.</p>
-<label for="myText01">Nothing:</label>
-<input type="text" id="myText01" value="Useless at the moment"><br>
-
-<input type="button" id="myButton01" value="Example Object Set and Show" onClick="{
-  let myPerson = {
-    'firstName': 'John',
-    'lastName': 'Doe',
-    'age': 50,
-    'eyeColor': 'blue'
-  }
-
-  document.getElementById('myDiv01').innerHTML = '<br>myPerson Object has properties:<br>'
-  document.getElementById('myDiv01').innerHTML += 'firstName: ' + myPerson.firstName + '<br>'
-  document.getElementById('myDiv01').innerHTML += 'lastName: ' + myPerson.lastName + '<br>'
-  document.getElementById('myDiv01').innerHTML += 'age: ' + myPerson.age + '<br>'
-  document.getElementById('myDiv01').innerHTML += 'eyeColor: ' + myPerson.eyeColor + '<br>'
+<h4>1. Complete the object</h4>
+<p>Show all four properties using <code>myPerson.property</code>.</p>
+<input type="button" id="myButton00" value="Show all properties" onclick="{
+  let myPerson = { firstName: 'John', lastName: 'Doe', age: 50, eyeColor: 'blue' }
+  document.getElementById('myDiv00').textContent =
+    'firstName: ' + myPerson.firstName + '\nlastName: ' + myPerson.lastName
+    + '\nage: ' + myPerson.age + '\neyeColor: ' + myPerson.eyeColor
 }">
-<div id="myDiv01" class="myOutput" aria-live="polite">...</div>
+<div id="myDiv00" class="myOutput" aria-live="polite">John, Doe, 50, blue.</div>
 
 <hr>
-<h3>2. Show My Player</h3>
-<p>The remaining examples use myPlayer, declared in the script at the top.</p>
+
+<h4>2. Show My Player</h4>
+<p>Read the current values stored in <code>myPlayer</code>.</p>
 <input type="button" id="myButton02" value="Show player" onclick="{
   document.getElementById('myDiv02').textContent =
     'Name: ' + myPlayer.name
@@ -67,7 +90,9 @@
 <div id="myDiv02" class="myOutput" aria-live="polite">Click to see the current values.</div>
 
 <hr>
-<h3>3. Change the Player's Name</h3>
+
+<h4>3. Change the Player's Name</h4>
+<p>Assign a new value to <code>myPlayer.name</code>.</p>
 <label for="myName03">New name:</label>
 <input type="text" id="myName03" value="Shunta" maxlength="30">
 <input type="button" id="myButton03" value="Change name" onclick="{
@@ -82,7 +107,9 @@
 <div id="myDiv03" class="myOutput" aria-live="polite">Change myPlayer.name.</div>
 
 <hr>
-<h3>4. Take Damage</h3>
+
+<h4>4. Take Damage</h4>
+<p>Subtract from <code>health</code>. HP stays at or above zero.</p>
 <label for="myDamage04">Damage:</label>
 <input type="number" id="myDamage04" value="10" min="1" step="1">
 <input type="button" id="myButton04" value="Take damage" onclick="{
@@ -103,7 +130,9 @@
 <div id="myDiv04" class="myOutput" aria-live="polite">Health starts at 50.</div>
 
 <hr>
-<h3>5. Use a Potion</h3>
+
+<h4>5. Use a Potion</h4>
+<p>Add to <code>health</code>, up to <code>maxHealth</code>.</p>
 <label for="myHeal05">HP to restore:</label>
 <input type="number" id="myHeal05" value="25" min="1" step="1">
 <input type="button" id="myButton05" value="Restore health" onclick="{
@@ -121,7 +150,9 @@
 <div id="myDiv05" class="myOutput" aria-live="polite">This button restores HP up to 100.</div>
 
 <hr>
-<h3>6. Level Up</h3>
+
+<h4>6. Level Up</h4>
+<p>Use <code>myPlayer.level++</code> to increase the level.</p>
 <input type="button" id="myButton06" value="Level up" onclick="{
   myPlayer.level++
   document.getElementById('myDiv06').textContent = myPlayer.name + ' is now level ' + myPlayer.level
@@ -129,7 +160,9 @@
 <div id="myDiv06" class="myOutput" aria-live="polite">Level starts at 1.</div>
 
 <hr>
-<h3>7. An Array Inside an Object</h3>
+
+<h4>7. An Array Inside an Object</h4>
+<p>Add an item to the <code>inventory</code> array.</p>
 <label for="myItem07">New item:</label>
 <input type="text" id="myItem07" value="Potion" maxlength="30">
 <input type="button" id="myButton07" value="Add an item" onclick="{
@@ -147,7 +180,9 @@
 <div id="myDiv07" class="myOutput" aria-live="polite">Starting items: Sword, Shield, Potion.</div>
 
 <hr>
-<h3>8. An Object Inside an Object</h3>
+
+<h4>8. An Object Inside an Object</h4>
+<p>Update the nested object: <code>position.x</code> and <code>position.y</code>.</p>
 <label for="myX08">X:</label>
 <input type="number" id="myX08" value="5" step="any">
 <label for="myY08">Y:</label>
@@ -167,11 +202,11 @@
 <div id="myDiv08" class="myOutput" aria-live="polite">Change myPlayer.position.x and myPlayer.position.y.</div>
 
 <hr>
-<h3>Local and Global Variables</h3>
-<p>myPerson is local to the first button's onclick code. Clicking that button creates a new object each time.</p>
-<p>myPlayer is declared outside the buttons in a script. The buttons share this object, so a change made by one button can be read by another.</p>
-<p>Try taking damage, then click Show player to check the new health. Refreshing the page resets the player.</p>
+<h4>Local and global variables</h4>
+<p>myPerson is local to its button. A new object is created each time.</p>
+<p>myPlayer is declared outside the buttons. All the player buttons can use and change it. Refreshing the page resets it.</p>
 <a href="index.html">Back to Home</a>
+</section>
 
 </body>
 </html>
