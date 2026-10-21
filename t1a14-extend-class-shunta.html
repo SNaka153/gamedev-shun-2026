@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T1A14 Extend Class by Shunta</title>
+<style>
+/* Only my added examples use these styles. */
+#myAdditions { background-color: #edf4fb; color: #28323c; font-family: Arial, sans-serif; padding: 20px; margin-top: 30px; }
+#myAdditions h3, #myAdditions h4 { color: #2c5d7d; }
+#myAdditions p { line-height: 1.5; }
+#myAdditions label { display: block; }
+#myAdditions input { margin: 4px 0; max-width: 100%; box-sizing: border-box; }
+#myAdditions input[type=text] { width: 200px; padding: 5px; }
+#myAdditions input[type=number] { width: 80px; padding: 5px; }
+#myAdditions input[type=button] { background-color: #dbeaf6; color: #2c5d7d; border: 1px solid #2c5d7d; padding: 6px 10px; cursor: pointer; white-space: normal; }
+#myAdditions pre { background-color: white; border: 1px solid #bbc6d0; padding: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+#myAdditions hr { border: 0; border-top: 1px solid #bbc6d0; margin: 24px 0; }
+</style>
+</head>
+<body>
+
+<script>
+// using a script tag to make the class global
+class myAnimal {
+  constructor(passName, passAge) {
+    this.myName = passName;
+    this.myAge = passAge;
+  }
+  myShow(){
+    document.getElementById('myDiv01').innerHTML = 'Hello '+ this.myName+'<br>'
+  }
+} // end class myAnimal
+</script>
+
+<h2 align=center>t1a14-extend-class-by-fred.html</h2>
+Extending a pre-existing Class<br>
+
+<h4> Example working Classes code</h4>
+
+<input type=button value="Example Class Set and Show Class Animal" onClick="{
+  let myDog = new myAnimal('Snickers', 5)
+  myDog.myShow()
+}">
+
+<h4> Example extending Class code</h4>
+Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
+
+<input type=button value="Example Extend Class Animal" onclick="{
+  class myCat extends myAnimal {
+    myShow(){
+      document.getElementById('myDiv01').innerHTML = this.myName + ' is a great cat<br>'
+    }
+  } // end extended class myCat
+
+  let myPet = new myCat('Fluffy', 14)
+  myPet.myShow()
+}">
+
+<div id="myDiv01">...</div>
+
+<section id="myAdditions">
+<h3>My additions by Shunta</h3>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends" target="_blank" rel="noopener">Good reference to JavaScript class inheritance</a>
+<p>I extended myAnimal to make a bird and a fish. Both use the name and age set by the parent constructor.</p>
+
+<script>
+  class myBird extends myAnimal {
+    myShow() {
+      return this.myName + ' is a bird. Age: ' + this.myAge;
+    }
+    mySpeak() {
+      return this.myName + ' says Chirp!';
+    }
+  }
+
+  class myFish extends myAnimal {
+    myShow() {
+      return this.myName + ' is a fish. Age: ' + this.myAge;
+    }
+  }
+
+  let myBirdPet = new myBird('Kiwi', 2);
+</script>
+
+<h4>1. Create a Bird</h4>
+<p>myBird inherits the constructor and changes the myShow method.</p>
+<label for="myName02">Name:</label>
+<input type=text id="myName02" value="Kiwi" maxlength="30">
+<label for="myAge02">Age:</label>
+<input type=number id="myAge02" value="2" min="0" step="1">
+<input type=button value="Create bird" onclick="{
+  let myName = document.getElementById('myName02').value.trim()
+  let myAge = parseInt(document.getElementById('myAge02').value)
+  if (myName === '' || isNaN(myAge) || myAge < 0) {
+    document.getElementById('myDiv02').textContent = 'Enter a name and an age of zero or more.'
+    return
+  }
+  myBirdPet = new myBird(myName, myAge)
+  document.getElementById('myDiv02').textContent = myBirdPet.myShow()
+}">
+<pre id="myDiv02" aria-live="polite">...</pre>
+
+<hr>
+<h4>2. Add a New Method</h4>
+<p>mySpeak is an extra method in myBird.</p>
+<input type=button value="Bird sound" onclick="{
+  document.getElementById('myDiv03').textContent = myBirdPet.mySpeak()
+}">
+<pre id="myDiv03" aria-live="polite">Click to hear what the bird says in text.</pre>
+
+<hr>
+<h4>3. Change an Inherited Property</h4>
+<p>myAge was set by the parent constructor. This button adds one year.</p>
+<input type=button value="Birthday" onclick="{
+  myBirdPet.myAge++
+  document.getElementById('myDiv04').textContent = myBirdPet.myShow()
+}">
+<pre id="myDiv04" aria-live="polite">The bird starts at age 2.</pre>
+
+<hr>
+<h4>4. Two Child Classes</h4>
+<p>myBird and myFish extend the same parent class, but their myShow methods return different text.</p>
+<input type=button value="Show bird and fish" onclick="{
+  let myFishPet = new myFish('Bubbles', 1)
+  document.getElementById('myDiv05').textContent =
+    myBirdPet.myShow() + '\n' + myFishPet.myShow()
+}">
+<pre id="myDiv05" aria-live="polite">...</pre>
+
+<hr>
+<h4>What I learned</h4>
+<p>extends lets a child class reuse a parent class. Writing a method with the same name changes what that method does for the child.</p>
+<p>The bird buttons share myBirdPet. Create a new bird or refresh the page to start again.</p>
+<a href="index.html">Back to Home</a>
+</section>
+
+</body>
+</html>
