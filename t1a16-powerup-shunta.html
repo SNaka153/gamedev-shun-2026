@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>T1A16 Power Up</title>
+
+<script>
+let myHero = {
+    name: "Captain Code",
+    power: 100,
+    comment: "Ready for training!"
+};
+
+function trainHero() {
+    myHero.power = myHero.power - 10;
+
+    if (myHero.power > 70) {
+        myHero.comment = "High power!";
+    }
+    else if (myHero.power > 30) {
+        myHero.comment = "Medium power!";
+    }
+    else if (myHero.power > 0) {
+        myHero.comment = "Low power!";
+    }
+    else {
+        myHero.comment = "Out of power!";
+        alert("Game Over! Power is resetting!");
+        myHero.power = 100;
+    }
+
+    document.getElementById('myDiv01').innerHTML =
+        'Hero: ' + myHero.name +
+        '<br>Power: ' + myHero.power +
+        '<br>Comment: ' + myHero.comment;
+}
+</script>
+</head>
+
+<body>
+
+<h2 align="center">t1a16-powerup-shunta.html</h2>
+
+Student Name: Shunta Nakamura<br>
+Assignment Title: Stateful Object Assignment
+
+<br><br>
+
+<input type="button"
+       value="Train Hero (-10 Power)"
+       onclick="trainHero()">
+
+<br><br>
+
+<div id="myDiv01">
+Click the button above to begin training!
+Initial Power: 100
+</div>
+
+</body>
+</html>
