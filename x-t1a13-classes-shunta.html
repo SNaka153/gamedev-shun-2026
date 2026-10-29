@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f3fa"><meta name="description" content="Build a party. Train your heroes. See one JavaScript class become many independent objects. X T1A13 Classes by Shunta."><title>GUILD — The Adventurer Workshop by Shunta</title><style>:root{--paper:#f5f3fa;--card:#fffefd;--ink:#292c42;--muted:#8a879d;--purple:#7762cb;--line:#e4e0ed;--mono:Consolas,"SFMono-Regular",monospace}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Segoe UI",Arial,sans-serif}a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{cursor:pointer;color:inherit;touch-action:manipulation}button:disabled{opacity:.4;cursor:not-allowed}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #a78bda;outline-offset:4px}button,input,select{-webkit-tap-highlight-color:transparent}.wrap{max-width:1300px;padding:0 40px;margin:auto}.topbar{height:100px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);gap:20px}.brand{display:flex;gap:11px;align-items:center;font-size:25px;font-weight:850;letter-spacing:-1.3px}.brand-icon{background:var(--ink);color:#e5d8fa;width:37px;height:37px;display:grid;place-items:center;border-radius:11px;font-size:25px}.brand-caption{font:8px/1.5 var(--mono);letter-spacing:1.2px;margin-left:6px;padding-left:17px;border-left:1px solid #d8d3e4;color:#838096}.topbar nav{display:flex;gap:27px;align-items:center}.text-button{border:0;background:none;font-size:11px;padding:5px 0}.text-button:hover{color:var(--purple)}.download,.outline-button{border:1px solid #d4cedf;background:transparent;padding:11px 14px;border-radius:7px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;justify-content:center}.download:hover,.outline-button:hover{background:#ebe6f4}.intro{display:flex;align-items:flex-end;justify-content:space-between;gap:25px;padding:37px 0 31px}.eyebrow,.overline,.label{font:9px var(--mono);letter-spacing:1.4px}.eyebrow{display:flex;gap:8px;align-items:center;margin:0 0 15px}.eyebrow i{width:5px;height:5px;background:#a08bcd;border-radius:50%}h1{font-size:clamp(42px,4.7vw,61px);font-weight:650;letter-spacing:-2.7px;line-height:1.05;margin:0}h1 em{font-family:Georgia,serif;font-weight:400;color:var(--purple)}.intro-copy{max-width:270px;padding-bottom:4px}.label{font-size:8px;letter-spacing:1.1px;color:var(--purple)}.intro-copy p{font-size:12px;line-height:1.7;margin:10px 0}.intro-copy p.muted{font-size:11px;color:var(--muted);margin-bottom:0}.workshop{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:20px}.stage-card{position:relative;overflow:hidden;border-radius:15px;background:#e4dff1;border:1px solid #dbd5e7;min-width:0;display:flex;flex-direction:column}.stage-heading{position:absolute;top:25px;left:27px;right:27px;display:flex;justify-content:space-between;align-items:start;gap:10px;z-index:1;pointer-events:none}.stage-heading .overline{font-size:8px;letter-spacing:1.6px;color:#86819e}.stage-heading h2{font-size:23px;font-weight:550;letter-spacing:-.6px;margin:7px 0}.stage-tag{font:8px var(--mono);letter-spacing:1px;border:1px solid #b8aed2a0;padding:7px 9px;border-radius:20px;display:flex;gap:10px;align-items:center;color:#7d7594}.stage-tag i{height:4px;width:4px;border-radius:50%;background:#9b8cbd}.scene{position:relative;flex:1;min-height:474px;background:linear-gradient(#e8e5f4 0%,#e5dff0 56%,#d9d8e3 100%);display:flex;align-items:center}#scene{width:100%;display:block;min-height:455px;max-height:565px}.scene-caption{position:absolute;bottom:25px;left:27px;right:27px;display:flex;justify-content:space-between;font:8px var(--mono);letter-spacing:1.3px;color:#82778e}.scene-toast{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);font-size:10px;padding:8px 13px;border-radius:25px;background:#fffcf4c9;border:1px solid #d8d2dd;max-width:85%;text-align:center;line-height:1.5;box-shadow:0 2px 12px #45325e05;color:#79708c}.stage-footer{padding:17px 24px;border-top:1px solid #b9adca40;font:7px var(--mono);letter-spacing:.7px;color:#8a819a;display:flex;justify-content:space-between;gap:15px}.stage-footer>span:first-child{display:flex;gap:7px;align-items:center}.stage-footer i{width:4px;height:4px;border-radius:50%;background:#a593bd;flex-shrink:0}.hero-panel{border:1px solid var(--line);background:var(--card);border-radius:15px;padding:22px;min-width:0}.panel-eyebrow{display:flex;justify-content:space-between;gap:10px;align-items:center}.panel-eyebrow .overline{font-size:8px;letter-spacing:1px}.panel-eyebrow>span:last-child{font:7px var(--mono);padding:4px 6px;background:#eeebf6;color:#9687b2;border-radius:3px;letter-spacing:.5px}.profile{display:flex;gap:13px;align-items:center;margin:23px 0 25px;min-width:0}#portrait{width:63px;height:63px;border-radius:12px;background:#f0edf7;overflow:hidden;flex-shrink:0}#portrait svg{width:100%;height:100%}.profile h2{font-size:28px;font-weight:650;letter-spacing:-1px;margin:0;overflow-wrap:anywhere;max-width:167px}.profile p{font-size:10px;color:var(--muted);margin:6px 0 0;line-height:1.5}.profile p>span:first-of-type{margin:0 4px}.stat-heading{display:flex;justify-content:space-between;align-items:center;font:9px var(--mono)}.stat-heading label{font-size:8px;letter-spacing:1px}.stat-heading>span{color:var(--muted)}.stat-heading b{font-size:13px;font-weight:400;color:var(--ink)}progress{border:0;background:#e9e8ee;border-radius:10px;overflow:hidden;width:100%;height:6px;display:block;margin:9px 0 0}progress::-webkit-progress-bar{background:#e9e8ee}progress::-webkit-progress-value{background:#90a38a;border-radius:10px;transition:width .25s}progress::-moz-progress-bar{background:#90a38a}#xp::-webkit-progress-value{background:#ad9bd3}#xp::-moz-progress-bar{background:#ad9bd3}.xp-heading{margin-top:19px}.xp-note{font-size:9px;color:#a39bb1;margin:9px 0 24px}.primary{border:1px solid var(--purple);background:var(--purple);color:#fff;padding:12px 15px;border-radius:7px;font-size:12px;font-weight:600}.primary:hover{background:#6752bb}.train{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left}.train small{font-size:8px;font-weight:400;display:block;opacity:.7;margin-top:4px}.train b{font-weight:400;font-size:24px}.secondary-actions{display:flex;gap:8px;margin-top:9px}.secondary-actions button{flex:1;background:#faf9fd;border:1px solid var(--line);border-radius:6px;font-size:10px;padding:10px 6px;white-space:nowrap}.secondary-actions button:hover{background:#eeebf6}.gear-heading{display:flex;justify-content:space-between;align-items:center;margin:24px 0 11px}.gear-heading h3{font-size:11px;font-weight:600;margin:0}.gear-heading>span{font:8px var(--mono);color:var(--muted)}.inventory{list-style:none;padding:0;margin:0 0 10px;display:flex;gap:5px;flex-wrap:wrap;max-height:85px;overflow:auto}.inventory li{font-size:9px;background:#f3f0f8;border:1px solid #e7e1ee;border-radius:4px;padding:5px 8px;overflow-wrap:anywhere;max-width:100%;color:#8a7f9b}.item-form{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}.item-form input{border:0;min-width:0;width:100%;padding:9px;font-size:10px;background:transparent}.item-form button{border:0;border-left:1px solid var(--line);background:none;width:34px;font-size:18px;color:#a18dbe;flex-shrink:0}.instance-note{display:flex;align-items:center;gap:6px;margin-top:15px;font-size:9px;color:#a19aa9;line-height:1.5}.mini-dot{width:4px;height:4px;background:#b4a4ca;border-radius:50%;flex-shrink:0}.party-section{margin-top:31px}.section-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:17px}.section-heading .overline{font-size:8px;color:#9d94ae;letter-spacing:1px}.section-heading h2{margin:6px 0 0;font-size:23px;letter-spacing:-.6px;font-weight:550}.section-heading h2 span{font:11px var(--mono);border-radius:5px;background:#e9e5f1;padding:3px 5px;margin-left:7px;color:#a091b8;vertical-align:middle}.party-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.hero-card{position:relative;background:#fffefd;border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;text-align:left;gap:14px;align-items:center;min-width:0;transition:background .15s}.hero-card:hover{background:#f0ecf9}.hero-card.selected{border-color:#9e8dcd;box-shadow:0 0 0 1px #9e8dcd;background:#f8f5ff}.hero-card svg{width:60px;height:65px;flex-shrink:0}.hero-card>div{min-width:0;flex:1}.hero-card h3{font-size:14px;font-weight:600;margin:0 0 4px;overflow-wrap:anywhere}.hero-card p{font-size:9px;color:#9890a4;margin:0 0 10px}.hero-card .card-stat{font:8px var(--mono);color:#8a8296;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.hero-card .card-track{background:#eae6f0;height:3px;width:100%;margin-top:6px;border-radius:3px}.hero-card .card-track>i{display:block;height:3px;background:#a49bba;border-radius:3px}.selected-marker{position:absolute;right:11px;top:10px;font-size:7px;color:#9b87bb}.challenge{display:flex;align-items:center;gap:14px;border:1px solid #d9dfcb;background:#edf1e5;border-radius:9px;margin-top:14px;padding:16px 19px;color:#667457}.challenge-icon{background:#dfe6d1;border-radius:7px;width:32px;height:32px;display:grid;place-items:center;font-size:22px;flex-shrink:0}.challenge h3{font-size:11px;font-weight:600;margin:0 0 4px}.challenge p{font-size:10px;margin:0;color:#93a082;line-height:1.5}.challenge>span:last-child{font:9px var(--mono);margin-left:auto;white-space:nowrap;letter-spacing:1px}.code-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px}.blueprint-card,.instance-card{border:1px solid var(--line);border-radius:11px;min-width:0;overflow:hidden;background:#fdfcff}.code-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid #eae6f0}.code-heading h2{font-size:12px;font-weight:600;margin:0}.code-heading h2>span{color:var(--purple);font:15px var(--mono);margin-right:7px}.code-heading>span{font:7px var(--mono);letter-spacing:1px;color:#a899b9}.blueprint-card>pre{font:10px/1.9 var(--mono);padding:17px 20px;margin:0;color:#706985;overflow:auto}.syntax-key{color:#9b79b8}.syntax-this{color:#b0786d}.syntax-comment{color:#b5adbf}.blueprint-foot{font-size:8px;color:#b2a9bd;padding:12px 20px;border-top:1px solid #eae6f0;line-height:1.6}.instance-card>pre{padding:17px 20px;margin:0;font:10px/1.8 var(--mono);color:#80758f;white-space:pre-wrap;overflow-wrap:anywhere;min-height:145px}.trace{border-top:1px solid #eae6f0;padding:15px 20px}.trace>.overline{font-size:7px;letter-spacing:1px;color:#a398b3}.trace>pre{font:11px/1.6 var(--mono);color:#8672ab;margin:8px 0}.trace>p{font-size:10px;color:#a49bae;line-height:1.7;margin:0;white-space:pre-line}.trace details{font-size:9px;color:#a99db6;margin-top:11px}.trace summary{cursor:pointer}.trace details pre{font:9px/1.8 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere;color:#9a8ca9;background:#f2eef8;padding:10px;border-radius:5px}footer{display:flex;justify-content:space-between;gap:15px;border-top:1px solid var(--line);margin-top:35px;padding:22px 0 30px;font:8px var(--mono);color:#a59bad;align-items:center}footer>span:last-child{display:flex;gap:20px;align-items:center}footer i{margin:0 9px;font-style:normal;color:#c8c0d1}.quick-actions{display:none}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}dialog{border:1px solid #d5ccdf;border-radius:15px;background:var(--paper);color:var(--ink);padding:28px;width:min(620px,calc(100% - 30px));max-height:88vh}dialog::backdrop{background:#292238a6;backdrop-filter:blur(5px)}.dialog-top{display:flex;align-items:center;justify-content:space-between;gap:15px}.dialog-top .overline{font-size:8px;color:#a18bb5}dialog h2{font:33px Georgia,serif;letter-spacing:-1px;margin:25px 0 15px}dialog p,dialog dd{font-size:12px;line-height:1.8;color:#8f829d}dialog code{color:#9c7eb8;font-family:var(--mono)}dialog dt{font-size:12px;font-weight:600;margin-top:17px}dialog dd{margin:4px 0}dialog>a{font-size:11px;text-decoration:underline}dialog h3{font-size:12px;margin-top:25px}dialog label{display:block;font-size:11px;margin-bottom:8px}dialog input,dialog select{width:100%;min-width:0;border:1px solid #d9d2e1;background:#fffefd;padding:11px;border-radius:6px;font-size:12px;color:var(--ink)}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:18px}.form-note{font-size:10px!important;color:#a093ac!important}.index-code{font:10px/1.8 var(--mono);background:#ebe5f3;padding:13px;border-radius:6px;white-space:pre-wrap;overflow-wrap:anywhere}.primary[type=submit]{width:100%;margin-top:5px}#createError{color:#b8676c;font-size:11px}#sourceDialog{width:min(780px,calc(100% - 30px))}#sourceView{font:11px/1.8 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere;color:#897296;background:#eee8f5;border-radius:8px;padding:17px}.hero-figure{transform-origin:center;animation:idle 4s ease-in-out infinite}.hero-figure.trained{animation:train .55s ease-in-out}.hero-figure.healed{animation:heal .6s ease-in-out}.level-spark{animation:spark 2.5s ease-in-out infinite}@keyframes idle{50%{transform:translateY(-3px)}}@keyframes train{25%{transform:translateX(18px) rotate(5deg)}60%{transform:translateY(-10px) rotate(-5deg)}}@keyframes heal{50%{transform:translateY(-10px);filter:drop-shadow(0 0 8px #d4e2a4)}}@keyframes spark{50%{opacity:.3;transform:translateY(-3px)}}@media(min-width:1200px){.workshop{grid-template-columns:minmax(0,1fr) 330px}.hero-panel{padding:25px}.scene,#scene{min-height:510px}}@media(max-width:950px){.wrap{padding:0 24px}.workshop{grid-template-columns:minmax(0,1fr) 280px}.hero-panel{padding:19px}.profile h2{max-width:150px}.stage-footer>span:last-child{display:none}.hero-card{gap:7px;padding:13px}.hero-card svg{width:43px}.intro-copy{max-width:230px}.code-heading{padding:16px}.blueprint-card>pre{padding:15px}.hero-card .card-stat{font-size:7px}}@media(max-width:720px){.wrap{padding:0 18px}.topbar{height:80px;gap:12px}.brand-caption{display:none}.brand{font-size:21px}.brand-icon{height:33px;width:33px}.topbar nav{gap:13px}.topbar nav>.text-button{font-size:10px;max-width:75px;text-align:left;line-height:1.5}.download{font-size:10px;padding:10px}.intro{padding:28px 0 26px}.intro-copy{max-width:170px}.intro-copy p{font-size:10px}.intro-copy p.muted{font-size:9px}.label{font-size:7px;letter-spacing:.6px}h1{font-size:42px;letter-spacing:-2px}.eyebrow{font-size:8px;letter-spacing:.8px}.workshop{grid-template-columns:1fr;gap:15px}.scene{min-height:345px}#scene{min-height:345px;max-height:420px}.stage-heading{top:20px;left:21px;right:21px}.stage-heading h2{font-size:21px}.stage-heading .overline{font-size:7px}.stage-footer{padding:14px 20px;font-size:6px}.quick-actions{display:flex;align-items:center;gap:8px;padding:12px 17px;border-top:1px solid #b9adca50}.quick-actions button{font-size:10px;padding:10px;border:1px solid #bdb0d1;background:#e4dcef;border-radius:5px}.quick-actions button:first-child{background:var(--purple);border-color:var(--purple);color:#fff}.quick-actions>span{font:9px var(--mono);color:#8f7c9f;margin-left:auto}.hero-panel{padding:22px;display:grid;grid-template-columns:1fr 1fr;column-gap:24px}.panel-eyebrow,.profile,.stat-heading,.hero-panel>progress,.xp-note{grid-column:1}.panel-eyebrow{margin-bottom:10px}.profile{margin:6px 0 16px;gap:9px}.profile h2{font-size:24px;max-width:145px}.profile p{font-size:8px}#portrait{width:49px;height:53px}.panel-eyebrow>span:last-child{display:none}.train{grid-column:2;grid-row:1/4;align-self:center}.secondary-actions{grid-column:2;grid-row:4/8;flex-direction:column;justify-content:center;margin:0;gap:9px}.secondary-actions button{flex:0}.xp-note{margin-bottom:0;font-size:8px;line-height:1.5}.xp-heading{margin-top:13px}.gear-heading,.inventory,.item-form,.instance-note{grid-column:1/-1}.gear-heading{margin-top:24px}.party-section{margin-top:26px}.party-grid{grid-template-columns:1fr}.hero-card{padding:13px 17px;gap:17px}.hero-card svg{width:50px;height:54px}.hero-card .card-stat{font-size:9px}.hero-card p{margin-bottom:8px}.hero-card>div{width:100%}.hero-card .card-track{max-width:250px}.hero-card h3{font-size:15px}.selected-marker{right:15px;top:14px}.challenge{padding:14px;gap:10px;flex-wrap:wrap}.challenge>div{flex:1}.challenge>span:last-child{margin-left:42px;font-size:8px}.challenge p{font-size:9px}.code-layout{grid-template-columns:1fr;gap:15px;margin-top:20px}.blueprint-card>pre{font-size:10px;padding:15px 20px}.code-heading{padding:17px 20px}footer{flex-direction:column;align-items:start;gap:15px}.section-heading h2{font-size:21px}.section-heading .outline-button{font-size:10px}.scene-caption{bottom:19px;left:21px;right:21px;font-size:7px}.scene-toast{bottom:48px;font-size:9px;max-width:86%}}@media(max-width:440px){.intro{flex-direction:column;align-items:start;gap:15px}h1{font-size:47px}.intro-copy{max-width:100%;padding:0}.intro-copy .label{display:none}.intro-copy p{font-size:11px;margin:0}.intro-copy p.muted{font-size:10px;margin-top:5px}.intro-copy br{display:none}.scene,#scene{min-height:300px}.stage-heading h2{font-size:19px}.stage-heading .overline{letter-spacing:1px;font-size:6px}.stage-tag{font-size:6px;padding:6px;gap:5px}.hero-panel{padding:19px 16px;column-gap:18px}.profile h2{max-width:100px;font-size:23px}.profile{gap:8px}#portrait{width:42px;height:47px}.panel-eyebrow .overline{font-size:7px;letter-spacing:.6px}.quick-actions{padding:11px 12px;gap:7px}.quick-actions button{padding:9px 8px;font-size:9px}.quick-actions>span{font-size:8px}.scene-toast{font-size:8px;bottom:43px}.section-heading .overline{font-size:6px}.blueprint-card>pre{font-size:8px;line-height:2}.stage-footer{font-size:5px}.section-heading{gap:10px}.section-heading .outline-button{font-size:9px;padding:10px}.section-heading h2{font-size:19px}.section-heading h2 span{font-size:9px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<header class="wrap topbar"><a class="brand" href="#" aria-label="GUILD home"><span class="brand-icon">✦</span>GUILD<span class="brand-caption">THE ADVENTURER<br>WORKSHOP</span></a><nav aria-label="Project"><button id="about" class="text-button">Behind the class ↗</button><a class="download" href="x-t1a13-classes-shunta.html" download>Download HTML ↓</a></nav></header>
+<main class="wrap">
+  <section class="intro" aria-labelledby="title"><div><p class="eyebrow"><i></i>X T1A13 / JAVASCRIPT CLASSES</p><h1 id="title">Every hero starts<br>with a <em>class.</em></h1></div><div class="intro-copy"><span class="label">ONE BLUEPRINT. YOUR WHOLE PARTY.</span><p>Train them. Gear them up. Make them yours.</p><p class="muted">Different heroes. The same class.<br>Each one has a story of their own.</p></div></section>
+  <section class="workshop" aria-label="Adventurer workshop">
+    <div class="stage-card"><div class="stage-heading"><div><span class="overline">THE PRACTICE MAKES THE HERO</span><h2>Training grounds</h2></div><span class="stage-tag">CAMP 013 <i></i></span></div><div class="scene"><svg id="scene" viewBox="0 0 900 540" role="img" aria-label="Aster at the training grounds"></svg><div class="scene-caption"><span id="sceneName">ASTER / KNIGHT</span><span id="sceneLevel">LEVEL 01</span></div><div id="sceneToast" class="scene-toast" role="status" aria-live="polite">Your next adventure begins here.</div></div><div class="quick-actions"><button data-action="train">Train −18 HP ⚔</button><button data-action="heal">Heal +25 ♡</button><span id="quickHP">80 / 100 HP</span></div><div class="stage-footer"><span><i></i>SELECT A HERO. CALL A METHOD. WATCH THEM GROW.</span><span>NO TWO INSTANCES ALIKE.</span></div></div>
+    <aside class="hero-panel" aria-label="Selected hero"><div class="panel-eyebrow"><span class="overline">SELECTED ADVENTURER</span><span id="roleBadge">KNIGHT</span></div><div class="profile"><div id="portrait" aria-hidden="true"></div><div><h2 id="heroName">Aster</h2><p>Level <b id="heroLevel">1</b> <span>·</span> <span id="heroMood">Ready to train</span></p></div></div><div class="stat-heading"><label for="health">HEALTH</label><span><b id="healthValue">80</b> / 100</span></div><progress id="health" value="80" max="100">80%</progress><div class="stat-heading xp-heading"><label for="xp">EXPERIENCE</label><span id="xpValue">0 / 3 XP</span></div><progress id="xp" value="0" max="3">0 of 3</progress><p class="xp-note">Three training sessions = one level up.</p><button class="primary train" data-action="train"><span>Train hero <small>−18 HP · +1 XP</small></span><b aria-hidden="true">⚔</b></button><div class="secondary-actions"><button data-action="heal">♡ Heal +25</button><button id="showProfile">{ } Show profile</button></div><div class="gear-heading"><h3>Travel essentials</h3><span id="itemCount">1 / 8</span></div><ul id="inventory" class="inventory"></ul><form id="itemForm" class="item-form"><label class="sr-only" for="itemName">New equipment</label><input id="itemName" maxlength="30" placeholder="Add equipment…" required autocomplete="off"><button aria-label="Add equipment" type="submit">+</button></form><div class="instance-note"><span class="mini-dot"></span><span>Changes belong to this hero only.</span></div></aside>
+  </section>
+  <section class="party-section" aria-labelledby="partyTitle"><div class="section-heading"><div><span class="overline">SAME CLASS. SEPARATE STORIES.</span><h2 id="partyTitle">Meet your party <span id="partyCount">03</span></h2></div><button id="recruit" class="outline-button">+ Create a hero</button></div><div id="party" class="party-grid"></div><div class="challenge"><span class="challenge-icon" aria-hidden="true">⚑</span><div><h3 id="goalTitle">A stronger party, together.</h3><p id="goalText">Get Aster, Lyra, and Finn to level 2. Heal whenever they need a break.</p></div><span id="goalCount">0 / 3 READY</span></div></section>
+  <section class="code-layout" aria-label="Classes in action"><div class="blueprint-card"><div class="code-heading"><h2><span>◇</span> The blueprint</h2><button id="openSource" class="text-button">View full class ↗</button></div><pre><span class="syntax-key">class</span> myGamePlayer {
+  <span class="syntax-key">constructor</span>(myName, myHealth, myRole) {
+    <span class="syntax-this">this</span>.myName = myName;
+    <span class="syntax-this">this</span>.myHealth = myHealth;
+    <span class="syntax-this">this</span>.myRole = myRole;
+    <span class="syntax-this">this</span>.myItems = []; <span class="syntax-comment">// A separate array per hero.</span>
+    <span class="syntax-comment">// More starting properties in the full class.</span>
+  }
+  <span class="syntax-key">myHeal</span>(amount) {
+    <span class="syntax-this">this</span>.myHealth = Math.min(100, <span class="syntax-this">this</span>.myHealth + amount);
+  }
+}</pre><div class="blueprint-foot"><span>Simplified view · The full class includes starting equipment and validation.</span></div></div><div class="instance-card"><div class="code-heading"><h2><span>{ }</span> The instance</h2><span id="instanceTag">PARTY[0]</span></div><pre id="instanceView"></pre><div class="trace"><span class="overline">LAST METHOD CALL</span><pre id="methodCall">party[0].myShow();</pre><p id="methodMessage">One class creates each hero. Select another hero to see its own properties.</p><details><summary>What happened inside?</summary><pre id="methodBody">// this refers to the selected player object.</pre></details></div></div></section>
+  <footer><span>✦ GUILD <i>/</i> BUILT BY SHUNTA NAKAMURA</span><span>X T1A13 Classes <button id="reset" class="text-button">Reset workshop ↻</button></span></footer>
+</main>
+<dialog id="recruitDialog"><div class="dialog-top"><span class="overline">CALL THE CONSTRUCTOR</span><button data-close="recruitDialog" class="text-button" aria-label="Close hero creation">Close ×</button></div><h2>Meet your next hero.</h2><p>Every new adventurer starts with <code>new myGamePlayer(...)</code>.</p><form id="recruitForm"><label for="newName">Hero name</label><input id="newName" maxlength="20" placeholder="Your hero's name" required autocomplete="off"><div class="form-grid"><div><label for="newRole">Appearance</label><select id="newRole"><option>Knight</option><option>Mage</option><option>Archer</option></select></div><div><label for="newHealth">Starting health</label><input id="newHealth" type="number" min="0" max="100" step="1" value="70" required></div></div><p class="form-note">All appearances use the same class. Up to six heroes per party.</p><p id="createError" role="alert"></p><button class="primary" type="submit">Create hero ↗</button></form></dialog>
+<dialog id="aboutDialog"><div class="dialog-top"><span class="overline">BEHIND THE CLASS</span><button data-close="aboutDialog" class="text-button" aria-label="Close class explanation">Close ×</button></div><h2>One class. Many heroes.</h2><p>A class describes how to create an object and what it can do. Each hero is a separate <strong>instance</strong> of <code>myGamePlayer</code>.</p><dl><dt>constructor</dt><dd>Runs when you use <code>new</code>. It sets the new hero's name, health, equipment, and other starting values.</dd><dt>this</dt><dd>Refers to the instance calling the method. <code>party[0].myHeal(25)</code> heals the first hero.</dd><dt>Methods</dt><dd><code>myTakeDamage()</code>, <code>myHeal()</code>, <code>myLevelUp()</code>, and <code>myAddItem()</code> work on that hero's properties.</dd><dt>Independent instances</dt><dd>Training Aster changes Aster's health and experience. Lyra and Finn keep their own values and inventories.</dd></dl><p class="form-note">An expanded version of my original T1A13 Classes assignment. Everything runs in the browser. The downloaded HTML works without libraries or internet access.</p><a href="https://guild-classes-shunta.p5n6kkyjrs.chatgpt.site/original.html">Open original assignment ↗</a><h3>Add this to index.html</h3><pre class="index-code">&lt;li&gt;&lt;a href="x-t1a13-classes-shunta.html"&gt;X T1A13 GUILD Classes by Shunta&lt;/a&gt;&lt;/li&gt;</pre><button id="copyIndex" class="outline-button">Copy index link</button></dialog>
+<dialog id="sourceDialog"><div class="dialog-top"><span class="overline">THE ACTUAL CLASS USED BY THIS SITE</span><button data-close="sourceDialog" class="text-button" aria-label="Close class source">Close ×</button></div><h2>The hero blueprint.</h2><pre id="sourceView"></pre></dialog>
+<script>// One class definition can create many independent player objects.
+class myGamePlayer {
+  constructor(myName, myHealth = 70, myRole = 'Knight') {
+    const cleanName = typeof myName === 'string' ? myName.trim() : '';
+    if (!cleanName || cleanName.length > 20) {
+      throw new RangeError('Player names must contain 1 to 20 characters.');
+    }
+    if (!Number.isFinite(myHealth) || myHealth < 0 || myHealth > 100) {
+      throw new RangeError('Starting health must be a number from 0 to 100.');
+    }
+    if (!['Knight', 'Mage', 'Archer'].includes(myRole)) {
+      throw new RangeError('Choose Knight, Mage, or Archer.');
+    }
+
+    this.myName = cleanName;
+    this.myHealth = myHealth;
+    this.myMaxHealth = 100;
+    this.myLevel = 1;
+    this.myXP = 0;
+    this.myRole = myRole;
+    const startingItems = {
+      Knight: 'Training blade',
+      Mage: 'Wooden staff',
+      Archer: 'Practice bow'
+    };
+    this.myItems = [startingItems[myRole]];
+  }
+
+  myShow() {
+    return this.myName + ' | ' + this.myRole
+      + '\nHealth: ' + this.myHealth + ' / ' + this.myMaxHealth
+      + '\nLevel: ' + this.myLevel + ' | XP: ' + this.myXP + ' / 3'
+      + '\nInventory: ' + this.myItems.join(', ');
+  }
+
+  myTakeDamage(amount) {
+    if (!Number.isFinite(amount) || amount <= 0) {
+      throw new RangeError('Damage must be a positive number.');
+    }
+    const before = this.myHealth;
+    this.myHealth = Math.max(0, this.myHealth - amount);
+    return before - this.myHealth;
+  }
+
+  myHeal(amount) {
+    if (!Number.isFinite(amount) || amount <= 0) {
+      throw new RangeError('Healing must be a positive number.');
+    }
+    const before = this.myHealth;
+    this.myHealth = Math.min(this.myMaxHealth, this.myHealth + amount);
+    return this.myHealth - before;
+  }
+
+  myLevelUp() {
+    this.myLevel += 1;
+    this.myXP = 0;
+    return this.myLevel;
+  }
+
+  myTrain() {
+    if (this.myHealth < 18) {
+      return {
+        ok: false,
+        message: this.myName + ' needs at least 18 health to train. Heal first.',
+        code: 'if (player.myHealth < 18) {\n  // Heal before training.\n}'
+      };
+    }
+    this.myTakeDamage(18);
+    this.myXP += 1;
+    const leveledUp = this.myXP >= 3;
+    if (leveledUp) this.myLevelUp();
+    return {
+      ok: true,
+      message: this.myName + ' trained: -18 health, +1 XP.'
+        + (leveledUp ? ' Level up! Now level ' + this.myLevel + '. XP reset to 0.' : ' XP: ' + this.myXP + ' / 3.'),
+      code: 'player.myTakeDamage(18);\nplayer.myXP += 1;\nif (player.myXP >= 3) {\n  player.myLevelUp();\n}'
+    };
+  }
+
+  myAddItem(name) {
+    const cleanName = typeof name === 'string' ? name.trim() : '';
+    if (!cleanName || cleanName.length > 30) {
+      return { ok: false, message: 'Item names must contain 1 to 30 characters.', code: '// Enter an item name with 1 to 30 characters.' };
+    }
+    if (this.myItems.some(item => item.toLowerCase() === cleanName.toLowerCase())) {
+      return { ok: false, message: this.myName + ' already has that item.', code: '// This item is already in player.myItems.' };
+    }
+    if (this.myItems.length >= 8) {
+      return { ok: false, message: 'Inventory full. Each player can carry 8 items.', code: '// player.myItems has reached its limit of 8 items.' };
+    }
+    this.myItems.push(cleanName);
+    return {
+      ok: true,
+      message: cleanName + ' added to ' + this.myName + "'s inventory.",
+      code: 'player.myItems.push(' + JSON.stringify(cleanName) + ');'
+    };
+  }
+}
+
+function createWorkshop() {
+  return {
+    players: [
+      new myGamePlayer('Aster', 80, 'Knight'),
+      new myGamePlayer('Lyra', 60, 'Mage'),
+      new myGamePlayer('Finn', 90, 'Archer')
+    ]
+  };
+}
+
+'use strict';
+const $=id=>document.getElementById(id);
+let party=createWorkshop().players,selected=0;
+const indexLink='<li><a href="x-t1a13-classes-shunta.html">X T1A13 GUILD Classes by Shunta</a></li>';
+const colors={Knight:'#85a6a9',Mage:'#ac8fc3',Archer:'#97a77c'};
+function heroArt(role) {
+  const color=colors[role];
+  let hat='',weapon='';
+  if(role==='Knight'){
+    hat='<path d="M-33-54Q-35-97 0-100Q35-97 33-54L17-37H-17Z" fill="#b8c7cc"/><path d="M-28-67H28V-52H-28Z" fill="#465569"/><path d="M-16-63V-54M-5-63V-54M6-63V-54M17-63V-54" stroke="#a9bfc6" stroke-width="3"/><path d="M0-98C-13-123 26-130 22-146C55-111 27-108 8-96Z" fill="#8da0b4"/>';
+    weapon='<g transform="rotate(17 50 -10)"><path d="M48-71L54-86L60-71V-4H48Z" fill="#d4d9df"/><path d="M54-80V-6" stroke="#a6aec1"/><path d="M40-4H68" stroke="#d6be91" stroke-width="5" stroke-linecap="round"/><path d="M54-3V19" stroke="#7b6e80" stroke-width="6"/></g><path d="M-58-29L-28-24L-24 10Q-35 30-49 22L-63 6Z" fill="#94b2b2" stroke="#55737c" stroke-width="3"/><path d="M-43-18L-40 13M-53-4L-29-1" stroke="#d5d9c1" stroke-width="4"/>';
+  }else if(role==='Mage'){
+    hat='<path d="M-36-65L3-146L26-98L35-65Z" fill="#9875b6"/><path d="M3-146L13-123L-6-119Z" fill="#b9a0cc"/><ellipse cy="-65" rx="47" ry="9" fill="#9977b3"/><path d="M-20-84Q0-77 25-84" fill="none" stroke="#cfb7d0" stroke-width="5"/><path d="M3-113L7-105L3-97L-1-105Z" fill="#e4d19d"/>';
+    weapon='<path d="M50 24L59-81" stroke="#8f7194" stroke-width="7" stroke-linecap="round"/><path d="M57-72Q36-88 52-103Q77-111 77-92Q77-77 57-72" fill="none" stroke="#a988ae" stroke-width="5"/><circle cx="63" cy="-94" r="10" fill="#ded6f6"/><circle cx="63" cy="-94" r="19" fill="#e0d2f9" opacity=".15"/>';
+  }else{
+    hat='<path d="M-33-52Q-48-94-9-114Q34-109 33-53L20-40H-21Z" fill="#8c9d72"/><path d="M-24-73Q0-91 26-73L23-47H-22Z" fill="#edc8a4"/><path d="M-27-76Q-3-96 24-73L12-93L-10-103Z" fill="#71875f"/><path d="M12-108Q42-136 40-113L26-96" fill="#cfbca1"/>';
+    weapon='<path d="M52-70Q94-27 52 20" stroke="#9c7d67" stroke-width="5" fill="none"/><path d="M52-70V20" stroke="#dfd8bb" fill="none"/><path d="M38-24H88L81-29M88-24L81-19" stroke="#dfc89f" stroke-width="2" fill="none"/>';
+  }
+  return `<ellipse cx="0" cy="42" rx="49" ry="13" fill="#554f6a" opacity=".14"/><path d="M-25-32L-39 27Q0 42 39 27L25-32Z" fill="${color}" opacity=".7"/><path d="M-22-24L-22 25H-2V0H8V25H27L23-24Z" fill="${color}"/><path d="M-21 22V34H-3V25M10 24V34H29V22" fill="#5e586e"/><path d="M-29-26Q-42-15-42-2M28-25Q43-19 47-5" stroke="${color}" stroke-width="15" stroke-linecap="round"/><circle cx="-40" cy="1" r="7" fill="#eac6a5"/><circle cx="47" cy="-3" r="7" fill="#eac6a5"/><path d="M-28-55Q0-75 29-55L24-34Q0-18-24-34Z" fill="#edc8a4"/>${hat}<circle cx="-10" cy="-52" r="2.7" fill="#554c5c"/><circle cx="11" cy="-52" r="2.7" fill="#554c5c"/><path d="M-4-42Q1-38 6-42" stroke="#b17e7f" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M-24-25Q0-13 24-25" fill="none" stroke="#d6d2b1" stroke-width="5"/><circle cy="-16" r="4" fill="#e2d8ad"/>${weapon}`;
+}
+function miniArt(role){return `<svg viewBox="-78 -152 156 205" aria-hidden="true">${heroArt(role)}</svg>`;}
+function buildScene(){
+  $('scene').innerHTML=`<defs><linearGradient id="islandTop" x2="1" y2="1"><stop stop-color="#bbc8ab"/><stop offset="1" stop-color="#97ac91"/></linearGradient><linearGradient id="islandEdge" x2="0" y2="1"><stop stop-color="#afa4bb"/><stop offset="1" stop-color="#bdb0cd" stop-opacity=".1"/></linearGradient></defs>
+    <circle cx="699" cy="142" r="36" fill="#fbf5e9" opacity=".8"/><g fill="#fffaf9" opacity=".35"><path d="M59 171Q69 140 103 151Q124 119 151 152Q190 143 191 173Z"/><path d="M505 108Q518 88 536 99Q554 73 570 100Q590 94 603 112Z"/></g>
+    <path d="M-50 333L109 162L214 276L334 177L510 315L651 202L785 283L938 181V482H-50Z" fill="#d5cce5"/><path d="M-30 355L181 231L325 331L489 249L635 344L809 252L949 353V480H-30Z" fill="#c4bfd4" opacity=".7"/>
+    <path d="M87 340Q380 245 774 335L767 366L539 458L273 431L89 371Z" fill="url(#islandEdge)"/><path d="M87 337Q324 251 774 332L600 405Q330 454 87 337Z" fill="url(#islandTop)"/>
+    <path d="M213 368Q377 371 454 331T682 333" fill="none" stroke="#d4d0bc" stroke-width="29" opacity=".85"/><path d="M256 371Q382 368 440 341" fill="none" stroke="#e3dbc6" stroke-width="2" stroke-dasharray="4 10"/>
+    <g opacity=".85"><path d="M151 309L170 255L189 308Z" fill="#8f9e98"/><path d="M161 286L170 248L180 285Z" fill="#a3ada0"/><path d="M170 301V327" stroke="#8b8d94" stroke-width="5"/><path d="M701 317L721 257L745 319Z" fill="#879e90"/><path d="M705 291L722 240L739 293Z" fill="#9caf9b"/><path d="M722 306V338" stroke="#8f8c93" stroke-width="6"/></g>
+    <g transform="translate(567 302)"><ellipse cy="60" rx="37" ry="9" fill="#716c77" opacity=".14"/><path d="M-8-44V59M-29 2H25" stroke="#9b8c86" stroke-width="8" stroke-linecap="round"/><path d="M-22-6L20-5L25 18L9 32L-18 21Z" fill="#bfa58d"/><circle cy="-27" r="17" fill="#d1b79c"/><path d="M-3-33L4-26M4-33L-3-26" stroke="#a48783" stroke-width="2"/><path d="M-6-19H7" stroke="#a48783" stroke-width="2"/></g>
+    <g transform="translate(266 241)"><path d="M0-61V65" stroke="#a49ab2" stroke-width="4"/><path d="M2-60L54-52L43-31L2-36Z" fill="#a38dbb"/><path d="M14-51L19-43L25-48" stroke="#d5c5df" stroke-width="2" fill="none"/></g>
+    <g fill="#b4b4aa"><path d="M126 358L142 343L159 357L148 369Z"/><path d="M631 370L648 357L665 366L655 378Z"/></g><g stroke="#c9d7b5" stroke-width="2" fill="none" opacity=".8"><path d="M219 325L216 314M220 323L226 316M668 344L672 334M670 344L664 335M474 388L472 377M475 389L481 382M294 405L291 394M295 403L301 395"/></g>
+    <g fill="#e8dcaf"><circle cx="199" cy="337" r="2"/><circle cx="205" cy="338" r="2"/><circle cx="616" cy="391" r="2"/><circle cx="622" cy="388" r="2"/></g>
+    <g transform="translate(373 328) scale(1.1)"><g class="hero-figure" id="heroFigure"></g></g><g class="level-spark" fill="#e6d7a0"><path d="M437 203L441 212L449 215L441 218L437 226L433 218L425 215L433 212Z"/><path d="M328 181L330 186L335 189L330 191L328 196L326 191L321 189L326 186Z"/></g>`;
+}
+function renderParty(){
+  if($('party').children.length!==party.length){
+    $('party').replaceChildren(...party.map((player,i)=>{
+      const button=document.createElement('button');button.className='hero-card';button.dataset.player=i;
+      button.innerHTML=miniArt(player.myRole)+'<div><h3></h3><p></p><div class="card-stat"><span></span><span></span></div><div class="card-track"><i></i></div></div><span class="selected-marker" aria-hidden="true"></span>';
+      return button;
+    }));
+  }
+  [...$('party').children].forEach((button,i)=>{
+    const p=party[i];button.classList.toggle('selected',i===selected);button.setAttribute('aria-pressed',String(i===selected));button.setAttribute('aria-label',`Select ${p.myName}, ${p.myRole}, level ${p.myLevel}`);
+    button.querySelector('h3').textContent=p.myName;button.querySelector('p').textContent=`${p.myRole} · Instance ${String(i+1).padStart(2,'0')}`;
+    const stats=button.querySelectorAll('.card-stat span');stats[0].textContent=`HP ${p.myHealth}/100`;stats[1].textContent=`LEVEL ${String(p.myLevel).padStart(2,'0')}`;
+    button.querySelector('.card-track i').style.width=p.myHealth+'%';button.querySelector('.selected-marker').textContent=i===selected?'● SELECTED':'';
+  });
+}
+function render(){
+  const p=party[selected];
+  $('heroName').textContent=p.myName;$('roleBadge').textContent=p.myRole.toUpperCase();$('heroLevel').textContent=p.myLevel;
+  $('heroMood').textContent=p.myHealth>=18?'Ready to train':'Needs healing';
+  $('portrait').innerHTML=miniArt(p.myRole);$('heroFigure').innerHTML=heroArt(p.myRole);
+  $('health').value=p.myHealth;$('healthValue').textContent=p.myHealth;$('xp').value=p.myXP;$('xpValue').textContent=p.myXP+' / 3 XP';
+  $('quickHP').textContent=p.myHealth+' / 100 HP';$('sceneName').textContent=p.myName.toUpperCase()+' / '+p.myRole.toUpperCase();$('sceneLevel').textContent='LEVEL '+String(p.myLevel).padStart(2,'0');
+  $('scene').setAttribute('aria-label',p.myName+', '+p.myRole+', at the training grounds. Level '+p.myLevel+'.');
+  $('itemCount').textContent=p.myItems.length+' / 8';$('inventory').replaceChildren(...p.myItems.map(item=>{const li=document.createElement('li');li.textContent=item;return li;}));
+  $('partyCount').textContent=String(party.length).padStart(2,'0');$('recruit').disabled=party.length>=6;
+  $('instanceTag').textContent='PARTY['+selected+']';
+  $('instanceView').textContent=`// party[${selected}] instanceof myGamePlayer → ${p instanceof myGamePlayer}\n{\n  myName: ${JSON.stringify(p.myName)},\n  myRole: ${JSON.stringify(p.myRole)},\n  myHealth: ${p.myHealth}, myMaxHealth: 100,\n  myLevel: ${p.myLevel}, myXP: ${p.myXP},\n  myItems: ${JSON.stringify(p.myItems)}\n}`;
+  renderParty();
+  const ready=party.slice(0,3).filter(p=>p.myLevel>=2).length;
+  $('goalCount').textContent=ready+' / 3 READY';$('goalTitle').textContent=ready===3?'The whole party leveled up!':'A stronger party, together.';
+  $('goalText').textContent=ready===3?'Challenge complete. Keep training, or create a new adventurer.':'Get Aster, Lyra, and Finn to level 2. Heal whenever they need a break.';
+}
+function showTrace(call,message,body){$('methodCall').textContent=call;$('methodMessage').textContent=message;$('methodBody').textContent=body;}
+function selectPlayer(index){selected=index;render();const p=party[index];$('sceneToast').textContent=p.myName+' is ready for your next move.';showTrace(`party[${index}].myShow();`,p.myShow(),'// myShow() reads this instance\'s own properties.');}
+function action(kind){
+  const player=party[selected];let result;
+  if(kind==='train')result=player.myTrain();
+  else {const healed=player.myHeal(25);result={ok:healed>0,message:healed?`${player.myName} recovered ${healed} health.`:`${player.myName} is already at full health.`,code:'this.myHealth = Math.min(\n  this.myMaxHealth, this.myHealth + amount\n);'};}
+  render();$('sceneToast').textContent=result.message;
+  showTrace(`party[${selected}].${kind==='train'?'myTrain()':'myHeal(25)'};`,result.message,result.code);
+  if(result.ok){const figure=$('heroFigure');figure.classList.remove('trained','healed');void figure.getBoundingClientRect();figure.classList.add(kind==='train'?'trained':'healed');}
+}
+document.querySelectorAll('[data-action]').forEach(button=>button.addEventListener('click',()=>action(button.dataset.action)));
+$('party').addEventListener('click',event=>{const button=event.target.closest('[data-player]');if(button)selectPlayer(Number(button.dataset.player));});
+$('showProfile').addEventListener('click',()=>{const p=party[selected];showTrace(`party[${selected}].myShow();`,p.myShow(),'// The method returns a string built from this.myName,\n// this.myHealth, this.myLevel, and this.myItems.');$('sceneToast').textContent=p.myName+'\'s profile is in the instance panel below.';});
+$('itemForm').addEventListener('submit',event=>{event.preventDefault();const item=$('itemName').value,result=party[selected].myAddItem(item);render();$('sceneToast').textContent=result.message;showTrace(`party[${selected}].myAddItem(${JSON.stringify(item.trim())});`,result.message,result.code);if(result.ok)$('itemName').value='';});
+$('recruit').addEventListener('click',()=>{$('createError').textContent='';$('recruitDialog').showModal();});
+$('recruitForm').addEventListener('submit',event=>{
+  event.preventDefault();try{
+    if(party.length>=6)throw new RangeError('Your party is full. Reset the workshop to start again.');
+    const player=new myGamePlayer($('newName').value,Number($('newHealth').value),$('newRole').value);
+    party.push(player);selected=party.length-1;render();$('recruitDialog').close();$('sceneToast').textContent='Welcome to the guild, '+player.myName+'!';
+    showTrace(`party.push(new myGamePlayer(\n  ${JSON.stringify(player.myName)}, ${player.myHealth}, ${JSON.stringify(player.myRole)}\n));`,'The constructor created a new hero with its own starting properties and inventory.','// constructor(myName, myHealth, myRole)\nthis.myName = myName;\nthis.myHealth = myHealth;\nthis.myItems = [startingItems[myRole]];');
+    $('newName').value='';
+  }catch(error){$('createError').textContent=error.message;}
+});
+$('about').addEventListener('click',()=>$('aboutDialog').showModal());
+$('openSource').addEventListener('click',()=>{$('sourceView').textContent=myGamePlayer.toString();$('sourceDialog').showModal();});
+document.querySelectorAll('[data-close]').forEach(button=>button.addEventListener('click',()=>$(button.dataset.close).close()));
+$('copyIndex').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(indexLink);$('copyIndex').textContent='Copied ✓';}catch{$('copyIndex').textContent='Select and copy the index code above.';}});
+$('reset').addEventListener('click',()=>{party=createWorkshop().players;selected=0;buildScene();selectPlayer(0);$('itemName').value='';});
+buildScene();render();
+
+</script>
+</body></html>
