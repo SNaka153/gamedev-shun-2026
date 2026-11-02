@@ -195,6 +195,25 @@ Use the first 15 buttons to decide on what words to enter for the last 5 buttons
 </form>
 
 
+
+<h2 id="myHeading">Shunta's Hack Browser</h2>
+
+<a id="myLink" name="myLink" href="https://www.google.com">
+  Visit Google
+</a>
+
+<table id="myTable" border="1">
+  <tr><th>Name</th><th>Score</th></tr>
+  <tr><td>Shunta</td><td>100</td></tr>
+</table>
+
+<ul id="myList">
+  <li>HTML</li>
+  <li>JavaScript</li>
+  <li>CSS</li>
+</ul>
+
+<b id="myBold">This is bold text!</b>
 <h3>Click the buttons to see all useable properties and methods of the object. Click refresh to reset Browser</h3>
 <form name="myForm">
 
@@ -221,12 +240,13 @@ Use the first 15 buttons to decide on what words to enter for the last 5 buttons
 <input type=button value="12 document.getElementById('move1').style" onclick="{myObjectData(document.getElementById('move1').style)}">
 <input type=button id="my10" value="13 document.myForm2.myText1" onclick="{myObjectData(document.myForm2.myText1)}">
 <input type=button value="14 document.getElementById('myText2')" onclick="{myObjectData(document.getElementById('myText2'))}">
-<input type=button value="15 " onclick="{myObjectData()}">
-<input type=button value="16 " onclick="{myObjectData()}">
-<input type=button value="17 " onclick="{myObjectData()}">
-<input type=button value="18 " onclick="{myObjectData()}">
-<input type=button value="19 " onclick="{myObjectData()}">
-<input type=button value="20 " onclick="{myObjectData()}">
+<input type="button" value="15 Link" onclick="myObjectData(document.getElementById('myLink'))">
+<input type="button" value="16 Table" onclick="myObjectData(document.getElementById('myTable'))">
+<input type="button" value="17 List" onclick="myObjectData(document.getElementById('myList'))">
+<input type="button" value="18 Bold" onclick="myObjectData(document.getElementById('myBold'))">
+<input type="button" value="19 Heading" onclick="myObjectData(document.getElementById('myHeading'))">
+<input type="button" value="20 Body" onclick="myObjectData(document.body)">
+
 <br>
 
 
