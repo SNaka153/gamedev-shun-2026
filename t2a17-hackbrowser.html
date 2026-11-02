@@ -1,334 +1,258 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>T2A17 Hack Browser by Shunta</title>
 
-<style>
-body {
-    background-color: #dff8ff;
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-
-button {
-    margin: 4px;
-    padding: 8px;
-    cursor: pointer;
-}
-
-textarea {
-    width: 95%;
-    max-width: 850px;
-    height: 350px;
-}
-
-table {
-    border-collapse: collapse;
-    margin: 10px 0;
-}
-
-td, th {
-    border: 1px solid black;
-    padding: 8px;
-}
-
-#move1 {
-    border: 2px solid black;
-    width: 200px;
-    height: 100px;
-}
-</style>
-
 <script>
-document.title = "T2A17 Hack Browser by Shunta";
+document.title = "T2A17 Hack Browser";
+document.name = "myDocument";
 window.name = "myWindow";
 
-// This function shows an object's properties and methods.
-function myObjectData(myObject, objectName) {
+function myObjectData(myObject) {
+    let myText = document.myForm.myTextarea;
+    let myInfo = document.myForm.myText1;
 
-    let output = document.getElementById("myOutput");
-    let selected = document.getElementById("mySelected");
-
-    selected.value = objectName;
-    output.value = "";
+    myText.value = "";
+    myInfo.value = "";
 
     if (myObject == null) {
-        output.value = "This object is not available.";
+        myText.value = "Object not available";
         return;
     }
 
-    let results = [];
-    let checked = new Set();
-    let current = myObject;
-    let level = 0;
+    let myResults = [];
+    let myChecked = new Set();
+    let myCurrent = myObject;
 
-    // Look at the object and its parent prototypes.
-    while (current != null && level < 10) {
-
-        let properties;
+    // Find properties and methods
+    for (let level = 0; level < 5 && myCurrent != null; level++) {
+        let myProperties = [];
 
         try {
-            properties = Object.getOwnPropertyNames(current);
+            myProperties = Object.getOwnPropertyNames(myCurrent);
         } catch (error) {
             break;
         }
 
-        for (let property of properties) {
-
-            if (checked.has(property)) {
+        for (let prop of myProperties) {
+            if (myChecked.has(prop)) {
                 continue;
             }
 
-            checked.add(property);
+            myChecked.add(prop);
 
             try {
-                let value = myObject[property];
-                let type = typeof value;
-                let result = "";
+                let value = myObject[prop];
+                let result;
 
-                if (type === "function") {
-                    result = property + "() = Method";
-                }
-                else if (value === null) {
-                    result = property + " = null";
-                }
-                else if (type === "object") {
-                    result = property + " = " +
-                        Object.prototype.toString.call(value);
-                }
-                else {
-                    result = property + " = " + String(value);
+                if (typeof value === "function") {
+                    result = prop + "() = Method";
+                } else if (value === null) {
+                    result = prop + " = null";
+                } else if (typeof value === "object") {
+                    result = prop + " = Object";
+                } else {
+                    result = prop + " = " + String(value);
                 }
 
-                if (result.length > 250) {
-                    result = result.substring(0, 250) + "...";
+                if (result.length > 200) {
+                    result = result.substring(0, 200) + "...";
                 }
 
-                results.push(result);
-
+                myResults.push(result);
             } catch (error) {
-                results.push(property + " = Not accessible");
+                myResults.push(prop + " = Not accessible");
             }
         }
 
         try {
-            current = Object.getPrototypeOf(current);
+            myCurrent = Object.getPrototypeOf(myCurrent);
         } catch (error) {
             break;
         }
-
-        level++;
     }
 
-    // Sort results alphabetically.
-    results.sort();
+    myResults.sort();
 
-    output.value =
-        "Object: " + objectName + "\n" +
-        "Properties and Methods: " + results.length +
-        "\n-----------------------------\n\n" +
-        results.join("\n");
-}
+    myInfo.value = myObject.name || myObject.id ||
+                   myObject.tagName || "Browser Object";
 
-// Check browser storage safely.
-function checkStorage() {
-    try {
-        myObjectData(window.localStorage, "window.localStorage");
-    } catch (error) {
-        document.getElementById("myOutput").value =
-            "Local storage is not available in this browser.";
-    }
-}
-
-// Clear the results.
-function clearResults() {
-    document.getElementById("myOutput").value = "";
-    document.getElementById("mySelected").value = "";
+    myText.value = myResults.join("\n");
 }
 </script>
 
 </head>
 
-<body>
+<body bgcolor="#81F7F3">
 
-<h1>T2A17 Hack Browser by Shunta</h1>
+<b>Browser Hack by Shunta</b>
 
-<p>
-Explore the properties and methods of HTML elements
-and browser objects using JavaScript.
-</p>
+<br><br>
+Object Sort base
 
-<h3>Example HTML Elements</h3>
+<h3>Instructions t2a17-Hackbrowser</h3>
 
-<form id="myForm2" name="myForm2">
-    <textarea id="myExampleText" name="myTextarea"
-        style="height:60px;width:250px;">wow</textarea>
-    <br><br>
+Use the first 15 buttons to decide on what words to enter
+for the last 5 buttons to gain interesting information
+from your present web browser.
 
-    <input type="text" id="myText2"
-        name="myText1" value="Hello Shunta">
+<br><br>
+
+Note: The results may be different on Chrome, Safari,
+Edge or Firefox.
+
+<br><br>
+
+<img id="move1"
+     style="position:absolute; left:600px; top:560px"
+     src="http://www.autos.ca/wp-content/uploads/2013/03/001-ferrari-laferrari.jpg"
+     width="400"
+     height="200"
+     alt="Car Image">
+
+<form name="myForm2" id="myForm2">
+
+<textarea name="myTextarea">wow</textarea>
+
+<br><br>
+
+<input type="text"
+       name="myText1"
+       id="myText2"
+       size="50"
+       value="">
+
+<br>
+
+</form>
+
+<h3>Click the buttons to see all usable properties
+and methods of the object.</h3>
+
+Click refresh to reset Browser.
+
+<br><br>
+
+<form name="myForm">
+
+<input type="text" name="myText1" size="50" value="">
+
+<br><br>
+
+<input type="button" value="1 window"
+onclick="myObjectData(window)">
+
+<input type="button" value="2 document"
+onclick="myObjectData(document)">
+
+<input type="button" value="3 document.myForm2"
+onclick="myObjectData(document.myForm2)">
+
+<input type="button" value="4 document.myForm2.myTextarea"
+onclick="myObjectData(document.myForm2.myTextarea)">
+
+<br>
+
+<input type="button" value="5 window.location"
+onclick="myObjectData(window.location)">
+
+<input type="button" value="6 window.parent"
+onclick="myObjectData(window.parent)">
+
+<input type="button" value="7 window.chrome"
+onclick="myObjectData(window.chrome || navigator)">
+
+<input type="button" value="8 Image Style"
+onclick="myObjectData(document.getElementById('move1').style)">
+
+<br>
+
+<input type="button" value="9 Body Style"
+onclick="myObjectData(document.body.style)">
+
+<input type="button" value="10 Image"
+onclick="myObjectData(document.getElementById('move1'))">
+
+<input type="button" value="11 Local Storage"
+onclick="myObjectData(window.localStorage)">
+
+<input type="button" value="12 Computed Image Style"
+onclick="myObjectData(getComputedStyle(document.getElementById('move1')))">
+
+<br>
+
+<input type="button" value="13 Form Text"
+onclick="myObjectData(document.myForm2.myText1)">
+
+<input type="button" value="14 Text by ID"
+onclick="myObjectData(document.getElementById('myText2'))">
+
+<br><br>
+
+<input type="button" value="15 Link"
+onclick="myObjectData(document.getElementById('myLink'))">
+
+<input type="button" value="16 Table"
+onclick="myObjectData(document.getElementById('myTable'))">
+
+<input type="button" value="17 List"
+onclick="myObjectData(document.getElementById('myList'))">
+
+<input type="button" value="18 Bold"
+onclick="myObjectData(document.getElementById('myBold'))">
+
+<input type="button" value="19 Heading"
+onclick="myObjectData(document.getElementById('myHeading'))">
+
+<input type="button" value="20 Table Row"
+onclick="myObjectData(document.getElementById('myTable').rows[0])">
+
+<br><br>
+
+<textarea name="myTextarea" rows="20" cols="70"></textarea>
+
 </form>
 
 <br>
 
-<img id="move1"
-     alt="Sample image"
-     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='100'%3E%3Crect width='200' height='100' fill='%2338bdf8'/%3E%3Ctext x='100' y='55' font-size='20' text-anchor='middle' fill='white'%3ESample Image%3C/text%3E%3C/svg%3E">
+<h3>Extra HTML Elements</h3>
 
-<hr>
+<h2 id="myHeading">Shunta's Hack Browser</h2>
 
-<h3>Five New HTML Elements</h3>
-
-<h2 id="myHeading">Shunta's Browser Test</h2>
-
-<a id="myLink" href="https://www.google.com"
-   target="_blank" rel="noopener noreferrer">
-    Visit Google
+<a id="myLink" href="https://www.google.com">
+Visit Google
 </a>
 
 <br><br>
 
-<table id="myTable">
-    <tr>
-        <th>Name</th>
-        <th>Score</th>
-    </tr>
-    <tr>
-        <td>Shunta</td>
-        <td>100</td>
-    </tr>
+<table id="myTable" border="1">
+<tr>
+<th>Name</th>
+<th>Score</th>
+</tr>
+<tr>
+<td>Shunta</td>
+<td>100</td>
+</tr>
 </table>
 
+<br>
+
 <ul id="myList">
-    <li>HTML</li>
-    <li>JavaScript</li>
-    <li>CSS</li>
+<li>HTML</li>
+<li>JavaScript</li>
+<li>CSS</li>
 </ul>
 
 <b id="myBold">This is bold text!</b>
 
-<hr>
-
-<h3>Browser Object Inspector</h3>
-
-<p>
-Click a button to explore its properties and methods.
-</p>
-
-<h4>Original Browser Objects (1-14)</h4>
-
-<button onclick="myObjectData(window, 'window')">
-1 Window
-</button>
-
-<button onclick="myObjectData(document, 'document')">
-2 Document
-</button>
-
-<button onclick="myObjectData(document.getElementById('myForm2'), 'myForm2')">
-3 Form
-</button>
-
-<button onclick="myObjectData(document.getElementById('myExampleText'), 'myTextarea')">
-4 Textarea
-</button>
-
-<button onclick="myObjectData(window.location, 'window.location')">
-5 Location
-</button>
-
-<button onclick="myObjectData(window.parent, 'window.parent')">
-6 Parent Window
-</button>
-
-<button onclick="myObjectData(window.chrome || navigator, 'Browser Information')">
-7 Browser
-</button>
-
-<button onclick="myObjectData(document.getElementById('move1').style, 'Image Style')">
-8 Image Style
-</button>
-
-<button onclick="myObjectData(document.body.style, 'Body Style')">
-9 Body Style
-</button>
-
-<button onclick="myObjectData(document.getElementById('move1'), 'Image')">
-10 Image
-</button>
-
-<button onclick="checkStorage()">
-11 Local Storage
-</button>
-
-<button onclick="myObjectData(getComputedStyle(document.getElementById('move1')), 'Computed Image Style')">
-12 Computed Style
-</button>
-
-<button onclick="myObjectData(document.getElementById('myForm2').elements['myText1'], 'Form Text Input')">
-13 Form Input
-</button>
-
-<button onclick="myObjectData(document.getElementById('myText2'), 'myText2')">
-14 Text by ID
-</button>
-
-<hr>
-
-<h4>New HTML Objects (15-20)</h4>
-
-<button onclick="myObjectData(document.getElementById('myLink'), 'myLink')">
-15 Link
-</button>
-
-<button onclick="myObjectData(document.getElementById('myTable'), 'myTable')">
-16 Table
-</button>
-
-<button onclick="myObjectData(document.getElementById('myList'), 'myList')">
-17 List
-</button>
-
-<button onclick="myObjectData(document.getElementById('myBold'), 'myBold')">
-18 Bold
-</button>
-
-<button onclick="myObjectData(document.getElementById('myHeading'), 'myHeading')">
-19 Heading
-</button>
-
-<button onclick="myObjectData(document.getElementById('myTable').rows[0], 'Table Row')">
-20 Table Row
-</button>
-
 <br><br>
 
-<button onclick="clearResults()">
-Clear Results
-</button>
-
-<hr>
-
-<h3>Object Information</h3>
-
-<p>Selected Object:</p>
-
-<input type="text" id="mySelected"
-       size="50" readonly>
-
-<br><br>
-
-<textarea id="myOutput" readonly></textarea>
-
-<br><br>
-
-<button onclick="window.history.back()">
-Back
-</button>
+<input type="button" value="Back"
+style="font-size:25px"
+onclick="window.history.back()">
 
 </body>
 </html>
