@@ -87,7 +87,8 @@ function myStorageData() {
         myObjectData(window.localStorage);
     } catch (error) {
         document.myForm.myText1.value = "window.localStorage";
-        document.myForm.myTextarea.value = "Local storage is not available in this browser or page.";
+        document.myForm.myTextarea.value =
+            "Local storage is not available in this browser or page.";
     }
 }
 </script>
@@ -115,10 +116,16 @@ Edge or Firefox.
 
 <img id="move1"
      style="position:absolute; left:600px; top:560px"
-     src="http://www.autos.ca/wp-content/uploads/2013/03/001-ferrari-laferrari.jpg"
+     src="t2a17-car.jpg"
      width="400"
      height="200"
      alt="Car Image">
+
+<small style="position:absolute; left:600px; top:764px; width:400px; font-size:11px">
+Photo: Clément Bucco-Lechat,
+<a href="https://commons.wikimedia.org/wiki/File:Geneva_MotorShow_2013_-_Ferrari_LaFerrari_front_left_view.jpg">Wikimedia Commons</a>,
+<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.
+</small>
 
 <form name="myForm2" id="myForm2">
 
@@ -170,7 +177,7 @@ onclick="myObjectData(window.location)">
 onclick="myObjectData(window.parent)">
 
 <input type="button" value="7 window.chrome"
-onclick="myObjectData(window.chrome || navigator)">
+onclick="myObjectData(window.chrome)">
 
 <input type="button" value="8 Image Style"
 onclick="myObjectData(document.getElementById('move1').style)">
