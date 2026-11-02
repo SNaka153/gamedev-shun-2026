@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,7 +53,8 @@ function myObjectData(myObject) {
                 } else if (typeof value === "object") {
                     result = prop + " = Object";
                 } else {
-                    result = prop + " = " + String(value);
+                    result = prop + " = " + String(value)
+                        .replace(/\r/g, "\\r").replace(/\n/g, "\\n");
                 }
 
                 if (result.length > 200) {
@@ -81,6 +81,15 @@ function myObjectData(myObject) {
 
     myText.value = myResults.join("\n");
 }
+
+function myStorageData() {
+    try {
+        myObjectData(window.localStorage);
+    } catch (error) {
+        document.myForm.myText1.value = "window.localStorage";
+        document.myForm.myTextarea.value = "Local storage is not available in this browser or page.";
+    }
+}
 </script>
 
 </head>
@@ -94,9 +103,8 @@ Object Sort base
 
 <h3>Instructions t2a17-Hackbrowser</h3>
 
-Use the first 15 buttons to decide on what words to enter
-for the last 5 buttons to gain interesting information
-from your present web browser.
+Use buttons 1–20 to explore the properties and methods
+of objects in your present web browser.
 
 <br><br>
 
@@ -176,7 +184,7 @@ onclick="myObjectData(document.body.style)">
 onclick="myObjectData(document.getElementById('move1'))">
 
 <input type="button" value="11 Local Storage"
-onclick="myObjectData(window.localStorage)">
+onclick="myStorageData()">
 
 <input type="button" value="12 Computed Image Style"
 onclick="myObjectData(getComputedStyle(document.getElementById('move1')))">
