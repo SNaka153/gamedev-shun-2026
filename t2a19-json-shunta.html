@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>T2A19 JSON by Shunta</title>
+</head>
+<body>
+
+<h1 align="center">t2a19-json-shunta.html</h1>
+
+<h2>What is JSON?</h2>
+
+<p>
+JSON stands for JavaScript Object Notation.
+It is a simple format used to store and exchange data.
+JSON uses key-value pairs to organize information.
+Many websites use JSON to send data between servers
+and browsers. For example, a weather website can use
+JSON to provide temperatures and weather conditions.
+</p>
+
+<h2>JSON API Examples</h2>
+
+<script>
+async function fetchData(url) {
+  if (!url) return;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error('HTTP error: ' + response.status);
+    }
+
+    const data = await response.json();
+    console.log(data);
+
+    const myJson = JSON.stringify(data, null, 2);
+
+    const output = document.getElementById('myDiv1');
+    output.innerHTML = '';
+
+    const pre = document.createElement('pre');
+    pre.textContent = myJson;
+    pre.style.whiteSpace = 'pre-wrap';
+    output.appendChild(pre);
+
+    if (data.image) {
+      const img = document.createElement('img');
+      img.src = data.image;
+      img.alt = 'Random Image';
+      img.style.maxWidth = '100%';
+      img.style.height = 'auto';
+      output.appendChild(img);
+    }
+
+  } catch (error) {
+    document.getElementById('myDiv1').textContent =
+      'Could not load JSON: ' + error.message;
+  }
+}
+</script>
+
+<select id="mySelect" size="1"
+        onchange="fetchData(this.value)">
+  <option value="">Choose an API</option>
+  <option value="https://randomfox.ca/floof/">
+    randomfox
+  </option>
+</select>
+
+<br><br>
+
+<div id="myDiv1">Select an API to see JSON data.</div>
+
+</body>
+</html>
