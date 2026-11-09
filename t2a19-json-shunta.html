@@ -45,9 +45,9 @@ async function fetchData(url) {
     pre.style.whiteSpace = 'pre-wrap';
     output.appendChild(pre);
 
-    if (data.image) {
+    if (data.image || data.message) {
       const img = document.createElement('img');
-      img.src = data.image;
+      img.src = data.image || data.message;
       img.alt = 'Random Image';
       img.style.maxWidth = '100%';
       img.style.height = 'auto';
@@ -66,6 +66,9 @@ async function fetchData(url) {
   <option value="">Choose an API</option>
   <option value="https://randomfox.ca/floof/">
     randomfox
+  </option>
+  <option value="https://dog.ceo/api/breeds/image/random">
+    Random Dog
   </option>
 </select>
 
