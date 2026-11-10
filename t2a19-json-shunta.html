@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>T2A19 JSON by Shunta</title>
 </head>
+
 <body>
 
 <h1 align="center">t2a19-json-shunta.html</h1>
@@ -22,38 +24,68 @@ JSON to provide temperatures and weather conditions.
 <h2>JSON API Examples</h2>
 
 <script>
+
+// Get JSON data from an API
 async function fetchData(url) {
+
   if (!url) return;
 
   try {
+
+    // Step 1: Request data from the API
     const response = await fetch(url);
 
+    // Check for HTTP errors
     if (!response.ok) {
       throw new Error('HTTP error: ' + response.status);
     }
 
+    // Step 2: Convert the response to JavaScript data
     const data = await response.json();
+
     console.log(data);
 
+    // Step 3: Convert data into a readable JSON string
     const myJson = JSON.stringify(data, null, 2);
 
+    // Find the HTML output area
     const output = document.getElementById('myDiv1');
+
+    // Clear the previous results
     output.innerHTML = '';
 
+    // Display the JSON data
     const pre = document.createElement('pre');
     pre.textContent = myJson;
     pre.style.whiteSpace = 'pre-wrap';
+
     output.appendChild(pre);
 
+
+    // --------------------------------
+    // Random Fox and Random Dog images
+    // --------------------------------
+
     if (data.image || data.message) {
+
       const img = document.createElement('img');
+
       img.src = data.image || data.message;
       img.alt = 'Random Image';
       img.style.maxWidth = '100%';
       img.style.height = 'auto';
+
       output.appendChild(img);
 
+    }
+
+
+    // --------------------------------
+    // Weather API
+    // --------------------------------
+
     if (data.current && data.current_units) {
+
       const weatherText = document.createElement('p');
 
       weatherText.textContent =
@@ -63,58 +95,98 @@ async function fetchData(url) {
         ' ' + data.current_units.wind_speed_10m;
 
       output.appendChild(weatherText);
+
     }
-      // Display Pokemon names from an array
+
+
+    // --------------------------------
+    // Pokemon API
+    // --------------------------------
+
     if (Array.isArray(data.results)) {
+
       const list = document.createElement('ul');
 
       data.results.forEach(function(pokemon) {
+
         const item = document.createElement('li');
+
         item.textContent = pokemon.name;
+
         list.appendChild(item);
+
       });
 
       output.appendChild(list);
-    }
-      
+
     }
 
-  } catch (error) {
+  }
+
+  catch (error) {
+
     document.getElementById('myDiv1').textContent =
       'Could not load JSON: ' + error.message;
+
   }
+
 }
+
 </script>
+
+
+<!-- API Selection Menu -->
 
 <select id="mySelect" size="1"
         onchange="fetchData(this.value)">
-  <option value="">Choose an API</option>
-  <option value="https://randomfox.ca/floof/">
-    randomfox
+
+  <option value="">
+    Choose an API
   </option>
+
+  <!-- 1. Random Fox -->
+  <option value="https://randomfox.ca/floof/">
+    Random Fox
+  </option>
+
+  <!-- 2. Random Dog -->
   <option value="https://dog.ceo/api/breeds/image/random">
     Random Dog
   </option>
+
+  <!-- 3. Cat Facts -->
   <option value="https://catfact.ninja/fact">
     Cat Facts
   </option>
+
+  <!-- 4. User Information -->
   <option value="https://jsonplaceholder.typicode.com/users/1">
     User Information
   </option>
+
+  <!-- 5. Posts Array -->
   <option value="https://jsonplaceholder.typicode.com/posts?userId=1">
     Posts by User 1
   </option>
+
+  <!-- 6. Weather in Mission -->
   <option value="https://api.open-meteo.com/v1/forecast?latitude=49.13&amp;longitude=-122.32&amp;current=temperature_2m,wind_speed_10m&amp;timezone=America%2FVancouver">
     Weather in Mission
   </option>
+
+  <!-- 7. Pokemon List -->
   <option value="https://pokeapi.co/api/v2/pokemon?limit=5">
     Pokemon List
   </option>
+
 </select>
 
 <br><br>
 
-<div id="myDiv1">Select an API to see JSON data.</div>
+<!-- JSON Output Area -->
+<div id="myDiv1">
+  Select an API to see JSON data.
+</div>
 
 </body>
 </html>
