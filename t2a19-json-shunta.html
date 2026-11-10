@@ -64,6 +64,19 @@ async function fetchData(url) {
 
       output.appendChild(weatherText);
     }
+      // Display Pokemon names from an array
+    if (Array.isArray(data.results)) {
+      const list = document.createElement('ul');
+
+      data.results.forEach(function(pokemon) {
+        const item = document.createElement('li');
+        item.textContent = pokemon.name;
+        list.appendChild(item);
+      });
+
+      output.appendChild(list);
+    }
+      
     }
 
   } catch (error) {
@@ -93,6 +106,9 @@ async function fetchData(url) {
   </option>
   <option value="https://api.open-meteo.com/v1/forecast?latitude=49.13&amp;longitude=-122.32&amp;current=temperature_2m,wind_speed_10m&amp;timezone=America%2FVancouver">
     Weather in Mission
+  </option>
+  <option value="https://pokeapi.co/api/v2/pokemon?limit=5">
+    Pokemon List
   </option>
 </select>
 
