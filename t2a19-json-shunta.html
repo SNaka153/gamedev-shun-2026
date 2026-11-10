@@ -52,6 +52,18 @@ async function fetchData(url) {
       img.style.maxWidth = '100%';
       img.style.height = 'auto';
       output.appendChild(img);
+
+    if (data.current && data.current_units) {
+      const weatherText = document.createElement('p');
+
+      weatherText.textContent =
+        'Temperature: ' + data.current.temperature_2m +
+        ' ' + data.current_units.temperature_2m +
+        ' | Wind Speed: ' + data.current.wind_speed_10m +
+        ' ' + data.current_units.wind_speed_10m;
+
+      output.appendChild(weatherText);
+    }
     }
 
   } catch (error) {
