@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>T2A19 JSON by Shunta</title>
@@ -19,6 +20,8 @@ JSON uses key-value pairs to organize information.
 Many websites use JSON to send data between servers
 and browsers. For example, a weather website can use
 JSON to provide temperatures and weather conditions.
+JSON is useful because it is easy to read, lightweight,
+and supported by many programming languages.
 </p>
 
 <h2>JSON API Examples</h2>
@@ -32,7 +35,7 @@ async function fetchData(url) {
 
   try {
 
-    // Step 1: Request data from the API
+    // 1. Request data from the API
     const response = await fetch(url);
 
     // Check for HTTP errors
@@ -40,22 +43,23 @@ async function fetchData(url) {
       throw new Error('HTTP error: ' + response.status);
     }
 
-    // Step 2: Convert the response to JavaScript data
+    // 2. Convert JSON into JavaScript data
     const data = await response.json();
 
     console.log(data);
 
-    // Step 3: Convert data into a readable JSON string
+    // 3. Convert data into a readable JSON string
     const myJson = JSON.stringify(data, null, 2);
 
-    // Find the HTML output area
+    // Find the output area
     const output = document.getElementById('myDiv1');
 
-    // Clear the previous results
+    // Clear previous results
     output.innerHTML = '';
 
-    // Display the JSON data
+    // Display JSON data
     const pre = document.createElement('pre');
+
     pre.textContent = myJson;
     pre.style.whiteSpace = 'pre-wrap';
 
@@ -63,7 +67,8 @@ async function fetchData(url) {
 
 
     // --------------------------------
-    // Random Fox and Random Dog images
+    // 1. Random Fox
+    // 2. Random Dog
     // --------------------------------
 
     if (data.image || data.message) {
@@ -71,7 +76,7 @@ async function fetchData(url) {
       const img = document.createElement('img');
 
       img.src = data.image || data.message;
-      img.alt = 'Random Image';
+      img.alt = 'Random Animal Image';
       img.style.maxWidth = '100%';
       img.style.height = 'auto';
 
@@ -81,7 +86,31 @@ async function fetchData(url) {
 
 
     // --------------------------------
-    // Weather API
+    // 3. Cat Facts
+    // --------------------------------
+
+    // The JSON is displayed automatically
+    // using JSON.stringify() above.
+
+
+    // --------------------------------
+    // 4. User Information
+    // --------------------------------
+
+    // Nested objects such as address and
+    // company are displayed in the JSON.
+
+
+    // --------------------------------
+    // 5. Posts by User 1
+    // --------------------------------
+
+    // The posts array is displayed
+    // automatically using JSON.stringify().
+
+
+    // --------------------------------
+    // 6. Weather in Mission
     // --------------------------------
 
     if (data.current && data.current_units) {
@@ -89,10 +118,14 @@ async function fetchData(url) {
       const weatherText = document.createElement('p');
 
       weatherText.textContent =
-        'Temperature: ' + data.current.temperature_2m +
-        ' ' + data.current_units.temperature_2m +
-        ' | Wind Speed: ' + data.current.wind_speed_10m +
-        ' ' + data.current_units.wind_speed_10m;
+        'Temperature: ' +
+        data.current.temperature_2m +
+        ' ' +
+        data.current_units.temperature_2m +
+        ' | Wind Speed: ' +
+        data.current.wind_speed_10m +
+        ' ' +
+        data.current_units.wind_speed_10m;
 
       output.appendChild(weatherText);
 
@@ -100,7 +133,7 @@ async function fetchData(url) {
 
 
     // --------------------------------
-    // Pokemon API
+    // 7. Pokemon List
     // --------------------------------
 
     if (Array.isArray(data.results)) {
@@ -121,9 +154,28 @@ async function fetchData(url) {
 
     }
 
-  }
 
-  catch (error) {
+    // --------------------------------
+    // 8. GitHub Repository
+    // --------------------------------
+
+    if (data.full_name && data.owner) {
+
+      const repoInfo = document.createElement('p');
+
+      repoInfo.textContent =
+        'Repository: ' +
+        data.full_name +
+        ' | Owner: ' +
+        data.owner.login +
+        ' | Stars: ' +
+        data.stargazers_count;
+
+      output.appendChild(repoInfo);
+
+    }
+
+  } catch (error) {
 
     document.getElementById('myDiv1').textContent =
       'Could not load JSON: ' + error.message;
@@ -164,7 +216,7 @@ async function fetchData(url) {
     User Information
   </option>
 
-  <!-- 5. Posts Array -->
+  <!-- 5. Posts by User 1 -->
   <option value="https://jsonplaceholder.typicode.com/posts?userId=1">
     Posts by User 1
   </option>
@@ -179,11 +231,17 @@ async function fetchData(url) {
     Pokemon List
   </option>
 
+  <!-- 8. GitHub Repository -->
+  <option value="https://api.github.com/repos/octocat/Hello-World">
+    GitHub Repository
+  </option>
+
 </select>
 
 <br><br>
 
 <!-- JSON Output Area -->
+
 <div id="myDiv1">
   Select an API to see JSON data.
 </div>
