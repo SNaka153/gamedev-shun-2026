@@ -1,0 +1,20 @@
+<h1 align=center>t2a21-spy-shunta.html</h1>
+<textarea id="myArea01" rows=4 cols=70>Hello how are you</textarea><br>
+
+<input type=button value="encrypt" onclick="{
+  let myTemp = ''
+  myString = document.getElementById('myArea01').value.toLowerCase().split('')
+  for (let myLoop=0; myLoop < myString.length; myLoop++){
+    myTemp = myString[myLoop]
+    if(myString[myLoop] == 'e') {myTemp = 'f'}
+    if(myStrimg[myLoop] == 'h') {myTemp = 'i'}
+    myString[myLoop] = myTemp
+  }
+  document.getElementById('myArea2').value = myString.join('')
+}"><br><br>
+
+
+<textarea id="myArea02" rows=4 cols=70></textarea>
+
+<input type=button value="decrypt" onclick="{
+  alert
