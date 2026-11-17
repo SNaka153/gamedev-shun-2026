@@ -1,13 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>T2A21 Spy by Shunta</title>
+</head>
+
+<body>
+
 <h1 align=center>t2a21-spy-by-shunta.html</h1>
-<textarea id="myArea01" rows=4 cols=70>Hello how are you</textarea><br> 
+
+<textarea id="myArea01" rows=4 cols=70>Hello how are you</textarea><br>
+
+<!-- NEW: Keyword for the third encryption method -->
+<br>
+Keyword (for Keyword Cipher):
+<input type="text" id="myKey" value="CAT" size="12">
+<br><br>
 
 
+<!-- BASIC ENCRYPT: Based on the teacher's code -->
 
 <input type="button" value="encrypt" onclick="{
+
   let myTemp = ''
   let myString = document.getElementById('myArea01').value.split('')
 
   for (let myLoop = 0; myLoop < myString.length; myLoop++) {
+
     let myOriginal = myString[myLoop]
     myString[myLoop] = myOriginal.toLowerCase()
     myTemp = myString[myLoop]
@@ -39,25 +60,43 @@
     if (myString[myLoop] == 'y') {myTemp = 'z'}
     if (myString[myLoop] == 'z') {myTemp = 'a'}
 
+    // NEW: Keep uppercase letters
     if (myOriginal !== myOriginal.toLowerCase()) {
       myTemp = myTemp.toUpperCase()
-  }
+    }
+
     myString[myLoop] = myTemp
   }
 
   document.getElementById('myArea02').value = myString.join('')
-}"><br><br>
+  document.getElementById('myArea03').value = ''
+
+}">
 
 
+<!-- NEW: Two additional encryption methods -->
 
-<textarea id="myArea02" rows=4 cols=70></textarea><br> 
+<input type="button" value="Encrypt Atbash"
+       onclick="myAtbashEncrypt()">
 
+<input type="button" value="Encrypt Keyword"
+       onclick="myKeywordEncrypt()">
+
+<br><br>
+
+
+<textarea id="myArea02" rows=4 cols=70></textarea><br>
+
+
+<!-- BASIC DECRYPT: Reverse of the teacher's code -->
 
 <input type="button" value="decrypt" onclick="{
+
   let myTemp = ''
   let myString = document.getElementById('myArea02').value.split('')
 
   for (let myLoop = 0; myLoop < myString.length; myLoop++) {
+
     let myOriginal = myString[myLoop]
     myString[myLoop] = myOriginal.toLowerCase()
     myTemp = myString[myLoop]
@@ -89,16 +128,173 @@
     if (myString[myLoop] == 'z') {myTemp = 'y'}
     if (myString[myLoop] == 'a') {myTemp = 'z'}
 
+    // NEW: Keep uppercase letters
     if (myOriginal !== myOriginal.toLowerCase()) {
       myTemp = myTemp.toUpperCase()
-  }
+    }
+
     myString[myLoop] = myTemp
   }
 
   document.getElementById('myArea03').value = myString.join('')
-}"><br><br>
+
+}">
 
 
+<!-- NEW: Two additional decryption methods -->
 
-<textarea id="myArea03" rows=4 cols=70></textarea><br> 
+<input type="button" value="Decrypt Atbash"
+       onclick="myAtbashDecrypt()">
 
+<input type="button" value="Decrypt Keyword"
+       onclick="myKeywordDecrypt()">
+
+<br><br>
+
+
+<textarea id="myArea03" rows=4 cols=70></textarea><br>
+
+
+<script>
+
+// ==========================================
+// NEW METHOD 2: ATBASH CIPHER
+// Reverse the alphabet: a = z, b = y
+// ==========================================
+
+function myAtbash(myText) {
+
+  let myAlphabet = 'abcdefghijklmnopqrstuvwxyz'
+  let myString = myText.split('')
+
+  for (let myLoop = 0; myLoop < myString.length; myLoop++) {
+
+    let myOriginal = myString[myLoop]
+    let myLower = myOriginal.toLowerCase()
+
+    let myPosition = myAlphabet.indexOf(myLower)
+
+    // Only change alphabet letters
+    if (myPosition !== -1) {
+
+      let myNewPosition = 25 - myPosition
+      let myTemp = myAlphabet[myNewPosition]
+
+      // Keep uppercase letters
+      if (myOriginal !== myLower) {
+        myTemp = myTemp.toUpperCase()
+      }
+
+      myString[myLoop] = myTemp
+    }
+  }
+
+  return myString.join('')
+}
+
+
+function myAtbashEncrypt() {
+
+  let myText = document.getElementById('myArea01').value
+
+  document.getElementById('myArea02').value = myAtbash(myText)
+  document.getElementById('myArea03').value = ''
+
+}
+
+
+function myAtbashDecrypt() {
+
+  let myText = document.getElementById('myArea02').value
+
+  document.getElementById('myArea03').value = myAtbash(myText)
+
+}
+
+
+// ==========================================
+// NEW METHOD 3: KEYWORD CIPHER
+// Uses a different shift for each letter
+// ==========================================
+
+function myKeywordChange(myText, myDirection) {
+
+  let myAlphabet = 'abcdefghijklmnopqrstuvwxyz'
+
+  let myKey = document.getElementById('myKey').value
+    .toLowerCase()
+    .replace(/[^a-z]/g, '')
+
+  // Check that the keyword is valid
+  if (myKey.length === 0) {
+    alert('Please enter a keyword using A-Z letters.')
+    return null
+  }
+
+  let myString = myText.split('')
+  let myKeyLoop = 0
+
+  for (let myLoop = 0; myLoop < myString.length; myLoop++) {
+
+    let myOriginal = myString[myLoop]
+    let myLower = myOriginal.toLowerCase()
+
+    let myPosition = myAlphabet.indexOf(myLower)
+
+    // Skip spaces, numbers and punctuation
+    if (myPosition !== -1) {
+
+      let myKeyLetter = myKey[myKeyLoop % myKey.length]
+      let myShift = myAlphabet.indexOf(myKeyLetter)
+
+      // Forward for encrypt, backward for decrypt
+      let myNewPosition =
+        (myPosition + myDirection * myShift + 26) % 26
+
+      let myTemp = myAlphabet[myNewPosition]
+
+      // Keep uppercase letters
+      if (myOriginal !== myLower) {
+        myTemp = myTemp.toUpperCase()
+      }
+
+      myString[myLoop] = myTemp
+
+      myKeyLoop++
+    }
+  }
+
+  return myString.join('')
+}
+
+
+function myKeywordEncrypt() {
+
+  let myText = document.getElementById('myArea01').value
+
+  let myResult = myKeywordChange(myText, 1)
+
+  if (myResult !== null) {
+    document.getElementById('myArea02').value = myResult
+    document.getElementById('myArea03').value = ''
+  }
+
+}
+
+
+function myKeywordDecrypt() {
+
+  let myText = document.getElementById('myArea02').value
+
+  let myResult = myKeywordChange(myText, -1)
+
+  if (myResult !== null) {
+    document.getElementById('myArea03').value = myResult
+  }
+
+}
+
+</script>
+
+</body>
+</html>
