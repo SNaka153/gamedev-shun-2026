@@ -1,30 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>T2A22 Local Storage by Shunta</title>
+</head>
+
+<body onload="myLoadData()">
+
 <h2>t2a22-local-storage-shunta.html</h2>
 
-Use local storage to make a to-do list
+<p>Use local storage to make a to-do list</p>
 
-<body onload="{
-   myStorage = localStorage.getItem('myStoredText')
-   if(myStorage  != null){
-      document.getElementById('myText1').value = myStorage 
+<!-- TEACHER'S BASIC EXAMPLE -->
+
+Text example:
+<input id="myText1" type="text" size="70"
+       value="" placeholder="Write here to store"><br><br>
+
+<input type="button" value="Store Text"
+       onclick="myStoreText()">
+
+<input type="button" value="Retrieve Text"
+       onclick="myRetrieveText()">
+
+<hr>
+
+<!-- NEW: A to-do list using local storage -->
+
+<h3>My To-Do List</h3>
+
+<input id="myTaskText" type="text" size="45"
+       placeholder="Write a task"
+       onkeydown="if (event.key === 'Enter') { myAddTask() }">
+
+<input type="button" value="Add Task"
+       onclick="myAddTask()">
+
+<br><br>
+
+Show:
+<select id="myFilter" onchange="myShowTasks()">
+  <option value="all">All Tasks</option>
+  <option value="active">Not Completed</option>
+  <option value="completed">Completed</option>
+</select>
+
+<input type="button" value="Clear Completed"
+       onclick="myClearCompleted()">
+
+<p id="myStats">
+  Total: 0 | Completed: 0 | Remaining: 0
+</p>
+
+<ul id="myTaskList"></ul>
+
+<script>
+
+// NEW: An array for storing tasks
+let myTasks = [];
+
+
+// Load saved data when the page opens
+function myLoadData() {
+
+  let myStorage = localStorage.getItem('myStoredText');
+
+  // Teacher's example: restore saved text
+  if (myStorage !== null) {
+    document.getElementById('myText1').value = myStorage;
+  }
+
+  // NEW: Load the saved to-do list
+  let mySavedTasks = localStorage.getItem('myTodoList');
+
+  if (mySavedTasks !== null) {
+
+    try {
+
+      let myData = JSON.parse(mySavedTasks);
+
+      if (Array.isArray(myData)) {
+
+        myTasks = myData.filter(function(task) {
+          return task &&
+                 typeof task.text === 'string' &&
+                 typeof task.done === 'boolean';
+        });
+
+      }
+
+    } catch (error) {
+      myTasks = [];
     }
-}">
+  }
 
-<body onunload="{
-   localstorage.setItem('myStoredText',document.getElementById('myText1').value)
-}">   
-
-Text example: <input id="myText1" type=text size=70 value="" placeholder="Write here to store"><br>
-
-<input type="button" value="Store Text" onClick="{
-   localStorage.setItem('myStoredText', document.getElementById('myText1').value)
-   alert(document.getElementById('myText1').value + ' \nHas been stored')
-   document.getElementById('myText1').value = ''
-}">
-
-<input type="button" value="Retrieve Text" onClick="{
-   document.getElementById('myText1').value = localStorage.getItem('myStoredText')
-}"> 
+  myShowTasks();
+}
 
 
+// Teacher's example: Store Text
+function myStoreText() {
+
+  let myText =
+    document.getElementById('myText1').value;
+
+  localStorage.setItem('myStoredText', myText);
+
+  alert(myText + '\nHas been stored');
+
+  document.getElementById('myText1').value = '';
+}
 
 
+// Teacher's example: Retrieve Text
+function myRetrieveText() {
+
+  let myStorage =
+    localStorage.getItem('myStoredText');
+
+  if (myStorage === null) {
+
+    alert('No text has been stored yet.');
+
+  } else {
+
+    document.getElementById('myText1').value =
+      myStorage;
+
+  }
+}
+
+
+// NEW: Save the task array
+function mySaveTasks() {
+
+  localStorage.setItem(
+    'myTodoList',
+    JSON.stringify(myTasks)
+  );
+
+}
+
+
+// NEW: Add a new task
+function myAddTask() {
+
+  let myInput =
+    document.getElementById('myTaskText');
+
+  let myText = myInput.value.trim();
+
+  if (myText === '') {
+    alert('Please enter a task.');
+    return;
+  }
+
+  myTasks.push({
+    text: myText,
+    done: false
+  });
+
+  mySaveTasks();
+
+  myInput.value = '';
+
+  myShowTasks();
+}
+
+
+// NEW: Mark a task completed or not completed
+function myToggleTask(myIndex) {
+
+  myTasks[myIndex].done =
+    !myTasks[myIndex].done;
+
+  mySaveTasks();
+
+  myShowTasks();
+}
+
+
+// NEW: Edit a task
+function myEditTask(myIndex) {
+
+  let myNewText = prompt(
+    'Edit your task:',
+    myTasks[myIndex].text
+  );
+
+  if (myNewText === null) return;
+
+  myNewText = myNewText.trim();
+
+  if (myNewText === '') {
+    alert('A task cannot be empty.');
+    return;
+  }
+
+  myTasks[myIndex].text = myNewText;
+
+  mySaveTasks();
+
+  myShowTasks();
+}
+
+
+// NEW: Delete one task
+function myDeleteTask(myIndex) {
+
+  myTasks.splice(myIndex, 1);
+
+  mySaveTasks();
+
+  myShowTasks();
+}
+
+
+// NEW: Delete all completed tasks
+function myClearCompleted() {
+
+  myTasks = myTasks.filter(function(task) {
+    return task.done === false;
+  });
+
+  mySaveTasks();
+
+  myShowTasks();
+}
+
+
+// NEW: Display the tasks
+function myShowTasks() {
+
+  let myList =
+    document.getElementById('myTaskList');
+
+  let myFilter =
+    document.getElementById('myFilter').value;
+
+  let myCompleted = 0;
+
+  myList.innerHTML = '';
+
+  for (let myLoop = 0;
+       myLoop < myTasks.length;
+       myLoop++) {
+
+    let myTask = myTasks[myLoop];
+
+    if (myTask.done) {
+      myCompleted++;
+    }
+
+    // Show only tasks matching the filter
+    if (myFilter === 'active' && myTask.done) {
+      continue;
+    }
+
+    if (myFilter === 'completed' && !myTask.done) {
+      continue;
+    }
+
+    // Create a list item
+    let myItem = document.createElement('li');
+
+    myItem.style.marginBottom = '6px';
+
+    // Create a checkbox
+    let myCheckbox =
+      document.createElement('input');
+
+    myCheckbox.type = 'checkbox';
+    myCheckbox.checked = myTask.done;
+
+    myCheckbox.onchange = function() {
+      myToggleTask(myLoop);
+    };
+
+    // Create the task text
+    let myLabel =
+      document.createElement('span');
+
+    myLabel.textContent = ' ' + myTask.text + ' ';
+
+    if (myTask.done) {
+      myLabel.style.textDecoration = 'line-through';
+    }
+
+    // Create Edit button
+    let myEditButton =
+      document.createElement('input');
+
+    myEditButton.type = 'button';
+    myEditButton.value = 'Edit';
+
+    myEditButton.onclick = function() {
+      myEditTask(myLoop);
+    };
+
+    // Create Delete button
+    let myDeleteButton =
+      document.createElement('input');
+
+    myDeleteButton.type = 'button';
+    myDeleteButton.value = 'Delete';
+
+    myDeleteButton.onclick = function() {
+      myDeleteTask(myLoop);
+    };
+
+    // Add everything to the page
+    myItem.appendChild(myCheckbox);
+    myItem.appendChild(myLabel);
+    myItem.appendChild(myEditButton);
+    myItem.appendChild(myDeleteButton);
+
+    myList.appendChild(myItem);
+  }
+
+  // Update the task statistics
+  document.getElementById('myStats').textContent =
+    'Total: ' + myTasks.length +
+    ' | Completed: ' + myCompleted +
+    ' | Remaining: ' + (myTasks.length - myCompleted);
+
+}
+
+</script>
+
+</body>
+</html>
