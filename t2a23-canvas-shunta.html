@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>T2A23 Canvas by Shunta</title>
+  <style>
+    /* Only needed so drawing works properly on phones/tablets */
+    #myCoolTag { touch-action: none; max-width: 100%; }
+  </style>
+</head>
+<body>
+
+<h2 align="center">t2a23-canvas by Shunta</h2>
+Click the button to draw basic shapes, then ask AI to help you add more!<br><br>
+
+<!-- TEACHER'S ORIGINAL BUTTON: Basic shapes -->
+<input type="button" value="Draw Basic Shapes" onclick="{
+  mySaveHistory();
+
+  // 1. Clear the canvas first so shapes don't overlap when clicked twice
+  myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
+
+  // 2. Draw a simple Line
+  myContext.beginPath();
+  myContext.lineWidth = 3;
+  myContext.strokeStyle = 'black';
+  myContext.moveTo(20, 20);       // Start point (x, y)
+  myContext.lineTo(150, 20);      // End point (x, y)
+  myContext.stroke();
+
+  // 3. Draw a solid Rectangle
+  myContext.fillStyle = 'blue';
+  myContext.fillRect(30, 50, 100, 60); // (x, y, width, height)
+
+  // 4. Draw a Circle
+  myContext.beginPath();
+  myContext.lineWidth = 5;
+  myContext.strokeStyle = 'green';
+  myContext.arc(220, 80, 40, 0, 2 * Math.PI); // (x, y, radius, start, end)
+  myContext.stroke();
+
+  // 5. Write some Text
+  myContext.fillStyle = 'red';
+  myContext.font = '24px Arial';
+  myContext.fillText('Hello World!', 30, 180); // ('text', x, y)
+}">
+
+<!-- NEW: Extra canvas drawing functions -->
+<input type="button" value="Draw More Shapes" onclick="myDrawMoreShapes()">
+<input type="button" value="Clear Canvas" onclick="myClearCanvas()">
+<br><br>
+
+<!-- Teacher's original canvas: 500 x 300 -->
+<canvas id="myCoolTag" width="500" height="300" style="border:1px solid #000000;"></canvas>
+<br><br>
+
+<!-- NEW: Drawing controls (simple HTML controls) -->
+Draw with mouse or touch:<br>
+Tool:
+<select id="myTool">
+  <option value="pen">Free Draw</option>
+  <option value="line">Line</option>
+  <option value="rectangle">Rectangle</option>
+  <option value="circle">Circle</option>
+  <option value="eraser">Eraser</option>
+</select>
+Color: <input id="myColor" type="color" value="#000000">
+Size: <input id="mySize" type="range" min="1" max="30" value="4">
+<span id="mySizeNumber">4</span>px
+<br><br>
+<input type="button" value="Undo" onclick="myUndo()">
+<input type="button" value="Redo" onclick="myRedo()">
+<input type="button" value="Save as PNG" onclick="mySavePNG()">
+<p id="myInfo">Choose a tool and draw inside the canvas.</p>
+
+<script>
+  // Teacher's original global variables
+  let myCanvas = document.getElementById('myCoolTag');
+  let myContext = myCanvas.getContext('2d');
+
+  // NEW: Store previous canvas states for Undo/Redo
+  let myHistory = [];
+  let myRedoHistory = [];
+  const myHistoryLimit = 20;
+
+  // NEW: Variables for mouse/touch drawing
+  let myDrawing = false;
+  let myStartX = 0;
+  let myStartY = 0;
+  let myLastX = 0;
+  let myLastY = 0;
+  let myBeforeDrawing = null;
+
+  function myMessage(message) {
+    document.getElementById('myInfo').textContent = message;
+  }
+
+  // Save the current picture before making a change
+  function mySaveHistory() {
+    myHistory.push(myContext.getImageData(0, 0, myCanvas.width, myCanvas.height));
+    if (myHistory.length > myHistoryLimit) myHistory.shift();
+    myRedoHistory = [];
+  }
+
+  // Restore the previous picture
+  function myUndo() {
+    if (myHistory.length === 0) {
+      myMessage('Nothing to undo.');
+      return;
+    }
+    myRedoHistory.push(myContext.getImageData(0, 0, myCanvas.width, myCanvas.height));
+    myContext.putImageData(myHistory.pop(), 0, 0);
+    myMessage('Undo completed.');
+  }
+
+  // Restore a picture that was undone
+  function myRedo() {
+    if (myRedoHistory.length === 0) {
+      myMessage('Nothing to redo.');
+      return;
+    }
+    myHistory.push(myContext.getImageData(0, 0, myCanvas.width, myCanvas.height));
+    if (myHistory.length > myHistoryLimit) myHistory.shift();
+    myContext.putImageData(myRedoHistory.pop(), 0, 0);
+    myMessage('Redo completed.');
+  }
+
+  // NEW: Draw a triangle, a star (using a loop), and an ellipse
+  function myDrawMoreShapes() {
+    mySaveHistory();
+
+    // Triangle: connect three points
+    myContext.beginPath();
+    myContext.moveTo(310, 35);
+    myContext.lineTo(275, 120);
+    myContext.lineTo(345, 120);
+    myContext.closePath();
+    myContext.fillStyle = 'orange';
+    myContext.fill();
+
+    // Five-point star: 10 alternating outer/inner points
+    myContext.beginPath();
+    for (let i = 0; i < 10; i++) {
+      let angle = -Math.PI / 2 + i * Math.PI / 5;
+      let radius = (i % 2 === 0) ? 40 : 18;
+      let x = 420 + Math.cos(angle) * radius;
+      let y = 80 + Math.sin(angle) * radius;
+      if (i === 0) myContext.moveTo(x, y);
+      else myContext.lineTo(x, y);
+    }
+    myContext.closePath();
+    myContext.fillStyle = 'gold';
+    myContext.fill();
+    myContext.strokeStyle = 'black';
+    myContext.lineWidth = 1;
+    myContext.stroke();
+
+    // Ellipse: two different radii
+    myContext.beginPath();
+    myContext.ellipse(375, 225, 70, 30, 0, 0, 2 * Math.PI);
+    myContext.fillStyle = 'purple';
+    myContext.fill();
+
+    myMessage('Drew a triangle, a star, and an ellipse.');
+  }
+
+  function myClearCanvas() {
+    mySaveHistory();
+    myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    myMessage('Canvas cleared. Undo can restore it.');
+  }
+
+  // Convert pointer coordinates to canvas coordinates
+  function myGetPoint(event) {
+    const rect = myCanvas.getBoundingClientRect();
+    return {
+      x: (event.clientX - rect.left) * myCanvas.width / rect.width,
+      y: (event.clientY - rect.top) * myCanvas.height / rect.height
+    };
+  }
+
+  // Set brush color and width; eraser removes pixels
+  function mySetDrawingStyle(tool) {
+    myContext.globalCompositeOperation = tool === 'eraser'
+      ? 'destination-out' : 'source-over';
+    myContext.strokeStyle = document.getElementById('myColor').value;
+    myContext.fillStyle = document.getElementById('myColor').value;
+    myContext.lineWidth = Number(document.getElementById('mySize').value);
+    myContext.lineCap = 'round';
+    myContext.lineJoin = 'round';
+  }
+
+  // Draw a selected shape from the start position to the pointer
+  function myDrawShape(x, y, tool) {
+    myContext.beginPath();
+    if (tool === 'line') {
+      myContext.moveTo(myStartX, myStartY);
+      myContext.lineTo(x, y);
+    } else if (tool === 'rectangle') {
+      myContext.rect(myStartX, myStartY, x - myStartX, y - myStartY);
+    } else if (tool === 'circle') {
+      let radius = Math.hypot(x - myStartX, y - myStartY);
+      myContext.arc(myStartX, myStartY, radius, 0, 2 * Math.PI);
+    }
+    myContext.stroke();
+  }
+
+  // Start drawing
+  myCanvas.addEventListener('pointerdown', function(event) {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    const point = myGetPoint(event);
+    const tool = document.getElementById('myTool').value;
+    myDrawing = true;
+    myStartX = myLastX = point.x;
+    myStartY = myLastY = point.y;
+    myBeforeDrawing = myContext.getImageData(0, 0, myCanvas.width, myCanvas.height);
+    myCanvas.setPointerCapture(event.pointerId);
+    mySetDrawingStyle(tool);
+
+    // A single click draws a dot with the pen or eraser
+    if (tool === 'pen' || tool === 'eraser') {
+      myContext.beginPath();
+      myContext.arc(point.x, point.y, myContext.lineWidth / 2, 0, 2 * Math.PI);
+      myContext.fill();
+    }
+  });
+
+  // Continue drawing, or preview the selected shape
+  myCanvas.addEventListener('pointermove', function(event) {
+    if (!myDrawing) return;
+    const point = myGetPoint(event);
+    const tool = document.getElementById('myTool').value;
+    mySetDrawingStyle(tool);
+
+    if (tool === 'pen' || tool === 'eraser') {
+      myContext.beginPath();
+      myContext.moveTo(myLastX, myLastY);
+      myContext.lineTo(point.x, point.y);
+      myContext.stroke();
+    } else {
+      myContext.putImageData(myBeforeDrawing, 0, 0);
+      mySetDrawingStyle(tool);
+      myDrawShape(point.x, point.y, tool);
+    }
+    myLastX = point.x;
+    myLastY = point.y;
+  });
+
+  // Finish the drawing and save ONE Undo step
+  myCanvas.addEventListener('pointerup', function(event) {
+    if (!myDrawing) return;
+    const point = myGetPoint(event);
+    const tool = document.getElementById('myTool').value;
+
+    if (tool !== 'pen' && tool !== 'eraser') {
+      myContext.putImageData(myBeforeDrawing, 0, 0);
+      mySetDrawingStyle(tool);
+      myDrawShape(point.x, point.y, tool);
+    }
+
+    myHistory.push(myBeforeDrawing);
+    if (myHistory.length > myHistoryLimit) myHistory.shift();
+    myRedoHistory = [];
+    myDrawing = false;
+    myContext.globalCompositeOperation = 'source-over';
+    myMessage('Drawing added. You can Undo or Redo.');
+  });
+
+  myCanvas.addEventListener('pointercancel', function() {
+    if (myDrawing && myBeforeDrawing) {
+      myContext.putImageData(myBeforeDrawing, 0, 0);
+    }
+    myDrawing = false;
+    myContext.globalCompositeOperation = 'source-over';
+  });
+
+  document.getElementById('mySize').addEventListener('input', function() {
+    document.getElementById('mySizeNumber').textContent = this.value;
+  });
+
+  // Download the actual canvas as an image
+  function mySavePNG() {
+    const link = document.createElement('a');
+    link.download = 't2a23-canvas-shunta.png';
+    link.href = myCanvas.toDataURL('image/png');
+    link.click();
+    myMessage('PNG image saved.');
+  }
+</script>
+
+</body>
+</html>
