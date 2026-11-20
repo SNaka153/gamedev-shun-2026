@@ -2,445 +2,380 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>T2A20 Sort by Shunta</title>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background-color: #f5f9ff;
-    }
-
-    button {
-      margin: 4px;
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    .number {
-      display: inline-block;
-      background-color: #d6eaff;
-      border: 2px solid #4488cc;
-      border-radius: 6px;
-      padding: 14px;
-      margin: 4px;
-      min-width: 25px;
-      text-align: center;
-      font-size: 22px;
-    }
-
-    .active {
-      background-color: #ffdd88;
-      border-color: #dd9900;
-    }
-
-    #myDiv01 {
-      margin-top: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>T2A20 Sort by Shunta</title>
 </head>
-
 <body>
 
 <h1 align="center">t2a20-sort-shunta.html</h1>
 
-<h2>Sorting Arrays</h2>
-
-<p>
-This page demonstrates how computers sort numbers
-using arrays, loops, comparisons, and temporary variables.
-</p>
-
-<h3>How swapping works</h3>
-
-<p>
-Example: [3, 7, 0, 4, 2]
-</p>
-
-<p>
-Compare 7 and 0. Since 7 is greater than 0,
-they must switch places.
-</p>
-
-<pre>
-myTemp = 7
-Move 0 into the second position
-Move myTemp (7) into the third position
-
-Result: [3, 0, 7, 4, 2]
-
-After sorting: [0, 2, 3, 4, 7]
-</pre>
-
-<hr>
-
-<h2>Sorting Program</h2>
-
 <script>
-
-// Global variables
-let myMax = 5;
+// Teacher's original variables
+let myMax = 52;  // Use 3 for testing, 52 for the assignment
 let myCards = new Array(myMax);
-let myHasNumbers = false;
-let myTimer = null;
+
+// NEW: Save the original numbers
+let myOriginalCards = [];
+let myComparisons = 0;
 
 
-// Stop the animation
-function myStopAnimation() {
+// NEW: Start each sort with the same numbers
+function myStartSort() {
 
-  clearInterval(myTimer);
-  myTimer = null;
-
-}
-
-
-// Check if numbers exist
-function myReady() {
-
-  if (!myHasNumbers) {
-    document.getElementById('myDiv01').textContent =
-      'Click Set Random first.';
-    return false;
-  }
-
-  return true;
-}
-
-
-// 1. Create random numbers
-function mySetRandom() {
-
-  myStopAnimation();
-
-  for (let myLoop = 0; myLoop < myMax; myLoop++) {
-
-    myCards[myLoop] =
-      Math.floor(Math.random() * 10);
-
-  }
-
-  myHasNumbers = true;
-
-  document.getElementById('myDiv01').textContent =
-    'Numbers generated! Click Show to display them.';
-
-}
-
-
-// Display the array
-function myDisplay(title, before = null,
-                   comparisons = null, swaps = null,
-                   first = -1, second = -1) {
-
-  const output = document.getElementById('myDiv01');
-
-  output.innerHTML = '';
-
-  const heading = document.createElement('h3');
-  heading.textContent = title;
-  output.appendChild(heading);
-
-  if (before !== null) {
-    const beforeText = document.createElement('p');
-    beforeText.textContent =
-      'Before: ' + before.join(', ');
-    output.appendChild(beforeText);
-  }
-
-  // Display each number
-  for (let i = 0; i < myMax; i++) {
-
-    const box = document.createElement('span');
-
-    box.className = 'number';
-
-    if (i === first || i === second) {
-      box.className += ' active';
+    if (myOriginalCards.length === 0) {
+        document.getElementById('myDiv01').innerHTML =
+            'Click Set Random first.';
+        return false;
     }
 
-    box.textContent = myCards[i];
+    myCards = myOriginalCards.slice();
+    myComparisons = 0;
 
-    output.appendChild(box);
-  }
-
-  if (comparisons !== null) {
-
-    const stats = document.createElement('p');
-
-    stats.textContent =
-      'Comparisons: ' + comparisons +
-      ' | Swaps: ' + swaps;
-
-    output.appendChild(stats);
-  }
-
+    return true;
 }
 
 
-// 2. Show the current numbers
-function myShow() {
+// NEW: Display sorting results
+function myShowResult(myMethod) {
 
-  if (!myReady()) return;
+    let myTemp = '<b>' + myMethod + '</b><br>';
 
-  myDisplay('Current Array');
+    myTemp += 'Before: ' +
+        myOriginalCards.join(', ') + '<br>';
 
-}
+    myTemp += 'After: ' +
+        myCards.join(', ') + '<br>';
 
+    myTemp += 'Comparisons: ' +
+        myComparisons + '<br><br>';
 
-// 3. Bubble Sort (ascending or descending)
-function myBubbleSort(descending = false) {
+    for (let myLoop = 0; myLoop < myMax; myLoop++) {
 
-  if (!myReady()) return;
-
-  myStopAnimation();
-
-  const before = [...myCards];
-
-  let comparisons = 0;
-  let swaps = 0;
-
-  // Outer loop
-  for (let pass = 0; pass < myMax - 1; pass++) {
-
-    // Inner loop
-    for (let i = 0; i < myMax - 1 - pass; i++) {
-
-      comparisons++;
-
-      let shouldSwap;
-
-      if (descending) {
-        shouldSwap = myCards[i] < myCards[i + 1];
-      } else {
-        shouldSwap = myCards[i] > myCards[i + 1];
-      }
-
-      if (shouldSwap) {
-
-        let myTemp = myCards[i];
-
-        myCards[i] = myCards[i + 1];
-
-        myCards[i + 1] = myTemp;
-
-        swaps++;
-      }
-
+        myTemp += myLoop + ' = ' +
+            myCards[myLoop] + '<br>';
     }
-  }
 
-  if (descending) {
-    myDisplay('Reverse Sort - Largest to Smallest',
-              before, comparisons, swaps);
-  } else {
-    myDisplay('Bubble Sort - Smallest to Largest',
-              before, comparisons, swaps);
-  }
-
+    document.getElementById('myDiv01').innerHTML =
+        myTemp;
 }
 
 
-// 4. Selection Sort
+// BASIC SORT: Bubble Sort
+function myBubbleSort() {
+
+    if (!myStartSort()) return;
+
+    for (let myPass = 0;
+         myPass < myMax - 1;
+         myPass++) {
+
+        let mySwapped = false;
+
+        for (let myLoop = 0;
+             myLoop < myMax - 1 - myPass;
+             myLoop++) {
+
+            myComparisons++;
+
+            if (myCards[myLoop] >
+                myCards[myLoop + 1]) {
+
+                let myTemp = myCards[myLoop];
+
+                myCards[myLoop] =
+                    myCards[myLoop + 1];
+
+                myCards[myLoop + 1] = myTemp;
+
+                mySwapped = true;
+            }
+        }
+
+        if (!mySwapped) break;
+    }
+
+    myShowResult('Bubble Sort');
+}
+
+
+// NEW METHOD 1: Selection Sort
 function mySelectionSort() {
 
-  if (!myReady()) return;
+    if (!myStartSort()) return;
 
-  myStopAnimation();
+    for (let myLoop = 0;
+         myLoop < myMax - 1;
+         myLoop++) {
 
-  const before = [...myCards];
+        let mySmallest = myLoop;
 
-  let comparisons = 0;
-  let swaps = 0;
+        for (let myNext = myLoop + 1;
+             myNext < myMax;
+             myNext++) {
 
-  for (let i = 0; i < myMax - 1; i++) {
+            myComparisons++;
 
-    let minIndex = i;
+            if (myCards[myNext] <
+                myCards[mySmallest]) {
 
-    // Find the smallest remaining number
-    for (let j = i + 1; j < myMax; j++) {
+                mySmallest = myNext;
+            }
+        }
 
-      comparisons++;
+        if (mySmallest !== myLoop) {
 
-      if (myCards[j] < myCards[minIndex]) {
-        minIndex = j;
-      }
+            let myTemp = myCards[myLoop];
 
+            myCards[myLoop] =
+                myCards[mySmallest];
+
+            myCards[mySmallest] = myTemp;
+        }
     }
 
-    // Swap the smallest number into place
-    if (minIndex !== i) {
-
-      let myTemp = myCards[i];
-
-      myCards[i] = myCards[minIndex];
-
-      myCards[minIndex] = myTemp;
-
-      swaps++;
-    }
-
-  }
-
-  myDisplay('Selection Sort - Smallest to Largest',
-            before, comparisons, swaps);
-
+    myShowResult('Selection Sort');
 }
 
 
-// 5. Animated Bubble Sort
-function myAnimateBubble() {
+// NEW METHOD 2: Insertion Sort
+function myInsertionSort() {
 
-  if (!myReady()) return;
+    if (!myStartSort()) return;
 
-  myStopAnimation();
+    for (let myLoop = 1;
+         myLoop < myMax;
+         myLoop++) {
 
-  const before = [...myCards];
-  const working = [...myCards];
+        let myTemp = myCards[myLoop];
+        let myPosition = myLoop - 1;
 
-  const frames = [];
+        while (myPosition >= 0) {
 
-  let comparisons = 0;
-  let swaps = 0;
+            myComparisons++;
 
-  // Prepare every sorting step
-  for (let pass = 0; pass < myMax - 1; pass++) {
+            if (myCards[myPosition] > myTemp) {
 
-    for (let i = 0; i < myMax - 1 - pass; i++) {
+                myCards[myPosition + 1] =
+                    myCards[myPosition];
 
-      comparisons++;
+                myPosition--;
 
-      if (working[i] > working[i + 1]) {
+            } else {
+                break;
+            }
+        }
 
-        let myTemp = working[i];
-
-        working[i] = working[i + 1];
-
-        working[i + 1] = myTemp;
-
-        swaps++;
-      }
-
-      frames.push({
-        numbers: [...working],
-        first: i,
-        second: i + 1,
-        comparisons: comparisons,
-        swaps: swaps
-      });
-
-    }
-  }
-
-  let step = 0;
-
-  myDisplay('Animation Starting', before, 0, 0);
-
-  // Display one step at a time
-  myTimer = setInterval(function() {
-
-    const frame = frames[step];
-
-    myCards = [...frame.numbers];
-
-    myDisplay(
-      'Animated Bubble Sort',
-      before,
-      frame.comparisons,
-      frame.swaps,
-      frame.first,
-      frame.second
-    );
-
-    step++;
-
-    if (step >= frames.length) {
-
-      myStopAnimation();
-
-      myDisplay(
-        'Animation Complete!',
-        before,
-        frame.comparisons,
-        frame.swaps
-      );
-
+        myCards[myPosition + 1] = myTemp;
     }
 
-  }, 600);
+    myShowResult('Insertion Sort');
+}
 
+
+// NEW METHOD 3: Quick Sort
+function myQuickSortPart(myLeft, myRight) {
+
+    if (myLeft >= myRight) return;
+
+    let myPivot =
+        myCards[Math.floor((myLeft + myRight) / 2)];
+
+    let mySmaller = myLeft;
+    let myLoop = myLeft;
+    let myLarger = myRight;
+
+    while (myLoop <= myLarger) {
+
+        myComparisons++;
+
+        if (myCards[myLoop] < myPivot) {
+
+            let myTemp = myCards[mySmaller];
+
+            myCards[mySmaller] = myCards[myLoop];
+            myCards[myLoop] = myTemp;
+
+            mySmaller++;
+            myLoop++;
+
+        } else {
+
+            myComparisons++;
+
+            if (myCards[myLoop] > myPivot) {
+
+                let myTemp = myCards[myLarger];
+
+                myCards[myLarger] = myCards[myLoop];
+                myCards[myLoop] = myTemp;
+
+                myLarger--;
+
+            } else {
+                myLoop++;
+            }
+        }
+    }
+
+    myQuickSortPart(myLeft, mySmaller - 1);
+    myQuickSortPart(myLarger + 1, myRight);
+}
+
+
+function myQuickSort() {
+
+    if (!myStartSort()) return;
+
+    myQuickSortPart(0, myMax - 1);
+
+    myShowResult('Quick Sort');
+}
+
+
+// NEW METHOD 4: Merge Sort
+function myMerge(myLeft, myMiddle, myRight) {
+
+    let myTemp = [];
+
+    let myA = myLeft;
+    let myB = myMiddle + 1;
+
+    while (myA <= myMiddle &&
+           myB <= myRight) {
+
+        myComparisons++;
+
+        if (myCards[myA] <= myCards[myB]) {
+
+            myTemp.push(myCards[myA]);
+            myA++;
+
+        } else {
+
+            myTemp.push(myCards[myB]);
+            myB++;
+        }
+    }
+
+    while (myA <= myMiddle) {
+
+        myTemp.push(myCards[myA]);
+        myA++;
+    }
+
+    while (myB <= myRight) {
+
+        myTemp.push(myCards[myB]);
+        myB++;
+    }
+
+    for (let myLoop = 0;
+         myLoop < myTemp.length;
+         myLoop++) {
+
+        myCards[myLeft + myLoop] =
+            myTemp[myLoop];
+    }
+}
+
+
+function myMergeSortPart(myLeft, myRight) {
+
+    if (myLeft >= myRight) return;
+
+    let myMiddle =
+        Math.floor((myLeft + myRight) / 2);
+
+    myMergeSortPart(myLeft, myMiddle);
+
+    myMergeSortPart(myMiddle + 1, myRight);
+
+    myMerge(myLeft, myMiddle, myRight);
+}
+
+
+function myMergeSort() {
+
+    if (!myStartSort()) return;
+
+    myMergeSortPart(0, myMax - 1);
+
+    myShowResult('Merge Sort');
 }
 
 </script>
 
 
-<!-- Buttons -->
+<!-- Teacher's original Set Random button -->
 
-<button onclick="mySetRandom()">
-  Set Random
-</button>
+<input type="button" value="Set Random" onclick="{
 
-<button onclick="myShow()">
-  Show
-</button>
+    for (let myLoop = 0;
+         myLoop < myMax;
+         myLoop++) {
 
-<br><br>
+        myCards[myLoop] =
+            Math.floor(Math.random() * 10);
+    }
 
-<button onclick="myBubbleSort(false)">
-  Bubble Sort
-</button>
+    myOriginalCards = myCards.slice();
 
-<button onclick="myBubbleSort(true)">
-  Reverse Sort
-</button>
+    document.getElementById('myDiv01').innerHTML =
+        'Random numbers created. Click Show.';
 
-<button onclick="mySelectionSort()">
-  Selection Sort
-</button>
-
-<br><br>
-
-<button onclick="myAnimateBubble()">
-  Animate Sort
-</button>
-
-<button onclick="myStopAnimation()">
-  Stop Animation
-</button>
+}">
 
 
-<!-- Output -->
+<!-- Teacher's original Show button -->
 
-<div id="myDiv01">
-  Click Set Random to begin.
-</div>
+<input type="button" value="Show" onclick="{
 
-<hr>
+    if (myOriginalCards.length === 0) {
 
-<h3>Sorting Methods</h3>
+        document.getElementById('myDiv01').innerHTML =
+            'Click Set Random first.';
 
-<p>
-<b>Bubble Sort:</b>
-Compares neighboring numbers and swaps them when
-they are in the wrong order.
-</p>
+    } else {
 
-<p>
-<b>Selection Sort:</b>
-Finds the smallest remaining number and moves it
-into the correct position.
-</p>
+        let myTemp = '';
 
-<p>
-<b>Reverse Sort:</b>
-Uses Bubble Sort but arranges numbers from
-largest to smallest.
-</p>
+        for (let myLoop = 0;
+             myLoop < myMax;
+             myLoop++) {
 
-<p>
-<b>Animated Sort:</b>
-Shows the comparisons and swaps step by step.
-</p>
+            myTemp += myLoop + ' = ' +
+                myCards[myLoop] + '<br>';
+        }
+
+        document.getElementById('myDiv01').innerHTML =
+            myTemp;
+    }
+
+}">
+
+
+<!-- Teacher's Sort button: Bubble Sort -->
+
+<input type="button" value="Sort"
+       onclick="myBubbleSort()">
+
+
+<!-- NEW: Additional sorting methods -->
+
+<input type="button" value="Selection Sort"
+       onclick="mySelectionSort()">
+
+<input type="button" value="Insertion Sort"
+       onclick="myInsertionSort()">
+
+<input type="button" value="Quick Sort"
+       onclick="myQuickSort()">
+
+<input type="button" value="Merge Sort"
+       onclick="myMergeSort()">
+
+
+<div id="myDiv01"></div>
 
 </body>
 </html>
