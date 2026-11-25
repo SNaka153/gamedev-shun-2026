@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f4ee">
+  <meta name="description" content="Create a poster with brushes, Canvas shapes, and mirrored marks. X T2A23 Canvas by Shunta.">
+  <title>X T2A23 Canvas — Print Studio by Shunta</title>
+  <style>
+    :root{color-scheme:light;--ink:#202522;--muted:#545a56;--paper:#f6f4ee;--white:#fffdf8;--line:#dedbd0;--accent:#293fcb;--red:#f2765e;--board:#e9e5da;--mono:Consolas,monospace}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.5 "Segoe UI",Arial,sans-serif}button,input{font:inherit}button{color:inherit;cursor:pointer}button:disabled{cursor:default;opacity:.45}button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}a{color:var(--accent)}.wrap{max-width:1312px;margin:auto;padding-inline:clamp(16px,4vw,52px)}
+    header{border-bottom:1px solid var(--line)}.top{min-height:72px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{display:flex;gap:12px;align-items:center;font-size:1rem;font-weight:800;letter-spacing:-.03em}.brand-mark{width:32px;height:32px;border-radius:8px;background:var(--red);color:#251e1b;display:grid;place-items:center;font-size:1.6rem;line-height:1}.credit{font-size:.875rem;color:var(--muted);text-align:right}
+    .intro{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding-block:32px 23px}.assignment{margin:0 0 5px;color:var(--accent);font:700 .875rem/1.5 var(--mono)}h1{font-size:clamp(2.65rem,6vw,4.85rem);line-height:1.02;letter-spacing:-.077em;margin:0;font-weight:800}.intro p:last-child{margin:13px 0 0;color:var(--muted)}.button,.action{display:inline-flex;justify-content:center;align-items:center;gap:7px;min-height:40px;padding:7px 12px;background:var(--white);border:1px solid var(--line);border-radius:8px;font-weight:650;font-size:.875rem;white-space:nowrap}.button:not(:disabled):hover,.action:not(:disabled):hover{background:#ebe9df}.primary{background:var(--accent);border-color:var(--accent);color:#fff}.primary:not(:disabled):hover{background:#2035ac}.intro .primary{min-height:45px;padding-inline:18px}
+    .workspace{display:grid;grid-template-columns:minmax(0,1fr) 280px;align-items:start;gap:18px}.artboard,.controls{min-width:0;border:1px solid var(--line);border-radius:13px;background:var(--white)}.board-head,.board-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px}.board-head h2,.controls h2{margin:0;font-size:1rem;letter-spacing:-.02em}.board-actions{display:flex;gap:6px}.board-actions .action{min-height:35px;padding:5px 9px}.mat{display:grid;place-items:center;position:relative;padding:clamp(10px,3vw,30px);background-color:var(--board);background-image:radial-gradient(#a39d8b55 1px,transparent 1px);background-size:13px 13px;border-block:1px solid var(--line)}.sheet{position:relative;width:min(100%,800px);background:#fff5dc;box-shadow:0 3px 14px #48371931;line-height:0}canvas{display:block;width:100%;height:auto;aspect-ratio:10/7;cursor:crosshair;touch-action:none}.axis{position:absolute;z-index:1;pointer-events:none;display:none}.axis-v{top:0;bottom:0;left:50%;border-left:1px dashed #fff;box-shadow:-1px 0 #292632a0}.axis-h{left:0;right:0;top:50%;border-top:1px dashed #fff;box-shadow:0 -1px #292632a0}.sheet[data-symmetry="mirror"] .axis-v,.sheet[data-symmetry="quad"] .axis{display:block}.board-foot{font: .84rem/1.45 var(--mono);color:var(--muted)}.board-foot output{font-family:"Segoe UI",Arial,sans-serif;overflow-wrap:anywhere}
+    .controls{padding:16px;display:grid;gap:13px}.controls h2{margin-bottom:4px}.controls fieldset{border:0;padding:0;margin:0;min-width:0}.controls fieldset+fieldset,.starter-block{padding-top:13px;border-top:1px solid var(--line)}.controls legend{float:left;width:100%;font-weight:700;font-size:.875rem;margin-bottom:8px;padding:0}.tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;clear:both}.tool-grid button,.segments button{min-width:0;background:#f6f4ee;border:1px solid var(--line);border-radius:7px;min-height:39px;font-size:.875rem;padding:5px 2px}.tool-grid button{display:grid;justify-items:center;align-content:center;gap:1px;min-height:49px}.tool-grid button span{font-size:1.22rem;line-height:1.15}.tool-grid button:hover,.segments button:hover{background:#eae7de}.tool-grid button[aria-pressed="true"],.segments button[aria-pressed="true"]{background:#ecedff;color:#2335b1;border-color:#9a9fea;font-weight:750}.segments{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;clear:both}.swatches{display:flex;align-items:center;gap:6px;clear:both;flex-wrap:wrap}.swatch,.picker{position:relative;width:28px;height:28px;border-radius:50%;border:1px solid #24232135;flex:none}.swatch{background:var(--color);padding:0}.swatch[aria-pressed="true"]{outline:2px solid var(--accent);outline-offset:2px}.picker{display:grid;place-items:center;background:conic-gradient(#e75c57,#d8ad43,#379e82,#6656d2,#e75c57)}.picker input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}.picker:focus-within{outline:2px solid var(--accent);outline-offset:2px}.picker span{font-size:1rem;color:#fff;background:#202522;border-radius:50%;width:16px;line-height:16px;text-align:center;pointer-events:none}
+    .size-row{display:flex;align-items:center;gap:8px;margin-top:11px;font-size:.875rem}.size-row label{font-weight:600}.size-row input{min-width:0;width:100%;accent-color:var(--accent)}.size-row output{font:.81rem var(--mono);white-space:nowrap}.fill{margin-top:8px;display:flex;align-items:center;gap:7px;font-size:.875rem}.fill input{accent-color:var(--accent);margin:0}.starter-block h3{font-size:.875rem;margin:0 0 8px}.starter-list{display:grid;grid-template-columns:1fr 1fr;gap:6px}.starter-list button{min-height:37px;text-align:left;white-space:normal;padding-inline:8px}.starter-list button span{width:11px;height:13px;border-radius:2px;flex:none;background:linear-gradient(140deg,var(--one) 45%,var(--two) 46%);border:1px solid #262a2322}.learning{margin-top:16px;border-top:1px solid var(--line);padding:12px 0 16px;font-size:.875rem;color:var(--muted)}.learning summary{cursor:pointer;color:var(--ink);font-weight:650}.learning p{max-width:68ch;margin:.65rem 0}.learning code{font-family:var(--mono);color:var(--accent)}footer{padding:1px 0 18px;font-size:.875rem;color:var(--muted)}
+    @media(max-width:950px){.workspace{grid-template-columns:minmax(0,1fr) 250px;gap:12px}.controls{padding:12px}.board-head,.board-foot{padding-inline:12px}}@media(max-width:720px){.intro{padding-top:23px;align-items:end}.workspace{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr;gap:14px}.controls h2{grid-column:1/-1}.controls fieldset+fieldset,.starter-block{border:0;padding-top:0}.tool-grid button{min-height:43px}}@media(max-width:460px){.intro{align-items:start;flex-direction:column;gap:12px}.intro .primary{min-height:38px}.intro p:last-child{margin-top:8px}.board-head{gap:6px}.board-actions .action{font-size:.8rem;padding-inline:6px}.board-foot{font-size:.75rem;padding-inline:10px}.controls{grid-template-columns:1fr}.controls fieldset+fieldset,.starter-block{border-top:1px solid var(--line);padding-top:12px}.starter-list{grid-template-columns:repeat(2,minmax(0,1fr))}.credit{font-size:.8rem}}
+  </style>
+</head>
+<body>
+  <header><div class="wrap top"><div class="brand"><span class="brand-mark" aria-hidden="true">✳</span>Print Studio</div><div class="credit">Canvas project by Shunta</div></div></header>
+  <main class="wrap">
+    <div class="intro">
+      <div><p class="assignment">X T2A23 / CANVAS</p><h1>Make a print.</h1><p>Pick a starter poster or start blank. Draw with shapes, ink, and symmetry.</p></div>
+      <a class="button primary" id="export" href="#" download="shunta-canvas-print.png" style="text-decoration:none">Save PNG</a>
+    </div>
+    <div class="workspace">
+      <section class="artboard" aria-labelledby="artboardTitle">
+        <div class="board-head"><h2 id="artboardTitle">Artboard</h2><div class="board-actions"><button class="action" id="undo" title="Undo (Ctrl+Z)">Undo</button><button class="action" id="redo" title="Redo (Ctrl+Shift+Z)">Redo</button><button class="action" id="clear">Clear</button></div></div>
+        <div class="mat"><div class="sheet" id="sheet" data-symmetry="off"><canvas id="art" width="800" height="560" aria-label="Artwork canvas. Draw with your mouse, stylus, or touch.">Your browser does not support Canvas.</canvas><i class="axis axis-v" aria-hidden="true"></i><i class="axis axis-h" aria-hidden="true"></i></div></div>
+        <div class="board-foot"><output id="status" aria-live="polite">Orbit starter loaded.</output><span>800 × 560 px</span></div>
+      </section>
+      <aside class="controls" aria-labelledby="controlsTitle">
+        <h2 id="controlsTitle">Tools</h2>
+        <fieldset><legend>Draw</legend><div class="tool-grid">
+          <button data-tool="ink" aria-pressed="true"><span aria-hidden="true">✎</span>Ink</button>
+          <button data-tool="line" aria-pressed="false"><span aria-hidden="true">╱</span>Line</button>
+          <button data-tool="rectangle" aria-pressed="false"><span aria-hidden="true">□</span>Box</button>
+          <button data-tool="ellipse" aria-pressed="false"><span aria-hidden="true">○</span>Oval</button>
+          <button data-tool="star" aria-pressed="false"><span aria-hidden="true">☆</span>Star</button>
+          <button data-tool="erase" aria-pressed="false"><span aria-hidden="true">▱</span>Erase</button>
+        </div></fieldset>
+        <fieldset><legend>Ink color</legend><div class="swatches">
+          <button class="swatch" data-color="#27262f" style="--color:#27262f" aria-label="Charcoal" aria-pressed="true"></button>
+          <button class="swatch" data-color="#f2765e" style="--color:#f2765e" aria-label="Coral" aria-pressed="false"></button>
+          <button class="swatch" data-color="#e8ae43" style="--color:#e8ae43" aria-label="Ochre" aria-pressed="false"></button>
+          <button class="swatch" data-color="#a398dd" style="--color:#a398dd" aria-label="Lavender" aria-pressed="false"></button>
+          <button class="swatch" data-color="#293fcb" style="--color:#293fcb" aria-label="Cobalt" aria-pressed="false"></button>
+          <button class="swatch" data-color="#248778" style="--color:#248778" aria-label="Teal" aria-pressed="false"></button>
+          <label class="picker"><input id="color" type="color" aria-label="Custom ink color" value="#27262f"><span aria-hidden="true">+</span></label>
+        </div><div class="size-row"><label for="size">Size</label><input id="size" type="range" min="1" max="40" value="8"><output id="sizeValue" for="size">8 px</output></div><label class="fill"><input id="fill" type="checkbox" checked> Fill shapes</label></fieldset>
+        <fieldset><legend>Symmetry</legend><div class="segments"><button data-symmetry="off" aria-pressed="true">Off</button><button data-symmetry="mirror" aria-pressed="false">Mirror</button><button data-symmetry="quad" aria-pressed="false">Four-way</button></div></fieldset>
+        <section class="starter-block" aria-labelledby="starterTitle"><h3 id="starterTitle">Start with</h3><div class="starter-list">
+          <button class="button" data-starter="orbit"><span style="--one:#efad42;--two:#28242c" aria-hidden="true"></span>Orbit</button>
+          <button class="button" data-starter="garden"><span style="--one:#296951;--two:#f2765e" aria-hidden="true"></span>Garden</button>
+          <button class="button" data-starter="tide"><span style="--one:#b5d2d3;--two:#293fcb" aria-hidden="true"></span>Tide</button>
+          <button class="button" data-starter="shapes"><span style="--one:#fff5dc;--two:#a398dd" aria-hidden="true"></span>Shape demo</button>
+        </div></section>
+      </aside>
+    </div>
+    <details class="learning"><summary>How the canvas works</summary><p><code>fillRect()</code> draws boxes, <code>ellipse()</code> draws ovals, <code>lineTo()</code> joins points, and <code>fillText()</code> adds lettering. The star repeats ten points, alternating between a large and small radius.</p><p>Mirror flips the x-coordinate across the center using <code>width - x</code>. Four-way also flips y using <code>height - y</code>. Undo stores a pixel snapshot before each change.</p></details>
+    <footer>X T2A23 Canvas by Shunta</footer>
+  </main>
+  <script>
+  'use strict';
+  // Original poster artwork drawn entirely with the Canvas 2D API.
+  function drawStarter(ctx, id) {
+    const W = 800, H = 560;
+    const ink = '#252223';
+    const paper = '#f7eddb';
+    ctx.save();
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    ctx.setLineDash([]);
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
+    ctx.lineCap = 'butt';
+    ctx.lineJoin = 'round';
+  
+    function rect(x, y, w, h, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, w, h);
+    }
+    function line(x1, y1, x2, y2, color = ink, width = 1) {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+    function circle(x, y, r, color) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    function text(value, x, y, size, color = ink, weight = 700) {
+      ctx.fillStyle = color;
+      ctx.font = weight + ' ' + size + 'px Arial, Helvetica, sans-serif';
+      ctx.fillText(value, x, y);
+    }
+    function star(x, y, r, color, points = 8, rotation = 0) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      for (let n = 0; n < points * 2; n++) {
+        const a = rotation + n * Math.PI / points;
+        const radius = n % 2 === 0 ? r : r * 0.26;
+        const px = x + Math.cos(a) * radius;
+        const py = y + Math.sin(a) * radius;
+        if (n === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.fill();
+    }
+    function ellipse(x, y, rx, ry, angle, color, stroke = false, width = 1) {
+      ctx.beginPath();
+      ctx.ellipse(x, y, rx, ry, angle, 0, Math.PI * 2);
+      if (stroke) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.stroke();
+      } else {
+        ctx.fillStyle = color;
+        ctx.fill();
+      }
+    }
+    function frame(label, number) {
+      ctx.strokeStyle = ink;
+      ctx.lineWidth = 1.25;
+      ctx.strokeRect(20.5, 20.5, 759, 519);
+      text('FIELD STUDIES / ' + label, 38, 43, 11);
+      ctx.textAlign = 'right';
+      text(number + ' / CANVAS COLLECTION', 762, 43, 10);
+      ctx.textAlign = 'left';
+    }
+    function grain() {
+      // Deterministic flecks give the flat shapes a restrained printed finish.
+      let seed = 1729;
+      ctx.fillStyle = 'rgba(37,34,35,0.055)';
+      for (let n = 0; n < 1500; n++) {
+        seed = (seed * 1664525 + 1013904223) >>> 0;
+        const x = 21 + (seed / 4294967296) * 758;
+        seed = (seed * 1664525 + 1013904223) >>> 0;
+        const y = 21 + (seed / 4294967296) * 518;
+        ctx.fillRect(x, y, 0.8, 0.8);
+      }
+    }
+  
+    rect(0, 0, W, H, paper);
+  
+    if (id === 'garden') {
+      const teal = '#176b60', orange = '#df713d', pale = '#d5dec2';
+      rect(21, 21, 758, 414, pale);
+      frame('BOTANICAL', '02');
+      text('SMALL', 38, 130, 75);
+      text('WONDERS.', 35, 205, 66);
+      text('GROW SOMETHING GOOD.', 40, 239, 12);
+      line(41, 265, 298, 265);
+      text('A STUDY IN PATIENCE,', 40, 291, 12, ink, 400);
+      text('SHAPE AND POSSIBILITY.', 40, 310, 12, ink, 400);
+  
+      // Curved stems connect alternating, asymmetric leaf silhouettes.
+      ctx.strokeStyle = teal;
+      ctx.lineWidth = 8;
+      ctx.beginPath();
+      ctx.moveTo(554, 425);
+      ctx.bezierCurveTo(539, 315, 579, 208, 586, 101);
+      ctx.stroke();
+      function leaf(x, y, w, h, angle, color) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(-w * 0.1, -h * 0.7, w * 0.7, -h, w, -h);
+        ctx.bezierCurveTo(w * 1.04, -h * 0.33, w * 0.48, h * 0.08, 0, 0);
+        ctx.fill();
+        line(4, -3, w * 0.8, -h * 0.73, paper, 1.4);
+        ctx.restore();
+      }
+      leaf(555, 360, 125, 107, -0.17, teal);
+      leaf(558, 320, 144, 95, -2.08, teal);
+      leaf(568, 250, 112, 103, -0.05, teal);
+      leaf(576, 201, 111, 85, -2.08, teal);
+      leaf(584, 139, 76, 81, -0.28, teal);
+      circle(707, 119, 28, orange);
+      circle(707, 119, 10, paper);
+      star(413, 96, 18, orange, 8);
+      ellipse(402, 369, 23, 42, -0.45, orange);
+      ellipse(454, 393, 15, 28, 0.54, teal);
+      ellipse(702, 368, 22, 39, 0.65, orange);
+      line(526, 425, 610, 425, ink, 2);
+      rect(21, 435, 758, 104, paper);
+      text('EVERY GREAT THING', 39, 475, 23);
+      text('STARTS WITH A SEED.', 39, 504, 23);
+      text('01  OBSERVE', 548, 470, 11);
+      text('02  CREATE', 548, 491, 11);
+      text('03  LET IT GROW', 548, 512, 11);
+      line(21, 435, 779, 435, ink, 1.25);
+    } else if (id === 'tide') {
+      const navy = '#183d60', blue = '#477da0', light = '#a9c9ce';
+      rect(21, 21, 758, 414, '#e0e8df');
+      frame('COASTAL', '03');
+      circle(653, 134, 67, '#e6a461');
+      text('FIND', 38, 130, 78, navy);
+      text('YOUR TIDE.', 35, 207, 69, navy);
+      text('FOLLOW THE QUIET CURRENT.', 40, 239, 12, navy);
+      function wave(y, color, phase) {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(21, y);
+        ctx.bezierCurveTo(180, y - 58 + phase, 282, y + 64, 425, y + 5);
+        ctx.bezierCurveTo(570, y - 58, 663, y + 54 - phase, 779, y - 23);
+        ctx.lineTo(779, 435);
+        ctx.lineTo(21, 435);
+        ctx.closePath();
+        ctx.fill();
+      }
+      wave(294, light, 0);
+      wave(331, blue, 14);
+      wave(374, navy, -8);
+      ctx.strokeStyle = paper;
+      ctx.lineWidth = 1.3;
+      for (let n = 0; n < 3; n++) {
+        const y = 340 + n * 24;
+        ctx.beginPath();
+        ctx.moveTo(55, y);
+        ctx.bezierCurveTo(173, y - 28, 245, y + 48, 352, y + 5);
+        ctx.stroke();
+      }
+      // Three small abstract shore birds above the water.
+      ctx.strokeStyle = navy;
+      ctx.lineWidth = 2;
+      for (const [x, y, r] of [[510, 160, 12], [560, 185, 8], [720, 234, 10]]) {
+        ctx.beginPath();
+        ctx.moveTo(x - r, y + 4);
+        ctx.quadraticCurveTo(x - r / 2, y - 4, x, y + 3);
+        ctx.quadraticCurveTo(x + r / 2, y - 4, x + r, y + 4);
+        ctx.stroke();
+      }
+      text('36.0 N / 140.0 E', 585, 411, 11, paper);
+      line(21, 435, 779, 435, ink, 1.25);
+      text('SLOW DOWN.', 39, 476, 26, navy);
+      text('LET YOUR IDEAS WANDER.', 39, 506, 21, navy);
+      text('WATER / WIND / WONDER', 551, 482, 11, navy);
+      text('AN EXPLORATION IN BLUE', 551, 502, 10, navy, 400);
+    } else {
+      const coral = '#db684d', ochre = '#dfac46', lavender = '#c5badb';
+      rect(21, 21, 758, 414, lavender);
+      frame('ORBITAL', '01');
+  
+      // Broad, offset orbital curves lead into the ringed planet.
+      ellipse(578, 235, 202, 156, -0.30, ink, true, 1.1);
+      ellipse(578, 235, 183, 138, -0.30, paper, true, 1.1);
+      circle(579, 227, 111, coral);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(579, 227, 111, 0, Math.PI * 2);
+      ctx.clip();
+      rect(468, 250, 225, 18, '#ca5843');
+      rect(468, 275, 225, 10, '#ca5843');
+      ctx.restore();
+  
+      // The rear half of the ring disappears behind the globe.
+      ctx.save();
+      ctx.translate(579, 227);
+      ctx.rotate(-0.42);
+      ctx.strokeStyle = ink;
+      ctx.lineWidth = 25;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 194, 57, 0, 0, Math.PI);
+      ctx.stroke();
+      ctx.strokeStyle = ochre;
+      ctx.lineWidth = 20;
+      ctx.stroke();
+      ctx.strokeStyle = paper;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 194, 57, 0, 0, Math.PI);
+      ctx.stroke();
+      ctx.restore();
+      ellipse(579, 227, 194, 57, -0.42, ink, true, 1.2);
+  
+      // Lettering remains in its own clear left-hand column.
+      text('MAKE', 38, 139, 84);
+      text('SPACE.', 34, 223, 84);
+      text('FOR YOUR NEXT BIG IDEA.', 40, 258, 12);
+      line(40, 282, 285, 282, ink, 1.25);
+      text('STAY CURIOUS.', 40, 309, 12);
+      text('THERE IS MORE OUT THERE.', 40, 328, 11, ink, 400);
+      star(397, 95, 22, paper, 4, Math.PI / 4);
+      star(738, 338, 23, ochre, 8, Math.PI / 8);
+      star(386, 355, 14, ink, 4, Math.PI / 4);
+      circle(700, 79, 5, ink);
+      circle(442, 329, 6, coral);
+      line(42, 392, 207, 392, ink, 1.3);
+      circle(42, 392, 4, ink);
+      circle(121, 392, 4, paper);
+      circle(207, 392, 4, ink);
+      text('IMAGINE', 40, 414, 9);
+      text('EXPLORE', 166, 414, 9);
+  
+      line(21, 435, 779, 435, ink, 1.25);
+      text('A LITTLE CURIOSITY.', 39, 476, 25);
+      text('A WHOLE NEW WORLD.', 39, 506, 25);
+      text('DEPARTURE: ANYTIME', 555, 472, 11);
+      text('DESTINATION: POSSIBILITY', 555, 493, 11);
+      text('NO LIMITS TO THE IMAGINATION.', 555, 514, 9, ink, 400);
+    }
+  
+    grain();
+    ctx.restore();
+  }
+
+  const canvas = document.getElementById('art');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  const width = canvas.width;
+  const height = canvas.height;
+  const paper = '#fff5dc';
+  const status = document.getElementById('status');
+  const color = document.getElementById('color');
+  const size = document.getElementById('size');
+  const fill = document.getElementById('fill');
+  const undoButton = document.getElementById('undo');
+  const redoButton = document.getElementById('redo');
+  const past = [];
+  const future = [];
+  const historyLimit = 24;
+  let tool = 'ink';
+  let symmetry = 'off';
+  let gesture = null;
+
+  const snapshot = () => ctx.getImageData(0, 0, width, height);
+  const say = message => { status.textContent = message; };
+
+  function updateHistoryButtons() {
+    undoButton.disabled = past.length === 0;
+    redoButton.disabled = future.length === 0;
+  }
+
+  function remember(before) {
+    past.push(before);
+    if (past.length > historyLimit) past.shift();
+    future.length = 0;
+    updateHistoryButtons();
+  }
+
+  function undo() {
+    if (gesture || !past.length) return;
+    future.push(snapshot());
+    ctx.putImageData(past.pop(), 0, 0);
+    updateHistoryButtons();
+    say('Undid the last change.');
+  }
+
+  function redo() {
+    if (gesture || !future.length) return;
+    past.push(snapshot());
+    ctx.putImageData(future.pop(), 0, 0);
+    updateHistoryButtons();
+    say('Restored the last change.');
+  }
+
+  function canvasPoint(event) {
+    const box = canvas.getBoundingClientRect();
+    return {
+      x: Math.max(0, Math.min(width, (event.clientX - box.left) * width / box.width)),
+      y: Math.max(0, Math.min(height, (event.clientY - box.top) * height / box.height))
+    };
+  }
+
+  // One drawn mark is repeated through reflected coordinate systems.
+  function forEachReflection(mode, draw) {
+    const flips = [[false, false]];
+    if (mode === 'mirror' || mode === 'quad') flips.push([true, false]);
+    if (mode === 'quad') flips.push([false, true], [true, true]);
+    for (const [flipX, flipY] of flips) {
+      ctx.save();
+      ctx.translate(flipX ? width : 0, flipY ? height : 0);
+      ctx.scale(flipX ? -1 : 1, flipY ? -1 : 1);
+      draw();
+      ctx.restore();
+    }
+  }
+
+  function drawMark(mark, from, to) {
+    forEachReflection(mark.symmetry, () => {
+      ctx.strokeStyle = ctx.fillStyle = mark.color;
+      ctx.lineWidth = mark.size;
+      ctx.lineCap = ctx.lineJoin = 'round';
+      if (mark.tool === 'erase') ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      if (mark.tool === 'line' || mark.tool === 'ink' || mark.tool === 'erase') {
+        if (from.x === to.x && from.y === to.y) {
+          ctx.arc(from.x, from.y, mark.size / 2, 0, 2 * Math.PI);
+          ctx.fill();
+        } else {
+          ctx.moveTo(from.x, from.y);
+          ctx.lineTo(to.x, to.y);
+          ctx.stroke();
+        }
+        return;
+      }
+      const tiny = Math.hypot(to.x - from.x, to.y - from.y) < 3;
+      const x = tiny ? from.x - 18 : Math.min(from.x, to.x);
+      const y = tiny ? from.y - 18 : Math.min(from.y, to.y);
+      const w = tiny ? 36 : Math.max(2, Math.abs(to.x - from.x));
+      const h = tiny ? 36 : Math.max(2, Math.abs(to.y - from.y));
+      if (mark.tool === 'rectangle') ctx.rect(x, y, w, h);
+      if (mark.tool === 'ellipse') ctx.ellipse(x + w / 2, y + h / 2, w / 2, h / 2, 0, 0, 2 * Math.PI);
+      if (mark.tool === 'star') {
+        for (let i = 0; i < 10; i++) {
+          const angle = i * Math.PI / 5 - Math.PI / 2;
+          const radius = i % 2 ? 0.45 : 1;
+          const px = x + w / 2 + Math.cos(angle) * w / 2 * radius;
+          const py = y + h / 2 + Math.sin(angle) * h / 2 * radius;
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+      }
+      if (mark.filled) ctx.fill();
+      else ctx.stroke();
+    });
+  }
+
+  function extendGesture(point) {
+    if (gesture.freehand) drawMark(gesture, gesture.last, point);
+    else {
+      // Restore the artboard before drawing a new shape preview.
+      ctx.putImageData(gesture.before, 0, 0);
+      drawMark(gesture, gesture.start, point);
+    }
+    gesture.last = point;
+  }
+
+  canvas.addEventListener('pointerdown', event => {
+    if (gesture || event.button !== 0) return;
+    const start = canvasPoint(event);
+    canvas.setPointerCapture(event.pointerId);
+    gesture = {
+      pointerId: event.pointerId, before: snapshot(), start, last: start,
+      tool, symmetry, color: color.value, size: Number(size.value), filled: fill.checked,
+      freehand: tool === 'ink' || tool === 'erase'
+    };
+    extendGesture(start);
+  });
+
+  canvas.addEventListener('pointermove', event => {
+    if (gesture?.pointerId === event.pointerId) extendGesture(canvasPoint(event));
+  });
+
+  canvas.addEventListener('pointerup', event => {
+    if (gesture?.pointerId !== event.pointerId) return;
+    extendGesture(canvasPoint(event));
+    const { before, tool: usedTool } = gesture;
+    gesture = null;
+    remember(before);
+    say(usedTool === 'erase' ? 'Erased ink.' : 'Mark added.');
+  });
+
+  function cancelGesture(event) {
+    if (gesture?.pointerId !== event.pointerId) return;
+    ctx.putImageData(gesture.before, 0, 0);
+    gesture = null;
+  }
+
+  canvas.addEventListener('pointercancel', cancelGesture);
+  canvas.addEventListener('lostpointercapture', cancelGesture);
+
+  function loadStarter(id) {
+    ctx.clearRect(0, 0, width, height);
+    if (id !== 'shapes') {
+      drawStarter(ctx, id);
+      return;
+    }
+    // The original assignment's line, rectangle, circle and text, plus a star.
+    ctx.save();
+    ctx.fillStyle = '#27262f';
+    ctx.font = 'bold 54px Georgia';
+    ctx.fillText('Shape studies', 56, 109);
+    ctx.font = '18px monospace';
+    ctx.fillText('LINE / RECTANGLE / CIRCLE / STAR', 58, 148);
+    ctx.restore();
+    const demo = { symmetry: 'off', size: 9, filled: true };
+    drawMark({ ...demo, tool: 'line', color: '#293fcb' }, { x: 68, y: 204 }, { x: 732, y: 204 });
+    drawMark({ ...demo, tool: 'rectangle', color: '#f2765e' }, { x: 68, y: 267 }, { x: 250, y: 430 });
+    drawMark({ ...demo, tool: 'ellipse', color: '#248778' }, { x: 306, y: 264 }, { x: 476, y: 434 });
+    drawMark({ ...demo, tool: 'star', color: '#a398dd' }, { x: 506, y: 228 }, { x: 744, y: 465 });
+  }
+
+  document.querySelectorAll('[data-tool]').forEach(button => button.addEventListener('click', () => {
+    tool = button.dataset.tool;
+    document.querySelectorAll('[data-tool]').forEach(option => option.setAttribute('aria-pressed', option === button));
+    say(button.textContent.trim().split(/\s+/).pop() + ' tool selected.');
+  }));
+
+  document.querySelectorAll('[data-symmetry]:is(button)').forEach(button => button.addEventListener('click', () => {
+    symmetry = button.dataset.symmetry;
+    document.getElementById('sheet').dataset.symmetry = symmetry;
+    document.querySelectorAll('button[data-symmetry]').forEach(option => option.setAttribute('aria-pressed', option === button));
+    say(symmetry === 'off' ? 'Symmetry turned off.' : button.textContent + ' symmetry selected.');
+  }));
+
+  function reflectSwatches() {
+    document.querySelectorAll('[data-color]').forEach(button => button.setAttribute('aria-pressed', button.dataset.color === color.value));
+  }
+
+  document.querySelectorAll('[data-color]').forEach(button => button.addEventListener('click', () => {
+    color.value = button.dataset.color;
+    reflectSwatches();
+  }));
+  color.addEventListener('input', reflectSwatches);
+  size.addEventListener('input', () => { document.getElementById('sizeValue').value = size.value + ' px'; });
+
+  document.querySelectorAll('[data-starter]').forEach(button => button.addEventListener('click', () => {
+    if (gesture) return;
+    remember(snapshot());
+    loadStarter(button.dataset.starter);
+    say(button.textContent.trim() + ' loaded. Undo restores your last print.');
+  }));
+
+  document.getElementById('clear').addEventListener('click', () => {
+    if (gesture) return;
+    remember(snapshot());
+    ctx.clearRect(0, 0, width, height);
+    say('Artboard cleared. Undo restores your print.');
+  });
+
+  undoButton.addEventListener('click', undo);
+  redoButton.addEventListener('click', redo);
+  document.addEventListener('keydown', event => {
+    if (!(event.ctrlKey || event.metaKey) || event.altKey || event.target.matches('input, textarea, [contenteditable]')) return;
+    const key = event.key.toLowerCase();
+    if (key === 'z' || key === 'y') {
+      event.preventDefault();
+      if (key === 'y' || event.shiftKey) redo();
+      else undo();
+    }
+  });
+
+  document.getElementById('export').addEventListener('click', event => {
+    if (gesture) {
+      event.preventDefault();
+      return;
+    }
+    // Paint paper beneath the artwork. The preview guides are CSS and stay out of the PNG.
+    const print = document.createElement('canvas');
+    print.width = width;
+    print.height = height;
+    const printContext = print.getContext('2d');
+    printContext.fillStyle = paper;
+    printContext.fillRect(0, 0, width, height);
+    printContext.drawImage(canvas, 0, 0);
+    event.currentTarget.href = print.toDataURL('image/png');
+    say('PNG ready to download.');
+  });
+
+  loadStarter('orbit');
+  updateHistoryButtons();
+  </script>
+</body>
+</html>
