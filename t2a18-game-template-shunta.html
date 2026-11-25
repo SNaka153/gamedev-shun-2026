@@ -26,6 +26,9 @@
 
 <p>Use WASD or Arrow Keys to move the blue slime.</p>
 <p>Avoid the red slime!</p>
+<p>Collect the small blue slime. Avoid the small red obstacle.</p>
+
+<p id="myStatus">Score: 0 | Lives: 3</p>
 
 <script>
 
@@ -33,7 +36,21 @@
 let myGlobalX = 0;
 let myClock;
 
-// Check if two images collide
+// NEW: Score and lives
+let myScore = 0;
+let myLives = 3;
+
+
+// NEW: Update the score and lives display
+function myUpdateStatus() {
+
+    document.getElementById('myStatus').textContent =
+        'Score: ' + myScore +
+        ' | Lives: ' + myLives;
+}
+
+
+// Teacher's collision detection function
 function myHitOther(my1, my2) {
 
     const img1 = document.getElementById(my1);
@@ -53,26 +70,86 @@ function myHitOther(my1, my2) {
         bottom1 >= top2 &&
         left1 <= right2 &&
         top1 <= bottom2) {
+
         return true;
     }
 
     return false;
 }
 
-// Check collision
+
+// NEW: Move the player back to the start
+function myResetPlayer() {
+
+    document.getElementById('myImg01').style.left = '50px';
+    document.getElementById('myImg01').style.top = '140px';
+}
+
+
+// Check collisions
 function myCheckHit() {
 
+    // Original: Enemy collision
     if (myHitOther('myImg01', 'myImg02')) {
 
         alert('You Lose! Try Again.');
 
-        document.getElementById('myImg01').style.left = '50px';
-        document.getElementById('myImg01').style.top = '140px';
+        myResetPlayer();
+
+        return;
     }
+
+
+    // NEW: Collect an item
+    if (
+        document.getElementById('myImg03').style.display !== 'none' &&
+        myHitOther('myImg01', 'myImg03')
+    ) {
+
+        // Increase score
+        myScore++;
+
+        // Hide the collected item
+        document.getElementById('myImg03').style.display = 'none';
+
+        // Update the score
+        myUpdateStatus();
+
+    }
+
+
+    // NEW: Hit an obstacle
+    if (myHitOther('myImg01', 'myImg04')) {
+
+        // Decrease lives
+        myLives--;
+
+        // Update the lives display
+        myUpdateStatus();
+
+        // Return player to the start
+        myResetPlayer();
+
+        // Check for game over
+        if (myLives <= 0) {
+
+            alert('Game Over! Press Restart Game.');
+
+        }
+
+        return;
+    }
+
 }
+
 
 // Move player inside the game area
 function myMovePlayer(x, y) {
+
+    // Stop movement after game over
+    if (myLives <= 0) {
+        return;
+    }
 
     const player = document.getElementById('myImg01');
     const gameArea = document.getElementById('myGameArea');
@@ -80,22 +157,48 @@ function myMovePlayer(x, y) {
     let newX = parseInt(player.style.left) + x;
     let newY = parseInt(player.style.top) + y;
 
-    // Keep the player inside the game area
+    // Prevent moving outside the game area
     newX = Math.max(
         0,
-        Math.min(newX, gameArea.clientWidth - player.offsetWidth)
+        Math.min(
+            newX,
+            gameArea.clientWidth - player.offsetWidth
+        )
     );
 
     newY = Math.max(
         0,
-        Math.min(newY, gameArea.clientHeight - player.offsetHeight)
+        Math.min(
+            newY,
+            gameArea.clientHeight - player.offsetHeight
+        )
     );
 
     player.style.left = newX + 'px';
     player.style.top = newY + 'px';
 
+    // Check all collisions after moving
     myCheckHit();
 }
+
+
+// NEW: Restart the game
+function myRestartGame() {
+
+    // Reset score and lives
+    myScore = 0;
+    myLives = 3;
+
+    // Bring back the collectible item
+    document.getElementById('myImg03').style.display = 'block';
+
+    // Reset player position
+    myResetPlayer();
+
+    // Update status display
+    myUpdateStatus();
+}
+
 
 // WASD and Arrow Key controls
 document.addEventListener('keydown', function(event) {
@@ -121,40 +224,54 @@ document.addEventListener('keydown', function(event) {
         event.preventDefault();
         myMovePlayer(10, 0);
     }
+
 });
 
 </script>
 
-<!-- Background movement -->
+
+<!-- Original: Background movement -->
 <input type="button"
        value="Auto Background Left"
        onclick="{
            clearInterval(myClock);
 
            myClock = setInterval(function() {
+
                myGlobalX -= 5;
+
                document.getElementById('myBody')
                    .style.backgroundPosition =
                    myGlobalX + 'px 0px';
+
            }, 100);
        }">
+
 
 <!-- Stop background -->
 <input type="button"
        value="Stop Background"
        onclick="clearInterval(myClock)">
 
-<!-- Move player right -->
+
+<!-- Original: Move right -->
 <input type="button"
        value="Image Right Fast Button"
        onclick="myMovePlayer(10, 0)">
 
+
+<!-- NEW: Restart button -->
+<input type="button"
+       value="Restart Game"
+       onclick="myRestartGame()">
+
 <br><br>
 
-<!-- Separate game area -->
+
+<!-- Game Area -->
 <div id="myGameArea">
 
-    <!-- Player -->
+    <!-- Original: Player -->
     <img id="myImg01"
          src="myImage01.png"
          style="position:absolute;
@@ -163,7 +280,8 @@ document.addEventListener('keydown', function(event) {
                 top:140px;
                 left:50px;">
 
-    <!-- Enemy -->
+
+    <!-- Original: Enemy -->
     <img id="myImg02"
          src="myImage02.png"
          style="position:absolute;
@@ -171,6 +289,26 @@ document.addEventListener('keydown', function(event) {
                 height:80px;
                 top:140px;
                 left:250px;">
+
+
+    <!-- NEW: Collectible item -->
+    <img id="myImg03"
+         src="myImage01.png"
+         style="position:absolute;
+                width:70px;
+                height:60px;
+                top:30px;
+                left:175px;">
+
+
+    <!-- NEW: Obstacle -->
+    <img id="myImg04"
+         src="myImage02.png"
+         style="position:absolute;
+                width:70px;
+                height:60px;
+                top:265px;
+                left:470px;">
 
 </div>
 
