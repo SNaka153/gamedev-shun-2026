@@ -25,10 +25,14 @@
 <h1 align="center">t2a18-game-template-shunta</h1>
 
 <p>Use WASD or Arrow Keys to move the blue slime.</p>
-<p>Avoid the red slime!</p>
-<p>Collect the small blue slime. Avoid the small red obstacle.</p>
+<p>Avoid the red slimes and collect the small blue slime.</p>
+<p>Collect the item before reaching GOAL!</p>
 
 <p id="myStatus">Score: 0 | Lives: 3</p>
+
+<p id="myMessage">
+    Collect the blue item, then reach GOAL!
+</p>
 
 <script>
 
@@ -36,12 +40,14 @@
 let myGlobalX = 0;
 let myClock;
 
-// NEW: Score and lives
+
+// NEW: Game variables
 let myScore = 0;
 let myLives = 3;
+let myHasWon = false;
 
 
-// NEW: Update the score and lives display
+// NEW: Update score and lives
 function myUpdateStatus() {
 
     document.getElementById('myStatus').textContent =
@@ -78,7 +84,7 @@ function myHitOther(my1, my2) {
 }
 
 
-// NEW: Move the player back to the start
+// NEW: Reset player position
 function myResetPlayer() {
 
     document.getElementById('myImg01').style.left = '50px';
@@ -89,51 +95,91 @@ function myResetPlayer() {
 // Check collisions
 function myCheckHit() {
 
-    // Original: Enemy collision
+    // Original: Hit the enemy
     if (myHitOther('myImg01', 'myImg02')) {
 
         alert('You Lose! Try Again.');
 
         myResetPlayer();
 
+        document.getElementById('myMessage').textContent =
+            'Avoid the red slime!';
+
         return;
     }
 
 
-    // NEW: Collect an item
+    // NEW: Collect the blue item
     if (
         document.getElementById('myImg03').style.display !== 'none' &&
         myHitOther('myImg01', 'myImg03')
     ) {
 
-        // Increase score
+        // Increase the score
         myScore++;
 
-        // Hide the collected item
-        document.getElementById('myImg03').style.display = 'none';
+        // Remove the collected item
+        document.getElementById('myImg03').style.display =
+            'none';
 
-        // Update the score
         myUpdateStatus();
 
+        document.getElementById('myMessage').textContent =
+            'Item collected! Now reach GOAL!';
     }
 
 
-    // NEW: Hit an obstacle
+    // NEW: Hit the obstacle
     if (myHitOther('myImg01', 'myImg04')) {
 
-        // Decrease lives
+        // Lose one life
         myLives--;
 
-        // Update the lives display
         myUpdateStatus();
 
-        // Return player to the start
+        // Return to starting position
         myResetPlayer();
 
-        // Check for game over
         if (myLives <= 0) {
 
-            alert('Game Over! Press Restart Game.');
+            document.getElementById('myMessage').textContent =
+                'GAME OVER! Press Restart Game.';
+
+            clearInterval(myClock);
+            myClock = null;
+
+            alert('Game Over!');
+
+        } else {
+
+            document.getElementById('myMessage').textContent =
+                'Obstacle hit! Lives remaining: ' + myLives;
+
+        }
+
+        return;
+    }
+
+
+    // NEW: Check if the player reaches GOAL
+    if (myHitOther('myImg01', 'myGoal')) {
+
+        // The player must collect the item first
+        if (myScore >= 1) {
+
+            myHasWon = true;
+
+            document.getElementById('myMessage').textContent =
+                'YOU WIN! You collected the item and reached GOAL!';
+
+            // Stop background movement
+            clearInterval(myClock);
+            myClock = null;
+
+        } else {
+
+            document.getElementById('myMessage').textContent =
+                'Collect the blue item before reaching GOAL!';
 
         }
 
@@ -146,8 +192,8 @@ function myCheckHit() {
 // Move player inside the game area
 function myMovePlayer(x, y) {
 
-    // Stop movement after game over
-    if (myLives <= 0) {
+    // Stop movement after winning or losing
+    if (myLives <= 0 || myHasWon) {
         return;
     }
 
@@ -177,7 +223,7 @@ function myMovePlayer(x, y) {
     player.style.left = newX + 'px';
     player.style.top = newY + 'px';
 
-    // Check all collisions after moving
+    // Check collisions after every movement
     myCheckHit();
 }
 
@@ -185,18 +231,31 @@ function myMovePlayer(x, y) {
 // NEW: Restart the game
 function myRestartGame() {
 
-    // Reset score and lives
+    // Reset game variables
     myScore = 0;
     myLives = 3;
+    myHasWon = false;
 
-    // Bring back the collectible item
-    document.getElementById('myImg03').style.display = 'block';
+    // Bring the collectible item back
+    document.getElementById('myImg03').style.display =
+        'block';
 
-    // Reset player position
+    // Reset player
     myResetPlayer();
 
-    // Update status display
+    // Reset background movement
+    clearInterval(myClock);
+    myClock = null;
+    myGlobalX = 0;
+
+    document.getElementById('myBody')
+        .style.backgroundPosition = '0px 0px';
+
+    // Reset display
     myUpdateStatus();
+
+    document.getElementById('myMessage').textContent =
+        'Collect the blue item, then reach GOAL!';
 }
 
 
@@ -251,7 +310,10 @@ document.addEventListener('keydown', function(event) {
 <!-- Stop background -->
 <input type="button"
        value="Stop Background"
-       onclick="clearInterval(myClock)">
+       onclick="{
+           clearInterval(myClock);
+           myClock = null;
+       }">
 
 
 <!-- Original: Move right -->
@@ -309,6 +371,25 @@ document.addEventListener('keydown', function(event) {
                 height:60px;
                 top:265px;
                 left:470px;">
+
+
+    <!-- NEW: GOAL -->
+    <div id="myGoal"
+         style="position:absolute;
+                width:80px;
+                height:60px;
+                top:30px;
+                left:350px;
+                background-color:lightgreen;
+                border:2px solid green;
+                box-sizing:border-box;
+                text-align:center;
+                line-height:56px;
+                font-weight:bold;">
+
+        GOAL
+
+    </div>
 
 </div>
 
