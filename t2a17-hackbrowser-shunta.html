@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T2A17 Hack Browser by Shunta</title>
+<script>
+// Teacher's original object and sorting variables
+ document.name = 'myDocument';
+ window.name = 'myWindow';
+ let splitIndex = 0;
+ let splitArray = [];
+ let myAllResults = [];
+
+// Teacher's split, join and manual sort
+function split(string, text) {
+    splitArray = string === '' ? [] : string.split(text);
+    splitIndex = splitArray.length;
+}
+function join(arrayName) {
+    let temp = '';
+    for (let i = 0; i < splitIndex; i++) {
+        if (i > 0) temp += '\n';
+        temp += arrayName[i];
+    }
+    return temp;
+}
+function sort(arrayName) {
+    for (let i = 0; i < splitIndex - 1; i++) {
+        for (let j = i + 1; j < splitIndex; j++) {
+            if (arrayName[j] < arrayName[i]) {
+                let dummy = arrayName[i];
+                arrayName[i] = arrayName[j];
+                arrayName[j] = dummy;
+            }
+        }
+    }
+}
+function sorttext() {
+    let myText = document.forms.myForm.myTextarea;
+    split(myText.value, '\n');
+    sort(splitArray);
+    myText.value = join(splitArray);
+}
+
+// Teacher's basic idea: use for...in to inspect an object.
+// Improvements: handle inaccessible properties and identify methods.
+function myObjectData(myObject, myLabel) {
+    let myForm = document.forms.myForm;
+    myForm.myText1.value = myLabel;
+    myForm.myTextarea.value = '';
+    document.getElementById('mySearch').value = '';
+    myAllResults = [];
+    if (myObject == null) {
+        myForm.myTextarea.value = 'Object not available in this browser.';
+        document.getElementById('myStats').textContent = 'Results: 0';
+        return;
+    }
+    try {
+        for (let prop in myObject) {
+            let line;
+            let method = false;
+            try {
+                let value = myObject[prop];
+                method = typeof value === 'function';
+                if (method) {
+                    line = prop + '() = Method';
+                } else if (value === null) {
+                    line = prop + ' = null';
+                } else if (typeof value === 'object') {
+                    line = prop + ' = Object';
+                } else {
+                    line = prop + ' = ' + String(value).replace(/\r/g, '\\r').replace(/\n/g, '\\n');
+                }
+            } catch (error) {
+                line = prop + ' = Not accessible';
+            }
+            if (line.length > 300) line = line.slice(0, 300) + '...';
+            myAllResults.push({line: line, method: method});
+        }
+    } catch (error) {
+        myForm.myTextarea.value = 'Object properties are not accessible.';
+        document.getElementById('myStats').textContent = 'Results: 0';
+        return;
+    }
+    myFilterResults();
+}
+
+// Additional feature: filter and count the real results
+function myFilterResults() {
+    let query = document.getElementById('mySearch').value.toLowerCase();
+    let lines = [];
+    let methods = 0;
+    for (let i = 0; i < myAllResults.length; i++) {
+        let result = myAllResults[i];
+        if (result.line.toLowerCase().includes(query)) {
+            lines.push(result.line);
+            if (result.method) methods++;
+        }
+    }
+    document.forms.myForm.myTextarea.value = lines.join('\n');
+    sorttext();
+    document.getElementById('myStats').textContent = 'Results: ' + lines.length +
+        ' | Properties: ' + (lines.length - methods) + ' | Methods: ' + methods;
+}
+function myStorageData() {
+    try { myObjectData(window.localStorage, 'window.localStorage'); }
+    catch (error) { myObjectData(null, 'window.localStorage'); }
+}
+</script>
+</head>
+<body bgcolor="#81F7F3">
+<b>Browser Hack by Shunta</b><br><br>
+Object Sort base
+<h3>Instructions t2a17-Hackbrowser</h3>
+Use the first 15 buttons to explore browser objects. The last 5 buttons inspect new HTML elements made on this page.<br>
+Change a checkbox, selection or slider, then click its numbered button again to see the new values.<br>
+Results may differ between browsers.<br><br>
+
+<!-- Existing image and credit retained -->
+<img id="move1" src="t2a17-car.jpg" width="400" height="200" style="max-width:100%; object-fit:contain;" alt="Ferrari LaFerrari"><br>
+<small>Photo: Clément Bucco-Lechat,
+<a href="https://commons.wikimedia.org/wiki/File:Geneva_MotorShow_2013_-_Ferrari_LaFerrari_front_left_view.jpg">Wikimedia Commons</a>,
+<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.</small><br><br>
+<form name="myForm2">
+<textarea name="myTextarea">wow</textarea><br>
+<input type="text" name="myText1" id="myText2" size="50" value="">
+</form>
+
+<h3>Click the buttons to see the properties and methods of each object.</h3>
+Click refresh to reset the browser.<br><br>
+<form name="myForm">
+<input type="text" name="myText1" size="50" readonly><br><br>
+<!-- Teacher's supplied object examples -->
+<input type="button" value="1 window" onclick="myObjectData(window, 'window')">
+<input type="button" value="2 document" onclick="myObjectData(document, 'document')">
+<input type="button" value="3 document.myForm2" onclick="myObjectData(document.forms.myForm2, 'document.myForm2')">
+<input type="button" value="4 document.myForm2.myTextarea" onclick="myObjectData(document.forms.myForm2.myTextarea, 'myTextarea')"><br>
+<input type="button" value="5 window.location" onclick="myObjectData(window.location, 'window.location')">
+<input type="button" value="6 window.parent" onclick="myObjectData(window.parent, 'window.parent')">
+<input type="button" value="7 window.chrome" onclick="myObjectData(window.chrome, 'window.chrome')">
+<input type="button" value="8 Image Style" onclick="myObjectData(document.getElementById('move1').style, 'Image Style')"><br>
+<input type="button" value="9 Body Style" onclick="myObjectData(document.body.style, 'Body Style')">
+<input type="button" value="10 Image" onclick="myObjectData(document.getElementById('move1'), 'Image')">
+<input type="button" value="11 Local Storage" onclick="myStorageData()">
+<input type="button" value="12 Computed Image Style" onclick="myObjectData(getComputedStyle(document.getElementById('move1')), 'Computed Image Style')"><br>
+<input type="button" value="13 Form Text" onclick="myObjectData(document.forms.myForm2.myText1, 'Form Text')">
+<input type="button" value="14 Text by ID" onclick="myObjectData(document.getElementById('myText2'), 'Text by ID')">
+<!-- Teacher's sheet had no object specified for button 15; add a table. -->
+<input type="button" value="15 Table" onclick="myObjectData(document.getElementById('myTable'), 'myTable')"><br><br>
+<!-- NEW: Inspect the five HTML elements created below. -->
+<input type="button" value="16 Bold" onclick="myObjectData(document.getElementById('myBold'), 'myBold')">
+<input type="button" value="17 Checkbox" onclick="myObjectData(document.getElementById('myCheckbox'), 'myCheckbox')">
+<input type="button" value="18 Select" onclick="myObjectData(document.getElementById('mySelect'), 'mySelect')">
+<input type="button" value="19 Range" onclick="myObjectData(document.getElementById('myRange'), 'myRange')">
+<input type="button" value="20 Progress" onclick="myObjectData(document.getElementById('myProgress'), 'myProgress')"><br><br>
+Search Properties / Methods:
+<input id="mySearch" type="text" oninput="myFilterResults()" placeholder="e.g. checked or value">
+<p id="myStats">Results: 0 | Properties: 0 | Methods: 0</p>
+<textarea name="myTextarea" rows="20" cols="70" style="max-width:95%;" readonly></textarea>
+</form>
+
+<h3>Extra HTML Elements</h3>
+<!-- Actual HTML objects, not just variable names -->
+<table id="myTable" border="1"><tr><th>Name</th><th>Score</th></tr><tr><td>Shunta</td><td>100</td></tr></table><br>
+16: <b id="myBold">This is bold text!</b><br><br>
+17: <label><input id="myCheckbox" type="checkbox"> Check me</label><br><br>
+18: <label for="mySelect">Choose a color:</label>
+<select id="mySelect"><option value="red">Red</option><option value="blue">Blue</option><option value="green">Green</option></select><br><br>
+19: <label for="myRange">Change the slider:</label>
+<input id="myRange" type="range" min="0" max="100" value="40" oninput="document.getElementById('myProgress').value = Number(this.value)"><br><br>
+20: <label for="myProgress">Progress:</label> <progress id="myProgress" value="40" max="100">40%</progress><br><br>
+<input type="button" value="Back" style="font-size:25px" onclick="window.history.back()"><br><br>
+</body>
+</html>

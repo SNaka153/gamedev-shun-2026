@@ -5,7 +5,7 @@
   <title>T2A23 Canvas by Shunta</title>
   <style>
     /* Only needed so drawing works properly on phones/tablets */
-    #myCoolTag { touch-action: none; max-width: 100%; }
+    #myCoolTag { touch-action: none; max-width: 100%; height: auto; }
   </style>
 </head>
 <body>
@@ -47,6 +47,10 @@ Click the button to draw basic shapes, then ask AI to help you add more!<br><br>
 
 <!-- NEW: Extra canvas drawing functions -->
 <input type="button" value="Draw More Shapes" onclick="myDrawMoreShapes()">
+<!-- NEW: Three separate Canvas drawing techniques -->
+<input type="button" value="Draw Bezier Curve" onclick="myDrawBezier()">
+<input type="button" value="Draw Gradient" onclick="myDrawGradient()">
+<input type="button" value="Draw Pattern" onclick="myDrawPattern()">
 <input type="button" value="Clear Canvas" onclick="myClearCanvas()">
 <br><br>
 
@@ -162,6 +166,57 @@ Size: <input id="mySize" type="range" min="1" max="30" value="4">
     myContext.fill();
 
     myMessage('Drew a triangle, a star, and an ellipse.');
+  }
+
+  // NEW: Draw a smooth curve using two control points
+  function myDrawBezier() {
+    mySaveHistory();
+    myContext.save();
+    myContext.globalCompositeOperation = 'source-over';
+    myContext.beginPath();
+    myContext.moveTo(165, 265);
+    myContext.bezierCurveTo(185, 185, 265, 295, 285, 215);
+    myContext.strokeStyle = 'purple';
+    myContext.lineWidth = 4;
+    myContext.stroke();
+    myContext.restore();
+    myMessage('Bezier curve: two control points change the shape of the curve.');
+  }
+
+  // NEW: Fill a rectangle with a smooth transition of colors
+  function myDrawGradient() {
+    mySaveHistory();
+    myContext.save();
+    myContext.globalCompositeOperation = 'source-over';
+    let myGradient = myContext.createLinearGradient(20, 0, 140, 0);
+    myGradient.addColorStop(0, 'red');
+    myGradient.addColorStop(0.5, 'yellow');
+    myGradient.addColorStop(1, 'blue');
+    myContext.fillStyle = myGradient;
+    myContext.fillRect(20, 220, 120, 55);
+    myContext.restore();
+    myMessage('Gradient: three colors blend across the rectangle.');
+  }
+
+  // NEW: Nested loops draw a checkerboard pattern
+  function myDrawPattern() {
+    mySaveHistory();
+    myContext.save();
+    myContext.globalCompositeOperation = 'source-over';
+    let mySize = 12;
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 12; col++) {
+        if ((row + col) % 2 === 0) {
+          myContext.fillStyle = '#3675bc';
+        } else {
+          myContext.fillStyle = '#dceafa';
+        }
+        myContext.fillRect(305 + col * mySize, 145 + row * mySize,
+                           mySize, mySize);
+      }
+    }
+    myContext.restore();
+    myMessage('Pattern: nested loops draw 36 alternating squares.');
   }
 
   function myClearCanvas() {
